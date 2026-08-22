@@ -498,14 +498,14 @@ function negativeFit(profile: UserProfile, frictionFactors: string[]) {
 }
 
 function noveltyScore(profile: UserProfile, job: JobPosting, analysis: JobAnalysis, predictedFit: number) {
-  const titleDistance = profile.persona.currentField && !job.domain.includes(profile.persona.currentField) ? 2.4 : 0.7;
-  const titleObvious = profile.persona.careerText.toLowerCase().includes(job.title.toLowerCase().split(" ")[0]) ? -1.1 : 1.4;
+  const titleDistance = profile.persona.currentField && !job.domain.includes(profile.persona.currentField) ? 2.4 : 1.0;
+  const titleObvious = profile.persona.careerText.toLowerCase().includes(job.title.toLowerCase().split(" ")[0]) ? -1.1 : 1.8;
   const transferRatio = capabilityAlignmentFor(profile, analysis.requiredCapabilities);
   if (predictedFit < scoringConfig.novelty.minimumRelevantFit || transferRatio < scoringConfig.novelty.minimumCapabilityTransfer) {
     return clamp(4.5 + predictedFit * 0.2 + transferRatio, 1, scoringConfig.novelty.threshold - 0.1);
   }
-  const transfer = transferRatio * 2.2;
-  const fit = predictedFit * 0.35;
+  const transfer = transferRatio * 2.6;
+  const fit = predictedFit * 0.46;
   return clamp(titleDistance + titleObvious + transfer + fit, 1, 10);
 }
 
@@ -670,7 +670,7 @@ function isExtremeMismatch(job: JobPosting) {
 export function hardFilterJobs(jobs: JobPosting[]) {
   return jobs.map((job) => {
     const reasons = [
-      ...(scoringConfig.hardFilters.extremeSeniority.includes(job.seniority) ? ["extreme seniority mismatch"] : []),
+      ...((scoringConfig.hardFilters.extremeSeniority as readonly string[]).includes(job.seniority) ? ["extreme seniority mismatch"] : []),
       ...job.requirements.filter((requirement) => scoringConfig.hardFilters.specializedGapKeywords.some((keyword) => requirement.toLowerCase().includes(keyword.toLowerCase()))).map((requirement) => `specialized hard gap: ${requirement}`),
     ];
     return { job, pass: reasons.length === 0, reasons };

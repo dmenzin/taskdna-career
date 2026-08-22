@@ -1,7 +1,13 @@
 import { describe, expect, it } from "vitest";
+import { scenarioBank } from "../src/config/scenarios";
 import { applyScenarioResponses, buildUserProfile, selectAdaptiveScenarios } from "../src/domain/engine";
 
 describe("adaptive scenario interview", () => {
+  it("has a scenario bank large enough for multi-step adaptive interviews", () => {
+    expect(scenarioBank.length).toBeGreaterThanOrEqual(10);
+    expect(new Set(scenarioBank.flatMap((scenario) => scenario.targetDimensions)).size).toBeGreaterThanOrEqual(10);
+  });
+
   it("selects different scenarios for different uncertainty and preference states", () => {
     const lowInfo = buildUserProfile("low-information");
     const coordination = buildUserProfile("coordination-pro");

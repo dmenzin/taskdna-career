@@ -181,7 +181,7 @@ export default function Home() {
           <button className="button" onClick={() => setFunctionId("")}>Clear function filter</button>
         </div>
         <div className="function-grid">
-          {functionScores.slice(0, 8).map((item, index) => (
+          {functionScores.map((item, index) => (
             <button key={item.function.id} className={functionId === item.function.id ? "function-card active" : "function-card"} onClick={() => setFunctionId(item.function.id)}>
               <span>#{index + 1}</span>
               <strong>{item.function.name}</strong>
@@ -289,7 +289,7 @@ export default function Home() {
                 <button onClick={() => setDismissed((items) => [...items, selectedJob.job.canonicalId])}>Dismiss</button>
               </div>
               {feedbackLog.length > 0 && (
-                <div className="changed" data-testid="recommendation-change">
+                <div className="changed">
                   <strong>Your recommendations changed because...</strong>
                   {feedbackLog.map((item) => <p key={item}>{item}</p>)}
                 </div>
@@ -297,6 +297,12 @@ export default function Home() {
             </article>
           )}
         </div>
+        {feedbackLog.length > 0 && (
+          <div className="changed global-change" data-testid="recommendation-change">
+            <strong>Your recommendations changed because...</strong>
+            {feedbackLog.map((item) => <p key={item}>{item}</p>)}
+          </div>
+        )}
       </section>
 
       <section className="card-grid lab" id="debug" data-testid="debug-console">
@@ -306,6 +312,30 @@ export default function Home() {
           <ol>
             {selectedJob?.decisionTrace.map((item) => <li key={item}>{item}</li>)}
           </ol>
+          {selectedJob && (
+            <details open className="trace-details">
+              <summary>Inspect score components and evidence</summary>
+              <dl className="funnel">
+                <div><dt>Raw fit</dt><dd>{selectedJob.score.rawPredictedFit.toFixed(2)}</dd></div>
+                <div><dt>Negative-fit risk</dt><dd>{selectedJob.score.negativeFitRisk.toFixed(2)}</dd></div>
+                <div><dt>Displayed Work Fit</dt><dd>{selectedJob.score.predictedFit.toFixed(2)}</dd></div>
+                <div><dt>Confidence</dt><dd>{Math.round(selectedJob.score.confidence * 100)}%</dd></div>
+                <div><dt>CAF</dt><dd>{selectedJob.score.confidenceAdjustedFit.toFixed(2)}</dd></div>
+                <div><dt>Hireability</dt><dd>{selectedJob.score.hireability.toFixed(2)}</dd></div>
+                <div><dt>Career Direction</dt><dd>{selectedJob.score.careerDirection.toFixed(2)}</dd></div>
+                <div><dt>Overall</dt><dd>{selectedJob.score.overall.toFixed(2)}</dd></div>
+                <div><dt>Novelty</dt><dd>{selectedJob.score.novelty.toFixed(2)}</dd></div>
+                <div><dt>Version</dt><dd>{selectedJob.score.scoringVersion}</dd></div>
+              </dl>
+              <h3>Capability matches and gaps</h3>
+              <p className="small">Required: {selectedJob.analysis.requiredCapabilities.join(", ")}</p>
+              <p className="small">Hard gaps: {selectedJob.analysis.hardGaps.join(", ") || "none"}</p>
+              <h3>Evidence signals</h3>
+              <ul>
+                {profile.evidence.slice(0, 5).map((item) => <li key={item.id}>{item.id}: {item.activity} ({item.sourceType})</li>)}
+              </ul>
+            </details>
+          )}
         </div>
         <div className="card">
           <h2><Beaker size={22} /> Search funnel</h2>

@@ -36,6 +36,8 @@ for (const persona of personas) {
 
     await page.getByTestId("debug-console").scrollIntoViewIfNeeded();
     await expect(page.getByTestId("debug-console")).toContainText("Decision trace");
+    await expect(page.getByTestId("debug-console")).toContainText("Raw fit");
+    await expect(page.getByTestId("debug-console")).toContainText("Capability matches and gaps");
     await expect(page.getByTestId("debug-console")).toContainText("Raw observations");
   });
 }

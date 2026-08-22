@@ -60,14 +60,14 @@
       "active": true,
       "version": "function.v1"
     },
-    "predictedFit": 9.4,
-    "confidence": 0.6766764705882351,
-    "confidenceAdjustedFit": 8.75335294117647,
+    "predictedFit": 9.051176470588235,
+    "confidence": 0.6227529411764707,
+    "confidenceAdjustedFit": 8.296682352941176,
     "capabilityAlignment": 6.799999999999999,
     "hireability": 6.040666666666667,
-    "careerDirection": 8.53,
+    "careerDirection": 8.285823529411763,
     "negativeFitRisk": 4.2,
-    "overallPriority": 7.396772549019607
+    "overallPriority": 7.223144901960785
   },
   {
     "function": {
@@ -128,14 +128,14 @@
       "active": true,
       "version": "function.v1"
     },
-    "predictedFit": 8.188235294117646,
-    "confidence": 0.6766764705882351,
-    "confidenceAdjustedFit": 7.541588235294117,
+    "predictedFit": 8.353058823529413,
+    "confidence": 0.6227529411764707,
+    "confidenceAdjustedFit": 7.598564705882354,
     "capabilityAlignment": 6.799999999999999,
     "hireability": 6.040666666666667,
-    "careerDirection": 8.19176470588235,
+    "careerDirection": 8.307141176470587,
     "negativeFitRisk": 2.2,
-    "overallPriority": 6.982507843137254
+    "overallPriority": 7.016907254901961
   },
   {
     "function": {
@@ -196,14 +196,14 @@
       "active": true,
       "version": "function.v1"
     },
-    "predictedFit": 7.970588235294118,
-    "confidence": 0.6766764705882351,
-    "confidenceAdjustedFit": 7.323941176470588,
+    "predictedFit": 8.052823529411764,
+    "confidence": 0.6227529411764707,
+    "confidenceAdjustedFit": 7.298329411764706,
     "capabilityAlignment": 5.133333333333333,
     "hireability": 4.5601111111111114,
-    "careerDirection": 8.039411764705882,
+    "careerDirection": 8.096976470588235,
     "negativeFitRisk": 0,
-    "overallPriority": 6.302138562091503
+    "overallPriority": 6.303089738562091
   },
   {
     "function": {
@@ -264,14 +264,14 @@
       "active": true,
       "version": "function.v1"
     },
-    "predictedFit": 8.523529411764706,
-    "confidence": 0.6766764705882351,
-    "confidenceAdjustedFit": 7.876882352941176,
+    "predictedFit": 8.372352941176471,
+    "confidence": 0.6227529411764707,
+    "confidenceAdjustedFit": 7.617858823529413,
     "capabilityAlignment": 4.3,
     "hireability": 3.8198333333333334,
-    "careerDirection": 8.426470588235293,
+    "careerDirection": 8.320647058823528,
     "negativeFitRisk": 0,
-    "overallPriority": 6.22996862745098
+    "overallPriority": 6.136388039215685
   },
   {
     "function": {
@@ -334,152 +334,14 @@
       "active": true,
       "version": "function.v1"
     },
-    "predictedFit": 8.305882352941177,
-    "confidence": 0.6766764705882351,
-    "confidenceAdjustedFit": 7.659235294117647,
+    "predictedFit": 8.296117647058823,
+    "confidence": 0.6227529411764707,
+    "confidenceAdjustedFit": 7.541623529411765,
     "capabilityAlignment": 4.3,
     "hireability": 3.8198333333333334,
-    "careerDirection": 8.274117647058823,
+    "careerDirection": 8.267282352941175,
     "negativeFitRisk": 0,
-    "overallPriority": 6.141821568627451
-  },
-  {
-    "function": {
-      "id": "scientific-software",
-      "name": "Scientific Software",
-      "shortName": "Scientific software",
-      "oneSentenceTaskLoop": "Build software that makes scientific or technical evidence easier to analyze, simulate, and use.",
-      "longerDescription": "Software creation tied to scientific workflows, models, instrumentation, or data interpretation.",
-      "taskDnaVector": {
-        "problem_structure": 5,
-        "measurable_feedback": 5,
-        "investigation_orientation": 5,
-        "evidence_density": 8.2,
-        "experimentation_preference": 5,
-        "scope_preference": 5,
-        "software_as_tool": 9.5,
-        "reasoning_style": 5,
-        "creation_style": 8.7,
-        "real_system_grounding": 5,
-        "closure_preference": 5,
-        "causal_reasoning": 5,
-        "integration_preference": 7.8,
-        "customer_interaction_preference": 3.8,
-        "coordination_preference": 5,
-        "theory_vs_application": 7.7,
-        "repetition_tolerance": 5
-      },
-      "commonAttractors": [
-        "domain software",
-        "data tools",
-        "simulation support",
-        "usable analysis"
-      ],
-      "commonRepellents": [
-        "pure SaaS feature churn",
-        "unclear scientific validation"
-      ],
-      "typicalTitles": [
-        "Scientific Software Engineer",
-        "Research Software Engineer",
-        "Computational Tools Developer"
-      ],
-      "typicalDomains": [
-        "scientific instrumentation",
-        "healthcare",
-        "energy",
-        "analytics"
-      ],
-      "typicalRequirements": [
-        "Python",
-        "numerical methods",
-        "data visualization",
-        "testing"
-      ],
-      "commonSkillGaps": [
-        "production software architecture",
-        "domain-specific math"
-      ],
-      "active": true,
-      "version": "function.v1"
-    },
-    "predictedFit": 7.8,
-    "confidence": 0.6766764705882351,
-    "confidenceAdjustedFit": 7.15335294117647,
-    "capabilityAlignment": 4.3,
-    "hireability": 3.8198333333333334,
-    "careerDirection": 7.92,
-    "negativeFitRisk": 0,
-    "overallPriority": 5.936939215686275
-  },
-  {
-    "function": {
-      "id": "test-development",
-      "name": "Test Development & Performance Characterization",
-      "shortName": "Test development",
-      "oneSentenceTaskLoop": "Build test methods and experiments that reveal system behavior under meaningful conditions.",
-      "longerDescription": "A mix of experimental design, instrumentation, automation, analysis, and actionable characterization.",
-      "taskDnaVector": {
-        "problem_structure": 8.3,
-        "measurable_feedback": 9.3,
-        "investigation_orientation": 5,
-        "evidence_density": 5,
-        "experimentation_preference": 9.2,
-        "scope_preference": 5,
-        "software_as_tool": 7.4,
-        "reasoning_style": 5,
-        "creation_style": 5,
-        "real_system_grounding": 8.4,
-        "closure_preference": 8.6,
-        "causal_reasoning": 5,
-        "integration_preference": 5,
-        "customer_interaction_preference": 5,
-        "coordination_preference": 5,
-        "theory_vs_application": 5,
-        "repetition_tolerance": 5
-      },
-      "commonAttractors": [
-        "test design",
-        "measurement",
-        "automation",
-        "performance envelopes"
-      ],
-      "commonRepellents": [
-        "protocol repetition",
-        "equipment scheduling"
-      ],
-      "typicalTitles": [
-        "Test Development Engineer",
-        "Characterization Engineer",
-        "Verification Tools Engineer"
-      ],
-      "typicalDomains": [
-        "medical devices",
-        "robotics",
-        "energy",
-        "aerospace"
-      ],
-      "typicalRequirements": [
-        "instrumentation",
-        "Python",
-        "DOE",
-        "data visualization"
-      ],
-      "commonSkillGaps": [
-        "hardware fixtures",
-        "formal validation protocols"
-      ],
-      "active": true,
-      "version": "function.v1"
-    },
-    "predictedFit": 7.982352941176471,
-    "confidence": 0.6766764705882351,
-    "confidenceAdjustedFit": 7.335705882352941,
-    "capabilityAlignment": 4.3,
-    "hireability": 3.8198333333333334,
-    "careerDirection": 7.537647058823529,
-    "negativeFitRisk": 0,
-    "overallPriority": 5.934292156862744
+    "overallPriority": 6.105512745098039
   },
   {
     "function": {
@@ -541,82 +403,152 @@
       "active": true,
       "version": "function.v1"
     },
-    "predictedFit": 7.688235294117647,
-    "confidence": 0.6766764705882351,
-    "confidenceAdjustedFit": 7.0415882352941175,
+    "predictedFit": 8.076823529411765,
+    "confidence": 0.6227529411764707,
+    "confidenceAdjustedFit": 7.322329411764707,
     "capabilityAlignment": 4.3,
     "hireability": 3.8198333333333334,
-    "careerDirection": 7.841764705882353,
+    "careerDirection": 8.113776470588235,
     "negativeFitRisk": 0,
-    "overallPriority": 5.891674509803922
+    "overallPriority": 6.01669862745098
   },
   {
     "function": {
-      "id": "field-applications",
-      "name": "Technical Field Service / Applications",
-      "shortName": "Field applications",
-      "oneSentenceTaskLoop": "Solve technical issues with customers in the field and translate patterns back to product teams.",
-      "longerDescription": "Customer-facing troubleshooting with real systems, fast feedback, and communication demands.",
+      "id": "test-development",
+      "name": "Test Development & Performance Characterization",
+      "shortName": "Test development",
+      "oneSentenceTaskLoop": "Build test methods and experiments that reveal system behavior under meaningful conditions.",
+      "longerDescription": "A mix of experimental design, instrumentation, automation, analysis, and actionable characterization.",
       "taskDnaVector": {
-        "problem_structure": 5,
-        "measurable_feedback": 5,
-        "investigation_orientation": 8.2,
-        "evidence_density": 7.4,
-        "experimentation_preference": 5,
+        "problem_structure": 8.3,
+        "measurable_feedback": 9.3,
+        "investigation_orientation": 5,
+        "evidence_density": 5,
+        "experimentation_preference": 9.2,
         "scope_preference": 5,
-        "software_as_tool": 5,
+        "software_as_tool": 7.4,
         "reasoning_style": 5,
         "creation_style": 5,
-        "real_system_grounding": 9,
-        "closure_preference": 8.2,
+        "real_system_grounding": 8.4,
+        "closure_preference": 8.6,
         "causal_reasoning": 5,
         "integration_preference": 5,
-        "customer_interaction_preference": 9.3,
-        "coordination_preference": 7.2,
+        "customer_interaction_preference": 5,
+        "coordination_preference": 5,
         "theory_vs_application": 5,
         "repetition_tolerance": 5
       },
       "commonAttractors": [
-        "hands-on troubleshooting",
-        "fast feedback",
-        "customer context"
+        "test design",
+        "measurement",
+        "automation",
+        "performance envelopes"
       ],
       "commonRepellents": [
-        "travel",
-        "interrupts",
-        "emotional escalation"
+        "protocol repetition",
+        "equipment scheduling"
       ],
       "typicalTitles": [
-        "Applications Engineer",
-        "Field Service Engineer",
-        "Technical Support Engineer"
+        "Test Development Engineer",
+        "Characterization Engineer",
+        "Verification Tools Engineer"
       ],
       "typicalDomains": [
-        "scientific instrumentation",
-        "automation",
+        "medical devices",
         "robotics",
-        "medical devices"
+        "energy",
+        "aerospace"
       ],
       "typicalRequirements": [
-        "communication",
-        "system troubleshooting",
-        "travel readiness"
+        "instrumentation",
+        "Python",
+        "DOE",
+        "data visualization"
       ],
       "commonSkillGaps": [
-        "customer escalation handling",
-        "onsite availability"
+        "hardware fixtures",
+        "formal validation protocols"
       ],
       "active": true,
       "version": "function.v1"
     },
-    "predictedFit": 8.24705882352941,
-    "confidence": 0.6766764705882351,
-    "confidenceAdjustedFit": 7.600411764705881,
-    "capabilityAlignment": 1.7999999999999998,
-    "hireability": 1.5990000000000002,
-    "careerDirection": 8.232941176470586,
+    "predictedFit": 8.17964705882353,
+    "confidence": 0.6227529411764707,
+    "confidenceAdjustedFit": 7.425152941176472,
+    "capabilityAlignment": 4.3,
+    "hireability": 3.8198333333333334,
+    "careerDirection": 7.675752941176471,
     "negativeFitRisk": 0,
-    "overallPriority": 5.229664705882351
+    "overallPriority": 5.981842156862745
+  },
+  {
+    "function": {
+      "id": "scientific-software",
+      "name": "Scientific Software",
+      "shortName": "Scientific software",
+      "oneSentenceTaskLoop": "Build software that makes scientific or technical evidence easier to analyze, simulate, and use.",
+      "longerDescription": "Software creation tied to scientific workflows, models, instrumentation, or data interpretation.",
+      "taskDnaVector": {
+        "problem_structure": 5,
+        "measurable_feedback": 5,
+        "investigation_orientation": 5,
+        "evidence_density": 8.2,
+        "experimentation_preference": 5,
+        "scope_preference": 5,
+        "software_as_tool": 9.5,
+        "reasoning_style": 5,
+        "creation_style": 8.7,
+        "real_system_grounding": 5,
+        "closure_preference": 5,
+        "causal_reasoning": 5,
+        "integration_preference": 7.8,
+        "customer_interaction_preference": 3.8,
+        "coordination_preference": 5,
+        "theory_vs_application": 7.7,
+        "repetition_tolerance": 5
+      },
+      "commonAttractors": [
+        "domain software",
+        "data tools",
+        "simulation support",
+        "usable analysis"
+      ],
+      "commonRepellents": [
+        "pure SaaS feature churn",
+        "unclear scientific validation"
+      ],
+      "typicalTitles": [
+        "Scientific Software Engineer",
+        "Research Software Engineer",
+        "Computational Tools Developer"
+      ],
+      "typicalDomains": [
+        "scientific instrumentation",
+        "healthcare",
+        "energy",
+        "analytics"
+      ],
+      "typicalRequirements": [
+        "Python",
+        "numerical methods",
+        "data visualization",
+        "testing"
+      ],
+      "commonSkillGaps": [
+        "production software architecture",
+        "domain-specific math"
+      ],
+      "active": true,
+      "version": "function.v1"
+    },
+    "predictedFit": 7.955176470588236,
+    "confidence": 0.6227529411764707,
+    "confidenceAdjustedFit": 7.200682352941177,
+    "capabilityAlignment": 4.3,
+    "hireability": 3.8198333333333334,
+    "careerDirection": 8.028623529411764,
+    "negativeFitRisk": 0,
+    "overallPriority": 5.96743156862745
   },
   {
     "function": {
@@ -677,14 +609,82 @@
       "active": true,
       "version": "function.v1"
     },
-    "predictedFit": 8.217647058823529,
-    "confidence": 0.6766764705882351,
-    "confidenceAdjustedFit": 7.570999999999999,
+    "predictedFit": 8.270470588235295,
+    "confidence": 0.6227529411764707,
+    "confidenceAdjustedFit": 7.515976470588236,
     "capabilityAlignment": 1.7999999999999998,
     "hireability": 1.5990000000000002,
-    "careerDirection": 8.21235294117647,
+    "careerDirection": 8.249329411764705,
     "negativeFitRisk": 0,
-    "overallPriority": 5.217752941176469
+    "overallPriority": 5.206792352941177
+  },
+  {
+    "function": {
+      "id": "field-applications",
+      "name": "Technical Field Service / Applications",
+      "shortName": "Field applications",
+      "oneSentenceTaskLoop": "Solve technical issues with customers in the field and translate patterns back to product teams.",
+      "longerDescription": "Customer-facing troubleshooting with real systems, fast feedback, and communication demands.",
+      "taskDnaVector": {
+        "problem_structure": 5,
+        "measurable_feedback": 5,
+        "investigation_orientation": 8.2,
+        "evidence_density": 7.4,
+        "experimentation_preference": 5,
+        "scope_preference": 5,
+        "software_as_tool": 5,
+        "reasoning_style": 5,
+        "creation_style": 5,
+        "real_system_grounding": 9,
+        "closure_preference": 8.2,
+        "causal_reasoning": 5,
+        "integration_preference": 5,
+        "customer_interaction_preference": 9.3,
+        "coordination_preference": 7.2,
+        "theory_vs_application": 5,
+        "repetition_tolerance": 5
+      },
+      "commonAttractors": [
+        "hands-on troubleshooting",
+        "fast feedback",
+        "customer context"
+      ],
+      "commonRepellents": [
+        "travel",
+        "interrupts",
+        "emotional escalation"
+      ],
+      "typicalTitles": [
+        "Applications Engineer",
+        "Field Service Engineer",
+        "Technical Support Engineer"
+      ],
+      "typicalDomains": [
+        "scientific instrumentation",
+        "automation",
+        "robotics",
+        "medical devices"
+      ],
+      "typicalRequirements": [
+        "communication",
+        "system troubleshooting",
+        "travel readiness"
+      ],
+      "commonSkillGaps": [
+        "customer escalation handling",
+        "onsite availability"
+      ],
+      "active": true,
+      "version": "function.v1"
+    },
+    "predictedFit": 8.095882352941176,
+    "confidence": 0.6227529411764707,
+    "confidenceAdjustedFit": 7.341388235294118,
+    "capabilityAlignment": 1.7999999999999998,
+    "hireability": 1.5990000000000002,
+    "careerDirection": 8.127117647058823,
+    "negativeFitRisk": 0,
+    "overallPriority": 5.136084117647059
   },
   {
     "function": {
@@ -747,14 +747,14 @@
       "active": true,
       "version": "function.v1"
     },
-    "predictedFit": 8.288235294117648,
-    "confidence": 0.6766764705882351,
-    "confidenceAdjustedFit": 7.641588235294118,
+    "predictedFit": 8.137058823529411,
+    "confidence": 0.6227529411764707,
+    "confidenceAdjustedFit": 7.382564705882353,
     "capabilityAlignment": 1.7999999999999998,
     "hireability": 1.5990000000000002,
-    "careerDirection": 7.751764705882353,
+    "careerDirection": 7.645941176470588,
     "negativeFitRisk": 0,
-    "overallPriority": 5.169841176470587
+    "overallPriority": 5.076260588235295
   },
   {
     "function": {
@@ -816,14 +816,14 @@
       "active": true,
       "version": "function.v1"
     },
-    "predictedFit": 8.047058823529412,
-    "confidence": 0.6766764705882351,
-    "confidenceAdjustedFit": 7.400411764705882,
+    "predictedFit": 7.874470588235294,
+    "confidence": 0.6227529411764707,
+    "confidenceAdjustedFit": 7.119976470588235,
     "capabilityAlignment": 1.7999999999999998,
     "hireability": 1.5990000000000002,
-    "careerDirection": 8.092941176470587,
+    "careerDirection": 7.972129411764705,
     "negativeFitRisk": 4.2,
-    "overallPriority": 5.148664705882352
+    "overallPriority": 5.046412352941177
   },
   {
     "function": {
@@ -885,13 +885,13 @@
       "active": true,
       "version": "function.v1"
     },
-    "predictedFit": 7.747058823529411,
-    "confidence": 0.6766764705882351,
-    "confidenceAdjustedFit": 7.100411764705881,
+    "predictedFit": 7.595882352941177,
+    "confidence": 0.6227529411764707,
+    "confidenceAdjustedFit": 6.841388235294119,
     "capabilityAlignment": 1.7999999999999998,
     "hireability": 1.5990000000000002,
-    "careerDirection": 7.882941176470586,
+    "careerDirection": 7.777117647058823,
     "negativeFitRisk": 0,
-    "overallPriority": 5.0271647058823525
+    "overallPriority": 4.933584117647058
   }
 ]
