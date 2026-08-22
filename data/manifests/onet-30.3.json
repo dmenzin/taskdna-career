@@ -1,0 +1,137 @@
+{
+  "version": "30.3",
+  "sourceUrl": "https://www.onetcenter.org/dl_files/database/db_30_3_csv.zip",
+  "fetchedAt": "2026-08-22T19:32:23.237Z",
+  "license": {
+    "name": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+    "url": "https://www.onetcenter.org/license_db.html",
+    "attribution": "This product includes information from the O*NET 30.3 Database by the U.S. Department of Labor, Employment and Training Administration (USDOL/ETA). Used under the CC BY 4.0 license. O*NET® is a trademark of USDOL/ETA. TaskDNA's derived interpretations do not represent the official position of USDOL/ETA and are not endorsed by USDOL/ETA."
+  },
+  "archive": {
+    "file": "db_30_3_csv.zip",
+    "sha256": "1a07f893d037ee81083cf6fdcf1c198bedd085beab4597d98702201448876fc4",
+    "bytes": 16258072
+  },
+  "tables": [
+    {
+      "table": "occupation_data",
+      "file": "db_30_3_csv/occupation_data.csv",
+      "sha256": "a09eae1d6609686e44e05b7290993a1c8b523d8ca224bc0eedc194c855c3ee02",
+      "bytes": 268030,
+      "rows": 1016
+    },
+    {
+      "table": "task_statements",
+      "file": "db_30_3_csv/task_statements.csv",
+      "sha256": "6462c5fef4e2b21ae2f1b85e5c3d6711ba5bef79e8c6091da48c1a26e9983a75",
+      "bytes": 3446784,
+      "rows": 18796
+    },
+    {
+      "table": "task_ratings",
+      "file": "db_30_3_csv/task_ratings.csv",
+      "sha256": "96fabe5cd925f741e91b41d95937e99d1a11bd98d9aee34a930b53dd2edf957e",
+      "bytes": 38092641,
+      "rows": 161559
+    },
+    {
+      "table": "work_activities",
+      "file": "db_30_3_csv/work_activities.csv",
+      "sha256": "494632dc96a8eface5084fbeb4038811cf01b0c9efe7d8c7d13e4d6453d6d8a4",
+      "bytes": 11625787,
+      "rows": 73308
+    },
+    {
+      "table": "work_context",
+      "file": "db_30_3_csv/work_context.csv",
+      "sha256": "ae720db6c126db24abd32ebe1eb590e8b0b09b131deea3036c36db7880eaa28f",
+      "bytes": 51647591,
+      "rows": 297676
+    },
+    {
+      "table": "essential_skills",
+      "file": "db_30_3_csv/essential_skills.csv",
+      "sha256": "4b709259b07de7e414f2d524365ce79dcce0e1c79c6e9ed35a4bc02163cf3737",
+      "bytes": 2286883,
+      "rows": 17880
+    },
+    {
+      "table": "transferable_skills",
+      "file": "db_30_3_csv/transferable_skills.csv",
+      "sha256": "23985fa24e0197067c02b3f062f0520839ef15a8980b93518bae68eeb041a841",
+      "bytes": 5973523,
+      "rows": 44700
+    },
+    {
+      "table": "knowledge",
+      "file": "db_30_3_csv/knowledge.csv",
+      "sha256": "ec5cafa88466ae350fdd51eefc3c63ff1cb7765af4c38381a613882a59238db1",
+      "bytes": 7887757,
+      "rows": 59004
+    },
+    {
+      "table": "abilities",
+      "file": "db_30_3_csv/abilities.csv",
+      "sha256": "17e6a8582a42939acc8ed150a4bde6132a5ddb3156abb39ca85ddc89057e42a7",
+      "bytes": 12443191,
+      "rows": 92976
+    },
+    {
+      "table": "education",
+      "file": "db_30_3_csv/education.csv",
+      "sha256": "a6c949af50e7f3edc79e322e5eea59b716fc5880d882bdec04f9a93208619a35",
+      "bytes": 1919069,
+      "rows": 11100
+    },
+    {
+      "table": "education_categories",
+      "file": "db_30_3_csv/education_categories.csv",
+      "sha256": "c010bae59dbc77ed267a74662bb654eff40f6ecc055f309a6b80a3d0250bb8c1",
+      "bytes": 2392,
+      "rows": 12
+    },
+    {
+      "table": "training_and_experience",
+      "file": "db_30_3_csv/training_and_experience.csv",
+      "sha256": "05dc5fcec280fc5e13eddda6a70cf58bd88728b3b8aee8e14affe1c1a8d78af9",
+      "bytes": 4381522,
+      "rows": 26025
+    },
+    {
+      "table": "job_zones",
+      "file": "db_30_3_csv/job_zones.csv",
+      "sha256": "075782b37d63dfa37d8afa6dea975388350baf2f4d1906e39b66766a05d72ba8",
+      "bytes": 60062,
+      "rows": 923
+    },
+    {
+      "table": "sample_of_reported_titles",
+      "file": "db_30_3_csv/sample_of_reported_titles.csv",
+      "sha256": "5f178e0770142d1acc6c3d99700e05b535f122d7af1ce6a900ef63630640c369",
+      "bytes": 578810,
+      "rows": 7953
+    },
+    {
+      "table": "related_occupations",
+      "file": "db_30_3_csv/related_occupations.csv",
+      "sha256": "fc2a719a21dbd3805ddfb6d510c013c9e0c366b46273701b88c683a50ef3fe6b",
+      "bytes": 2051148,
+      "rows": 18460
+    },
+    {
+      "table": "tasks_to_dwas",
+      "file": "db_30_3_csv/tasks_to_dwas.csv",
+      "sha256": "fdeda974af517ae8c3644466fe782af7d5d1c4864fa4d05c8f4f5ade11a60d2a",
+      "bytes": 5555376,
+      "rows": 23850
+    },
+    {
+      "table": "scales_reference",
+      "file": "db_30_3_csv/scales_reference.csv",
+      "sha256": "336a45bd2d4a05ff4222761444ba3431011a5e341fc249b8ff7a7f3a491c266c",
+      "bytes": 950,
+      "rows": 32
+    }
+  ],
+  "transformVersion": "onet-corpus.v1"
+}

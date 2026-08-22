@@ -47,4 +47,4 @@ function occ(
   return { onetCode, title, family, industry, tasks, generalizedWorkActivities, skills, knowledge, workContext, source: "onet-inspired-local-snapshot" };
 }
 
-export const families: OccupationalFamily[] = Array.from(new Set(occupationSkeletons.map((occupation) => occupation.family)));
+export const families: OccupationalFamily[] = Array.from(new Set(occupationSkeletons.map((occupation) => occupation.family as OccupationalFamily)));

@@ -1,0 +1,2238 @@
+{
+  "kind": "onet-external-shock",
+  "engineVersion": {
+    "scoring": "scoring.v1",
+    "inference": "taskdna.v2"
+  },
+  "labVersion": "subject-lab.v2-onet",
+  "seed": 20260823,
+  "corpusVersion": "30.3",
+  "generatedAt": "2026-08-22T19:40:40.619Z",
+  "runtimeMs": 1965,
+  "cohortSizes": {
+    "development": 150,
+    "validation": 100,
+    "holdout": 100,
+    "adversarial": 100
+  },
+  "sharedEvalJobs": [
+    "onet-17-2141.00",
+    "onet-17-2112.00",
+    "onet-15-1252.00",
+    "onet-15-1212.00",
+    "onet-15-2051.00",
+    "onet-19-1042.00",
+    "onet-29-1141.00",
+    "onet-11-9111.00",
+    "onet-13-2051.00",
+    "onet-13-2011.00",
+    "onet-13-1111.00",
+    "onet-11-2021.00",
+    "onet-13-1082.00",
+    "onet-13-1081.00",
+    "onet-41-4012.00",
+    "onet-13-1071.00",
+    "onet-23-1011.00",
+    "onet-13-1041.00",
+    "onet-25-2031.00",
+    "onet-15-1255.00",
+    "onet-43-4051.00",
+    "onet-11-3012.00"
+  ],
+  "overall": {
+    "n": 450,
+    "meanMae": 1.8452277688400356,
+    "worstStratumMae": {
+      "stratum": "software",
+      "meanMae": 1.9969167348276382,
+      "n": 14
+    },
+    "perDimension": [
+      {
+        "id": "problem_structure",
+        "mae": 1.8815253075552762,
+        "bias": -0.21130650094351813,
+        "falseHighRate": 0,
+        "falseLowRate": 0,
+        "missingEvidenceRate": 0.7977777777777778,
+        "meanConfidence": 0.31072358915485104
+      },
+      {
+        "id": "measurable_feedback",
+        "mae": 2.090030255462289,
+        "bias": 0.6221583054041158,
+        "falseHighRate": 0.07111111111111111,
+        "falseLowRate": 0,
+        "missingEvidenceRate": 0.43555555555555553,
+        "meanConfidence": 0.4751129229608989
+      },
+      {
+        "id": "investigation_orientation",
+        "mae": 1.7395831109323747,
+        "bias": 0.08664036791023451,
+        "falseHighRate": 0.05333333333333334,
+        "falseLowRate": 0,
+        "missingEvidenceRate": 0.6733333333333333,
+        "meanConfidence": 0.3696320000000006
+      },
+      {
+        "id": "evidence_density",
+        "mae": 1.6509067823630084,
+        "bias": 0.6924397946942482,
+        "falseHighRate": 0.042222222222222223,
+        "falseLowRate": 0,
+        "missingEvidenceRate": 0.43555555555555553,
+        "meanConfidence": 0.47820267615515066
+      },
+      {
+        "id": "experimentation_preference",
+        "mae": 1.7025427284953871,
+        "bias": 0.2523476596004473,
+        "falseHighRate": 0.013333333333333334,
+        "falseLowRate": 0,
+        "missingEvidenceRate": 0.6977777777777778,
+        "meanConfidence": 0.36109493333333453
+      },
+      {
+        "id": "scope_preference",
+        "mae": 1.9139613957587212,
+        "bias": -0.1406949837377508,
+        "falseHighRate": 0,
+        "falseLowRate": 0,
+        "missingEvidenceRate": 1,
+        "meanConfidence": 0.2399999999999983
+      },
+      {
+        "id": "software_as_tool",
+        "mae": 1.661693304373633,
+        "bias": -0.2832202429862502,
+        "falseHighRate": 0.008888888888888889,
+        "falseLowRate": 0,
+        "missingEvidenceRate": 0.7777777777777778,
+        "meanConfidence": 0.32729158793046803
+      },
+      {
+        "id": "reasoning_style",
+        "mae": 1.7789487264616843,
+        "bias": -0.16941666474679723,
+        "falseHighRate": 0,
+        "falseLowRate": 0,
+        "missingEvidenceRate": 1,
+        "meanConfidence": 0.2399999999999983
+      },
+      {
+        "id": "creation_style",
+        "mae": 1.979705290358182,
+        "bias": -0.10656014334861078,
+        "falseHighRate": 0.013333333333333334,
+        "falseLowRate": 0,
+        "missingEvidenceRate": 0.6844444444444444,
+        "meanConfidence": 0.355041536021945
+      },
+      {
+        "id": "real_system_grounding",
+        "mae": 1.8994786353065938,
+        "bias": 0.052006610214280845,
+        "falseHighRate": 0.02666666666666667,
+        "falseLowRate": 0,
+        "missingEvidenceRate": 0.7311111111111112,
+        "meanConfidence": 0.3485273465073156
+      },
+      {
+        "id": "closure_preference",
+        "mae": 1.9241484066785417,
+        "bias": 0.21489239804175528,
+        "falseHighRate": 0.02,
+        "falseLowRate": 0,
+        "missingEvidenceRate": 0.6977777777777778,
+        "meanConfidence": 0.3588720000000011
+      },
+      {
+        "id": "causal_reasoning",
+        "mae": 1.8333480546179841,
+        "bias": 0.11202612498117984,
+        "falseHighRate": 0.06444444444444444,
+        "falseLowRate": 0,
+        "missingEvidenceRate": 0.6733333333333333,
+        "meanConfidence": 0.3696320000000006
+      },
+      {
+        "id": "integration_preference",
+        "mae": 1.8919038907232066,
+        "bias": -0.08591534675849213,
+        "falseHighRate": 0,
+        "falseLowRate": 0,
+        "missingEvidenceRate": 1,
+        "meanConfidence": 0.2399999999999983
+      },
+      {
+        "id": "customer_interaction_preference",
+        "mae": 1.832174846053309,
+        "bias": 0.11378176663787867,
+        "falseHighRate": 0.02666666666666667,
+        "falseLowRate": 0,
+        "missingEvidenceRate": 0.6733333333333333,
+        "meanConfidence": 0.3712986543834107
+      },
+      {
+        "id": "coordination_preference",
+        "mae": 1.898859743004963,
+        "bias": -0.302373164399929,
+        "falseHighRate": 0.03333333333333333,
+        "falseLowRate": 0,
+        "missingEvidenceRate": 0.6755555555555556,
+        "meanConfidence": 0.3650353631079624
+      },
+      {
+        "id": "theory_vs_application",
+        "mae": 1.8488073836876995,
+        "bias": -0.20575935602555476,
+        "falseHighRate": 0,
+        "falseLowRate": 0,
+        "missingEvidenceRate": 1,
+        "meanConfidence": 0.2399999999999983
+      },
+      {
+        "id": "repetition_tolerance",
+        "mae": 1.8412542084477548,
+        "bias": -0.2183276713103674,
+        "falseHighRate": 0.04,
+        "falseLowRate": 0.015555555555555555,
+        "missingEvidenceRate": 0.7444444444444445,
+        "meanConfidence": 0.33987206037536927
+      }
+    ],
+    "propertyPassRate": 0.9588100686498856,
+    "meanFitSpread": 0.2933333333333327,
+    "meanHireabilitySpread": 3.4602802962962915,
+    "technicalDemoTopFunctionShare": 0.32,
+    "confidenceErrorBuckets": [
+      {
+        "bucket": "<0.35",
+        "n": 265,
+        "meanMae": 1.8445874835790288
+      },
+      {
+        "bucket": "0.35-0.5",
+        "n": 182,
+        "meanMae": 1.8444262163924865
+      },
+      {
+        "bucket": "0.5-0.65",
+        "n": 3,
+        "meanMae": 1.9504138153802604
+      },
+      {
+        "bucket": ">=0.65",
+        "n": 0,
+        "meanMae": 0
+      }
+    ],
+    "byStratum": [
+      {
+        "stratum": "software",
+        "n": 14,
+        "meanMae": 1.9969167348276382,
+        "propertyPassRate": 0.9615384615384616
+      },
+      {
+        "stratum": "supply_chain",
+        "n": 13,
+        "meanMae": 1.9657429994303957,
+        "propertyPassRate": 0.9807692307692307
+      },
+      {
+        "stratum": "business_development",
+        "n": 13,
+        "meanMae": 1.9534792844513904,
+        "propertyPassRate": 0.9423076923076923
+      },
+      {
+        "stratum": "cybersecurity",
+        "n": 14,
+        "meanMae": 1.9278516515910904,
+        "propertyPassRate": 0.9821428571428571
+      },
+      {
+        "stratum": "compliance",
+        "n": 13,
+        "meanMae": 1.9210333713040744,
+        "propertyPassRate": 1
+      },
+      {
+        "stratum": "science_research",
+        "n": 14,
+        "meanMae": 1.9198715067298473,
+        "propertyPassRate": 0.9818181818181818
+      },
+      {
+        "stratum": "communications",
+        "n": 13,
+        "meanMae": 1.9087304910967744,
+        "propertyPassRate": 0.9622641509433962
+      },
+      {
+        "stratum": "field_technical",
+        "n": 17,
+        "meanMae": 1.903999155561986,
+        "propertyPassRate": 0.9558823529411765
+      },
+      {
+        "stratum": "learning_education",
+        "n": 13,
+        "meanMae": 1.8960512778323726,
+        "propertyPassRate": 0.9074074074074074
+      },
+      {
+        "stratum": "consulting",
+        "n": 13,
+        "meanMae": 1.8914308098211854,
+        "propertyPassRate": 0.9607843137254902
+      },
+      {
+        "stratum": "healthcare_operations",
+        "n": 13,
+        "meanMae": 1.8905463215313234,
+        "propertyPassRate": 0.9215686274509803
+      },
+      {
+        "stratum": "data_analytics",
+        "n": 14,
+        "meanMae": 1.8879871994024064,
+        "propertyPassRate": 0.9444444444444444
+      },
+      {
+        "stratum": "operations",
+        "n": 14,
+        "meanMae": 1.878294793040298,
+        "propertyPassRate": 0.9642857142857143
+      },
+      {
+        "stratum": "research",
+        "n": 13,
+        "meanMae": 1.871594568792135,
+        "propertyPassRate": 0.9433962264150944
+      },
+      {
+        "stratum": "accounting_audit",
+        "n": 13,
+        "meanMae": 1.869808612464363,
+        "propertyPassRate": 0.9411764705882353
+      },
+      {
+        "stratum": "other",
+        "n": 34,
+        "meanMae": 1.8457470468587747,
+        "propertyPassRate": 0.9485294117647058
+      },
+      {
+        "stratum": "engineering",
+        "n": 15,
+        "meanMae": 1.8444240686134838,
+        "propertyPassRate": 0.9491525423728814
+      },
+      {
+        "stratum": "hr",
+        "n": 13,
+        "meanMae": 1.8316888985923538,
+        "propertyPassRate": 1
+      },
+      {
+        "stratum": "healthcare_professional",
+        "n": 14,
+        "meanMae": 1.823874341442911,
+        "propertyPassRate": 0.9814814814814815
+      },
+      {
+        "stratum": "sales",
+        "n": 13,
+        "meanMae": 1.8226403959958661,
+        "propertyPassRate": 0.9259259259259259
+      },
+      {
+        "stratum": "legal",
+        "n": 13,
+        "meanMae": 1.8117001631308913,
+        "propertyPassRate": 0.9574468085106383
+      },
+      {
+        "stratum": "marketing",
+        "n": 13,
+        "meanMae": 1.8045322034017914,
+        "propertyPassRate": 0.9791666666666666
+      },
+      {
+        "stratum": "ux_design",
+        "n": 13,
+        "meanMae": 1.7974422052688983,
+        "propertyPassRate": 0.94
+      },
+      {
+        "stratum": "finance",
+        "n": 13,
+        "meanMae": 1.7920781208509524,
+        "propertyPassRate": 0.9583333333333334
+      },
+      {
+        "stratum": "manufacturing_technical_operations",
+        "n": 27,
+        "meanMae": 1.7835920798722245,
+        "propertyPassRate": 0.9716981132075472
+      },
+      {
+        "stratum": "procurement",
+        "n": 13,
+        "meanMae": 1.7783924111085485,
+        "propertyPassRate": 0.9387755102040817
+      },
+      {
+        "stratum": "insurance_risk",
+        "n": 13,
+        "meanMae": 1.7708639382482774,
+        "propertyPassRate": 0.9795918367346939
+      },
+      {
+        "stratum": "policy",
+        "n": 13,
+        "meanMae": 1.7631953747915103,
+        "propertyPassRate": 0.9387755102040817
+      },
+      {
+        "stratum": "public_administration",
+        "n": 13,
+        "meanMae": 1.7387523588761042,
+        "propertyPassRate": 0.9777777777777777
+      },
+      {
+        "stratum": "project_program",
+        "n": 13,
+        "meanMae": 1.7071463910308216,
+        "propertyPassRate": 0.9607843137254902
+      },
+      {
+        "stratum": "product",
+        "n": 13,
+        "meanMae": 1.6222741385978916,
+        "propertyPassRate": 0.9782608695652174
+      }
+    ]
+  },
+  "byCohort": {
+    "development": {
+      "n": 150,
+      "meanMae": 1.875368214584508,
+      "worstStratumMae": {
+        "stratum": "software",
+        "meanMae": 2.0607906565007283,
+        "n": 5
+      },
+      "perDimension": [
+        {
+          "id": "problem_structure",
+          "mae": 1.6696863194898484,
+          "bias": -0.1712504250839052,
+          "falseHighRate": 0,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.76,
+          "meanConfidence": 0.3255049852072042
+        },
+        {
+          "id": "measurable_feedback",
+          "mae": 2.1356208458365376,
+          "bias": 0.799067198343086,
+          "falseHighRate": 0.08,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.38,
+          "meanConfidence": 0.5003523745385968
+        },
+        {
+          "id": "investigation_orientation",
+          "mae": 1.8548232016736013,
+          "bias": 0.18423523304108513,
+          "falseHighRate": 0.06666666666666667,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.66,
+          "meanConfidence": 0.3742280000000001
+        },
+        {
+          "id": "evidence_density",
+          "mae": 1.7357282552357567,
+          "bias": 0.855281086494151,
+          "falseHighRate": 0.05333333333333334,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.38,
+          "meanConfidence": 0.5038104096515906
+        },
+        {
+          "id": "experimentation_preference",
+          "mae": 1.7538386393249845,
+          "bias": 0.24646547169390412,
+          "falseHighRate": 0.02666666666666667,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.6666666666666666,
+          "meanConfidence": 0.3758973333333333
+        },
+        {
+          "id": "scope_preference",
+          "mae": 1.8804036870760237,
+          "bias": -0.2695212054510295,
+          "falseHighRate": 0,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 1,
+          "meanConfidence": 0.23999999999999963
+        },
+        {
+          "id": "software_as_tool",
+          "mae": 1.6843733887006536,
+          "bias": -0.21323538065052902,
+          "falseHighRate": 0.006666666666666667,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.8133333333333334,
+          "meanConfidence": 0.3160826666666669
+        },
+        {
+          "id": "reasoning_style",
+          "mae": 1.890610856997626,
+          "bias": -0.22469751003213873,
+          "falseHighRate": 0,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 1,
+          "meanConfidence": 0.23999999999999963
+        },
+        {
+          "id": "creation_style",
+          "mae": 2.1563701470353025,
+          "bias": 0.02080312277353848,
+          "falseHighRate": 0.02,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.7066666666666667,
+          "meanConfidence": 0.3496483787553598
+        },
+        {
+          "id": "real_system_grounding",
+          "mae": 1.822711372151457,
+          "bias": 0.1948941206939685,
+          "falseHighRate": 0.006666666666666667,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.7,
+          "meanConfidence": 0.3605781261261264
+        },
+        {
+          "id": "closure_preference",
+          "mae": 1.987171927600541,
+          "bias": 0.3561519891362011,
+          "falseHighRate": 0.03333333333333333,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.6666666666666666,
+          "meanConfidence": 0.3733800000000004
+        },
+        {
+          "id": "causal_reasoning",
+          "mae": 1.8373371666513696,
+          "bias": 0.1165262338025181,
+          "falseHighRate": 0.04,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.66,
+          "meanConfidence": 0.3742280000000001
+        },
+        {
+          "id": "integration_preference",
+          "mae": 1.967251628157218,
+          "bias": -0.27586829902185156,
+          "falseHighRate": 0,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 1,
+          "meanConfidence": 0.23999999999999963
+        },
+        {
+          "id": "customer_interaction_preference",
+          "mae": 1.9365026116020942,
+          "bias": 0.4200480589738087,
+          "falseHighRate": 0.04666666666666667,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.62,
+          "meanConfidence": 0.39264590140745753
+        },
+        {
+          "id": "coordination_preference",
+          "mae": 1.907744798554684,
+          "bias": -0.3913690992856733,
+          "falseHighRate": 0.02666666666666667,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.6533333333333333,
+          "meanConfidence": 0.37180002385651273
+        },
+        {
+          "id": "theory_vs_application",
+          "mae": 1.8359933624461597,
+          "bias": -0.4373596434029753,
+          "falseHighRate": 0,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 1,
+          "meanConfidence": 0.23999999999999963
+        },
+        {
+          "id": "repetition_tolerance",
+          "mae": 1.8250914394027704,
+          "bias": -0.43518585631911305,
+          "falseHighRate": 0.03333333333333333,
+          "falseLowRate": 0.02,
+          "missingEvidenceRate": 0.7266666666666667,
+          "meanConfidence": 0.342802034226041
+        }
+      ],
+      "propertyPassRate": 0.9667250437828371,
+      "meanFitSpread": 0.3446666666666669,
+      "meanHireabilitySpread": 3.4898917333333346,
+      "technicalDemoTopFunctionShare": 0.3333333333333333,
+      "confidenceErrorBuckets": [
+        {
+          "bucket": "<0.35",
+          "n": 79,
+          "meanMae": 1.8770598042759858
+        },
+        {
+          "bucket": "0.35-0.5",
+          "n": 70,
+          "meanMae": 1.8748270587262945
+        },
+        {
+          "bucket": "0.5-0.65",
+          "n": 1,
+          "meanMae": 1.779613539032638
+        },
+        {
+          "bucket": ">=0.65",
+          "n": 0,
+          "meanMae": 0
+        }
+      ],
+      "byStratum": [
+        {
+          "stratum": "software",
+          "n": 5,
+          "meanMae": 2.0607906565007283,
+          "propertyPassRate": 0.9
+        },
+        {
+          "stratum": "field_technical",
+          "n": 4,
+          "meanMae": 2.039057840513106,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "healthcare_professional",
+          "n": 5,
+          "meanMae": 2.0287877687901696,
+          "propertyPassRate": 0.9523809523809523
+        },
+        {
+          "stratum": "compliance",
+          "n": 4,
+          "meanMae": 2.028353550608503,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "supply_chain",
+          "n": 5,
+          "meanMae": 2.026642615896976,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "business_development",
+          "n": 5,
+          "meanMae": 2.005873767191796,
+          "propertyPassRate": 0.9473684210526315
+        },
+        {
+          "stratum": "other",
+          "n": 4,
+          "meanMae": 1.9812353527173812,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "science_research",
+          "n": 5,
+          "meanMae": 1.9751804775834416,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "engineering",
+          "n": 5,
+          "meanMae": 1.9347466942234952,
+          "propertyPassRate": 0.9444444444444444
+        },
+        {
+          "stratum": "research",
+          "n": 5,
+          "meanMae": 1.9248472805596446,
+          "propertyPassRate": 0.9444444444444444
+        },
+        {
+          "stratum": "insurance_risk",
+          "n": 5,
+          "meanMae": 1.9194168286606648,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "accounting_audit",
+          "n": 5,
+          "meanMae": 1.9192556942562014,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "communications",
+          "n": 5,
+          "meanMae": 1.916782917245215,
+          "propertyPassRate": 0.9545454545454546
+        },
+        {
+          "stratum": "marketing",
+          "n": 5,
+          "meanMae": 1.9153643518927175,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "project_program",
+          "n": 5,
+          "meanMae": 1.8880561149570323,
+          "propertyPassRate": 0.95
+        },
+        {
+          "stratum": "healthcare_operations",
+          "n": 5,
+          "meanMae": 1.88191202619041,
+          "propertyPassRate": 0.9444444444444444
+        },
+        {
+          "stratum": "data_analytics",
+          "n": 5,
+          "meanMae": 1.8683240256961327,
+          "propertyPassRate": 0.9473684210526315
+        },
+        {
+          "stratum": "ux_design",
+          "n": 5,
+          "meanMae": 1.8570703675591662,
+          "propertyPassRate": 0.95
+        },
+        {
+          "stratum": "procurement",
+          "n": 5,
+          "meanMae": 1.8318216361153106,
+          "propertyPassRate": 0.9
+        },
+        {
+          "stratum": "hr",
+          "n": 5,
+          "meanMae": 1.8216865489069671,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "sales",
+          "n": 5,
+          "meanMae": 1.810493994371593,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "finance",
+          "n": 5,
+          "meanMae": 1.8015406259168028,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "learning_education",
+          "n": 5,
+          "meanMae": 1.8006592175517233,
+          "propertyPassRate": 0.8571428571428571
+        },
+        {
+          "stratum": "operations",
+          "n": 5,
+          "meanMae": 1.794025332844214,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "manufacturing_technical_operations",
+          "n": 5,
+          "meanMae": 1.7904520523755334,
+          "propertyPassRate": 0.9473684210526315
+        },
+        {
+          "stratum": "legal",
+          "n": 5,
+          "meanMae": 1.7688611037120006,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "consulting",
+          "n": 5,
+          "meanMae": 1.7677947647623937,
+          "propertyPassRate": 0.9523809523809523
+        },
+        {
+          "stratum": "cybersecurity",
+          "n": 5,
+          "meanMae": 1.7579624935076203,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "product",
+          "n": 5,
+          "meanMae": 1.718285636243282,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "public_administration",
+          "n": 4,
+          "meanMae": 1.6847310306043788,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "policy",
+          "n": 4,
+          "meanMae": 1.609636530586628,
+          "propertyPassRate": 0.9285714285714286
+        }
+      ]
+    },
+    "validation": {
+      "n": 100,
+      "meanMae": 1.8149132754155013,
+      "worstStratumMae": {
+        "stratum": "software",
+        "meanMae": 2.2220463948877054,
+        "n": 3
+      },
+      "perDimension": [
+        {
+          "id": "problem_structure",
+          "mae": 1.9650761138123587,
+          "bias": -0.1098400618700875,
+          "falseHighRate": 0,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.86,
+          "meanConfidence": 0.2886267628189112
+        },
+        {
+          "id": "measurable_feedback",
+          "mae": 2.2363886908831314,
+          "bias": 0.6458346575155157,
+          "falseHighRate": 0.06,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.43,
+          "meanConfidence": 0.46393269446624674
+        },
+        {
+          "id": "investigation_orientation",
+          "mae": 1.7580242404669995,
+          "bias": 0.290522327952692,
+          "falseHighRate": 0.04,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.68,
+          "meanConfidence": 0.36872399999999955
+        },
+        {
+          "id": "evidence_density",
+          "mae": 1.6429078426742105,
+          "bias": 0.766653005829558,
+          "falseHighRate": 0.04,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.43,
+          "meanConfidence": 0.4667951345724573
+        },
+        {
+          "id": "experimentation_preference",
+          "mae": 1.6382085503408865,
+          "bias": 0.44959162206226966,
+          "falseHighRate": 0.01,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.67,
+          "meanConfidence": 0.3681155999999997
+        },
+        {
+          "id": "scope_preference",
+          "mae": 1.794913304667687,
+          "bias": -0.11822175626200636,
+          "falseHighRate": 0,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 1,
+          "meanConfidence": 0.2399999999999996
+        },
+        {
+          "id": "software_as_tool",
+          "mae": 1.4308161854405619,
+          "bias": -0.428125235020396,
+          "falseHighRate": 0.01,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.74,
+          "meanConfidence": 0.33857936598789173
+        },
+        {
+          "id": "reasoning_style",
+          "mae": 1.6923184039429768,
+          "bias": -0.2886772805545482,
+          "falseHighRate": 0,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 1,
+          "meanConfidence": 0.2399999999999996
+        },
+        {
+          "id": "creation_style",
+          "mae": 1.814236894107998,
+          "bias": -0.058836776519549744,
+          "falseHighRate": 0.01,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.68,
+          "meanConfidence": 0.3560013331916324
+        },
+        {
+          "id": "real_system_grounding",
+          "mae": 1.889453975155742,
+          "bias": -0.18276281942550365,
+          "falseHighRate": 0.04,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.65,
+          "meanConfidence": 0.38244970201342277
+        },
+        {
+          "id": "closure_preference",
+          "mae": 1.930750318418676,
+          "bias": 0.34408588681132485,
+          "falseHighRate": 0.01,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.67,
+          "meanConfidence": 0.36580199999999974
+        },
+        {
+          "id": "causal_reasoning",
+          "mae": 1.9093019527174058,
+          "bias": -0.139275431330735,
+          "falseHighRate": 0.07,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.68,
+          "meanConfidence": 0.36872399999999955
+        },
+        {
+          "id": "integration_preference",
+          "mae": 1.7806335055613893,
+          "bias": 0.1133065847042013,
+          "falseHighRate": 0,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 1,
+          "meanConfidence": 0.2399999999999996
+        },
+        {
+          "id": "customer_interaction_preference",
+          "mae": 1.7075212122041306,
+          "bias": 0.14164373087684975,
+          "falseHighRate": 0.01,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.62,
+          "meanConfidence": 0.3927635415832256
+        },
+        {
+          "id": "coordination_preference",
+          "mae": 1.949512942966578,
+          "bias": -0.5677338004811155,
+          "falseHighRate": 0.03,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.72,
+          "meanConfidence": 0.3501940488369695
+        },
+        {
+          "id": "theory_vs_application",
+          "mae": 1.9942756023861008,
+          "bias": -0.17056407868140425,
+          "falseHighRate": 0,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 1,
+          "meanConfidence": 0.2399999999999996
+        },
+        {
+          "id": "repetition_tolerance",
+          "mae": 1.7191859463166907,
+          "bias": -0.11317316325482665,
+          "falseHighRate": 0.03,
+          "falseLowRate": 0.01,
+          "missingEvidenceRate": 0.78,
+          "meanConfidence": 0.33028068087197904
+        }
+      ],
+      "propertyPassRate": 0.9708994708994709,
+      "meanFitSpread": 0.34100000000000014,
+      "meanHireabilitySpread": 3.410097066666667,
+      "technicalDemoTopFunctionShare": 0.27,
+      "confidenceErrorBuckets": [
+        {
+          "bucket": "<0.35",
+          "n": 58,
+          "meanMae": 1.8229673963679043
+        },
+        {
+          "bucket": "0.35-0.5",
+          "n": 42,
+          "meanMae": 1.8037909179098015
+        },
+        {
+          "bucket": "0.5-0.65",
+          "n": 0,
+          "meanMae": 0
+        },
+        {
+          "bucket": ">=0.65",
+          "n": 0,
+          "meanMae": 0
+        }
+      ],
+      "byStratum": [
+        {
+          "stratum": "software",
+          "n": 3,
+          "meanMae": 2.2220463948877054,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "hr",
+          "n": 3,
+          "meanMae": 2.0196324836199184,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "legal",
+          "n": 3,
+          "meanMae": 2.012270444476286,
+          "propertyPassRate": 0.9230769230769231
+        },
+        {
+          "stratum": "communications",
+          "n": 3,
+          "meanMae": 2.005375080345345,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "cybersecurity",
+          "n": 3,
+          "meanMae": 1.9967580339401723,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "consulting",
+          "n": 3,
+          "meanMae": 1.992874801475325,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "learning_education",
+          "n": 3,
+          "meanMae": 1.9649127189575275,
+          "propertyPassRate": 0.9285714285714286
+        },
+        {
+          "stratum": "healthcare_professional",
+          "n": 3,
+          "meanMae": 1.958998624201188,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "research",
+          "n": 3,
+          "meanMae": 1.9562421342620109,
+          "propertyPassRate": 0.9285714285714286
+        },
+        {
+          "stratum": "healthcare_operations",
+          "n": 3,
+          "meanMae": 1.9351606744484597,
+          "propertyPassRate": 0.9230769230769231
+        },
+        {
+          "stratum": "compliance",
+          "n": 4,
+          "meanMae": 1.9249228116651387,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "other",
+          "n": 4,
+          "meanMae": 1.9003237120227423,
+          "propertyPassRate": 0.9375
+        },
+        {
+          "stratum": "supply_chain",
+          "n": 3,
+          "meanMae": 1.8741769449887364,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "science_research",
+          "n": 3,
+          "meanMae": 1.8516858117526116,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "ux_design",
+          "n": 3,
+          "meanMae": 1.8424248052641712,
+          "propertyPassRate": 0.9166666666666666
+        },
+        {
+          "stratum": "marketing",
+          "n": 3,
+          "meanMae": 1.8385105965073354,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "data_analytics",
+          "n": 3,
+          "meanMae": 1.8334056723197811,
+          "propertyPassRate": 0.8461538461538461
+        },
+        {
+          "stratum": "business_development",
+          "n": 3,
+          "meanMae": 1.7808115556584074,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "accounting_audit",
+          "n": 3,
+          "meanMae": 1.7481614042196731,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "sales",
+          "n": 3,
+          "meanMae": 1.744128137782133,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "manufacturing_technical_operations",
+          "n": 4,
+          "meanMae": 1.7378027428521705,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "field_technical",
+          "n": 4,
+          "meanMae": 1.7247326095495097,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "finance",
+          "n": 3,
+          "meanMae": 1.7176483254525226,
+          "propertyPassRate": 0.8333333333333334
+        },
+        {
+          "stratum": "procurement",
+          "n": 3,
+          "meanMae": 1.6863826608856474,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "public_administration",
+          "n": 4,
+          "meanMae": 1.6821779923027487,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "operations",
+          "n": 3,
+          "meanMae": 1.6783300099949006,
+          "propertyPassRate": 0.9090909090909091
+        },
+        {
+          "stratum": "insurance_risk",
+          "n": 3,
+          "meanMae": 1.6416280188591348,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "engineering",
+          "n": 4,
+          "meanMae": 1.608414273889886,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "policy",
+          "n": 4,
+          "meanMae": 1.6053533624936822,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "product",
+          "n": 3,
+          "meanMae": 1.492454195007956,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "project_program",
+          "n": 3,
+          "meanMae": 1.458119644841928,
+          "propertyPassRate": 1
+        }
+      ]
+    },
+    "holdout": {
+      "n": 100,
+      "meanMae": 1.819947817153856,
+      "worstStratumMae": {
+        "stratum": "operations",
+        "meanMae": 2.1346067127970443,
+        "n": 3
+      },
+      "perDimension": [
+        {
+          "id": "problem_structure",
+          "mae": 1.8268539044476018,
+          "bias": -0.13694591768127443,
+          "falseHighRate": 0,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.82,
+          "meanConfidence": 0.3058826010418533
+        },
+        {
+          "id": "measurable_feedback",
+          "mae": 2.1694013004607573,
+          "bias": 0.9585586233140514,
+          "falseHighRate": 0.11,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.39,
+          "meanConfidence": 0.505073719840436
+        },
+        {
+          "id": "investigation_orientation",
+          "mae": 1.5231223070348614,
+          "bias": -0.2842772422216835,
+          "falseHighRate": 0.04,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.67,
+          "meanConfidence": 0.3737259999999996
+        },
+        {
+          "id": "evidence_density",
+          "mae": 1.5471962814195572,
+          "bias": 0.6565336454736552,
+          "falseHighRate": 0.04,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.39,
+          "meanConfidence": 0.5085493810754773
+        },
+        {
+          "id": "experimentation_preference",
+          "mae": 1.5623378462307809,
+          "bias": 0.2769545839459915,
+          "falseHighRate": 0,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.66,
+          "meanConfidence": 0.37694679999999997
+        },
+        {
+          "id": "scope_preference",
+          "mae": 2.07564343959652,
+          "bias": -0.272973461928312,
+          "falseHighRate": 0,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 1,
+          "meanConfidence": 0.2399999999999996
+        },
+        {
+          "id": "software_as_tool",
+          "mae": 1.6421950560583147,
+          "bias": -0.1826329540825104,
+          "falseHighRate": 0.01,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.75,
+          "meanConfidence": 0.33768517468354387
+        },
+        {
+          "id": "reasoning_style",
+          "mae": 1.70821220291662,
+          "bias": 0.07971702652913493,
+          "falseHighRate": 0,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 1,
+          "meanConfidence": 0.2399999999999996
+        },
+        {
+          "id": "creation_style",
+          "mae": 1.9511956531124282,
+          "bias": -0.14597743219725942,
+          "falseHighRate": 0.02,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.68,
+          "meanConfidence": 0.35783183610926017
+        },
+        {
+          "id": "real_system_grounding",
+          "mae": 1.9311047968664787,
+          "bias": -0.1439252296016202,
+          "falseHighRate": 0.04,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.79,
+          "meanConfidence": 0.32291110097719816
+        },
+        {
+          "id": "closure_preference",
+          "mae": 1.8634884921000812,
+          "bias": 0.11505188279305545,
+          "falseHighRate": 0.02,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.66,
+          "meanConfidence": 0.3744059999999998
+        },
+        {
+          "id": "causal_reasoning",
+          "mae": 1.810183276940184,
+          "bias": 0.15104743364811837,
+          "falseHighRate": 0.08,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.67,
+          "meanConfidence": 0.3737259999999996
+        },
+        {
+          "id": "integration_preference",
+          "mae": 1.8615415733652185,
+          "bias": 0.030693505809176312,
+          "falseHighRate": 0,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 1,
+          "meanConfidence": 0.2399999999999996
+        },
+        {
+          "id": "customer_interaction_preference",
+          "mae": 1.7410253978945172,
+          "bias": 0.10674926641709558,
+          "falseHighRate": 0.01,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.73,
+          "meanConfidence": 0.34606731049562633
+        },
+        {
+          "id": "coordination_preference",
+          "mae": 1.8787150996885356,
+          "bias": -0.13113266008027774,
+          "falseHighRate": 0.04,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.58,
+          "meanConfidence": 0.4016748294540355
+        },
+        {
+          "id": "theory_vs_application",
+          "mae": 1.8698068090551538,
+          "bias": -0.24286862349556804,
+          "falseHighRate": 0,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 1,
+          "meanConfidence": 0.2399999999999996
+        },
+        {
+          "id": "repetition_tolerance",
+          "mae": 1.9770894544279423,
+          "bias": -0.09052894458853997,
+          "falseHighRate": 0.07,
+          "falseLowRate": 0.03,
+          "missingEvidenceRate": 0.65,
+          "meanConfidence": 0.3774030026360154
+        }
+      ],
+      "propertyPassRate": 0.9561855670103093,
+      "meanFitSpread": 0.26400000000000007,
+      "meanHireabilitySpread": 3.4273098666666653,
+      "technicalDemoTopFunctionShare": 0.28,
+      "confidenceErrorBuckets": [
+        {
+          "bucket": "<0.35",
+          "n": 53,
+          "meanMae": 1.796823791848382
+        },
+        {
+          "bucket": "0.35-0.5",
+          "n": 46,
+          "meanMae": 1.8450769676155128
+        },
+        {
+          "bucket": "0.5-0.65",
+          "n": 1,
+          "meanMae": 1.8895802371077637
+        },
+        {
+          "bucket": ">=0.65",
+          "n": 0,
+          "meanMae": 0
+        }
+      ],
+      "byStratum": [
+        {
+          "stratum": "operations",
+          "n": 3,
+          "meanMae": 2.1346067127970443,
+          "propertyPassRate": 0.9230769230769231
+        },
+        {
+          "stratum": "policy",
+          "n": 3,
+          "meanMae": 2.1279354212123573,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "business_development",
+          "n": 3,
+          "meanMae": 2.0538877536063453,
+          "propertyPassRate": 0.8571428571428571
+        },
+        {
+          "stratum": "cybersecurity",
+          "n": 4,
+          "meanMae": 2.0062668260984706,
+          "propertyPassRate": 0.9411764705882353
+        },
+        {
+          "stratum": "science_research",
+          "n": 4,
+          "meanMae": 1.9754531678613003,
+          "propertyPassRate": 0.9375
+        },
+        {
+          "stratum": "accounting_audit",
+          "n": 3,
+          "meanMae": 1.9384710250929615,
+          "propertyPassRate": 0.9285714285714286
+        },
+        {
+          "stratum": "other",
+          "n": 3,
+          "meanMae": 1.9356772561745685,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "engineering",
+          "n": 3,
+          "meanMae": 1.9262439363082668,
+          "propertyPassRate": 0.9230769230769231
+        },
+        {
+          "stratum": "consulting",
+          "n": 3,
+          "meanMae": 1.9130331174060524,
+          "propertyPassRate": 0.9166666666666666
+        },
+        {
+          "stratum": "healthcare_operations",
+          "n": 4,
+          "meanMae": 1.891324186086865,
+          "propertyPassRate": 0.8823529411764706
+        },
+        {
+          "stratum": "learning_education",
+          "n": 3,
+          "meanMae": 1.865440896882274,
+          "propertyPassRate": 0.9166666666666666
+        },
+        {
+          "stratum": "sales",
+          "n": 3,
+          "meanMae": 1.8511217525898684,
+          "propertyPassRate": 0.8571428571428571
+        },
+        {
+          "stratum": "field_technical",
+          "n": 3,
+          "meanMae": 1.8453378885841436,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "software",
+          "n": 4,
+          "meanMae": 1.837620812096044,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "public_administration",
+          "n": 3,
+          "meanMae": 1.8367326616750486,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "supply_chain",
+          "n": 3,
+          "meanMae": 1.8342829622655425,
+          "propertyPassRate": 0.9166666666666666
+        },
+        {
+          "stratum": "data_analytics",
+          "n": 4,
+          "meanMae": 1.808793328486931,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "finance",
+          "n": 4,
+          "meanMae": 1.8005527619506396,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "project_program",
+          "n": 3,
+          "meanMae": 1.7716648215485702,
+          "propertyPassRate": 0.9166666666666666
+        },
+        {
+          "stratum": "hr",
+          "n": 3,
+          "meanMae": 1.7420524174378507,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "compliance",
+          "n": 3,
+          "meanMae": 1.7326000438534142,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "communications",
+          "n": 3,
+          "meanMae": 1.7152843025762297,
+          "propertyPassRate": 0.9230769230769231
+        },
+        {
+          "stratum": "procurement",
+          "n": 3,
+          "meanMae": 1.7028949496630699,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "research",
+          "n": 3,
+          "meanMae": 1.7027762381019607,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "ux_design",
+          "n": 3,
+          "meanMae": 1.6794724840278208,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "legal",
+          "n": 3,
+          "meanMae": 1.6707561856318336,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "manufacturing_technical_operations",
+          "n": 3,
+          "meanMae": 1.6674138033874517,
+          "propertyPassRate": 0.9230769230769231
+        },
+        {
+          "stratum": "insurance_risk",
+          "n": 3,
+          "meanMae": 1.6440498074680638,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "marketing",
+          "n": 3,
+          "meanMae": 1.5925287764481364,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "product",
+          "n": 3,
+          "meanMae": 1.5823388626478867,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "healthcare_professional",
+          "n": 4,
+          "meanMae": 1.578731288226075,
+          "propertyPassRate": 1
+        }
+      ]
+    },
+    "adversarial": {
+      "n": 100,
+      "meanMae": 1.8556115453340427,
+      "worstStratumMae": {
+        "stratum": "field_technical",
+        "meanMae": 1.9628016964251447,
+        "n": 6
+      },
+      "perDimension": [
+        {
+          "id": "problem_structure",
+          "mae": 2.1704043865040084,
+          "bias": -0.44721763706861223,
+          "falseHighRate": 0,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.77,
+          "meanConfidence": 0.315489309525262
+        },
+        {
+          "id": "measurable_feedback",
+          "mae": 1.795914889481604,
+          "bias": -0.0032817040256746034,
+          "falseHighRate": 0.03,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.57,
+          "meanConfidence": 0.4184731772094631
+        },
+        {
+          "id": "investigation_orientation",
+          "mae": 1.764742649183422,
+          "bias": 0.10728372030341962,
+          "falseHighRate": 0.06,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.69,
+          "meanConfidence": 0.3595519999999995
+        },
+        {
+          "id": "evidence_density",
+          "mae": 1.6353840136861248,
+          "bias": 0.4098707950796757,
+          "falseHighRate": 0.03,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.57,
+          "meanConfidence": 0.4208519125728505
+        },
+        {
+          "id": "experimentation_preference",
+          "mae": 1.830137922670096,
+          "bias": 0.039320054652895606,
+          "falseHighRate": 0.01,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.81,
+          "meanConfidence": 0.3160187999999995
+        },
+        {
+          "id": "scope_preference",
+          "mae": 1.9216640060360075,
+          "bias": 0.1623495995469854,
+          "falseHighRate": 0,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 1,
+          "meanConfidence": 0.2399999999999996
+        },
+        {
+          "id": "software_as_tool",
+          "mae": 1.8780485451314906,
+          "bias": -0.3438798333594268,
+          "falseHighRate": 0.01,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.79,
+          "meanConfidence": 0.32242360501567363
+        },
+        {
+          "id": "reasoning_style",
+          "mae": 1.7688223767215385,
+          "bias": -0.21636847228696596,
+          "falseHighRate": 0,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 1,
+          "meanConfidence": 0.2399999999999996
+        },
+        {
+          "id": "creation_style",
+          "mae": 1.9086860388384306,
+          "bias": -0.30591112051224684,
+          "falseHighRate": 0,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.66,
+          "meanConfidence": 0.35938117466482195
+        },
+        {
+          "id": "real_system_grounding",
+          "mae": 1.993028028630264,
+          "bias": 0.2683766139504349,
+          "falseHighRate": 0.03,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.8,
+          "meanConfidence": 0.32214506710310914
+        },
+        {
+          "id": "closure_preference",
+          "mae": 1.8836711281338703,
+          "bias": -0.026349962120783,
+          "falseHighRate": 0.01,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.81,
+          "meanConfidence": 0.3146459999999993
+        },
+        {
+          "id": "causal_reasoning",
+          "mae": 1.7745752661462872,
+          "bias": 0.3175562093941492,
+          "falseHighRate": 0.08,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.69,
+          "meanConfidence": 0.3595519999999995
+        },
+        {
+          "id": "integration_preference",
+          "mae": 1.9205149870919995,
+          "bias": -0.11681670239381528,
+          "falseHighRate": 0,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 1,
+          "meanConfidence": 0.2399999999999996
+        },
+        {
+          "id": "customer_interaction_preference",
+          "mae": 1.891486279738097,
+          "bias": -0.36644713588420486,
+          "falseHighRate": 0.03,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.75,
+          "meanConfidence": 0.34304424053530547
+        },
+        {
+          "id": "coordination_preference",
+          "mae": 1.8550236030351956,
+          "bias": -0.07475913030977752,
+          "falseHighRate": 0.04,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.76,
+          "meanConfidence": 0.3330902199100519
+        },
+        {
+          "id": "theory_vs_application",
+          "mae": 1.701560771484162,
+          "bias": 0.14355506516643773,
+          "falseHighRate": 0,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 1,
+          "meanConfidence": 0.2399999999999996
+        },
+        {
+          "id": "repetition_tolerance",
+          "mae": 1.8517313781661102,
+          "bias": -0.12599362857461693,
+          "falseHighRate": 0.03,
+          "falseLowRate": 0,
+          "missingEvidenceRate": 0.83,
+          "meanConfidence": 0.3075375368421048
+        }
+      ],
+      "propertyPassRate": 0.9391727493917275,
+      "meanFitSpread": 0.19799999999999998,
+      "meanHireabilitySpread": 3.4990167999999984,
+      "technicalDemoTopFunctionShare": 0.39,
+      "confidenceErrorBuckets": [
+        {
+          "bucket": "<0.35",
+          "n": 75,
+          "meanMae": 1.8608558487111615
+        },
+        {
+          "bucket": "0.35-0.5",
+          "n": 24,
+          "meanMae": 1.8256215920861119
+        },
+        {
+          "bucket": "0.5-0.65",
+          "n": 1,
+          "meanMae": 2.18204767000038
+        },
+        {
+          "bucket": ">=0.65",
+          "n": 0,
+          "meanMae": 0
+        }
+      ],
+      "byStratum": [
+        {
+          "stratum": "data_analytics",
+          "n": 2,
+          "meanMae": 2.1774051661229805,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "supply_chain",
+          "n": 2,
+          "meanMae": 2.1480330956737124,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "cybersecurity",
+          "n": 2,
+          "meanMae": 2.092384624261382,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "learning_education",
+          "n": 2,
+          "meanMae": 2.077154838271412,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "communications",
+          "n": 2,
+          "meanMae": 2.0338018246336347,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "consulting",
+          "n": 2,
+          "meanMae": 2.0159514736096544,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "compliance",
+          "n": 2,
+          "meanMae": 1.98126412314908,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "field_technical",
+          "n": 6,
+          "meanMae": 1.9628016964251447,
+          "propertyPassRate": 0.8888888888888888
+        },
+        {
+          "stratum": "operations",
+          "n": 3,
+          "meanMae": 1.9623967566557556,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "finance",
+          "n": 1,
+          "meanMae": 1.9341564173182366,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "business_development",
+          "n": 2,
+          "meanMae": 1.9308819670574193,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "sales",
+          "n": 2,
+          "meanMae": 1.9280527524861437,
+          "propertyPassRate": 0.8
+        },
+        {
+          "stratum": "engineering",
+          "n": 3,
+          "meanMae": 1.9267462178668116,
+          "propertyPassRate": 0.9230769230769231
+        },
+        {
+          "stratum": "procurement",
+          "n": 2,
+          "meanMae": 1.8960801660942126,
+          "propertyPassRate": 0.8888888888888888
+        },
+        {
+          "stratum": "research",
+          "n": 2,
+          "meanMae": 1.8647189372038084,
+          "propertyPassRate": 0.8888888888888888
+        },
+        {
+          "stratum": "policy",
+          "n": 2,
+          "meanMae": 1.8388870181656607,
+          "propertyPassRate": 0.8
+        },
+        {
+          "stratum": "legal",
+          "n": 2,
+          "meanMae": 1.8293583559086115,
+          "propertyPassRate": 0.875
+        },
+        {
+          "stratum": "accounting_audit",
+          "n": 2,
+          "meanMae": 1.8256681014089025,
+          "propertyPassRate": 0.7777777777777778
+        },
+        {
+          "stratum": "software",
+          "n": 2,
+          "meanMae": 1.8181292860179998,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "manufacturing_technical_operations",
+          "n": 15,
+          "meanMae": 1.8167515675400905,
+          "propertyPassRate": 0.9833333333333333
+        },
+        {
+          "stratum": "public_administration",
+          "n": 2,
+          "meanMae": 1.8129732943678496,
+          "propertyPassRate": 0.8888888888888888
+        },
+        {
+          "stratum": "other",
+          "n": 23,
+          "meanMae": 1.800962241987572,
+          "propertyPassRate": 0.9347826086956522
+        },
+        {
+          "stratum": "healthcare_operations",
+          "n": 1,
+          "meanMae": 1.7967632812623155,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "marketing",
+          "n": 2,
+          "meanMae": 1.794489382946645,
+          "propertyPassRate": 0.8888888888888888
+        },
+        {
+          "stratum": "insurance_risk",
+          "n": 2,
+          "meanMae": 1.7835567874713432,
+          "propertyPassRate": 0.8888888888888888
+        },
+        {
+          "stratum": "science_research",
+          "n": 2,
+          "meanMae": 1.7727142997988061,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "ux_design",
+          "n": 2,
+          "meanMae": 1.757852481411935,
+          "propertyPassRate": 0.8888888888888888
+        },
+        {
+          "stratum": "hr",
+          "n": 2,
+          "meanMae": 1.7092341169962277,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "product",
+          "n": 2,
+          "meanMae": 1.636878223794325,
+          "propertyPassRate": 0.8571428571428571
+        },
+        {
+          "stratum": "healthcare_professional",
+          "n": 2,
+          "meanMae": 1.599190455371021,
+          "propertyPassRate": 1
+        },
+        {
+          "stratum": "project_program",
+          "n": 2,
+          "meanMae": 1.5316345547220132,
+          "propertyPassRate": 1
+        }
+      ]
+    }
+  },
+  "twins": {
+    "total": 600,
+    "passRate": 0.905,
+    "byKind": {
+      "same_experience_different_preference": {
+        "n": 150,
+        "passRate": 0.94
+      },
+      "same_preference_different_experience": {
+        "n": 150,
+        "passRate": 0.68
+      },
+      "same_user_different_network": {
+        "n": 150,
+        "passRate": 1
+      },
+      "title_removed": {
+        "n": 150,
+        "passRate": 1
+      }
+    }
+  },
+  "observationVariants": {
+    "n": 1000,
+    "meanMae": 1.851872793373776,
+    "sparseConfidence": 0.2615992564705884,
+    "stuffedConfidence": 0.3512747657707959
+  },
+  "counterfactualVariantCount": 1600,
+  "hireabilityPathologies": {
+    "stuffedMeanHireability": 3.5252838787878837,
+    "unstuffedAdversarialMeanHireability": 3.3407961212121227,
+    "stuffingBuysHireability": false
+  },
+  "scoreDistribution": {
+    "pairs": 9900,
+    "fit": {
+      "n": 9900,
+      "mean": 9.532,
+      "sd": 0.403,
+      "min": 7.926,
+      "p10": 9.052,
+      "median": 9.622,
+      "p90": 9.994,
+      "max": 10
+    },
+    "hireability": {
+      "n": 9900,
+      "mean": 3.689,
+      "sd": 1.348,
+      "min": 1.158,
+      "p10": 1.558,
+      "median": 4.443,
+      "p90": 4.915,
+      "max": 7.566
+    },
+    "overall": {
+      "n": 9900,
+      "mean": 6.351,
+      "sd": 0.598,
+      "min": 4.444,
+      "p10": 5.508,
+      "median": 6.203,
+      "p90": 6.952,
+      "max": 8.11
+    }
+  },
+  "invariants": {
+    "passed": true,
+    "failing": []
+  },
+  "rankStability": {
+    "n": 12,
+    "meanSpearman": 1,
+    "minSpearman": 1
+  },
+  "networkAndNba": {
+    "n": 24,
+    "nbaFeasibleRate": 1,
+    "strategyPassRate": 0.08333333333333333,
+    "failingCases": [
+      {
+        "subjectId": "v2-subject-001",
+        "actions": 10,
+        "strategyPassed": false,
+        "strategyCases": [
+          "former-manager-direct"
+        ],
+        "hasActions": true
+      },
+      {
+        "subjectId": "v2-subject-019",
+        "actions": 11,
+        "strategyPassed": false,
+        "strategyCases": [
+          "explicit-offer-materials",
+          "second-degree-paths"
+        ],
+        "hasActions": true
+      },
+      {
+        "subjectId": "v2-subject-055",
+        "actions": 11,
+        "strategyPassed": false,
+        "strategyCases": [
+          "second-degree-paths"
+        ],
+        "hasActions": true
+      },
+      {
+        "subjectId": "v2-subject-073",
+        "actions": 11,
+        "strategyPassed": false,
+        "strategyCases": [
+          "former-manager-direct",
+          "second-degree-paths"
+        ],
+        "hasActions": true
+      },
+      {
+        "subjectId": "v2-subject-091",
+        "actions": 11,
+        "strategyPassed": false,
+        "strategyCases": [
+          "former-manager-direct",
+          "explicit-offer-materials",
+          "second-degree-paths"
+        ],
+        "hasActions": true
+      },
+      {
+        "subjectId": "v2-subject-109",
+        "actions": 11,
+        "strategyPassed": false,
+        "strategyCases": [
+          "second-degree-paths"
+        ],
+        "hasActions": true
+      },
+      {
+        "subjectId": "v2-subject-127",
+        "actions": 11,
+        "strategyPassed": false,
+        "strategyCases": [
+          "second-degree-paths"
+        ],
+        "hasActions": true
+      },
+      {
+        "subjectId": "v2-subject-145",
+        "actions": 11,
+        "strategyPassed": false,
+        "strategyCases": [
+          "former-manager-direct",
+          "second-degree-paths"
+        ],
+        "hasActions": true
+      }
+    ]
+  },
+  "worstDimensions": [
+    {
+      "id": "measurable_feedback",
+      "mae": 2.090030255462289,
+      "bias": 0.6221583054041158,
+      "falseHighRate": 0.07111111111111111,
+      "falseLowRate": 0,
+      "missingEvidenceRate": 0.43555555555555553,
+      "meanConfidence": 0.4751129229608989
+    },
+    {
+      "id": "creation_style",
+      "mae": 1.979705290358182,
+      "bias": -0.10656014334861078,
+      "falseHighRate": 0.013333333333333334,
+      "falseLowRate": 0,
+      "missingEvidenceRate": 0.6844444444444444,
+      "meanConfidence": 0.355041536021945
+    },
+    {
+      "id": "closure_preference",
+      "mae": 1.9241484066785417,
+      "bias": 0.21489239804175528,
+      "falseHighRate": 0.02,
+      "falseLowRate": 0,
+      "missingEvidenceRate": 0.6977777777777778,
+      "meanConfidence": 0.3588720000000011
+    },
+    {
+      "id": "scope_preference",
+      "mae": 1.9139613957587212,
+      "bias": -0.1406949837377508,
+      "falseHighRate": 0,
+      "falseLowRate": 0,
+      "missingEvidenceRate": 1,
+      "meanConfidence": 0.2399999999999983
+    },
+    {
+      "id": "real_system_grounding",
+      "mae": 1.8994786353065938,
+      "bias": 0.052006610214280845,
+      "falseHighRate": 0.02666666666666667,
+      "falseLowRate": 0,
+      "missingEvidenceRate": 0.7311111111111112,
+      "meanConfidence": 0.3485273465073156
+    },
+    {
+      "id": "coordination_preference",
+      "mae": 1.898859743004963,
+      "bias": -0.302373164399929,
+      "falseHighRate": 0.03333333333333333,
+      "falseLowRate": 0,
+      "missingEvidenceRate": 0.6755555555555556,
+      "meanConfidence": 0.3650353631079624
+    }
+  ],
+  "bestDimensions": [
+    {
+      "id": "evidence_density",
+      "mae": 1.6509067823630084,
+      "bias": 0.6924397946942482,
+      "falseHighRate": 0.042222222222222223,
+      "falseLowRate": 0,
+      "missingEvidenceRate": 0.43555555555555553,
+      "meanConfidence": 0.47820267615515066
+    },
+    {
+      "id": "software_as_tool",
+      "mae": 1.661693304373633,
+      "bias": -0.2832202429862502,
+      "falseHighRate": 0.008888888888888889,
+      "falseLowRate": 0,
+      "missingEvidenceRate": 0.7777777777777778,
+      "meanConfidence": 0.32729158793046803
+    },
+    {
+      "id": "experimentation_preference",
+      "mae": 1.7025427284953871,
+      "bias": 0.2523476596004473,
+      "falseHighRate": 0.013333333333333334,
+      "falseLowRate": 0,
+      "missingEvidenceRate": 0.6977777777777778,
+      "meanConfidence": 0.36109493333333453
+    },
+    {
+      "id": "investigation_orientation",
+      "mae": 1.7395831109323747,
+      "bias": 0.08664036791023451,
+      "falseHighRate": 0.05333333333333334,
+      "falseLowRate": 0,
+      "missingEvidenceRate": 0.6733333333333333,
+      "meanConfidence": 0.3696320000000006
+    }
+  ],
+  "worstStrata": [
+    {
+      "stratum": "software",
+      "n": 14,
+      "meanMae": 1.9969167348276382,
+      "propertyPassRate": 0.9615384615384616
+    },
+    {
+      "stratum": "supply_chain",
+      "n": 13,
+      "meanMae": 1.9657429994303957,
+      "propertyPassRate": 0.9807692307692307
+    },
+    {
+      "stratum": "business_development",
+      "n": 13,
+      "meanMae": 1.9534792844513904,
+      "propertyPassRate": 0.9423076923076923
+    },
+    {
+      "stratum": "cybersecurity",
+      "n": 14,
+      "meanMae": 1.9278516515910904,
+      "propertyPassRate": 0.9821428571428571
+    },
+    {
+      "stratum": "compliance",
+      "n": 13,
+      "meanMae": 1.9210333713040744,
+      "propertyPassRate": 1
+    },
+    {
+      "stratum": "science_research",
+      "n": 14,
+      "meanMae": 1.9198715067298473,
+      "propertyPassRate": 0.9818181818181818
+    },
+    {
+      "stratum": "communications",
+      "n": 13,
+      "meanMae": 1.9087304910967744,
+      "propertyPassRate": 0.9622641509433962
+    },
+    {
+      "stratum": "field_technical",
+      "n": 17,
+      "meanMae": 1.903999155561986,
+      "propertyPassRate": 0.9558823529411765
+    }
+  ]
+}

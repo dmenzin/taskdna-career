@@ -2,6 +2,8 @@ import type { ScenarioAnswer, Vector } from "@/domain/types";
 import type { InteractionEvent, Person, Relationship } from "@/domain/networkTypes";
 
 export type SubjectCohort = "design" | "validation" | "holdout" | "adversarial";
+/** Pass-2 cohorts for the O*NET-backed lab. "development" replaces "design" naming. */
+export type SubjectCohortV2 = "development" | "validation" | "holdout" | "adversarial";
 
 export type OccupationalFamily =
   | "engineering_hardware"
@@ -29,14 +31,15 @@ export type OccupationalFamily =
 export interface OccupationSkeleton {
   onetCode: string;
   title: string;
-  family: OccupationalFamily;
+  /** Occupational family (legacy snapshot) or O*NET stratum (real corpus). */
+  family: OccupationalFamily | string;
   industry: string;
   tasks: string[];
   generalizedWorkActivities: string[];
   skills: string[];
   knowledge: string[];
   workContext: string[];
-  source: "onet-inspired-local-snapshot";
+  source: "onet-inspired-local-snapshot" | "onet-30.3";
 }
 
 export interface VirtualSubjectTruth {

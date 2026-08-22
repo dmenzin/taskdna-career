@@ -1,5 +1,7 @@
 node_modules/
 .next/
+# Raw external downloads are reproducible via `pnpm onet:fetch`; manifests are committed.
+data/external/
 out/
 coverage/
 test-results/
