@@ -56,10 +56,18 @@ export interface TaskDimensionDefinition {
   consumerLabel: string;
 }
 
+export type EvidenceClass = "EXPOSURE" | "SUCCESS" | "PREFERENCE" | "DISLIKE" | "ASPIRATIONAL" | "UNKNOWN";
+
 export interface UserEvidence {
   id: string;
   sourceType: SourceType;
   sourceReference: string;
+  /** Exposure/success/preference/dislike/aspirational separation; exposure never moves preference. */
+  evidenceClass: EvidenceClass;
+  /** Dependence group: bullets from one document/role are one observation stream. */
+  sourceGroup: string;
+  /** Class-derived multiplier applied to preference signals (0 for exposure/success). */
+  signalWeight: number;
   originalText: string;
   activity: string;
   context: string;

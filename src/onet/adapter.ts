@@ -16,11 +16,13 @@ const SENIORITY_BY_JOB_ZONE: Record<number, JobPosting["seniority"]> = {
 
 /** Deterministically express an O*NET occupation as a JobPosting the engine can analyze. */
 export function occupationToJobPosting(occupation: OnetOccupationSkeleton): JobPosting {
+  const genericSkill = /critical thinking|active listening|reading comprehension|speaking|writing|monitoring|active learning|judgment and decision|complex problem|time management|social perceptiveness|coordination|persuasion|instructing|service orientation|learning strategies|science\b/i;
+  const specificSkills = occupation.essentialSkills.filter((skill) => !genericSkill.test(skill.name)).slice(0, 3);
   const requirements = [
-    ...occupation.essentialSkills.slice(0, 4).map((skill) => skill.name),
-    ...occupation.knowledge.slice(0, 2).map((item) => item.name),
+    ...occupation.knowledge.slice(0, 3).map((item) => item.name),
+    ...specificSkills.map((skill) => skill.name),
   ];
-  const preferred = occupation.transferableSkills.slice(0, 3).map((skill) => skill.name);
+  const preferred = occupation.transferableSkills.filter((skill) => !genericSkill.test(skill.name)).slice(0, 3).map((skill) => skill.name);
   return {
     canonicalId: `onet-${occupation.onetSocCode}`,
     company: "Occupation Corpus",
@@ -29,7 +31,7 @@ export function occupationToJobPosting(occupation: OnetOccupationSkeleton): JobP
     workMode: "Onsite",
     compensation: "not modeled",
     seniority: SENIORITY_BY_JOB_ZONE[occupation.jobZone ?? 3] ?? "Mid",
-    description: occupation.description,
+    description: `${occupation.description} Work activities include ${occupation.workActivities.slice(0, 8).map((activity) => activity.name).join(", ")}.`,
     responsibilities: occupation.taskStatements.slice(0, 8).map((task) => task.statement),
     requirements,
     preferredRequirements: preferred,

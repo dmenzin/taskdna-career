@@ -53,6 +53,7 @@ export const skillLexicon = [
   "customer interviews", "ux research", "figma", "curriculum design", "clinical workflow",
   "supply chain", "logistics", "recruiting", "communication", "technical writing",
   "project management", "stakeholder management", "incident response", "fraud investigation",
+  "nursing", "teaching", "legal research", "compliance", "procurement", "logistics",
 ];
 
 export const scoringConfig = {

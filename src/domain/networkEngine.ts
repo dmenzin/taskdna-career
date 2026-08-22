@@ -232,9 +232,12 @@ function findNetworkPaths(people: Person[], relationships: Relationship[], inter
       const firstHop = people.find((person) => person.id === direct.personId)!;
       const rel = relationships.find((relationship) => relationship.personId === firstHop.id)!;
       paths.push(pathFromAssessment(job, direct, [firstHop.id], "DIRECT", rel.relationshipType === "COLD_CONTEXTUAL_CONTACT" ? "HYPOTHESIZED" : "USER_REPORTED"));
-      const bridge = people.find((person) => person.organizationId === organizationIdFromCompany(job.job.company) && person.id !== firstHop.id);
+      const bridge = people.find((person) => person.organizationId === organizationIdFromCompany(job.job.company) && person.id !== firstHop.id)
+        ?? people.find((person) => person.id !== firstHop.id && person.currentRoleSummary.toLowerCase().includes(job.job.domain.split(" ")[0] ?? ""));
       if (bridge && direct.routingValue >= 5.5) {
         paths.push(pathFromAssessment(job, direct, [firstHop.id, bridge.id], "SECOND_DEGREE", interactions.some((event) => event.relationshipId === rel.id && event.explicitOffer === "INTRODUCTION_REQUEST") ? "USER_REPORTED" : "INFERRED"));
+      } else if (direct.routingValue >= 7) {
+        paths.push(pathFromAssessment(job, direct, [firstHop.id, `hypothesized-${job.job.canonicalId}`], "SECOND_DEGREE", "HYPOTHESIZED"));
       }
     }
   }
@@ -317,38 +320,83 @@ export function isDoNotContact(relationshipId: string, interactions: Interaction
   return interactions.some((event) => event.relationshipId === relationshipId && event.eventType === "DO_NOT_CONTACT");
 }
 
+const DEFAULT_TIME_BUDGET_MINUTES = 90;
+
 function planNextBestActions(profile: UserProfile, jobs: ScoredJob[], pursuitPlans: OpportunityPursuitPlan[], assessments: ContactOpportunityAssessment[], people: Person[], relationships: Relationship[], interactions: InteractionEvent[]): NextBestAction[] {
-  const actions: NextBestAction[] = [];
+  const noNetworking = profile.persona.desiredConstraints.some((constraint) => /no networking/i.test(constraint));
+  const candidates: NextBestAction[] = [];
   for (const plan of pursuitPlans) {
     const job = jobs.find((item) => item.job.canonicalId === plan.opportunityId)!;
     if (plan.applyNow) {
-      actions.push(makeAction("APPLY_TO_JOB", `Apply to ${job.job.title}`, plan.freshnessRationale, job.score.overall, 0, 0.5, 35, urgencyFor(job), 0, [], job.job.canonicalId));
+      candidates.push(makeAction("APPLY_TO_JOB", `Apply to ${job.job.title}`, plan.freshnessRationale, job.score.overall, 0, 0.5, 15, urgencyFor(job), 0, [], job.job.canonicalId));
     }
-    if (plan.bestContactId) {
-      const person = people.find((item) => item.id === plan.bestContactId)!;
-      const relationship = relationships.find((item) => item.personId === person.id)!;
+    if (noNetworking || !plan.bestContactId) continue;
+    const person = people.find((item) => item.id === plan.bestContactId)!;
+    const relationship = relationships.find((item) => item.personId === person.id)!;
+    if (isDoNotContact(relationship.id, interactions)) continue;
+    const assessment = assessments.find((item) => item.personId === person.id && item.opportunityId === plan.opportunityId);
+    if (!assessment) continue;
+    const interactionPlan = createInteractionPlan(person, relationship, assessment, job, interactions);
+    if (!askIsEligible(interactionPlan.recommendedAskType, relationship, assessment, interactions, job)) continue;
+    if (interactionPlan.recommendedAskType === "REFERRAL_REQUEST" && job.score.overall < 6.8) continue;
+    candidates.push({
+      ...makeAction(actionTypeForAsk(interactionPlan.recommendedAskType), `${humanAsk(interactionPlan.recommendedAskType)}: ${person.name}`, interactionPlan.whyThisPerson, job.score.overall, Math.max(assessment.informationValue, assessment.routingValue, assessment.referralAbility), interactionPlan.socialCost, 18, interactionPlan.urgency, assessment.informationValue, [], job.job.canonicalId, person.id),
+      interactionPlan,
+      draft: composeDeterministicDraft(interactionPlan, person, job),
+    });
+  }
+  if (!noNetworking) {
+    for (const relationship of relationships) {
       if (isDoNotContact(relationship.id, interactions)) continue;
-      const assessment = assessments.find((item) => item.personId === person.id && item.opportunityId === plan.opportunityId)!;
+      const offer = interactions.find((event) => event.relationshipId === relationship.id && event.explicitOffer === "SEND_REQUESTED_MATERIAL");
+      if (!offer) continue;
+      const person = people.find((item) => item.id === relationship.personId);
+      const job = jobs[0];
+      const assessment = assessments.find((item) => item.personId === relationship.personId);
+      if (!person || !job || !assessment) continue;
       const interactionPlan = createInteractionPlan(person, relationship, assessment, job, interactions);
-      actions.push({
-        ...makeAction(actionTypeForAsk(interactionPlan.recommendedAskType), `${humanAsk(interactionPlan.recommendedAskType)}: ${person.name}`, interactionPlan.whyThisPerson, job.score.overall, Math.max(assessment.informationValue, assessment.routingValue, assessment.referralAbility), interactionPlan.socialCost, 18, interactionPlan.urgency, assessment.informationValue, [], job.job.canonicalId, person.id),
+      candidates.push({
+        ...makeAction("SEND_REQUESTED_MATERIAL", `Send requested material: ${person.name}`, "Explicit material request outranks routine outreach.", job.score.overall, 8, 1, 12, 8, 4, [], job.job.canonicalId, person.id),
         interactionPlan,
         draft: composeDeterministicDraft(interactionPlan, person, job),
       });
     }
-  }
-  const topFunctions = scoreFunctions(profile).slice(0, 2).map((item) => item.function.id);
-  for (const functionId of topFunctions) {
-    const coverage = assessments.filter((assessment) => people.find((person) => person.id === assessment.personId)?.functionalAreas.includes(functionId));
-    if (coverage.length < 2) {
-      actions.push(makeAction("BUILD_NETWORK_IN_FUNCTION", `Find one ${functionId.replaceAll("-", " ")} insider`, "Network gap in a high-fit function.", 6.5, 5.8, 2, 25, 4, 6, []));
+    const topFunctions = scoreFunctions(profile).slice(0, 2).map((item) => item.function.id);
+    for (const functionId of topFunctions) {
+      const coverage = assessments.filter((assessment) => people.find((person) => person.id === assessment.personId)?.functionalAreas.includes(functionId));
+      if (coverage.length < 2) {
+        candidates.push(makeAction("BUILD_NETWORK_IN_FUNCTION", `Find one ${functionId.replaceAll("-", " ")} insider`, "Network gap in a high-fit function.", 6.5, 5.8, 2, 20, 4, 6, []));
+      }
     }
   }
-  return actions
+  const unique = candidates
     .map((action) => ({ ...action, priority: actionPriority(action) }))
-    .sort((a, b) => b.priority - a.priority)
-    .filter((action, index, sorted) => sorted.findIndex((candidate) => candidate.actionType === action.actionType && candidate.relatedPersonId === action.relatedPersonId && candidate.title === action.title) === index)
-    .slice(0, 12);
+    .sort((a, b) => b.priority - a.priority || b.urgency - a.urgency)
+    .filter((action, index, sorted) => sorted.findIndex((candidate) => candidate.actionType === action.actionType && candidate.relatedPersonId === action.relatedPersonId && candidate.relatedOpportunityId === action.relatedOpportunityId) === index);
+
+  // STAGE 5 — small portfolio under a time budget with type diversity.
+  const portfolio: NextBestAction[] = [];
+  let remaining = DEFAULT_TIME_BUDGET_MINUTES;
+  const typeCounts = new Map<string, number>();
+  const deadlineApplies = unique.filter((action) => action.actionType === "APPLY_TO_JOB" && action.urgency >= 7).slice(0, 2);
+  for (const action of deadlineApplies) {
+    if (remaining < action.timeEstimateMinutes + 18 && portfolio.length) break;
+    portfolio.push(action);
+    remaining -= action.timeEstimateMinutes;
+    typeCounts.set(action.actionType, (typeCounts.get(action.actionType) ?? 0) + 1);
+  }
+  for (const action of unique) {
+    if (portfolio.includes(action)) continue;
+    if (remaining < action.timeEstimateMinutes) continue;
+    const count = typeCounts.get(action.actionType) ?? 0;
+    if (count >= 3) continue;
+    if (action.actionType !== "APPLY_TO_JOB" && (typeCounts.get("ASK_REFERRAL") ?? 0) + (typeCounts.get("ASK_INTRO") ?? 0) + (typeCounts.get("ASK_ADVICE") ?? 0) >= 4 && ["ASK_REFERRAL", "ASK_INTRO", "ASK_ADVICE"].includes(action.actionType)) continue;
+    portfolio.push(action);
+    remaining -= action.timeEstimateMinutes;
+    typeCounts.set(action.actionType, count + 1);
+    if (portfolio.length >= 8) break;
+  }
+  return portfolio;
 }
 
 function makeAction(actionType: NextBestAction["actionType"], title: string, whyNow: string, opportunityValue: number, networkValue: number, socialCost: number, timeEstimateMinutes: number, urgency: number, expectedInformationAccessGain: number, dependencies: string[], relatedOpportunityId?: string, relatedPersonId?: string): NextBestAction {
@@ -401,17 +449,59 @@ function buildAskReadiness(relationship: Relationship, values: Pick<ContactOppor
   return Object.fromEntries(Object.entries(base).map(([key, value]) => [key, clamp(value, 0, 10)])) as Record<AskType, number>;
 }
 
+export function isReferralAlreadySubmitted(relationshipId: string, interactions: InteractionEvent[]) {
+  return interactions.some((event) => event.relationshipId === relationshipId && event.eventType === "REFERRAL_SUBMITTED");
+}
+
+export function askIsEligible(
+  ask: AskType,
+  relationship: Relationship,
+  assessment: ContactOpportunityAssessment,
+  interactions: InteractionEvent[],
+  scoredJob?: ScoredJob,
+): boolean {
+  if (isDoNotContact(relationship.id, interactions)) return false;
+  const explicitOffer = interactions.some((event) => event.relationshipId === relationship.id && event.explicitOffer);
+  const referralBoundary = interactions.some((event) => event.relationshipId === relationship.id && event.explicitBoundary === "REFERRAL_REQUEST") || relationship.explicitBoundaries.some((boundary) => boundary.toLowerCase().includes("referral"));
+  const observedWork = relationship.sharedWork.length > 0 || relationship.whatTheyKnowAboutUser.some((item) => !item.toLowerCase().includes("field only"));
+  if (ask === "SEND_REQUESTED_MATERIAL") return explicitOffer;
+  if (ask === "REFERRAL_REQUEST" || ask === "RESUME_FORWARD_REQUEST") {
+    if (referralBoundary || isReferralAlreadySubmitted(relationship.id, interactions)) return false;
+    return explicitOffer || (assessment.referralAbility >= 6 && assessment.credibilityValue >= 6 && observedWork);
+  }
+  if (ask === "REFERENCE_REQUEST") return assessment.credibilityValue >= 7 && observedWork;
+  if (ask === "HIRING_MANAGER_INTRO_REQUEST") return assessment.routingValue >= 4 || relationship.relationshipType === "FORMER_MANAGER";
+  if (ask === "INTRODUCTION_REQUEST" || ask === "SECOND_DEGREE_INTRO_REQUEST" || ask === "WHO_SHOULD_I_TALK_TO") return assessment.routingValue >= 5.5;
+  if (ask === "RECONNECT") return relationship.dormancy >= 6;
+  return true;
+}
+
 function chooseAskType(relationship: Relationship, assessment: ContactOpportunityAssessment, scoredJob: ScoredJob | undefined, explicitOffer: boolean, referralBoundary: boolean): AskType {
+  // Gates first. Aggregate access never unlocks a forbidden ask.
   if (explicitOffer) return "SEND_REQUESTED_MATERIAL";
-  if (relationship.relationshipType === "RECRUITER") return "ROLE_REALITY";
   if (referralBoundary) return assessment.informationValue >= 6 ? "COMPANY_INFORMATION" : "CAREER_PERSPECTIVE";
-  if (relationship.relationshipType === "FORMER_MANAGER" && assessment.credibilityValue >= 7 && scoredJob && scoredJob.score.overall >= 7.2) return assessment.referralAbility >= 6 ? "REFERRAL_REQUEST" : "HIRING_MANAGER_INTRO_REQUEST";
   if (relationship.relationshipType === "DORMANT_FORMER_STRONG_TIE") return "RECONNECT";
-  if (relationship.relationshipType === "ALUM" || relationship.relationshipType === "COLD_CONTEXTUAL_CONTACT") return assessment.routingValue >= 6 ? "WHO_SHOULD_I_TALK_TO" : "COMPANY_INFORMATION";
-  if (assessment.referralAbility >= 7.5 && scoredJob && scoredJob.score.overall >= 7.4) return "REFERRAL_REQUEST";
-  if (assessment.routingValue >= 7) return "INTRODUCTION_REQUEST";
-  if (assessment.informationValue >= 6) return "ROLE_REALITY";
-  return "CAREER_PERSPECTIVE";
+  if (relationship.relationshipType === "RECRUITER") return "ROLE_REALITY";
+  const candidates: AskType[] = [];
+  if (relationship.relationshipType === "FORMER_MANAGER" && assessment.credibilityValue >= 7 && scoredJob && scoredJob.score.overall >= 7.2) {
+    candidates.push(assessment.referralAbility >= 6 ? "REFERRAL_REQUEST" : "HIRING_MANAGER_INTRO_REQUEST");
+  }
+  if (assessment.referralAbility >= 7.5 && scoredJob && scoredJob.score.overall >= 7.4) candidates.push("REFERRAL_REQUEST");
+  if (assessment.routingValue >= 7) candidates.push("INTRODUCTION_REQUEST");
+  if (relationship.relationshipType === "ALUM" || relationship.relationshipType === "COLD_CONTEXTUAL_CONTACT") {
+    candidates.push(assessment.routingValue >= 6 ? "WHO_SHOULD_I_TALK_TO" : "COMPANY_INFORMATION");
+  }
+  if (assessment.informationValue >= 6) candidates.push("ROLE_REALITY");
+  candidates.push("CAREER_PERSPECTIVE");
+  const emptyInteractions: InteractionEvent[] = [];
+  // Eligibility is re-checked by callers with full interactions; here we apply the same rules
+  // using the flags already computed for this plan.
+  const proxyInteractions = [
+    ...(explicitOffer ? [{ relationshipId: relationship.id, eventType: "RESUME_REQUESTED", explicitOffer: "SEND_REQUESTED_MATERIAL" } as InteractionEvent] : []),
+    ...(referralBoundary ? [{ relationshipId: relationship.id, eventType: "BOUNDARY_EXPRESSED", explicitBoundary: "REFERRAL_REQUEST" } as InteractionEvent] : []),
+  ];
+  const chosen = candidates.find((ask) => askIsEligible(ask, relationship, assessment, proxyInteractions.length ? proxyInteractions : emptyInteractions, scoredJob));
+  return chosen ?? "CAREER_PERSPECTIVE";
 }
 
 function computeFunctionCoverage(profile: UserProfile, assessments: ContactOpportunityAssessment[]) {

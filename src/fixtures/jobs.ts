@@ -1,4 +1,5 @@
 import { careerFunctions, vector } from "@/config/model";
+import { emphasizeWorkStructure, readWorkStructure } from "@/domain/workStructure";
 import type { FreshnessState, JobPosting, JobSourceObservation, Vector } from "@/domain/types";
 
 const domains = [
@@ -233,11 +234,29 @@ export function matchFunctionByTasks(job: Pick<JobPosting, "title" | "descriptio
   return { functionId: null, source: "none" as const };
 }
 
+function jobText(job: Pick<JobPosting, "title" | "description" | "responsibilities" | "requirements">) {
+  return `${job.description} ${job.responsibilities.join(" ")} ${job.requirements.join(" ")}`;
+}
+
 export function inferJobVector(job: JobPosting): Vector {
   const match = matchFunctionByTasks(job);
   if (match.functionId === "documentation-heavy-systems") {
     return vector({ problem_structure: 8.8, repetition_tolerance: 8.9, coordination_preference: 8.2, investigation_orientation: 4.1, experimentation_preference: 3.8, closure_preference: 8.4 });
   }
-  const matched = careerFunctions.find((fn) => fn.id === match.functionId);
-  return matched?.taskDnaVector ?? vector({});
+  // Title fallback must not mint a TaskDNA vector. Demo fixtures match by task
+  // content; generic/O*NET jobs are read from their own work language.
+  if (match.source === "task-content") {
+    const matched = careerFunctions.find((fn) => fn.id === match.functionId);
+    if (matched) return matched.taskDnaVector;
+  }
+  const reading = readWorkStructure(jobText(job));
+  return reading.dimensionsCovered >= 3 ? emphasizeWorkStructure(reading.vector) : vector({});
+}
+
+/** 0..1 share of TaskDNA dimensions the job's own language supports. */
+export function jobStructureCoverage(job: JobPosting): { coverage: number; dimensionsCovered: number; fixtureMatched: boolean } {
+  const match = matchFunctionByTasks(job);
+  if (match.source === "task-content" && match.functionId) return { coverage: 1, dimensionsCovered: 17, fixtureMatched: true };
+  const reading = readWorkStructure(jobText(job));
+  return { coverage: reading.coverage, dimensionsCovered: reading.dimensionsCovered, fixtureMatched: false };
 }

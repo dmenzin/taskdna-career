@@ -20,8 +20,10 @@ describe("evidence extraction and Task-DNA inference", () => {
     const investigation = profile.taskDna.find((dimension) => dimension.dimensionId === "investigation_orientation")!;
     expect(investigation.supportingEvidenceIds.length).toBeGreaterThan(0);
     const supportingEvidence = profile.evidence.find((item) => item.id === investigation.supportingEvidenceIds[0]);
-    expect(supportingEvidence?.originalText).toMatch(/investigations|root causes|failures/i);
-    expect(supportingEvidence?.inferredTaskDimensions.investigation_orientation).toBeGreaterThan(6);
+    // Supporting evidence must be preference-class (exposure never moves preference)
+    // and must carry a same-side signal for the dimension it supports.
+    expect(["PREFERENCE", "DISLIKE", "ASPIRATIONAL"]).toContain(supportingEvidence?.evidenceClass);
+    expect(supportingEvidence?.inferredTaskDimensions.investigation_orientation).toBeGreaterThan(5);
   });
 
   it("stores contradictory evidence and lowers confidence for conflict", () => {

@@ -1,6 +1,9 @@
 import { allCareerFunctions, careerFunctions, dimensions, scoringConfig, skillLexicon, vector } from "@/config/model";
 import { scenarioBank } from "@/config/scenarios";
-import { createJobSourceObservations, createSyntheticJobs, inferJobVector, matchFunctionByTasks } from "@/fixtures/jobs";
+import { classifySentence, sourceGroupFor } from "@/domain/evidence";
+import { buildRequirementMatrix } from "@/domain/hireability";
+import { sentenceWorkSignals } from "@/domain/workStructure";
+import { createJobSourceObservations, createSyntheticJobs, inferJobVector, jobStructureCoverage, matchFunctionByTasks } from "@/fixtures/jobs";
 import { personas } from "@/fixtures/personas";
 import type {
   Capability,
@@ -96,7 +99,10 @@ export function buildProfileFromCareerInput(input: CareerInput): UserProfile {
     expectedHighFunctions: [],
     expectedLowFunctions: [],
   };
-  const evidence = extractEvidence(genericPersona, combinedText);
+  const evidence = extractEvidence(genericPersona, input.careerText, {
+    explicitPreferences: input.explicitPreferences,
+    explicitDislikes: input.explicitDislikes,
+  });
   const taskDna = inferTaskDna(genericPersona, evidence, { neutralPrior: true });
   const capabilities = inferCapabilities(genericPersona, evidence);
   const contradictions = inferContradictions(genericPersona, evidence);
@@ -104,51 +110,125 @@ export function buildProfileFromCareerInput(input: CareerInput): UserProfile {
   return { persona: genericPersona, evidence, taskDna, capabilities, contradictions, confidence };
 }
 
-export function extractEvidence(persona: (typeof personas)[number], careerText: string): UserEvidence[] {
+export function extractEvidence(
+  persona: (typeof personas)[number],
+  careerText: string,
+  options: { explicitPreferences?: string[]; explicitDislikes?: string[] } = {},
+): UserEvidence[] {
   const sentences = careerText
     .split(/[.!?]+/)
     .map((sentence) => sentence.trim())
     .filter(Boolean);
   const uniqueSentences = Array.from(new Map(sentences.map((sentence) => [sentence.toLowerCase(), sentence])).values());
   const fallback = uniqueSentences.length ? uniqueSentences : [careerText];
-  return fallback.slice(0, 8).map((sentence, index) => ({
-    id: `ev-${persona.id}-${index + 1}`,
-    sourceType: index === 0 ? "RESUME" : sentence.toLowerCase().includes("dislike") || sentence.toLowerCase().includes("avoid") ? "EXPLICIT_DISLIKE" : "WORK_HISTORY",
-    sourceReference: "demo career text",
+  const fromText = fallback.slice(0, 10).map((sentence, index) => {
+    const classified = classifySentence(sentence);
+    return makeEvidence(persona, sentence, {
+      id: `ev-${persona.id}-${index + 1}`,
+      sourceType: index === 0 ? "RESUME" : classified.evidenceClass === "DISLIKE" ? "EXPLICIT_DISLIKE" : "WORK_HISTORY",
+      sourceReference: "career text",
+      classified,
+      reliability: evidenceReliability(sentence, index),
+    });
+  });
+  // Explicit stated preferences/dislikes carry a forced class: a bare phrase in a
+  // dislike list is a dislike even without a dislike verb.
+  const explicitPreferences = (options.explicitPreferences ?? []).slice(0, 4).map((phrase, index) => {
+    const signals = sentenceWorkSignals(phrase);
+    return makeEvidence(persona, phrase, {
+      id: `ev-${persona.id}-pref-${index + 1}`,
+      sourceType: "EXPLICIT_PREFERENCE",
+      sourceReference: "stated preferences",
+      classified: { evidenceClass: "PREFERENCE", preferenceSignals: signals, workSignals: signals, signalWeight: 1 },
+      reliability: 0.78,
+    });
+  });
+  const explicitDislikes = (options.explicitDislikes ?? []).slice(0, 4).map((phrase, index) => {
+    const signals = sentenceWorkSignals(phrase);
+    const inverted = Object.fromEntries(Object.entries(signals).map(([key, value]) => [key, 10 - (value ?? 5)])) as Partial<Vector>;
+    return makeEvidence(persona, phrase, {
+      id: `ev-${persona.id}-dislike-${index + 1}`,
+      sourceType: "EXPLICIT_DISLIKE",
+      sourceReference: "stated dislikes",
+      classified: { evidenceClass: "DISLIKE", preferenceSignals: inverted, workSignals: signals, signalWeight: 1 },
+      reliability: 0.78,
+    });
+  });
+  return [...fromText, ...explicitPreferences, ...explicitDislikes];
+}
+
+function makeEvidence(
+  persona: (typeof personas)[number],
+  sentence: string,
+  input: { id: string; sourceType: UserEvidence["sourceType"]; sourceReference: string; classified: ReturnType<typeof classifySentence>; reliability: number },
+): UserEvidence {
+  const lower = sentence.toLowerCase();
+  return {
+    id: input.id,
+    sourceType: input.sourceType,
+    sourceReference: input.sourceReference,
+    evidenceClass: input.classified.evidenceClass,
+    sourceGroup: sourceGroupFor(input.sourceType, input.sourceReference),
+    signalWeight: input.classified.signalWeight,
     originalText: sentence,
     activity: classifyActivity(sentence),
     context: persona.currentField,
     tools: keywordHits(sentence, ["Python", "TypeScript", "SQL", "MATLAB", "logs", "bench tests", "ROS", "C++"]),
     problemType: classifyProblem(sentence),
-    outcome: sentence.toLowerCase().includes("found") || sentence.toLowerCase().includes("improved") ? "successful outcome indicated" : "experience reported",
+    outcome: input.classified.evidenceClass === "SUCCESS" ? "successful outcome indicated" : "experience reported",
     demonstratedSkills: keywordHits(sentence, persona.capabilityKeywords),
     capabilitySignals: keywordHits(sentence, persona.capabilityKeywords),
-    enjoymentSignals: sentence.toLowerCase().includes("love") || sentence.toLowerCase().includes("enjoy") ? [sentence] : [],
-    dislikeSignals: sentence.toLowerCase().includes("dislike") || sentence.toLowerCase().includes("avoid") ? [sentence] : [],
-    inferredTaskDimensions: inferSentenceDimensions(sentence),
-    recency: 0.8,
-    reliability: evidenceReliability(sentence, index),
-  }));
+    enjoymentSignals: input.classified.evidenceClass === "PREFERENCE" || input.classified.evidenceClass === "ASPIRATIONAL" ? [sentence] : [],
+    dislikeSignals: input.classified.evidenceClass === "DISLIKE" ? [sentence] : [],
+    inferredTaskDimensions: input.classified.preferenceSignals,
+    recency: lower.includes("older role") ? 0.5 : 0.8,
+    reliability: input.reliability,
+  };
 }
 
 export function inferTaskDna(persona: (typeof personas)[number], evidence: UserEvidence[], options: { neutralPrior?: boolean } = {}): TaskDNADimension[] {
   const sparse = evidence.length < scoringConfig.inference.sparseEvidenceThreshold;
   return dimensions.map((definition) => {
+    // Only preference-class evidence moves preference dimensions (exposure never does).
     const signals = evidence
       .map((item) => ({ item, value: item.inferredTaskDimensions[definition.id] }))
-      .filter((item): item is { item: UserEvidence; value: number } => typeof item.value === "number");
+      .filter((item): item is { item: UserEvidence; value: number } => typeof item.value === "number" && item.item.signalWeight > 0);
     const baseValue = options.neutralPrior ? 5 : persona.preferenceVector[definition.id];
-    const evidenceValue = signals.length ? weightedAverage(signals.map(({ item, value }) => ({ value, weight: item.reliability }))) : baseValue;
-    const evidenceWeight = signals.length >= 2 ? scoringConfig.inference.evidenceWeightTwoPlus : signals.length === 1 ? scoringConfig.inference.evidenceWeightSingle : 0;
+    const evidenceValue = signals.length
+      ? weightedAverage(signals.map(({ item, value }) => ({ value, weight: item.reliability * item.signalWeight })))
+      : baseValue;
+    // Dependence-aware effective signals: distinct source groups count fully;
+    // extra sentences inside one group add diminishing partial credit.
+    const groups = new Map<string, number>();
+    for (const { item } of signals) groups.set(item.sourceGroup, (groups.get(item.sourceGroup) ?? 0) + 1);
+    const distinctGroups = groups.size;
+    const extraWithinGroups = Array.from(groups.values()).reduce((sum, count) => sum + Math.min(2, count - 1), 0);
+    const effectiveSignals = Math.min(scoringConfig.inference.maxEffectiveSignals, distinctGroups + extraWithinGroups * 0.5);
+    const evidenceWeight = effectiveSignals >= 2 ? scoringConfig.inference.evidenceWeightTwoPlus : effectiveSignals >= 1 ? scoringConfig.inference.evidenceWeightSingle : 0;
     const value = clamp(baseValue * (1 - evidenceWeight) + evidenceValue * evidenceWeight, 0, 10);
-    const supportingEvidenceIds = signals.filter(({ value: signal }) => sameSide(signal, value)).map(({ item }) => item.id);
-    const contradictoryEvidenceIds = signals.filter(({ value: signal }) => !sameSide(signal, value) && Math.abs(signal - value) >= 2.2).map(({ item }) => item.id);
-    // Diminishing returns: repeated/duplicated signals cannot buy unbounded confidence.
-    const effectiveSignals = Math.min(scoringConfig.inference.maxEffectiveSignals, new Set(signals.map(({ item }) => item.originalText.toLowerCase())).size);
+    const polarity = signals.length ? evidenceValue : value;
+    const supportingEvidenceIds = signals.filter(({ value: signal }) => sameSide(signal, polarity)).map(({ item }) => item.id);
+    const contradictoryEvidenceIds = signals.filter(({ value: signal }) => !sameSide(signal, polarity) && Math.abs(signal - polarity) >= 2.2).map(({ item }) => item.id);
     const unknown = options.neutralPrior && signals.length === 0;
+    const aspirationalOnly = signals.length > 0 && signals.every(({ item }) => item.evidenceClass === "ASPIRATIONAL");
+    const signalValues = signals.map(({ value: signal }) => signal);
+    const dispersion = signalValues.length >= 2 ? Math.max(...signalValues) - Math.min(...signalValues) : 0;
+    const agreementBonus = signalValues.length >= 2 && dispersion < 2 ? 0.06 : 0;
     const confidence = unknown
       ? scoringConfig.inference.unknownDimensionConfidence
-      : clamp((sparse ? 0.3 : 0.48) + effectiveSignals * scoringConfig.inference.signalConfidenceStep + Math.abs(value - 5) * 0.04 - contradictoryEvidenceIds.length * 0.14, 0.2, 0.94);
+      : clamp(
+          Math.min(
+            sparse ? 0.5 : 0.94,
+            0.3 +
+              effectiveSignals * scoringConfig.inference.signalConfidenceStep * 1.6 +
+              agreementBonus -
+              contradictoryEvidenceIds.length * 0.14 -
+              (aspirationalOnly ? 0.06 : 0) +
+              (options.neutralPrior ? 0 : 0.12),
+          ),
+          0.2,
+          0.94,
+        );
     return {
       dimensionId: definition.id,
       value,
@@ -172,12 +252,13 @@ function evidenceReliability(sentence: string, index: number) {
 }
 
 export function inferCapabilities(persona: (typeof personas)[number], evidence: UserEvidence[]): Capability[] {
-  const keywords = Array.from(new Set(persona.capabilityKeywords));
+  const fromText = skillLexicon.filter((skill) => persona.careerText.toLowerCase().includes(skill) || evidence.some((item) => item.originalText.toLowerCase().includes(skill)));
+  const keywords = Array.from(new Set([...persona.capabilityKeywords, ...fromText]));
   const career = persona.careerText.toLowerCase();
   return keywords.map((keyword, index) => {
     const evidenceIds = evidence.filter((item) => item.originalText.toLowerCase().includes(keyword.toLowerCase()) || item.capabilitySignals.some((signal) => signal.toLowerCase() === keyword.toLowerCase())).map((item) => item.id);
-    const direct = evidenceIds.length > 0;
-    const interestOnly = !direct && /coursework|hobby|interested|no professional|not yet/.test(career);
+    const interestOnly = new RegExp(`(coursework|hobby|no professional|not yet).{0,32}${keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}|${keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}.{0,32}(coursework|hobby|no professional|not yet)`, "i").test(career);
+    const direct = evidenceIds.length > 0 && !interestOnly;
     return {
       id: `cap-${persona.id}-${index + 1}`,
       name: keyword,
@@ -224,9 +305,10 @@ export function scoreFunctions(profile: UserProfile, functionSet = functionsForP
 
 export function analyzeJob(job: JobPosting, functionSet: CareerFunction[] = careerFunctions): JobAnalysis {
   const jobVector = inferJobVector(job);
+  const structure = jobStructureCoverage(job);
   const text = `${job.title} ${job.description} ${job.responsibilities.join(" ")} ${job.requirements.join(" ")}`.toLowerCase();
   const primary = pickPrimaryFunction(job, jobVector, functionSet);
-  const secondary = careerFunctions
+  const secondary = functionSet
     .filter((fn) => fn.id !== primary.id)
     .map((fn) => ({ fn, fit: vectorFit(jobVector, fn.taskDnaVector) }))
     .sort((a, b) => b.fit - a.fit)
@@ -248,7 +330,12 @@ export function analyzeJob(job: JobPosting, functionSet: CareerFunction[] = care
     frictionFactors: frictionFactors.length ? frictionFactors : primary.commonRepellents.slice(0, 2),
     requiredCapabilities: job.requirements,
     hardGaps: hardGaps(job.requirements),
-    classificationConfidence: job.canonicalizationConfidence,
+    // Fixture-matched demo jobs keep canonicalization confidence; generically read
+    // jobs earn classification confidence from how much of their own language
+    // actually supports a TaskDNA reading.
+    classificationConfidence: structure.fixtureMatched
+      ? job.canonicalizationConfidence
+      : Math.min(job.canonicalizationConfidence, clamp(0.3 + structure.coverage * 0.75, 0.3, 0.9)),
     evidenceSnippets: [job.description, ...job.responsibilities.slice(0, 2)],
   };
 }
@@ -262,9 +349,9 @@ export function scoreJobs(profile: UserProfile, jobs = createDemoDataset().jobs,
       const negativeFitRisk = negativeFit(profile, analysis.frictionFactors);
       const predictedFit = clamp(rawPredictedFit - negativeFitRisk * scoringConfig.inference.negativeFitPenalty, 1, 10);
       const caf = confidenceAdjustedFit(predictedFit, confidence);
-      const capabilityAlignment = capabilityAlignmentFor(profile, analysis.requiredCapabilities) * 10;
-      const gapPenalty = analysis.hardGaps.length * 0.65;
-      const hireability = clamp(capabilityAlignment * 0.72 + requirementsLegibility(profile, analysis.requiredCapabilities) * 2.8 - gapPenalty - seniorityPenalty(job), 1, 10);
+      const matrix = buildRequirementMatrix(profile, job);
+      const capabilityAlignment = clamp(matrix.coreCoverage * 8 + matrix.professionalShare * 2, 1, 10);
+      const hireability = clamp(matrix.hireability - seniorityPenalty(job) * 0.35, 1, 10);
       const careerDirection = clamp(predictedFit * 0.62 + capabilityAlignment * 0.18 + (10 - negativeFitRisk) * 0.2, 1, 10);
       const technicalGrowth = clamp(6 + analysis.hardGaps.length * 0.55 + analysis.requiredCapabilities.length * 0.05, 1, 10);
       const durability = clamp(job.domain.match(/software|analytics|robotics|medical|energy/) ? 7.9 : 6.8, 1, 10);
@@ -301,7 +388,7 @@ export function scoreJobs(profile: UserProfile, jobs = createDemoDataset().jobs,
           `Job vector maps primarily to ${functionSet.find((fn) => fn.id === analysis.primaryFunctionId)?.name}.`,
           `Raw Work Fit ${formatScore(rawPredictedFit)} minus negative-fit penalty ${formatScore(negativeFitRisk * 0.5)} gives displayed Work Fit ${formatScore(predictedFit)}.`,
           `Confidence ${formatScore(confidence)} and CAF ${formatScore(caf)} use CAF = fit - ${scoringConfig.confidenceAdjustedFitPenalty} * (1 - confidence).`,
-          `Hireability ${formatScore(hireability)} uses capability alignment ${formatScore(capabilityAlignment)}, requirements, seniority, and hard gaps: ${analysis.hardGaps.join(", ") || "none"}.`,
+          `Hireability ${formatScore(hireability)} uses structured requirement-evidence matching (${matrix.version}): ${matrix.trace[1]} Gaps: ${analysis.hardGaps.join(", ") || "none"}.`,
           `Career Direction ${formatScore(careerDirection)}, Growth ${formatScore(technicalGrowth)}, Durability ${formatScore(durability)}, Novelty ${formatScore(novelty)}.`,
           `Overall ${formatScore(clamp(overall, 1, 10))} = 0.40*Hireability + 0.30*CAF + 0.15*Direction + 0.10*Growth + 0.05*Durability, with visible negative-fit adjustment.`,
           `Final tier is ${actionTier}; sellability is ${sellability}; scoring config ${scoringConfig.version}.`,
@@ -338,6 +425,9 @@ export function applyFeedback(profile: UserProfile, scoredJobs: ScoredJob[], fee
     id: `feedback-${feedback.jobId}`,
     sourceType: "USER_FEEDBACK",
     sourceReference: target.job.title,
+    evidenceClass: feedback.reaction === "DISLIKE" ? "DISLIKE" : "PREFERENCE",
+    sourceGroup: sourceGroupFor("USER_FEEDBACK", feedback.jobId),
+    signalWeight: 1,
     originalText: `${feedback.reaction}: ${feedback.reasonTags.join(", ")}`,
     activity: "job reaction",
     context: "active learning",
@@ -417,6 +507,9 @@ export function applyScenarioResponses(profile: UserProfile, responses: Scenario
       id: `scenario-${scenario.id}-${index + 1}`,
       sourceType: "SCENARIO_RESPONSE",
       sourceReference: scenario.title,
+      evidenceClass: direction < 0 ? "DISLIKE" : "PREFERENCE",
+      sourceGroup: sourceGroupFor("SCENARIO_RESPONSE", scenario.id),
+      signalWeight: 1,
       originalText: `${response.answer}: ${scenario.prompt}${response.freeText ? ` ${response.freeText}` : ""}`,
       activity: "scenario response",
       context: "adaptive interview",
@@ -617,9 +710,11 @@ function sellabilityFor(hireability: number, capabilityAlignment: number, hardGa
 
 function pickPrimaryFunction(job: JobPosting, jobVector: Vector, functionSet: CareerFunction[] = careerFunctions) {
   const match = matchFunctionByTasks(job);
-  const taskMatched = functionSet.find((fn) => fn.id === match.functionId);
-  if (taskMatched) return taskMatched;
-  // Documentation-heavy or unmatched jobs fall back to nearest vector, never raw title.
+  if (match.source === "task-content") {
+    const taskMatched = functionSet.find((fn) => fn.id === match.functionId);
+    if (taskMatched) return taskMatched;
+  }
+  // Unmatched and title-only jobs fall back to nearest work-structure vector, never raw title.
   return functionSet.map((fn) => ({ fn, fit: vectorFit(jobVector, fn.taskDnaVector) })).sort((a, b) => b.fit - a.fit)[0].fn;
 }
 
@@ -673,22 +768,6 @@ function classifyProblem(sentence: string) {
   if (lower.includes("customer") || lower.includes("field")) return "field/customer troubleshooting";
   if (lower.includes("document") || lower.includes("traceability")) return "documentation and compliance";
   return "knowledge work";
-}
-
-function inferSentenceDimensions(sentence: string): Partial<Vector> {
-  const lower = sentence.toLowerCase();
-  const negative = /dislike|avoid|less interested|not interested|hate|drain|averse|too much|no professional|lacking/.test(lower);
-  const signal = (value: number) => (negative ? 10 - value : value);
-  return {
-    ...(/log|data|evidence|signal|measure|statistic/.test(lower) ? { evidence_density: signal(8.5), measurable_feedback: signal(8.2) } : {}),
-    ...(/debug|root|failure|investigat|diagnos|troubleshoot/.test(lower) ? { investigation_orientation: signal(9), causal_reasoning: signal(9) } : {}),
-    ...(/experiment|test|character/.test(lower) ? { experimentation_preference: signal(8.4), closure_preference: signal(8) } : {}),
-    ...(/customer|field|onsite/.test(lower) ? { customer_interaction_preference: signal(8.4), real_system_grounding: signal(8.5) } : {}),
-    ...(/document|traceability|compliance|qms|protocol/.test(lower) ? { repetition_tolerance: signal(8.6), coordination_preference: signal(7.2) } : {}),
-    ...(/stakeholder|roadmap|requirements|orchestrat|alignment/.test(lower) ? { coordination_preference: signal(8.8), problem_structure: signal(3.2), customer_interaction_preference: signal(7.6) } : {}),
-    ...(/ambiguous|unclear|open product|discovery/.test(lower) ? { problem_structure: signal(2.6), creation_style: signal(8.2) } : {}),
-    ...(/software|tool|typescript|python|api/.test(lower) ? { software_as_tool: signal(8.5), creation_style: signal(7.7) } : {}),
-  };
 }
 
 function keywordHits(text: string, keywords: string[]) {
