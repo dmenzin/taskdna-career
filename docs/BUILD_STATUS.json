@@ -1,0 +1,47 @@
+{
+  "phase": "sandbox prototype",
+  "current_milestone": "M41 clean acceptance run",
+  "current_task": "Verify build, tests, eval, exports, and manual walkthrough",
+  "completed": [
+    "M0 inspected greenfield repository; no reference artifacts found",
+    "M1 architecture, documentation, and build state",
+    "M2 Next.js application foundation",
+    "M4 core domain models",
+    "M5 demo personas",
+    "M6 career-text input",
+    "M7 deterministic evidence extraction",
+    "M8 Task-DNA inference",
+    "M9 adaptive interview heuristic represented through profile/confidence targeting",
+    "M10 capability inference",
+    "M11 function ontology",
+    "M12 function scoring",
+    "M13 synthetic job provider",
+    "M14 canonicalization/search funnel",
+    "M15 hard filters",
+    "M16-M23 job interpretation, scoring, hireability, repellents, novelty",
+    "M24 freshness and simulated commute semantics",
+    "M25-M32 UI, reactions, debug console, analytics/Product Lab",
+    "M33-M34 evaluation harness and regression tests",
+    "M36 standalone HTML/JSON exports"
+  ],
+  "in_progress": [
+    "M37 accessibility/responsive polish validation",
+    "M38-M40 critique cycles"
+  ],
+  "next": [
+    "Run pnpm test, pnpm eval, pnpm build, pnpm export:demo",
+    "Perform browser smoke walkthrough and capture artifact",
+    "Expand SQLite persistence from seeded JSON boundary to real migrations"
+  ],
+  "blockers": [],
+  "known_defects": [
+    "SQLite/ORM boundary is documented and command-backed, but V1 uses deterministic JSON seed output instead of a full migration stack",
+    "Scenario interview is modeled as deterministic profile evidence and feedback updates; a dedicated 10-20 question flow is a next refinement"
+  ],
+  "failing_tests": [],
+  "evaluation_failures": [],
+  "last_successful_build": "",
+  "last_e2e_run": "",
+  "last_eval_run": "",
+  "last_updated": "2026-08-22T15:07:00.000Z"
+}

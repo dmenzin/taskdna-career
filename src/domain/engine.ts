@@ -1,0 +1,525 @@
+import { careerFunctions, dimensions, scoringConfig, vector } from "@/config/model";
+import { createJobSourceObservations, createSyntheticJobs, inferJobVector } from "@/fixtures/jobs";
+import { personas } from "@/fixtures/personas";
+import type {
+  Capability,
+  CareerFunction,
+  DimensionId,
+  FeedbackEvent,
+  JobAnalysis,
+  JobPosting,
+  Reaction,
+  ScoredJob,
+  SearchRun,
+  TaskDNADimension,
+  UserEvidence,
+  UserProfile,
+  Vector,
+} from "@/domain/types";
+
+const now = "2026-08-22T15:07:00.000Z";
+
+export interface DemoDataset {
+  personas: typeof personas;
+  functions: CareerFunction[];
+  jobs: JobPosting[];
+  rawObservations: ReturnType<typeof createJobSourceObservations>;
+  searchRun: SearchRun;
+}
+
+export function createDemoDataset(): DemoDataset {
+  const rawObservations = createJobSourceObservations();
+  const jobs = createSyntheticJobs();
+  return {
+    personas,
+    functions: careerFunctions,
+    jobs,
+    rawObservations,
+    searchRun: {
+      id: "search-run-demo-001",
+      queryOrLane: "sandbox synthetic multi-lane corpus",
+      provider: "SyntheticJobProvider",
+      rawCount: rawObservations.length,
+      canonicalCount: jobs.length,
+      hardFilterPassCount: jobs.filter((job) => !isExtremeMismatch(job)).length,
+      semanticScreenCount: Math.min(104, jobs.length),
+      deepAnalysisCount: Math.min(91, jobs.length),
+      recommendationCount: Math.min(75, jobs.length),
+      startedAt: "2026-08-22T15:00:00.000Z",
+      completedAt: now,
+    },
+  };
+}
+
+export function buildUserProfile(personaId = "failure-analyst", careerText?: string): UserProfile {
+  const persona = personas.find((item) => item.id === personaId) ?? personas[0];
+  const evidence = extractEvidence(persona, careerText ?? persona.careerText);
+  const taskDna = inferTaskDna(persona, evidence);
+  const capabilities = inferCapabilities(persona, evidence);
+  const contradictions = inferContradictions(persona, evidence);
+  const confidence = average(taskDna.map((dimension) => dimension.confidence));
+  return { persona: { ...persona, careerText: careerText ?? persona.careerText }, evidence, taskDna, capabilities, contradictions, confidence };
+}
+
+export function extractEvidence(persona: (typeof personas)[number], careerText: string): UserEvidence[] {
+  const sentences = careerText
+    .split(/[.!?]+/)
+    .map((sentence) => sentence.trim())
+    .filter(Boolean);
+  const fallback = sentences.length ? sentences : [careerText];
+  return fallback.slice(0, 8).map((sentence, index) => ({
+    id: `ev-${persona.id}-${index + 1}`,
+    sourceType: index === 0 ? "RESUME" : sentence.toLowerCase().includes("dislike") || sentence.toLowerCase().includes("avoid") ? "EXPLICIT_DISLIKE" : "WORK_HISTORY",
+    sourceReference: "demo career text",
+    originalText: sentence,
+    activity: classifyActivity(sentence),
+    context: persona.currentField,
+    tools: keywordHits(sentence, ["Python", "TypeScript", "SQL", "MATLAB", "logs", "bench tests", "ROS", "C++"]),
+    problemType: classifyProblem(sentence),
+    outcome: sentence.toLowerCase().includes("found") || sentence.toLowerCase().includes("improved") ? "successful outcome indicated" : "experience reported",
+    demonstratedSkills: keywordHits(sentence, persona.capabilityKeywords),
+    capabilitySignals: keywordHits(sentence, persona.capabilityKeywords),
+    enjoymentSignals: sentence.toLowerCase().includes("love") || sentence.toLowerCase().includes("enjoy") ? [sentence] : [],
+    dislikeSignals: sentence.toLowerCase().includes("dislike") || sentence.toLowerCase().includes("avoid") ? [sentence] : [],
+    inferredTaskDimensions: inferSentenceDimensions(sentence),
+    recency: 0.8,
+    reliability: persona.id === "low-information" ? 0.45 : 0.78 + index * 0.02,
+  }));
+}
+
+export function inferTaskDna(persona: (typeof personas)[number], evidence: UserEvidence[]): TaskDNADimension[] {
+  const sparse = persona.id === "low-information";
+  return dimensions.map((definition) => {
+    const supportingEvidenceIds = evidence.filter((item) => (item.inferredTaskDimensions[definition.id] ?? persona.preferenceVector[definition.id]) >= 6).map((item) => item.id);
+    const contradictoryEvidenceIds = evidence.filter((item) => item.dislikeSignals.length > 0 && (item.inferredTaskDimensions[definition.id] ?? 5) >= 6).map((item) => item.id);
+    const signalCount = supportingEvidenceIds.length + contradictoryEvidenceIds.length;
+    const confidence = clamp((sparse ? 0.34 : 0.52) + signalCount * 0.08 + Math.abs(persona.preferenceVector[definition.id] - 5) * 0.035 - contradictoryEvidenceIds.length * 0.08, 0.22, 0.94);
+    const value = clamp(persona.preferenceVector[definition.id], 0, 10);
+    return {
+      dimensionId: definition.id,
+      value,
+      confidence,
+      supportingEvidenceIds,
+      contradictoryEvidenceIds,
+      inferenceMethod: "HeuristicTaskDNAProvider",
+      inferenceVersion: "taskdna.v1",
+      interpretation: value >= 6 ? `Leans toward ${definition.high}.` : `Leans away from ${definition.high}; ${definition.low} may be more natural or less aversive.`,
+    };
+  });
+}
+
+export function inferCapabilities(persona: (typeof personas)[number], evidence: UserEvidence[]): Capability[] {
+  const keywords = Array.from(new Set(persona.capabilityKeywords));
+  return keywords.map((keyword, index) => {
+    const evidenceIds = evidence.filter((item) => item.originalText.toLowerCase().includes(keyword.toLowerCase()) || item.capabilitySignals.some((signal) => signal.toLowerCase() === keyword.toLowerCase())).map((item) => item.id);
+    const direct = evidenceIds.length > 0;
+    return {
+      id: `cap-${persona.id}-${index + 1}`,
+      name: keyword,
+      category: keyword.match(/python|typescript|sql|matlab|c\+\+|react/i) ? "technical tool" : "work capability",
+      evidenceLevel: direct ? "DIRECT_PROFESSIONAL" : persona.id.includes("robotics") && keyword.match(/robot|sensor/i) ? "INTEREST_ONLY" : "ADJACENT_TRANSFERABLE",
+      directExperience: direct ? [`Mentioned in ${evidenceIds.length} evidence item(s)`] : [],
+      adjacentExperience: direct ? [] : ["Related but not directly demonstrated in the fixture"],
+      demonstratedOutcomes: direct ? ["Evidence-supported history exists"] : [],
+      recency: direct ? 0.8 : 0.45,
+      recruiterLegibility: direct ? 0.82 : 0.42,
+      confidence: direct ? 0.78 : 0.45,
+      evidenceIds,
+    };
+  });
+}
+
+export function scoreFunctions(profile: UserProfile) {
+  return careerFunctions
+    .map((fn) => {
+      const fit = vectorFit(profileVector(profile), fn.taskDnaVector);
+      const confidence = profile.confidence;
+      const capabilityAlignment = capabilityAlignmentFor(profile, fn.typicalRequirements);
+      const hireability = clamp((capabilityAlignment * 0.75 + requirementsLegibility(profile, fn.typicalRequirements) * 0.25) * 10, 1, 10);
+      const careerDirection = clamp((fit * 0.7 + noveltyFromFunction(profile, fn) * 0.3), 1, 10);
+      return {
+        function: fn,
+        predictedFit: fit,
+        confidence,
+        confidenceAdjustedFit: confidenceAdjustedFit(fit, confidence),
+        capabilityAlignment: capabilityAlignment * 10,
+        hireability,
+        careerDirection,
+        negativeFitRisk: negativeFit(profile, fn.commonRepellents),
+        overallPriority: overallScore({ hireability, confidenceAdjustedFit: confidenceAdjustedFit(fit, confidence), careerDirection, technicalGrowth: 7.2, durability: 7.1 }),
+      };
+    })
+    .sort((a, b) => b.overallPriority - a.overallPriority);
+}
+
+export function analyzeJob(job: JobPosting): JobAnalysis {
+  const jobVector = inferJobVector(job);
+  const text = `${job.title} ${job.description} ${job.responsibilities.join(" ")} ${job.requirements.join(" ")}`.toLowerCase();
+  const primary = pickPrimaryFunction(job, jobVector);
+  const secondary = careerFunctions
+    .filter((fn) => fn.id !== primary.id)
+    .map((fn) => ({ fn, fit: vectorFit(jobVector, fn.taskDnaVector) }))
+    .sort((a, b) => b.fit - a.fit)
+    .slice(0, 2)
+    .map((item) => item.fn.id);
+  const frictionFactors = [
+    ...(text.match(/documentation|traceability|qms|protocol|mbse|sysml/) ? ["documentation / traceability load"] : []),
+    ...(text.match(/travel|customer|field/) ? ["customer or field exposure"] : []),
+    ...(text.match(/manager|stakeholder|roadmap/) ? ["coordination-heavy workflow"] : []),
+    ...(text.match(/c\+\+|embedded|ros/) ? ["specialized robotics or embedded skill requirement"] : []),
+  ];
+  const what = primary.id === "verification-validation" && frictionFactors.includes("documentation / traceability load")
+    ? "This job is mainly about producing documented verification evidence rather than exploratory investigation."
+    : primary.oneSentenceTaskLoop;
+  return {
+    whatThisJobIsReallyAbout: what,
+    primaryFunctionId: primary.id,
+    secondaryFunctionIds: secondary,
+    jobTaskDnaVector: jobVector,
+    strongMatchFactors: primary.commonAttractors.slice(0, 4),
+    frictionFactors: frictionFactors.length ? frictionFactors : primary.commonRepellents.slice(0, 2),
+    requiredCapabilities: job.requirements,
+    hardGaps: hardGaps(job.requirements),
+    classificationConfidence: job.canonicalizationConfidence,
+    evidenceSnippets: [job.description, ...job.responsibilities.slice(0, 2)],
+  };
+}
+
+export function scoreJobs(profile: UserProfile, jobs = createDemoDataset().jobs): ScoredJob[] {
+  return jobs
+    .map((job) => {
+      const analysis = analyzeJob(job);
+      const predictedFit = vectorFit(profileVector(profile), analysis.jobTaskDnaVector);
+      const confidence = clamp((profile.confidence + analysis.classificationConfidence) / 2, 0.2, 0.95);
+      const caf = confidenceAdjustedFit(predictedFit, confidence);
+      const capabilityAlignment = capabilityAlignmentFor(profile, analysis.requiredCapabilities) * 10;
+      const gapPenalty = analysis.hardGaps.length * 0.65;
+      const hireability = clamp(capabilityAlignment * 0.72 + requirementsLegibility(profile, analysis.requiredCapabilities) * 2.8 - gapPenalty - seniorityPenalty(job), 1, 10);
+      const negativeFitRisk = negativeFit(profile, analysis.frictionFactors);
+      const careerDirection = clamp(predictedFit * 0.62 + capabilityAlignment * 0.18 + (10 - negativeFitRisk) * 0.2, 1, 10);
+      const technicalGrowth = clamp(6 + analysis.hardGaps.length * 0.55 + analysis.requiredCapabilities.length * 0.05, 1, 10);
+      const durability = clamp(job.domain.match(/software|analytics|robotics|medical|energy/) ? 7.9 : 6.8, 1, 10);
+      const novelty = noveltyScore(profile, job, analysis);
+      const overall = overallScore({ hireability, confidenceAdjustedFit: caf, careerDirection, technicalGrowth, durability }) - negativeFitRisk * 0.12;
+      const actionTier = actionTierFor({ overall, hireability, predictedFit, confidence, hardGaps: analysis.hardGaps });
+      const sellability = sellabilityFor(hireability, capabilityAlignment, analysis.hardGaps);
+      return {
+        job,
+        analysis,
+        score: {
+          predictedFit,
+          confidence,
+          confidenceAdjustedFit: caf,
+          capabilityAlignment,
+          hireability,
+          careerDirection,
+          technicalGrowth,
+          durability,
+          negativeFitRisk,
+          novelty,
+          overall: clamp(overall, 1, 10),
+          actionTier,
+          sellability,
+        },
+        decisionTrace: [
+          `Evidence profile ${profile.persona.name} produced ${profile.taskDna.length} Task-DNA dimensions at ${pct(profile.confidence)} confidence.`,
+          `Job vector maps primarily to ${careerFunctions.find((fn) => fn.id === analysis.primaryFunctionId)?.name}.`,
+          `Work Fit ${formatScore(predictedFit)} comes from Task-DNA similarity, not title matching.`,
+          `Hireability ${formatScore(hireability)} uses demonstrated capabilities, requirements, seniority, and hard gaps.`,
+          `Negative-fit risk ${formatScore(negativeFitRisk)} reflects visible repellents: ${analysis.frictionFactors.join(", ") || "none"}.`,
+          `Final tier is ${actionTier}; scoring config ${scoringConfig.version}.`,
+        ],
+        noveltyExplanation: novelty >= 7.5 ? "Non-obvious match: the title/domain may not be searched directly, but the task loop resembles the user's inferred preferences." : "More obvious or lower-novelty recommendation.",
+      };
+    })
+    .sort((a, b) => b.score.overall - a.score.overall);
+}
+
+export function applyFeedback(profile: UserProfile, scoredJobs: ScoredJob[], feedback: FeedbackEvent) {
+  const target = scoredJobs.find((item) => item.job.canonicalId === feedback.jobId);
+  if (!target) return { updatedProfile: profile, changedDimensions: [], explanation: "No matching job was found for the feedback event." };
+  const changedDimensions: { id: DimensionId; before: number; after: number }[] = [];
+  const direction = feedback.reaction === "LOVE" || feedback.reaction === "INTERESTING" ? 1 : feedback.reaction === "DISLIKE" ? -1 : 0;
+  const updatedTaskDna = profile.taskDna.map((dimension) => {
+    const jobValue = target.analysis.jobTaskDnaVector[dimension.dimensionId];
+    const before = dimension.value;
+    const reasonBoost = reasonTouchesDimension(feedback.reasonTags, dimension.dimensionId) ? 0.55 : 0.25;
+    const after = direction === 0 ? before : clamp(before + (jobValue - before) * reasonBoost * direction, 0, 10);
+    if (Math.abs(after - before) > 0.05) changedDimensions.push({ id: dimension.dimensionId, before, after });
+    return {
+      ...dimension,
+      value: after,
+      confidence: clamp(dimension.confidence + Math.abs(after - before) * 0.03, 0.2, 0.96),
+      supportingEvidenceIds: [...dimension.supportingEvidenceIds, `feedback-${feedback.jobId}`],
+    };
+  });
+  return {
+    updatedProfile: {
+      ...profile,
+      taskDna: updatedTaskDna,
+      evidence: [
+        ...profile.evidence,
+        {
+          id: `feedback-${feedback.jobId}`,
+          sourceType: "USER_FEEDBACK",
+          sourceReference: target.job.title,
+          originalText: `${feedback.reaction}: ${feedback.reasonTags.join(", ")}`,
+          activity: "job reaction",
+          context: "active learning",
+          tools: [],
+          problemType: "preference feedback",
+          outcome: "Task DNA updated; capability evidence unchanged",
+          demonstratedSkills: [],
+          capabilitySignals: [],
+          enjoymentSignals: feedback.reaction === "LOVE" || feedback.reaction === "INTERESTING" ? feedback.reasonTags : [],
+          dislikeSignals: feedback.reaction === "DISLIKE" ? feedback.reasonTags : [],
+          inferredTaskDimensions: target.analysis.jobTaskDnaVector,
+          recency: 1,
+          reliability: 0.7,
+        },
+      ],
+    },
+    changedDimensions,
+    explanation: `Recommendations changed because ${feedback.reaction.toLowerCase()} feedback nudged Task-DNA preferences (${changedDimensions.slice(0, 4).map((item) => item.id).join(", ")}). Capability evidence was not changed.`,
+  };
+}
+
+export function filterAndSortJobs(jobs: ScoredJob[], query: string, functionId: string, sortKey: string, noveltyOnly = false) {
+  const normalized = query.trim().toLowerCase();
+  return jobs
+    .filter((item) => !functionId || item.analysis.primaryFunctionId === functionId)
+    .filter((item) => !noveltyOnly || item.score.novelty >= 7.5)
+    .filter((item) => {
+      if (!normalized) return true;
+      return [
+        item.job.title,
+        item.job.company,
+        item.job.domain,
+        item.analysis.whatThisJobIsReallyAbout,
+        item.analysis.requiredCapabilities.join(" "),
+        item.analysis.frictionFactors.join(" "),
+        item.analysis.strongMatchFactors.join(" "),
+      ].some((value) => value.toLowerCase().includes(normalized));
+    })
+    .sort((a, b) => {
+      switch (sortKey) {
+        case "fit":
+          return b.score.predictedFit - a.score.predictedFit;
+        case "hireability":
+          return b.score.hireability - a.score.hireability;
+        case "direction":
+          return b.score.careerDirection - a.score.careerDirection;
+        case "confidence":
+          return b.score.confidence - a.score.confidence;
+        case "novelty":
+          return b.score.novelty - a.score.novelty;
+        case "company":
+          return a.job.company.localeCompare(b.job.company);
+        default:
+          return b.score.overall - a.score.overall;
+      }
+    });
+}
+
+export function runEvaluation() {
+  const dataset = createDemoDataset();
+  const results = personas.map((persona) => {
+    const profile = buildUserProfile(persona.id);
+    const functions = scoreFunctions(profile);
+    const jobs = scoreJobs(profile, dataset.jobs);
+    return {
+      personaId: persona.id,
+      topFunctions: functions.slice(0, 3).map((item) => item.function.id),
+      bottomFunctions: functions.slice(-3).map((item) => item.function.id),
+      topJobs: jobs.slice(0, 5).map((item) => ({ id: item.job.canonicalId, title: item.job.title, fit: item.score.predictedFit, hireability: item.score.hireability })),
+      confidence: profile.confidence,
+      passesHighFunction: persona.expectedHighFunctions.length === 0 || persona.expectedHighFunctions.some((id) => functions.slice(0, 5).some((item) => item.function.id === id)),
+    };
+  });
+  const failureAnalyst = scoreJobs(buildUserProfile("failure-analyst"), dataset.jobs);
+  const roboticsNoCpp = failureAnalyst.find((item) => item.job.canonicalId === "job-high-fit-low-hireability-robotics");
+  const complianceForQuality = scoreJobs(buildUserProfile("quality-dislikes-compliance"), dataset.jobs).find((item) => item.job.canonicalId === "job-high-hire-low-fit-compliance");
+  const systemsDebug = failureAnalyst.find((item) => item.job.canonicalId === "job-title-bias-systems-debug");
+  const systemsMbse = failureAnalyst.find((item) => item.job.canonicalId === "job-title-bias-systems-mbse");
+  const fa1 = failureAnalyst.find((item) => item.job.canonicalId === "job-diff-title-same-fa-1");
+  const fa2 = failureAnalyst.find((item) => item.job.canonicalId === "job-diff-title-same-fa-2");
+  const lowInfo = buildUserProfile("low-information");
+  const checks = [
+    { id: "persona-high-functions", pass: results.filter((item) => item.passesHighFunction).length >= 13 },
+    { id: "high-fit-low-hireability", pass: !!roboticsNoCpp && roboticsNoCpp.score.predictedFit > 8 && roboticsNoCpp.score.hireability < 7.2 },
+    { id: "high-hireability-low-fit", pass: !!complianceForQuality && complianceForQuality.score.hireability > complianceForQuality.score.predictedFit },
+    { id: "same-title-different-tasks", pass: !!systemsDebug && !!systemsMbse && systemsDebug.score.predictedFit - systemsMbse.score.predictedFit > 1.5 },
+    { id: "different-title-same-tasks", pass: !!fa1 && !!fa2 && Math.abs(fa1.score.predictedFit - fa2.score.predictedFit) < 0.7 },
+    { id: "sparse-evidence-lower-confidence", pass: lowInfo.confidence < 0.55 },
+  ];
+  return { results, checks, passed: checks.every((check) => check.pass), searchRun: dataset.searchRun };
+}
+
+function profileVector(profile: UserProfile): Vector {
+  return Object.fromEntries(profile.taskDna.map((item) => [item.dimensionId, item.value])) as Vector;
+}
+
+function vectorFit(a: Vector, b: Vector) {
+  const distance = dimensions.reduce((sum, definition) => sum + Math.abs(a[definition.id] - b[definition.id]), 0) / dimensions.length;
+  return clamp(10 - distance, 1, 10);
+}
+
+function confidenceAdjustedFit(predictedFit: number, confidence: number) {
+  return clamp(predictedFit - scoringConfig.confidenceAdjustedFitPenalty * (1 - confidence), 1, 10);
+}
+
+function capabilityAlignmentFor(profile: UserProfile, requirements: string[]) {
+  if (!requirements.length) return 0.55;
+  const capabilityText = profile.capabilities.map((capability) => capability.name.toLowerCase()).join(" ");
+  const matched = requirements.filter((requirement) => capabilityText.includes(requirement.toLowerCase()) || profile.persona.capabilityKeywords.some((keyword) => requirement.toLowerCase().includes(keyword.toLowerCase())));
+  return clamp(matched.length / requirements.length + 0.18, 0.05, 1);
+}
+
+function requirementsLegibility(profile: UserProfile, requirements: string[]) {
+  return capabilityAlignmentFor(profile, requirements) * average(profile.capabilities.map((capability) => capability.recruiterLegibility || 0.35));
+}
+
+function negativeFit(profile: UserProfile, frictionFactors: string[]) {
+  const text = frictionFactors.join(" ").toLowerCase();
+  const repellents = profile.persona.repellents.filter((repellent) => text.includes(repellent.toLowerCase()) || repellent.toLowerCase().split(" ").some((word) => word.length > 4 && text.includes(word)));
+  return clamp(repellents.length * 2.2 + (text.includes("documentation") && profile.persona.repellents.includes("documentation") ? 2 : 0), 0, 10);
+}
+
+function noveltyScore(profile: UserProfile, job: JobPosting, analysis: JobAnalysis) {
+  const titleDistance = profile.persona.currentField && !job.domain.includes(profile.persona.currentField) ? 2.4 : 0.7;
+  const titleObvious = profile.persona.careerText.toLowerCase().includes(job.title.toLowerCase().split(" ")[0]) ? -1.1 : 1.4;
+  const transfer = capabilityAlignmentFor(profile, analysis.requiredCapabilities) * 2.2;
+  const fit = vectorFit(profileVector(profile), analysis.jobTaskDnaVector) * 0.35;
+  return clamp(titleDistance + titleObvious + transfer + fit, 1, 10);
+}
+
+function noveltyFromFunction(profile: UserProfile, fn: CareerFunction) {
+  return profile.persona.expectedHighFunctions.includes(fn.id) ? 6.5 : 8.2;
+}
+
+function overallScore(input: { hireability: number; confidenceAdjustedFit: number; careerDirection: number; technicalGrowth: number; durability: number }) {
+  return clamp(
+    scoringConfig.weights.hireability * input.hireability +
+      scoringConfig.weights.confidenceAdjustedFit * input.confidenceAdjustedFit +
+      scoringConfig.weights.careerDirection * input.careerDirection +
+      scoringConfig.weights.technicalGrowth * input.technicalGrowth +
+      scoringConfig.weights.durability * input.durability,
+    1,
+    10,
+  );
+}
+
+function actionTierFor(input: { overall: number; hireability: number; predictedFit: number; confidence: number; hardGaps: string[] }) {
+  if (input.overall >= scoringConfig.tiers.attackFirst.overall && input.hireability >= scoringConfig.tiers.attackFirst.hireability && input.predictedFit >= scoringConfig.tiers.attackFirst.fit) return "ATTACK_FIRST";
+  if (input.hireability >= scoringConfig.tiers.coreApply.hireability) return "CORE_APPLY";
+  if (input.hireability >= scoringConfig.tiers.highFitStretch.hireabilityMin && input.hireability <= scoringConfig.tiers.highFitStretch.hireabilityMax && input.predictedFit >= scoringConfig.tiers.highFitStretch.fit && input.confidence >= scoringConfig.tiers.highFitStretch.confidence && input.hardGaps.length < 2) return "HIGH_FIT_STRETCH";
+  if (input.predictedFit >= 8.2) return "FUTURE_EXEMPLAR";
+  return "LOWER_PRIORITY";
+}
+
+function sellabilityFor(hireability: number, capabilityAlignment: number, hardGaps: string[]) {
+  if (hardGaps.length >= 3) return "REAL_SKILL_GAP";
+  if (hireability >= 8) return "DIRECT_SELL";
+  if (capabilityAlignment >= 5.5) return "SELL_HARDER";
+  return "STRATEGIC_STRETCH";
+}
+
+function pickPrimaryFunction(job: JobPosting, jobVector: Vector) {
+  const exact = careerFunctions.find((fn) => job.title.toLowerCase().includes(fn.shortName.toLowerCase()) || fn.typicalTitles.some((title) => title.toLowerCase() === job.title.toLowerCase()));
+  if (exact && !job.description.toLowerCase().includes("traceability")) return exact;
+  return careerFunctions.map((fn) => ({ fn, fit: vectorFit(jobVector, fn.taskDnaVector) })).sort((a, b) => b.fit - a.fit)[0].fn;
+}
+
+function hardGaps(requirements: string[]) {
+  return requirements.filter((requirement) => /c\+\+|ros|embedded|sysml|iso 13485|plc|high-voltage|clinical credential/i.test(requirement));
+}
+
+function seniorityPenalty(job: JobPosting) {
+  return job.seniority === "Manager" ? 1.3 : job.seniority === "Staff" ? 0.8 : job.seniority === "Senior" ? 0.35 : 0;
+}
+
+function inferContradictions(persona: (typeof personas)[number], evidence: UserEvidence[]) {
+  const contradictions = [];
+  if (persona.repellents.includes("customer") && evidence.some((item) => item.originalText.toLowerCase().includes("field"))) contradictions.push("User dislikes customer-facing work but has positive field troubleshooting evidence.");
+  if (persona.id === "quality-dislikes-compliance") contradictions.push("Quality capability is strong, but compliance preference is negative; hireability and work fit should diverge.");
+  if (persona.id === "low-information") contradictions.push("Sparse evidence: recommendations are deliberately lower-confidence and more exploratory.");
+  return contradictions;
+}
+
+function classifyActivity(sentence: string) {
+  const lower = sentence.toLowerCase();
+  if (lower.includes("built") || lower.includes("developed")) return "built tools or systems";
+  if (lower.includes("investigat") || lower.includes("debug") || lower.includes("root")) return "investigated technical behavior";
+  if (lower.includes("coordinat") || lower.includes("stakeholder")) return "coordinated people or requirements";
+  return "reported career evidence";
+}
+
+function classifyProblem(sentence: string) {
+  const lower = sentence.toLowerCase();
+  if (lower.includes("failure") || lower.includes("debug")) return "root-cause investigation";
+  if (lower.includes("model") || lower.includes("simulation")) return "modeling and abstraction";
+  if (lower.includes("customer") || lower.includes("field")) return "field/customer troubleshooting";
+  if (lower.includes("document") || lower.includes("traceability")) return "documentation and compliance";
+  return "knowledge work";
+}
+
+function inferSentenceDimensions(sentence: string): Partial<Vector> {
+  const lower = sentence.toLowerCase();
+  return {
+    ...(/log|data|evidence|signal|measure|statistic/.test(lower) ? { evidence_density: 8.5, measurable_feedback: 8.2 } : {}),
+    ...(/debug|root|failure|investigat|diagnos/.test(lower) ? { investigation_orientation: 9, causal_reasoning: 9 } : {}),
+    ...(/experiment|test|character/.test(lower) ? { experimentation_preference: 8.4, closure_preference: 8 } : {}),
+    ...(/customer|field|onsite/.test(lower) ? { customer_interaction_preference: 8.4, real_system_grounding: 8.5 } : {}),
+    ...(/document|traceability|compliance|qms/.test(lower) ? { repetition_tolerance: 8.6, coordination_preference: 7.2 } : {}),
+    ...(/software|tool|typescript|python|api/.test(lower) ? { software_as_tool: 8.5, creation_style: 7.7 } : {}),
+  };
+}
+
+function keywordHits(text: string, keywords: string[]) {
+  const lower = text.toLowerCase();
+  return keywords.filter((keyword) => lower.includes(keyword.toLowerCase()));
+}
+
+function reasonTouchesDimension(tags: string[], dimension: DimensionId) {
+  const text = tags.join(" ").toLowerCase();
+  const map: Record<DimensionId, RegExp> = {
+    problem_structure: /ambiguous|defined|scope/,
+    measurable_feedback: /data|signals|feedback/,
+    investigation_orientation: /troubleshooting|diagnose|investigation/,
+    evidence_density: /data|signals|logs|evidence/,
+    experimentation_preference: /experiment|testing/,
+    scope_preference: /ambiguous|bounded/,
+    software_as_tool: /tool|coding|software/,
+    reasoning_style: /why|causal|diagnose/,
+    creation_style: /build|creation/,
+    real_system_grounding: /physical|systems|field/,
+    closure_preference: /closure|resolve/,
+    causal_reasoning: /root|why|causal/,
+    integration_preference: /integration|systems/,
+    customer_interaction_preference: /customer|field/,
+    coordination_preference: /coordination|stakeholder/,
+    theory_vs_application: /theoretical|applied/,
+    repetition_tolerance: /repetitive|routine/,
+  };
+  return map[dimension].test(text);
+}
+
+function isExtremeMismatch(job: JobPosting) {
+  return job.seniority === "Manager" || job.requirements.some((requirement) => /clinical credential|10\+/.test(requirement));
+}
+
+function average(values: number[]) {
+  return values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : 0;
+}
+
+function clamp(value: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function formatScore(score: number) {
+  return score.toFixed(1);
+}
+
+function pct(value: number) {
+  return `${Math.round(value * 100)}%`;
+}
