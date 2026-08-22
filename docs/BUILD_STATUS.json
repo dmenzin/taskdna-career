@@ -1,0 +1,89 @@
+{
+  "phase": "Human Opportunity Graph V2 sandbox",
+  "current_milestone": "V2-M30 standalone export complete",
+  "current_task": "Manual V2 walkthrough, final commit, PR update",
+  "completed": [
+    "M0 inspected greenfield repository; no reference artifacts found",
+    "M1 architecture, documentation, and build state",
+    "M2 Next.js application foundation",
+    "M4 core domain models",
+    "M5 demo personas",
+    "M6 career-text input",
+    "M7 deterministic evidence extraction",
+    "M8 Task-DNA inference",
+    "M9 adaptive interview heuristic represented through profile/confidence targeting",
+    "M10 capability inference",
+    "M11 function ontology",
+    "M12 function scoring",
+    "M13 synthetic job provider",
+    "M14 canonicalization/search funnel",
+    "M15 hard filters",
+    "M16-M23 job interpretation, scoring, hireability, repellents, novelty",
+    "M24 freshness and simulated commute semantics",
+    "M25-M32 UI, reactions, debug console, analytics/Product Lab",
+    "M33-M34 evaluation harness and regression tests",
+    "M36 standalone HTML/JSON exports",
+    "Audit cycle 1: evidence-driven Task-DNA blending, contradiction-aware confidence, adaptive interview, provider interfaces, freshness filtering, safer export, expanded tests",
+    "Audit cycle 2: larger scenario bank, full function map visibility, richer debug console, Playwright hydration fix"
+  ],
+  "in_progress": [],
+  "next": [
+    "Expand SQLite persistence from seeded JSON boundary to real migrations",
+    "Split the now-larger domain engine into smaller provider/service modules",
+    "Add empirically calibrated scoring once real user feedback exists",
+    "Run deeper human-strategy adversarial review over 30+ recommendations",
+    "Improve V2 information architecture to reduce long-scroll density"
+  ],
+  "blockers": [],
+  "known_defects": [
+    "SQLite/ORM boundary is documented and command-backed, but V1 uses deterministic JSON seed output instead of a full migration stack",
+    "Scenario interview is modeled as deterministic profile evidence and feedback updates; a dedicated 10-20 question flow is a next refinement"
+  ],
+  "failing_tests": [],
+  "evaluation_failures": [],
+  "network_current_milestone": "V2-M30 standalone export complete",
+  "network_completed": [
+    "V2-M0 baseline current hardened system",
+    "V2-M3 synthetic network fixtures",
+    "V2-M4 relationship inference/readiness",
+    "V2-M5 research principle registry",
+    "V2-M6 contact-opportunity assessment",
+    "V2-M7 information/routing/credibility/advocacy",
+    "V2-M8 dormant ties",
+    "V2-M9 interaction timeline",
+    "V2-M10 ask ontology",
+    "V2-M11 interaction-plan engine",
+    "V2-M12 deterministic message composer",
+    "V2-M13 execution abstraction/sandbox execution",
+    "V2-M14 second-degree pathfinding",
+    "V2-M15 network coverage",
+    "V2-M16 opportunity access assessment",
+    "V2-M17 application/network sequencing",
+    "V2-M18 social cost/ask fatigue",
+    "V2-M19 Next Best Action",
+    "V2-M21 contact explorer",
+    "V2-M23 job network tab",
+    "V2-M27 debug traces",
+    "V2-M28 network evals",
+    "V2-M29 network E2E",
+    "V2-M30 standalone export"
+  ],
+  "network_in_progress": [
+    "V2-M32+ deeper adversarial human-strategy review"
+  ],
+  "network_blockers": [],
+  "network_eval_failures": [],
+  "human_strategy_known_defects": [
+    "Strategies are deterministic heuristics over synthetic data and need real-user calibration",
+    "The UI demonstrates strategy but is still dense and long-scroll",
+    "Graph is generated in memory; SQLite migrations are still future work"
+  ],
+  "next_best_action_known_defects": [
+    "Daily action planner balances action types but has no real time-budget editor yet",
+    "No persistent completion/outcome workflow beyond synthetic events"
+  ],
+  "last_successful_build": "pnpm lint && pnpm typecheck && pnpm test && pnpm eval && pnpm eval:network && pnpm test:e2e && pnpm export:demo && pnpm build passed on 2026-08-22T17:42Z",
+  "last_e2e_run": "pnpm test:e2e passed 16 Playwright tests across desktop/mobile plus function-map and opportunity-graph standalone exports on 2026-08-22T17:42Z",
+  "last_eval_run": "pnpm eval and pnpm eval:network passed on 2026-08-22T17:42Z",
+  "last_updated": "2026-08-22T17:42:00.000Z"
+}

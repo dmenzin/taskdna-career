@@ -1,0 +1,556 @@
+[
+  {
+    "id": "action-send-requested-material-nadia-singh",
+    "actionType": "SEND_REQUESTED_MATERIAL",
+    "title": "send requested material: Nadia Singh",
+    "whyNow": "Nadia Singh is a alum with Synthetic engineering tools contact at Kinetic Labs. Info 6.9, routing 2.1, credibility 0.0, advocacy 0.9 are separate.",
+    "opportunityValue": 5.783516196078432,
+    "networkValue": 6.9399999999999995,
+    "socialCost": 1.7,
+    "timeEstimateMinutes": 18,
+    "urgency": 8,
+    "expectedInformationAccessGain": 6.9399999999999995,
+    "dependencies": [],
+    "priority": 5.760514210980393,
+    "relatedOpportunityId": "job-057",
+    "relatedPersonId": "failure-analyst-contact-05",
+    "interactionPlan": {
+      "id": "plan-rel-failure-analyst-contact-05-job-057",
+      "personId": "failure-analyst-contact-05",
+      "opportunityId": "job-057",
+      "objective": "Advance Workflow Platform Engineer without changing intrinsic Work Fit.",
+      "whyThisPerson": "Nadia Singh is a alum with Synthetic engineering tools contact at Kinetic Labs. Info 6.9, routing 2.1, credibility 0.0, advocacy 0.9 are separate.",
+      "relationshipInterpretation": "Weak alumni tie: useful for information/routing, not credibility by default.",
+      "currentState": "explicit offer available",
+      "recommendedAskType": "SEND_REQUESTED_MATERIAL",
+      "askReadiness": 10,
+      "askBurden": 2,
+      "socialCost": 1.7,
+      "urgency": 8,
+      "sharedContextToUse": [
+        "Has a concrete professional context, not a fake pretext."
+      ],
+      "factsNotToAssume": [
+        "Do not imply they can refer unless explicitly offered or credible.",
+        "Do not fabricate closeness or mutual contacts."
+      ],
+      "tone": "WARM_CONVERSATIONAL",
+      "channel": "LINKEDIN_MANUAL",
+      "messageLength": "medium",
+      "directness": 8,
+      "successCondition": "Send requested material or receive the offered introduction/referral.",
+      "acceptablePartialSuccess": "Contact gives role/team context or names a better person to ask.",
+      "escalationIfPositive": "Mark material sent and await referral outcome.",
+      "actionIfNeutral": "Thank them and record information; do not force escalation.",
+      "actionIfNoResponse": "One context-aware follow-up only if urgency and relationship warrant it.",
+      "actionIfDeclined": "Respect the decline and update boundaries/readiness.",
+      "thingsNotToAskYet": [
+        "REFERRAL_REQUEST",
+        "REFERENCE_REQUEST"
+      ],
+      "timingRecommendation": "Outreach can gather information before committing high effort.",
+      "reasoningTrace": [
+        "Relationship type ALUM; warmth 8.8, trust 3.0, dormancy 1.4.",
+        "Access values information 6.9, routing 2.1, credibility 0.0, referral 4.1, advocacy 0.9.",
+        "Explicit offer SEND_REQUESTED_MATERIAL overrides generic sequencing.",
+        "No referral boundary detected.",
+        "Recommended ask SEND_REQUESTED_MATERIAL; execution mode MANUAL_SEND."
+      ],
+      "executionMode": "MANUAL_SEND",
+      "modelVersion": "human.strategy.v1",
+      "createdAt": "2026-08-22T17:21:00.000Z"
+    },
+    "draft": {
+      "id": "draft-plan-rel-failure-analyst-contact-05-job-057",
+      "interactionPlanId": "plan-rel-failure-analyst-contact-05-job-057",
+      "subject": "Question about Aster Medical",
+      "body": "Hi Nadia —\n\nI’m reaching out with our shared context in mind: Has a concrete professional context, not a fake pretext.. I’m looking at Workflow Platform Engineer at Aster Medical.\n\nYou offered to look at materials, so the right next step is to send the role and resume rather than ask for an informational chat first.\n\nNo pressure if timing is bad — I’d appreciate any quick pointer that is easy for you.\n\nThanks!",
+      "style": "WARM_CONVERSATIONAL",
+      "groundedFields": [
+        "relationship context",
+        "opportunity",
+        "recommended ask",
+        "boundaries"
+      ],
+      "warnings": [
+        "Do not ask yet: REFERRAL_REQUEST, REFERENCE_REQUEST"
+      ]
+    }
+  },
+  {
+    "id": "action-role-reality-jon-patel",
+    "actionType": "ASK_ADVICE",
+    "title": "role reality: Jon Patel",
+    "whyNow": "Jon Patel is a former coworker with Synthetic sensor performance contact at Helio Robotics. Info 7.7, routing 5.3, credibility 8.4, advocacy 5.7 are separate.",
+    "opportunityValue": 6.890108666666667,
+    "networkValue": 7.680000000000001,
+    "socialCost": 3.7,
+    "timeEstimateMinutes": 18,
+    "urgency": 5.5,
+    "expectedInformationAccessGain": 7.680000000000001,
+    "dependencies": [],
+    "priority": 5.3002282533333345,
+    "relatedOpportunityId": "job-diff-title-same-fa-1",
+    "relatedPersonId": "failure-analyst-contact-02",
+    "interactionPlan": {
+      "id": "plan-rel-failure-analyst-contact-02-job-diff-title-same-fa-1",
+      "personId": "failure-analyst-contact-02",
+      "opportunityId": "job-diff-title-same-fa-1",
+      "objective": "Advance Product Performance Engineer without changing intrinsic Work Fit.",
+      "whyThisPerson": "Jon Patel is a former coworker with Synthetic sensor performance contact at Helio Robotics. Info 7.7, routing 5.3, credibility 8.4, advocacy 5.7 are separate.",
+      "relationshipInterpretation": "Synthetic user read: professionally appropriate with context.",
+      "currentState": "available for context-aware outreach",
+      "recommendedAskType": "ROLE_REALITY",
+      "askReadiness": 7.680000000000001,
+      "askBurden": 3,
+      "socialCost": 3.7,
+      "urgency": 5.5,
+      "sharedContextToUse": [
+        "Observed Investigation-oriented failure analyst on evidence-heavy technical work",
+        "Has a concrete professional context, not a fake pretext."
+      ],
+      "factsNotToAssume": [
+        "Do not imply they can refer unless explicitly offered or credible.",
+        "Do not fabricate closeness or mutual contacts."
+      ],
+      "tone": "WARM_CONVERSATIONAL",
+      "channel": "EMAIL",
+      "messageLength": "medium",
+      "directness": 5,
+      "successCondition": "Receive useful information, routing guidance, or a clear next step.",
+      "acceptablePartialSuccess": "Contact gives role/team context or names a better person to ask.",
+      "escalationIfPositive": "Ask whether a more specific intro or role discussion would be appropriate.",
+      "actionIfNeutral": "Thank them and record information; do not force escalation.",
+      "actionIfNoResponse": "One context-aware follow-up only if urgency and relationship warrant it.",
+      "actionIfDeclined": "Respect the decline and update boundaries/readiness.",
+      "thingsNotToAskYet": [],
+      "timingRecommendation": "Outreach can gather information before committing high effort.",
+      "reasoningTrace": [
+        "Relationship type FORMER_COWORKER; warmth 5.8, trust 5.2, dormancy 0.3.",
+        "Access values information 7.7, routing 5.3, credibility 8.4, referral 6.7, advocacy 5.7.",
+        "No explicit offer overrides generic sequencing.",
+        "No referral boundary detected.",
+        "Recommended ask ROLE_REALITY; execution mode DRAFT_ONLY."
+      ],
+      "executionMode": "DRAFT_ONLY",
+      "modelVersion": "human.strategy.v1",
+      "createdAt": "2026-08-22T17:21:00.000Z"
+    },
+    "draft": {
+      "id": "draft-plan-rel-failure-analyst-contact-02-job-diff-title-same-fa-1",
+      "interactionPlanId": "plan-rel-failure-analyst-contact-02-job-diff-title-same-fa-1",
+      "subject": "Question about Aster Medical",
+      "body": "Hi Jon —\n\nI’m reaching out with our shared context in mind: Observed Investigation-oriented failure analyst on evidence-heavy technical work. I’m looking at Product Performance Engineer at Aster Medical.\n\nWould you be open to sharing a quick read on the role, team, or who would be best to talk with?\n\nNo pressure if timing is bad — I’d appreciate any quick pointer that is easy for you.\n\nThanks!",
+      "style": "WARM_CONVERSATIONAL",
+      "groundedFields": [
+        "relationship context",
+        "opportunity",
+        "recommended ask",
+        "boundaries"
+      ],
+      "warnings": []
+    }
+  },
+  {
+    "id": "action-introduction-request-ben-bennett",
+    "actionType": "ASK_INTRO",
+    "title": "introduction request: Ben Bennett",
+    "whyNow": "Ben Bennett is a mentor with Synthetic test development contact at SignalForge. Info 7.6, routing 7.7, credibility 7.8, advocacy 5.7 are separate.",
+    "opportunityValue": 5.716516196078431,
+    "networkValue": 7.65,
+    "socialCost": 6.394,
+    "timeEstimateMinutes": 18,
+    "urgency": 5.5,
+    "expectedInformationAccessGain": 7.5600000000000005,
+    "dependencies": [],
+    "priority": 4.485574210980392,
+    "relatedOpportunityId": "job-005",
+    "relatedPersonId": "failure-analyst-contact-16",
+    "interactionPlan": {
+      "id": "plan-rel-failure-analyst-contact-16-job-005",
+      "personId": "failure-analyst-contact-16",
+      "opportunityId": "job-005",
+      "objective": "Advance Data Automation Engineer without changing intrinsic Work Fit.",
+      "whyThisPerson": "Ben Bennett is a mentor with Synthetic test development contact at SignalForge. Info 7.6, routing 7.7, credibility 7.8, advocacy 5.7 are separate.",
+      "relationshipInterpretation": "Synthetic user read: professionally appropriate with context.",
+      "currentState": "available for context-aware outreach",
+      "recommendedAskType": "INTRODUCTION_REQUEST",
+      "askReadiness": 7.65,
+      "askBurden": 4,
+      "socialCost": 6.394,
+      "urgency": 5.5,
+      "sharedContextToUse": [
+        "Has a concrete professional context, not a fake pretext."
+      ],
+      "factsNotToAssume": [
+        "Do not imply they can refer unless explicitly offered or credible.",
+        "Do not fabricate closeness or mutual contacts."
+      ],
+      "tone": "BRIEF_DIRECT",
+      "channel": "EMAIL",
+      "messageLength": "short",
+      "directness": 5,
+      "successCondition": "Receive useful information, routing guidance, or a clear next step.",
+      "acceptablePartialSuccess": "Contact gives role/team context or names a better person to ask.",
+      "escalationIfPositive": "Ask whether a more specific intro or role discussion would be appropriate.",
+      "actionIfNeutral": "Thank them and record information; do not force escalation.",
+      "actionIfNoResponse": "One context-aware follow-up only if urgency and relationship warrant it.",
+      "actionIfDeclined": "Respect the decline and update boundaries/readiness.",
+      "thingsNotToAskYet": [],
+      "timingRecommendation": "Outreach can gather information before committing high effort.",
+      "reasoningTrace": [
+        "Relationship type MENTOR; warmth 4.8, trust 4.2, dormancy 5.3.",
+        "Access values information 7.6, routing 7.7, credibility 7.8, referral 6.6, advocacy 5.7.",
+        "No explicit offer overrides generic sequencing.",
+        "No referral boundary detected.",
+        "Recommended ask INTRODUCTION_REQUEST; execution mode DRAFT_ONLY."
+      ],
+      "executionMode": "DRAFT_ONLY",
+      "modelVersion": "human.strategy.v1",
+      "createdAt": "2026-08-22T17:21:00.000Z"
+    },
+    "draft": {
+      "id": "draft-plan-rel-failure-analyst-contact-16-job-005",
+      "interactionPlanId": "plan-rel-failure-analyst-contact-16-job-005",
+      "subject": "Question about Mesa Automation",
+      "body": "Hi Ben,\n\nI’m reaching out with our shared context in mind: Has a concrete professional context, not a fake pretext.. I’m looking at Data Automation Engineer at Mesa Automation.\n\nWould you be open to pointing me to the right person, if someone comes to mind?\n\nNo pressure if timing is bad — I’d appreciate any quick pointer that is easy for you.\n\nThanks!",
+      "style": "BRIEF_DIRECT",
+      "groundedFields": [
+        "relationship context",
+        "opportunity",
+        "recommended ask",
+        "boundaries"
+      ],
+      "warnings": []
+    }
+  },
+  {
+    "id": "action-career-perspective-noah-ibrahim",
+    "actionType": "ASK_ADVICE",
+    "title": "career perspective: Noah Ibrahim",
+    "whyNow": "Noah Ibrahim is a brief acquaintance with Synthetic scientific software contact at Cobalt Analytics. Info 5.8, routing 5.3, credibility 8.6, advocacy 4.4 are separate.",
+    "opportunityValue": 6.002675333333334,
+    "networkValue": 6.80392,
+    "socialCost": 5.1,
+    "timeEstimateMinutes": 18,
+    "urgency": 8,
+    "expectedInformationAccessGain": 5.82,
+    "dependencies": [],
+    "priority": 4.458679586666667,
+    "relatedOpportunityId": "job-title-bias-systems-debug",
+    "relatedPersonId": "failure-analyst-contact-10",
+    "interactionPlan": {
+      "id": "plan-rel-failure-analyst-contact-10-job-title-bias-systems-debug",
+      "personId": "failure-analyst-contact-10",
+      "opportunityId": "job-title-bias-systems-debug",
+      "objective": "Advance Systems Engineer without changing intrinsic Work Fit.",
+      "whyThisPerson": "Noah Ibrahim is a brief acquaintance with Synthetic scientific software contact at Cobalt Analytics. Info 5.8, routing 5.3, credibility 8.6, advocacy 4.4 are separate.",
+      "relationshipInterpretation": "Synthetic user read: professionally appropriate with context.",
+      "currentState": "available for context-aware outreach",
+      "recommendedAskType": "CAREER_PERSPECTIVE",
+      "askReadiness": 5.82,
+      "askBurden": 4,
+      "socialCost": 5.1,
+      "urgency": 8,
+      "sharedContextToUse": [
+        "Has a concrete professional context, not a fake pretext."
+      ],
+      "factsNotToAssume": [
+        "Do not imply they can refer unless explicitly offered or credible.",
+        "Do not fabricate closeness or mutual contacts."
+      ],
+      "tone": "BRIEF_DIRECT",
+      "channel": "EMAIL",
+      "messageLength": "short",
+      "directness": 5,
+      "successCondition": "Receive useful information, routing guidance, or a clear next step.",
+      "acceptablePartialSuccess": "Contact gives role/team context or names a better person to ask.",
+      "escalationIfPositive": "Ask whether a more specific intro or role discussion would be appropriate.",
+      "actionIfNeutral": "Thank them and record information; do not force escalation.",
+      "actionIfNoResponse": "One context-aware follow-up only if urgency and relationship warrant it.",
+      "actionIfDeclined": "Respect the decline and update boundaries/readiness.",
+      "thingsNotToAskYet": [],
+      "timingRecommendation": "Do not delay application; network in parallel if useful.",
+      "reasoningTrace": [
+        "Relationship type BRIEF_ACQUAINTANCE; warmth 8.8, trust 8.2, dormancy 3.1.",
+        "Access values information 5.8, routing 5.3, credibility 8.6, referral 6.8, advocacy 4.4.",
+        "No explicit offer overrides generic sequencing.",
+        "No referral boundary detected.",
+        "Recommended ask CAREER_PERSPECTIVE; execution mode DRAFT_ONLY."
+      ],
+      "executionMode": "DRAFT_ONLY",
+      "modelVersion": "human.strategy.v1",
+      "createdAt": "2026-08-22T17:21:00.000Z"
+    },
+    "draft": {
+      "id": "draft-plan-rel-failure-analyst-contact-10-job-title-bias-systems-debug",
+      "interactionPlanId": "plan-rel-failure-analyst-contact-10-job-title-bias-systems-debug",
+      "subject": "Question about Northstar Instruments",
+      "body": "Hi Noah,\n\nI’m reaching out with our shared context in mind: Has a concrete professional context, not a fake pretext.. I’m looking at Systems Engineer at Northstar Instruments.\n\nWould you be open to sharing a quick read on the role, team, or who would be best to talk with?\n\nNo pressure if timing is bad — I’d appreciate any quick pointer that is easy for you.\n\nThanks!",
+      "style": "BRIEF_DIRECT",
+      "groundedFields": [
+        "relationship context",
+        "opportunity",
+        "recommended ask",
+        "boundaries"
+      ],
+      "warnings": []
+    }
+  },
+  {
+    "id": "action-who-should-i-talk-to-iris-carter",
+    "actionType": "ASK_ADVICE",
+    "title": "who should i talk to: Iris Carter",
+    "whyNow": "Iris Carter is a cold contextual contact with Synthetic v&v contact at Civic BioSystems. Info 4.6, routing 7.5, credibility 2.4, advocacy 2.3 are separate.",
+    "opportunityValue": 5.704516196078432,
+    "networkValue": 7.45,
+    "socialCost": 4.316,
+    "timeEstimateMinutes": 18,
+    "urgency": 4,
+    "expectedInformationAccessGain": 4.62,
+    "dependencies": [],
+    "priority": 4.255694210980392,
+    "relatedOpportunityId": "job-109",
+    "relatedPersonId": "failure-analyst-contact-11",
+    "interactionPlan": {
+      "id": "plan-rel-failure-analyst-contact-11-job-109",
+      "personId": "failure-analyst-contact-11",
+      "opportunityId": "job-109",
+      "objective": "Advance Engineering Tools Engineer without changing intrinsic Work Fit.",
+      "whyThisPerson": "Iris Carter is a cold contextual contact with Synthetic v&v contact at Civic BioSystems. Info 4.6, routing 7.5, credibility 2.4, advocacy 2.3 are separate.",
+      "relationshipInterpretation": "Synthetic user read: professionally appropriate with context.",
+      "currentState": "available for context-aware outreach",
+      "recommendedAskType": "WHO_SHOULD_I_TALK_TO",
+      "askReadiness": 7.45,
+      "askBurden": 3,
+      "socialCost": 4.316,
+      "urgency": 4,
+      "sharedContextToUse": [
+        "Has a concrete professional context, not a fake pretext."
+      ],
+      "factsNotToAssume": [
+        "Do not imply they can refer unless explicitly offered or credible.",
+        "Do not fabricate closeness or mutual contacts."
+      ],
+      "tone": "WARM_CONVERSATIONAL",
+      "channel": "LINKEDIN_MANUAL",
+      "messageLength": "medium",
+      "directness": 5,
+      "successCondition": "Receive useful information, routing guidance, or a clear next step.",
+      "acceptablePartialSuccess": "Contact gives role/team context or names a better person to ask.",
+      "escalationIfPositive": "Ask whether a more specific intro or role discussion would be appropriate.",
+      "actionIfNeutral": "Thank them and record information; do not force escalation.",
+      "actionIfNoResponse": "One context-aware follow-up only if urgency and relationship warrant it.",
+      "actionIfDeclined": "Respect the decline and update boundaries/readiness.",
+      "thingsNotToAskYet": [
+        "REFERRAL_REQUEST",
+        "REFERENCE_REQUEST"
+      ],
+      "timingRecommendation": "Outreach can gather information before committing high effort.",
+      "reasoningTrace": [
+        "Relationship type COLD_CONTEXTUAL_CONTACT; warmth 2.2, trust 4.2, dormancy 3.5.",
+        "Access values information 4.6, routing 7.5, credibility 2.4, referral 4.8, advocacy 2.3.",
+        "No explicit offer overrides generic sequencing.",
+        "No referral boundary detected.",
+        "Recommended ask WHO_SHOULD_I_TALK_TO; execution mode MANUAL_SEND."
+      ],
+      "executionMode": "MANUAL_SEND",
+      "modelVersion": "human.strategy.v1",
+      "createdAt": "2026-08-22T17:21:00.000Z"
+    },
+    "draft": {
+      "id": "draft-plan-rel-failure-analyst-contact-11-job-109",
+      "interactionPlanId": "plan-rel-failure-analyst-contact-11-job-109",
+      "subject": "Question about OrbitWorks",
+      "body": "Hi Iris —\n\nI’m reaching out with our shared context in mind: Has a concrete professional context, not a fake pretext.. I’m looking at Engineering Tools Engineer at OrbitWorks.\n\nWould you be open to sharing a quick read on the role, team, or who would be best to talk with?\n\nNo pressure if timing is bad — I’d appreciate any quick pointer that is easy for you.\n\nThanks!",
+      "style": "WARM_CONVERSATIONAL",
+      "groundedFields": [
+        "relationship context",
+        "opportunity",
+        "recommended ask",
+        "boundaries"
+      ],
+      "warnings": [
+        "Do not ask yet: REFERRAL_REQUEST, REFERENCE_REQUEST"
+      ]
+    }
+  },
+  {
+    "id": "action-career-perspective-victor-rossi",
+    "actionType": "ASK_ADVICE",
+    "title": "career perspective: Victor Rossi",
+    "whyNow": "Victor Rossi is a former coworker with Synthetic modeling contact at Lattice Mobility. Info 4.3, routing 4.5, credibility 8.4, advocacy 5.4 are separate.",
+    "opportunityValue": 7.887542,
+    "networkValue": 6.73672,
+    "socialCost": 4.05,
+    "timeEstimateMinutes": 18,
+    "urgency": 4,
+    "expectedInformationAccessGain": 4.32,
+    "dependencies": [],
+    "priority": 4.25430492,
+    "relatedOpportunityId": "job-diff-title-same-fa-2",
+    "relatedPersonId": "failure-analyst-contact-12",
+    "interactionPlan": {
+      "id": "plan-rel-failure-analyst-contact-12-job-diff-title-same-fa-2",
+      "personId": "failure-analyst-contact-12",
+      "opportunityId": "job-diff-title-same-fa-2",
+      "objective": "Advance Reliability Investigation Engineer without changing intrinsic Work Fit.",
+      "whyThisPerson": "Victor Rossi is a former coworker with Synthetic modeling contact at Lattice Mobility. Info 4.3, routing 4.5, credibility 8.4, advocacy 5.4 are separate.",
+      "relationshipInterpretation": "Synthetic user read: professionally appropriate with context.",
+      "currentState": "available for context-aware outreach",
+      "recommendedAskType": "CAREER_PERSPECTIVE",
+      "askReadiness": 4.32,
+      "askBurden": 4,
+      "socialCost": 4.05,
+      "urgency": 4,
+      "sharedContextToUse": [
+        "Observed Investigation-oriented failure analyst on evidence-heavy technical work",
+        "Has a concrete professional context, not a fake pretext."
+      ],
+      "factsNotToAssume": [
+        "Do not imply they can refer unless explicitly offered or credible.",
+        "Do not fabricate closeness or mutual contacts."
+      ],
+      "tone": "PROFESSIONAL_CONCISE",
+      "channel": "EMAIL",
+      "messageLength": "medium",
+      "directness": 5,
+      "successCondition": "Receive useful information, routing guidance, or a clear next step.",
+      "acceptablePartialSuccess": "Contact gives role/team context or names a better person to ask.",
+      "escalationIfPositive": "Ask whether a more specific intro or role discussion would be appropriate.",
+      "actionIfNeutral": "Thank them and record information; do not force escalation.",
+      "actionIfNoResponse": "One context-aware follow-up only if urgency and relationship warrant it.",
+      "actionIfDeclined": "Respect the decline and update boundaries/readiness.",
+      "thingsNotToAskYet": [],
+      "timingRecommendation": "Outreach can gather information before committing high effort.",
+      "reasoningTrace": [
+        "Relationship type FORMER_COWORKER; warmth 5.8, trust 5.2, dormancy 3.8.",
+        "Access values information 4.3, routing 4.5, credibility 8.4, referral 6.7, advocacy 5.4.",
+        "No explicit offer overrides generic sequencing.",
+        "No referral boundary detected.",
+        "Recommended ask CAREER_PERSPECTIVE; execution mode DRAFT_ONLY."
+      ],
+      "executionMode": "DRAFT_ONLY",
+      "modelVersion": "human.strategy.v1",
+      "createdAt": "2026-08-22T17:21:00.000Z"
+    },
+    "draft": {
+      "id": "draft-plan-rel-failure-analyst-contact-12-job-diff-title-same-fa-2",
+      "interactionPlanId": "plan-rel-failure-analyst-contact-12-job-diff-title-same-fa-2",
+      "subject": "Question about SignalForge",
+      "body": "Hi Victor —\n\nI’m reaching out with our shared context in mind: Observed Investigation-oriented failure analyst on evidence-heavy technical work. I’m looking at Reliability Investigation Engineer at SignalForge.\n\nWould you be open to sharing a quick read on the role, team, or who would be best to talk with?\n\nNo pressure if timing is bad — I’d appreciate any quick pointer that is easy for you.\n\nThanks!",
+      "style": "PROFESSIONAL_CONCISE",
+      "groundedFields": [
+        "relationship context",
+        "opportunity",
+        "recommended ask",
+        "boundaries"
+      ],
+      "warnings": []
+    }
+  },
+  {
+    "id": "action-career-perspective-mira-chen",
+    "actionType": "ASK_ADVICE",
+    "title": "career perspective: Mira Chen",
+    "whyNow": "Mira Chen is a former manager with Synthetic failure analysis contact at Northstar Instruments. Info 4.3, routing 6.5, credibility 9.5, advocacy 5.4 are separate.",
+    "opportunityValue": 5.734516196078431,
+    "networkValue": 7.0771999999999995,
+    "socialCost": 5.1,
+    "timeEstimateMinutes": 18,
+    "urgency": 5.5,
+    "expectedInformationAccessGain": 4.32,
+    "dependencies": [],
+    "priority": 3.753614210980392,
+    "relatedOpportunityId": "job-083",
+    "relatedPersonId": "failure-analyst-contact-01",
+    "interactionPlan": {
+      "id": "plan-rel-failure-analyst-contact-01-job-083",
+      "personId": "failure-analyst-contact-01",
+      "opportunityId": "job-083",
+      "objective": "Advance Data Automation Engineer without changing intrinsic Work Fit.",
+      "whyThisPerson": "Mira Chen is a former manager with Synthetic failure analysis contact at Northstar Instruments. Info 4.3, routing 6.5, credibility 9.5, advocacy 5.4 are separate.",
+      "relationshipInterpretation": "Strong observed-work relationship; direct specific ask can be normal.",
+      "currentState": "available for context-aware outreach",
+      "recommendedAskType": "CAREER_PERSPECTIVE",
+      "askReadiness": 4.32,
+      "askBurden": 4,
+      "socialCost": 5.1,
+      "urgency": 5.5,
+      "sharedContextToUse": [
+        "Observed Investigation-oriented failure analyst on evidence-heavy technical work",
+        "Has a concrete professional context, not a fake pretext."
+      ],
+      "factsNotToAssume": [
+        "Do not imply they can refer unless explicitly offered or credible.",
+        "Do not fabricate closeness or mutual contacts."
+      ],
+      "tone": "BRIEF_DIRECT",
+      "channel": "EMAIL",
+      "messageLength": "short",
+      "directness": 8,
+      "successCondition": "Receive useful information, routing guidance, or a clear next step.",
+      "acceptablePartialSuccess": "Contact gives role/team context or names a better person to ask.",
+      "escalationIfPositive": "Ask whether a more specific intro or role discussion would be appropriate.",
+      "actionIfNeutral": "Thank them and record information; do not force escalation.",
+      "actionIfNoResponse": "One context-aware follow-up only if urgency and relationship warrant it.",
+      "actionIfDeclined": "Respect the decline and update boundaries/readiness.",
+      "thingsNotToAskYet": [],
+      "timingRecommendation": "Outreach can gather information before committing high effort.",
+      "reasoningTrace": [
+        "Relationship type FORMER_MANAGER; warmth 8.8, trust 9.0, dormancy 0.0.",
+        "Access values information 4.3, routing 6.5, credibility 9.5, referral 7.1, advocacy 5.4.",
+        "No explicit offer overrides generic sequencing.",
+        "No referral boundary detected.",
+        "Recommended ask CAREER_PERSPECTIVE; execution mode DRAFT_ONLY."
+      ],
+      "executionMode": "DRAFT_ONLY",
+      "modelVersion": "human.strategy.v1",
+      "createdAt": "2026-08-22T17:21:00.000Z"
+    },
+    "draft": {
+      "id": "draft-plan-rel-failure-analyst-contact-01-job-083",
+      "interactionPlanId": "plan-rel-failure-analyst-contact-01-job-083",
+      "subject": "Question about Kinetic Labs",
+      "body": "Hi Mira,\n\nI’m reaching out with our shared context in mind: Observed Investigation-oriented failure analyst on evidence-heavy technical work. I’m looking at Data Automation Engineer at Kinetic Labs.\n\nWould you be open to sharing a quick read on the role, team, or who would be best to talk with?\n\nNo pressure if timing is bad — I’d appreciate any quick pointer that is easy for you.\n\nThanks!",
+      "style": "BRIEF_DIRECT",
+      "groundedFields": [
+        "relationship context",
+        "opportunity",
+        "recommended ask",
+        "boundaries"
+      ],
+      "warnings": []
+    }
+  },
+  {
+    "id": "action-apply-to-reliability-investigation-engineer",
+    "actionType": "APPLY_TO_JOB",
+    "title": "Apply to Reliability Investigation Engineer",
+    "whyNow": "networking can gather information while freshness is uncertain",
+    "opportunityValue": 7.887542,
+    "networkValue": 0,
+    "socialCost": 0.5,
+    "timeEstimateMinutes": 35,
+    "urgency": 4,
+    "expectedInformationAccessGain": 0,
+    "dependencies": [],
+    "priority": 3.2457609200000004,
+    "relatedOpportunityId": "job-diff-title-same-fa-2"
+  },
+  {
+    "id": "action-apply-to-systems-engineer",
+    "actionType": "APPLY_TO_JOB",
+    "title": "Apply to Systems Engineer",
+    "whyNow": "fresh enough to avoid slow networking delays",
+    "opportunityValue": 6.002675333333334,
+    "networkValue": 0,
+    "socialCost": 0.5,
+    "timeEstimateMinutes": 35,
+    "urgency": 8,
+    "expectedInformationAccessGain": 0,
+    "dependencies": [],
+    "priority": 3.235695586666667,
+    "relatedOpportunityId": "job-title-bias-systems-debug"
+  }
+]

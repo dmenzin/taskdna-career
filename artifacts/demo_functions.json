@@ -1,0 +1,897 @@
+[
+  {
+    "function": {
+      "id": "failure-analysis",
+      "name": "Failure Analysis / Reliability / Sustaining R&D",
+      "shortName": "Failure analysis",
+      "oneSentenceTaskLoop": "Investigate why real products fail, gather evidence, test hypotheses, and close the loop with fixes.",
+      "longerDescription": "Evidence-rich root-cause work across logs, hardware, test data, and manufacturing or field signals.",
+      "taskDnaVector": {
+        "problem_structure": 5,
+        "measurable_feedback": 5,
+        "investigation_orientation": 9.6,
+        "evidence_density": 9.1,
+        "experimentation_preference": 8.6,
+        "scope_preference": 5,
+        "software_as_tool": 5,
+        "reasoning_style": 5,
+        "creation_style": 5,
+        "real_system_grounding": 8.9,
+        "closure_preference": 9.2,
+        "causal_reasoning": 9.7,
+        "integration_preference": 5,
+        "customer_interaction_preference": 5,
+        "coordination_preference": 5,
+        "theory_vs_application": 5,
+        "repetition_tolerance": 4.2
+      },
+      "commonAttractors": [
+        "root cause",
+        "telemetry",
+        "test evidence",
+        "closed-loop fixes"
+      ],
+      "commonRepellents": [
+        "urgent escalations",
+        "documentation tail",
+        "messy ownership"
+      ],
+      "typicalTitles": [
+        "Failure Analysis Engineer",
+        "Reliability Engineer",
+        "Product Performance Engineer"
+      ],
+      "typicalDomains": [
+        "medical devices",
+        "semiconductors",
+        "aerospace",
+        "manufacturing"
+      ],
+      "typicalRequirements": [
+        "debugging",
+        "statistics",
+        "test design",
+        "technical writing"
+      ],
+      "commonSkillGaps": [
+        "formal reliability methods",
+        "domain-specific test equipment"
+      ],
+      "active": true,
+      "version": "function.v1"
+    },
+    "predictedFit": 9.051176470588235,
+    "confidence": 0.6227529411764707,
+    "confidenceAdjustedFit": 8.296682352941176,
+    "capabilityAlignment": 6.799999999999999,
+    "hireability": 6.040666666666667,
+    "careerDirection": 8.285823529411763,
+    "negativeFitRisk": 4.2,
+    "overallPriority": 7.223144901960785
+  },
+  {
+    "function": {
+      "id": "sensor-algorithm-performance",
+      "name": "Sensor & Algorithm Performance",
+      "shortName": "Sensor performance",
+      "oneSentenceTaskLoop": "Use data and experiments to understand where sensing or algorithm behavior succeeds and fails.",
+      "longerDescription": "Applied data work that ties model behavior to real-world signal quality, cohorts, instrumentation, and edge cases.",
+      "taskDnaVector": {
+        "problem_structure": 5,
+        "measurable_feedback": 9.2,
+        "investigation_orientation": 5,
+        "evidence_density": 9.4,
+        "experimentation_preference": 8.8,
+        "scope_preference": 5,
+        "software_as_tool": 8.7,
+        "reasoning_style": 5,
+        "creation_style": 5,
+        "real_system_grounding": 8.3,
+        "closure_preference": 5,
+        "causal_reasoning": 8.8,
+        "integration_preference": 5,
+        "customer_interaction_preference": 5,
+        "coordination_preference": 5,
+        "theory_vs_application": 8.5,
+        "repetition_tolerance": 5
+      },
+      "commonAttractors": [
+        "signals",
+        "performance metrics",
+        "subgroup analysis",
+        "algorithm debugging"
+      ],
+      "commonRepellents": [
+        "unclear labels",
+        "production data access friction"
+      ],
+      "typicalTitles": [
+        "Algorithm Performance Engineer",
+        "Sensor Data Scientist",
+        "Clinical Algorithm Analyst"
+      ],
+      "typicalDomains": [
+        "healthcare",
+        "robotics",
+        "scientific instrumentation"
+      ],
+      "typicalRequirements": [
+        "Python",
+        "data analysis",
+        "signal processing",
+        "statistics"
+      ],
+      "commonSkillGaps": [
+        "regulated ML validation",
+        "advanced signal processing"
+      ],
+      "active": true,
+      "version": "function.v1"
+    },
+    "predictedFit": 8.353058823529413,
+    "confidence": 0.6227529411764707,
+    "confidenceAdjustedFit": 7.598564705882354,
+    "capabilityAlignment": 6.799999999999999,
+    "hireability": 6.040666666666667,
+    "careerDirection": 8.307141176470587,
+    "negativeFitRisk": 2.2,
+    "overallPriority": 7.016907254901961
+  },
+  {
+    "function": {
+      "id": "controls-characterization",
+      "name": "Controls & System Characterization",
+      "shortName": "Controls characterization",
+      "oneSentenceTaskLoop": "Characterize dynamic systems and tune or validate behavior using models and experiments.",
+      "longerDescription": "Applied controls work anchored in measured behavior rather than pure theory.",
+      "taskDnaVector": {
+        "problem_structure": 7.6,
+        "measurable_feedback": 8.8,
+        "investigation_orientation": 5,
+        "evidence_density": 5,
+        "experimentation_preference": 8.1,
+        "scope_preference": 5,
+        "software_as_tool": 5,
+        "reasoning_style": 5,
+        "creation_style": 5,
+        "real_system_grounding": 9,
+        "closure_preference": 5,
+        "causal_reasoning": 8.4,
+        "integration_preference": 5,
+        "customer_interaction_preference": 5,
+        "coordination_preference": 5,
+        "theory_vs_application": 7.5,
+        "repetition_tolerance": 5
+      },
+      "commonAttractors": [
+        "dynamic behavior",
+        "models plus data",
+        "tuning",
+        "verification"
+      ],
+      "commonRepellents": [
+        "math-heavy abstraction",
+        "specialized tooling"
+      ],
+      "typicalTitles": [
+        "Controls Engineer",
+        "System Characterization Engineer",
+        "Dynamics Test Engineer"
+      ],
+      "typicalDomains": [
+        "aerospace",
+        "energy",
+        "robotics",
+        "medical devices"
+      ],
+      "typicalRequirements": [
+        "controls",
+        "MATLAB/Python",
+        "data acquisition"
+      ],
+      "commonSkillGaps": [
+        "formal control theory",
+        "embedded implementation"
+      ],
+      "active": true,
+      "version": "function.v1"
+    },
+    "predictedFit": 8.052823529411764,
+    "confidence": 0.6227529411764707,
+    "confidenceAdjustedFit": 7.298329411764706,
+    "capabilityAlignment": 5.133333333333333,
+    "hireability": 4.5601111111111114,
+    "careerDirection": 8.096976470588235,
+    "negativeFitRisk": 0,
+    "overallPriority": 6.303089738562091
+  },
+  {
+    "function": {
+      "id": "clinical-real-world-performance",
+      "name": "Clinical / Real-World Algorithm Performance",
+      "shortName": "Real-world performance",
+      "oneSentenceTaskLoop": "Investigate how technical systems perform across messy real-world populations and contexts.",
+      "longerDescription": "Applied evidence work that separates algorithm behavior, workflow effects, and data quality.",
+      "taskDnaVector": {
+        "problem_structure": 5,
+        "measurable_feedback": 5,
+        "investigation_orientation": 8.9,
+        "evidence_density": 8.7,
+        "experimentation_preference": 5,
+        "scope_preference": 5,
+        "software_as_tool": 5,
+        "reasoning_style": 5,
+        "creation_style": 5,
+        "real_system_grounding": 8.7,
+        "closure_preference": 5,
+        "causal_reasoning": 8.5,
+        "integration_preference": 5,
+        "customer_interaction_preference": 5.6,
+        "coordination_preference": 5,
+        "theory_vs_application": 8.8,
+        "repetition_tolerance": 5
+      },
+      "commonAttractors": [
+        "real-world data",
+        "performance drift",
+        "equity questions",
+        "clinical workflow evidence"
+      ],
+      "commonRepellents": [
+        "privacy constraints",
+        "slow institutional cycles"
+      ],
+      "typicalTitles": [
+        "Clinical Data Scientist",
+        "Real-World Performance Analyst",
+        "Algorithm Evaluation Engineer"
+      ],
+      "typicalDomains": [
+        "healthcare",
+        "medical devices",
+        "digital health"
+      ],
+      "typicalRequirements": [
+        "Python",
+        "statistics",
+        "health data literacy",
+        "careful communication"
+      ],
+      "commonSkillGaps": [
+        "clinical domain knowledge",
+        "HIPAA production practices"
+      ],
+      "active": true,
+      "version": "function.v1"
+    },
+    "predictedFit": 8.372352941176471,
+    "confidence": 0.6227529411764707,
+    "confidenceAdjustedFit": 7.617858823529413,
+    "capabilityAlignment": 4.3,
+    "hireability": 3.8198333333333334,
+    "careerDirection": 8.320647058823528,
+    "negativeFitRisk": 0,
+    "overallPriority": 6.136388039215685
+  },
+  {
+    "function": {
+      "id": "robotics-field-performance",
+      "name": "Robotics / Autonomy Field Performance",
+      "shortName": "Robotics performance",
+      "oneSentenceTaskLoop": "Diagnose robot behavior in real environments and improve sensing, autonomy, and operations.",
+      "longerDescription": "High-fit for people who like embodied systems, logs, experiments, and cross-layer behavior.",
+      "taskDnaVector": {
+        "problem_structure": 5,
+        "measurable_feedback": 5,
+        "investigation_orientation": 5,
+        "evidence_density": 8.9,
+        "experimentation_preference": 8.8,
+        "scope_preference": 5,
+        "software_as_tool": 8.4,
+        "reasoning_style": 5,
+        "creation_style": 5,
+        "real_system_grounding": 9.7,
+        "closure_preference": 5,
+        "causal_reasoning": 9,
+        "integration_preference": 9.3,
+        "customer_interaction_preference": 5,
+        "coordination_preference": 5,
+        "theory_vs_application": 5,
+        "repetition_tolerance": 5
+      },
+      "commonAttractors": [
+        "robots in the world",
+        "logs",
+        "field experiments",
+        "autonomy edge cases"
+      ],
+      "commonRepellents": [
+        "C++/embedded barriers",
+        "field operations",
+        "hardware constraints"
+      ],
+      "typicalTitles": [
+        "Robotics Field Performance Engineer",
+        "Autonomy Test Engineer",
+        "Robot Reliability Engineer"
+      ],
+      "typicalDomains": [
+        "robotics",
+        "automation",
+        "aerospace"
+      ],
+      "typicalRequirements": [
+        "Python",
+        "C++",
+        "robotics logs",
+        "controls basics"
+      ],
+      "commonSkillGaps": [
+        "C++",
+        "ROS",
+        "embedded systems"
+      ],
+      "active": true,
+      "version": "function.v1"
+    },
+    "predictedFit": 8.296117647058823,
+    "confidence": 0.6227529411764707,
+    "confidenceAdjustedFit": 7.541623529411765,
+    "capabilityAlignment": 4.3,
+    "hireability": 3.8198333333333334,
+    "careerDirection": 8.267282352941175,
+    "negativeFitRisk": 0,
+    "overallPriority": 6.105512745098039
+  },
+  {
+    "function": {
+      "id": "engineering-tools",
+      "name": "Engineering Tools / Automation / Data Integration",
+      "shortName": "Engineering tools",
+      "oneSentenceTaskLoop": "Turn tedious engineering workflows into reliable tools that connect data and reduce manual reconciliation.",
+      "longerDescription": "Software-building with a concrete engineering or scientific workflow as the customer.",
+      "taskDnaVector": {
+        "problem_structure": 5,
+        "measurable_feedback": 8.1,
+        "investigation_orientation": 5,
+        "evidence_density": 7.9,
+        "experimentation_preference": 5,
+        "scope_preference": 5,
+        "software_as_tool": 9.8,
+        "reasoning_style": 5,
+        "creation_style": 8.4,
+        "real_system_grounding": 5,
+        "closure_preference": 5,
+        "causal_reasoning": 5,
+        "integration_preference": 8.5,
+        "customer_interaction_preference": 4.2,
+        "coordination_preference": 5,
+        "theory_vs_application": 5,
+        "repetition_tolerance": 5.1
+      },
+      "commonAttractors": [
+        "automation",
+        "workflow design",
+        "data integration",
+        "usable internal tools"
+      ],
+      "commonRepellents": [
+        "generic web backlog",
+        "stakeholder churn"
+      ],
+      "typicalTitles": [
+        "Engineering Tools Engineer",
+        "Scientific Software Engineer",
+        "Data Automation Engineer"
+      ],
+      "typicalDomains": [
+        "software",
+        "scientific instrumentation",
+        "manufacturing",
+        "healthcare"
+      ],
+      "typicalRequirements": [
+        "TypeScript or Python",
+        "data modeling",
+        "UX empathy",
+        "APIs"
+      ],
+      "commonSkillGaps": [
+        "production frontend depth",
+        "database operations"
+      ],
+      "active": true,
+      "version": "function.v1"
+    },
+    "predictedFit": 8.076823529411765,
+    "confidence": 0.6227529411764707,
+    "confidenceAdjustedFit": 7.322329411764707,
+    "capabilityAlignment": 4.3,
+    "hireability": 3.8198333333333334,
+    "careerDirection": 8.113776470588235,
+    "negativeFitRisk": 0,
+    "overallPriority": 6.01669862745098
+  },
+  {
+    "function": {
+      "id": "test-development",
+      "name": "Test Development & Performance Characterization",
+      "shortName": "Test development",
+      "oneSentenceTaskLoop": "Build test methods and experiments that reveal system behavior under meaningful conditions.",
+      "longerDescription": "A mix of experimental design, instrumentation, automation, analysis, and actionable characterization.",
+      "taskDnaVector": {
+        "problem_structure": 8.3,
+        "measurable_feedback": 9.3,
+        "investigation_orientation": 5,
+        "evidence_density": 5,
+        "experimentation_preference": 9.2,
+        "scope_preference": 5,
+        "software_as_tool": 7.4,
+        "reasoning_style": 5,
+        "creation_style": 5,
+        "real_system_grounding": 8.4,
+        "closure_preference": 8.6,
+        "causal_reasoning": 5,
+        "integration_preference": 5,
+        "customer_interaction_preference": 5,
+        "coordination_preference": 5,
+        "theory_vs_application": 5,
+        "repetition_tolerance": 5
+      },
+      "commonAttractors": [
+        "test design",
+        "measurement",
+        "automation",
+        "performance envelopes"
+      ],
+      "commonRepellents": [
+        "protocol repetition",
+        "equipment scheduling"
+      ],
+      "typicalTitles": [
+        "Test Development Engineer",
+        "Characterization Engineer",
+        "Verification Tools Engineer"
+      ],
+      "typicalDomains": [
+        "medical devices",
+        "robotics",
+        "energy",
+        "aerospace"
+      ],
+      "typicalRequirements": [
+        "instrumentation",
+        "Python",
+        "DOE",
+        "data visualization"
+      ],
+      "commonSkillGaps": [
+        "hardware fixtures",
+        "formal validation protocols"
+      ],
+      "active": true,
+      "version": "function.v1"
+    },
+    "predictedFit": 8.17964705882353,
+    "confidence": 0.6227529411764707,
+    "confidenceAdjustedFit": 7.425152941176472,
+    "capabilityAlignment": 4.3,
+    "hireability": 3.8198333333333334,
+    "careerDirection": 7.675752941176471,
+    "negativeFitRisk": 0,
+    "overallPriority": 5.981842156862745
+  },
+  {
+    "function": {
+      "id": "scientific-software",
+      "name": "Scientific Software",
+      "shortName": "Scientific software",
+      "oneSentenceTaskLoop": "Build software that makes scientific or technical evidence easier to analyze, simulate, and use.",
+      "longerDescription": "Software creation tied to scientific workflows, models, instrumentation, or data interpretation.",
+      "taskDnaVector": {
+        "problem_structure": 5,
+        "measurable_feedback": 5,
+        "investigation_orientation": 5,
+        "evidence_density": 8.2,
+        "experimentation_preference": 5,
+        "scope_preference": 5,
+        "software_as_tool": 9.5,
+        "reasoning_style": 5,
+        "creation_style": 8.7,
+        "real_system_grounding": 5,
+        "closure_preference": 5,
+        "causal_reasoning": 5,
+        "integration_preference": 7.8,
+        "customer_interaction_preference": 3.8,
+        "coordination_preference": 5,
+        "theory_vs_application": 7.7,
+        "repetition_tolerance": 5
+      },
+      "commonAttractors": [
+        "domain software",
+        "data tools",
+        "simulation support",
+        "usable analysis"
+      ],
+      "commonRepellents": [
+        "pure SaaS feature churn",
+        "unclear scientific validation"
+      ],
+      "typicalTitles": [
+        "Scientific Software Engineer",
+        "Research Software Engineer",
+        "Computational Tools Developer"
+      ],
+      "typicalDomains": [
+        "scientific instrumentation",
+        "healthcare",
+        "energy",
+        "analytics"
+      ],
+      "typicalRequirements": [
+        "Python",
+        "numerical methods",
+        "data visualization",
+        "testing"
+      ],
+      "commonSkillGaps": [
+        "production software architecture",
+        "domain-specific math"
+      ],
+      "active": true,
+      "version": "function.v1"
+    },
+    "predictedFit": 7.955176470588236,
+    "confidence": 0.6227529411764707,
+    "confidenceAdjustedFit": 7.200682352941177,
+    "capabilityAlignment": 4.3,
+    "hireability": 3.8198333333333334,
+    "careerDirection": 8.028623529411764,
+    "negativeFitRisk": 0,
+    "overallPriority": 5.96743156862745
+  },
+  {
+    "function": {
+      "id": "modeling-simulation",
+      "name": "Modeling / Simulation / Digital Twins",
+      "shortName": "Modeling",
+      "oneSentenceTaskLoop": "Create and calibrate models that explain or predict technical system behavior.",
+      "longerDescription": "Can be high-fit for theory-friendly users, but too abstract for those needing fast real-world feedback.",
+      "taskDnaVector": {
+        "problem_structure": 5.5,
+        "measurable_feedback": 5.6,
+        "investigation_orientation": 5,
+        "evidence_density": 7.4,
+        "experimentation_preference": 5,
+        "scope_preference": 5,
+        "software_as_tool": 5,
+        "reasoning_style": 5,
+        "creation_style": 8.1,
+        "real_system_grounding": 5,
+        "closure_preference": 5.2,
+        "causal_reasoning": 5,
+        "integration_preference": 5,
+        "customer_interaction_preference": 5,
+        "coordination_preference": 5,
+        "theory_vs_application": 4.4,
+        "repetition_tolerance": 5
+      },
+      "commonAttractors": [
+        "models",
+        "simulation",
+        "technical depth",
+        "abstraction"
+      ],
+      "commonRepellents": [
+        "long validation loops",
+        "theory-heavy work"
+      ],
+      "typicalTitles": [
+        "Modeling Engineer",
+        "Simulation Engineer",
+        "Digital Twin Engineer"
+      ],
+      "typicalDomains": [
+        "aerospace",
+        "energy",
+        "manufacturing",
+        "robotics"
+      ],
+      "typicalRequirements": [
+        "math modeling",
+        "simulation tools",
+        "domain physics"
+      ],
+      "commonSkillGaps": [
+        "advanced math",
+        "specialized simulation packages"
+      ],
+      "active": true,
+      "version": "function.v1"
+    },
+    "predictedFit": 8.270470588235295,
+    "confidence": 0.6227529411764707,
+    "confidenceAdjustedFit": 7.515976470588236,
+    "capabilityAlignment": 1.7999999999999998,
+    "hireability": 1.5990000000000002,
+    "careerDirection": 8.249329411764705,
+    "negativeFitRisk": 0,
+    "overallPriority": 5.206792352941177
+  },
+  {
+    "function": {
+      "id": "field-applications",
+      "name": "Technical Field Service / Applications",
+      "shortName": "Field applications",
+      "oneSentenceTaskLoop": "Solve technical issues with customers in the field and translate patterns back to product teams.",
+      "longerDescription": "Customer-facing troubleshooting with real systems, fast feedback, and communication demands.",
+      "taskDnaVector": {
+        "problem_structure": 5,
+        "measurable_feedback": 5,
+        "investigation_orientation": 8.2,
+        "evidence_density": 7.4,
+        "experimentation_preference": 5,
+        "scope_preference": 5,
+        "software_as_tool": 5,
+        "reasoning_style": 5,
+        "creation_style": 5,
+        "real_system_grounding": 9,
+        "closure_preference": 8.2,
+        "causal_reasoning": 5,
+        "integration_preference": 5,
+        "customer_interaction_preference": 9.3,
+        "coordination_preference": 7.2,
+        "theory_vs_application": 5,
+        "repetition_tolerance": 5
+      },
+      "commonAttractors": [
+        "hands-on troubleshooting",
+        "fast feedback",
+        "customer context"
+      ],
+      "commonRepellents": [
+        "travel",
+        "interrupts",
+        "emotional escalation"
+      ],
+      "typicalTitles": [
+        "Applications Engineer",
+        "Field Service Engineer",
+        "Technical Support Engineer"
+      ],
+      "typicalDomains": [
+        "scientific instrumentation",
+        "automation",
+        "robotics",
+        "medical devices"
+      ],
+      "typicalRequirements": [
+        "communication",
+        "system troubleshooting",
+        "travel readiness"
+      ],
+      "commonSkillGaps": [
+        "customer escalation handling",
+        "onsite availability"
+      ],
+      "active": true,
+      "version": "function.v1"
+    },
+    "predictedFit": 8.095882352941176,
+    "confidence": 0.6227529411764707,
+    "confidenceAdjustedFit": 7.341388235294118,
+    "capabilityAlignment": 1.7999999999999998,
+    "hireability": 1.5990000000000002,
+    "careerDirection": 8.127117647058823,
+    "negativeFitRisk": 0,
+    "overallPriority": 5.136084117647059
+  },
+  {
+    "function": {
+      "id": "systems-integration-debug",
+      "name": "Systems Integration & Real-World Debug",
+      "shortName": "Systems debug",
+      "oneSentenceTaskLoop": "Trace cross-layer failures that only appear when hardware, software, sensors, and users meet.",
+      "longerDescription": "Integration troubleshooting across interfaces, logs, field signals, and experiments.",
+      "taskDnaVector": {
+        "problem_structure": 5,
+        "measurable_feedback": 5,
+        "investigation_orientation": 9.2,
+        "evidence_density": 8.8,
+        "experimentation_preference": 5,
+        "scope_preference": 8.2,
+        "software_as_tool": 5,
+        "reasoning_style": 5,
+        "creation_style": 5,
+        "real_system_grounding": 9.4,
+        "closure_preference": 5,
+        "causal_reasoning": 9.1,
+        "integration_preference": 9.7,
+        "customer_interaction_preference": 5.8,
+        "coordination_preference": 5,
+        "theory_vs_application": 5,
+        "repetition_tolerance": 5
+      },
+      "commonAttractors": [
+        "cross-layer debug",
+        "system behavior",
+        "field evidence",
+        "interfaces"
+      ],
+      "commonRepellents": [
+        "unclear ownership",
+        "travel spikes",
+        "interrupt-driven work"
+      ],
+      "typicalTitles": [
+        "Systems Integration Engineer",
+        "Field Performance Engineer",
+        "Systems Test Engineer"
+      ],
+      "typicalDomains": [
+        "robotics",
+        "aerospace",
+        "automation",
+        "medical devices"
+      ],
+      "typicalRequirements": [
+        "systems thinking",
+        "logging",
+        "test planning",
+        "hardware/software fluency"
+      ],
+      "commonSkillGaps": [
+        "embedded C++",
+        "controls fundamentals"
+      ],
+      "active": true,
+      "version": "function.v1"
+    },
+    "predictedFit": 8.137058823529411,
+    "confidence": 0.6227529411764707,
+    "confidenceAdjustedFit": 7.382564705882353,
+    "capabilityAlignment": 1.7999999999999998,
+    "hireability": 1.5990000000000002,
+    "careerDirection": 7.645941176470588,
+    "negativeFitRisk": 0,
+    "overallPriority": 5.076260588235295
+  },
+  {
+    "function": {
+      "id": "verification-validation",
+      "name": "Verification / Validation / Software Test",
+      "shortName": "V&V",
+      "oneSentenceTaskLoop": "Confirm systems meet requirements through protocols, tests, traceability, and documented evidence.",
+      "longerDescription": "Important but often documentation-heavy work, distinct from exploratory failure analysis.",
+      "taskDnaVector": {
+        "problem_structure": 9.1,
+        "measurable_feedback": 5,
+        "investigation_orientation": 4.8,
+        "evidence_density": 6.3,
+        "experimentation_preference": 4.9,
+        "scope_preference": 5,
+        "software_as_tool": 5,
+        "reasoning_style": 5,
+        "creation_style": 5,
+        "real_system_grounding": 5,
+        "closure_preference": 8.6,
+        "causal_reasoning": 5,
+        "integration_preference": 5,
+        "customer_interaction_preference": 5,
+        "coordination_preference": 6.8,
+        "theory_vs_application": 5,
+        "repetition_tolerance": 8.8
+      },
+      "commonAttractors": [
+        "clear requirements",
+        "quality evidence",
+        "release confidence"
+      ],
+      "commonRepellents": [
+        "rote protocols",
+        "traceability",
+        "documentation load"
+      ],
+      "typicalTitles": [
+        "V&V Engineer",
+        "Software Test Engineer",
+        "Design Verification Engineer"
+      ],
+      "typicalDomains": [
+        "medical devices",
+        "aerospace",
+        "software",
+        "manufacturing"
+      ],
+      "typicalRequirements": [
+        "test protocols",
+        "requirements",
+        "documentation",
+        "quality systems"
+      ],
+      "commonSkillGaps": [
+        "regulatory context",
+        "automation frameworks"
+      ],
+      "active": true,
+      "version": "function.v1"
+    },
+    "predictedFit": 7.874470588235294,
+    "confidence": 0.6227529411764707,
+    "confidenceAdjustedFit": 7.119976470588235,
+    "capabilityAlignment": 1.7999999999999998,
+    "hireability": 1.5990000000000002,
+    "careerDirection": 7.972129411764705,
+    "negativeFitRisk": 4.2,
+    "overallPriority": 5.046412352941177
+  },
+  {
+    "function": {
+      "id": "product-systems-engineering",
+      "name": "Broad Product R&D / Systems Engineering",
+      "shortName": "Product systems",
+      "oneSentenceTaskLoop": "Shape broad product direction, requirements, interfaces, and tradeoffs across teams.",
+      "longerDescription": "Valuable work, but often ambiguous and coordination-heavy compared with hands-on investigation.",
+      "taskDnaVector": {
+        "problem_structure": 4.2,
+        "measurable_feedback": 5,
+        "investigation_orientation": 5.4,
+        "evidence_density": 5,
+        "experimentation_preference": 5,
+        "scope_preference": 5,
+        "software_as_tool": 5,
+        "reasoning_style": 5,
+        "creation_style": 5,
+        "real_system_grounding": 5,
+        "closure_preference": 4.9,
+        "causal_reasoning": 5,
+        "integration_preference": 8.4,
+        "customer_interaction_preference": 7.2,
+        "coordination_preference": 9.1,
+        "theory_vs_application": 5,
+        "repetition_tolerance": 5
+      },
+      "commonAttractors": [
+        "strategy",
+        "interfaces",
+        "product tradeoffs",
+        "cross-functional influence"
+      ],
+      "commonRepellents": [
+        "ambiguity",
+        "requirements churn",
+        "meetings"
+      ],
+      "typicalTitles": [
+        "Systems Engineer",
+        "Product Systems Engineer",
+        "Technical Product Manager"
+      ],
+      "typicalDomains": [
+        "medical devices",
+        "aerospace",
+        "software",
+        "automation"
+      ],
+      "typicalRequirements": [
+        "requirements",
+        "stakeholder communication",
+        "systems thinking"
+      ],
+      "commonSkillGaps": [
+        "formal systems engineering",
+        "domain standards"
+      ],
+      "active": true,
+      "version": "function.v1"
+    },
+    "predictedFit": 7.595882352941177,
+    "confidence": 0.6227529411764707,
+    "confidenceAdjustedFit": 6.841388235294119,
+    "capabilityAlignment": 1.7999999999999998,
+    "hireability": 1.5990000000000002,
+    "careerDirection": 7.777117647058823,
+    "negativeFitRisk": 0,
+    "overallPriority": 4.933584117647058
+  }
+]
