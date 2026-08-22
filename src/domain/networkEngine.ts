@@ -24,11 +24,11 @@ export function createHumanOpportunityGraph(profile: UserProfile, scoredJobs: Sc
   const personaRelationships = universe.relationships.filter((relationship) => relationship.personaId === profile.persona.id);
   const personaPeople = universe.people.filter((person) => personaRelationships.some((relationship) => relationship.personId === person.id));
   const personaInteractions = universe.interactions.filter((interaction) => personaRelationships.some((relationship) => relationship.id === interaction.relationshipId));
-  const jobs = scoredJobs.slice(0, 24);
+  const jobs = scoredJobs;
   const contactAssessments = personaRelationships.flatMap((relationship) => {
     const person = personaPeople.find((candidate) => candidate.id === relationship.personId);
     if (!person) return [];
-    return jobs.slice(0, 10).map((job) => assessContactForOpportunity(person, relationship, personaInteractions, job));
+    return jobs.map((job) => assessContactForOpportunity(person, relationship, personaInteractions, job));
   });
   const paths = findNetworkPaths(personaPeople, personaRelationships, personaInteractions, jobs, contactAssessments);
   const accessAssessments = jobs.map((job) => assessOpportunityAccess(job, contactAssessments, paths));

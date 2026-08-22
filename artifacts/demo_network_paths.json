@@ -42,6 +42,48 @@
     "explanation": "Direct known contact path."
   },
   {
+    "id": "path-job-044-failure-analyst-contact-15",
+    "opportunityId": "job-044",
+    "pathType": "DIRECT",
+    "peopleIds": [
+      "failure-analyst-contact-15"
+    ],
+    "hopCount": 1,
+    "edgeCertainty": "USER_REPORTED",
+    "firstHopReadiness": 7.45,
+    "functionalRelevance": 2,
+    "companyTeamProximity": 8,
+    "askRequired": "COMPANY_INFORMATION",
+    "socialCost": 9.05,
+    "informationValue": 5.1,
+    "routingValue": 7.45,
+    "credibilityValue": 8.786,
+    "pathScore": 4.764339252026145,
+    "confidence": 0.6725,
+    "explanation": "Direct known contact path."
+  },
+  {
+    "id": "path-job-044-failure-analyst-contact-03",
+    "opportunityId": "job-044",
+    "pathType": "DIRECT",
+    "peopleIds": [
+      "failure-analyst-contact-03"
+    ],
+    "hopCount": 1,
+    "edgeCertainty": "USER_REPORTED",
+    "firstHopReadiness": 7.45,
+    "functionalRelevance": 9,
+    "companyTeamProximity": 8,
+    "askRequired": "COMPANY_INFORMATION",
+    "socialCost": 9.05,
+    "informationValue": 7.800000000000001,
+    "routingValue": 7.45,
+    "credibilityValue": 8.226,
+    "pathScore": 4.640355252026145,
+    "confidence": 0.8525,
+    "explanation": "Direct known contact path."
+  },
+  {
     "id": "path-job-005-failure-analyst-contact-04",
     "opportunityId": "job-005",
     "pathType": "DIRECT",
@@ -273,6 +315,28 @@
     "explanation": "Direct known contact path."
   },
   {
+    "id": "path-job-044-failure-analyst-contact-03-failure-analyst-contact-15",
+    "opportunityId": "job-044",
+    "pathType": "SECOND_DEGREE",
+    "peopleIds": [
+      "failure-analyst-contact-03",
+      "failure-analyst-contact-15"
+    ],
+    "hopCount": 2,
+    "edgeCertainty": "USER_REPORTED",
+    "firstHopReadiness": 7.45,
+    "functionalRelevance": 9,
+    "companyTeamProximity": 8,
+    "askRequired": "SECOND_DEGREE_INTRO_REQUEST",
+    "socialCost": 10.05,
+    "informationValue": 7.800000000000001,
+    "routingValue": 7.45,
+    "credibilityValue": 4.9356,
+    "pathScore": 3.890355252026145,
+    "confidence": 0.7325,
+    "explanation": "Second-degree route through first-hop contact; certainty exposed separately."
+  },
+  {
     "id": "path-job-title-bias-systems-debug-failure-analyst-contact-16",
     "opportunityId": "job-title-bias-systems-debug",
     "pathType": "DIRECT",
@@ -417,6 +481,48 @@
     "credibilityValue": 8.606,
     "pathScore": 3.780506973333334,
     "confidence": 0.6375,
+    "explanation": "Direct known contact path."
+  },
+  {
+    "id": "path-job-070-failure-analyst-contact-16",
+    "opportunityId": "job-070",
+    "pathType": "DIRECT",
+    "peopleIds": [
+      "failure-analyst-contact-16"
+    ],
+    "hopCount": 1,
+    "edgeCertainty": "USER_REPORTED",
+    "firstHopReadiness": 4.725,
+    "functionalRelevance": 9,
+    "companyTeamProximity": 5.5,
+    "askRequired": "COMPANY_INFORMATION",
+    "socialCost": 8.394,
+    "informationValue": 5.739999999999999,
+    "routingValue": 4.725,
+    "credibilityValue": 7.846,
+    "pathScore": 3.775123252026144,
+    "confidence": 0.7075,
+    "explanation": "Direct known contact path."
+  },
+  {
+    "id": "path-job-044-failure-analyst-contact-16",
+    "opportunityId": "job-044",
+    "pathType": "DIRECT",
+    "peopleIds": [
+      "failure-analyst-contact-16"
+    ],
+    "hopCount": 1,
+    "edgeCertainty": "USER_REPORTED",
+    "firstHopReadiness": 4.725,
+    "functionalRelevance": 9,
+    "companyTeamProximity": 5.5,
+    "askRequired": "COMPANY_INFORMATION",
+    "socialCost": 8.394,
+    "informationValue": 5.739999999999999,
+    "routingValue": 4.725,
+    "credibilityValue": 7.846,
+    "pathScore": 3.7738032520261444,
+    "confidence": 0.7075,
     "explanation": "Direct known contact path."
   },
   {
@@ -569,6 +675,49 @@
     "explanation": "Direct known contact path."
   },
   {
+    "id": "path-job-044-failure-analyst-contact-15-failure-analyst-contact-03",
+    "opportunityId": "job-044",
+    "pathType": "SECOND_DEGREE",
+    "peopleIds": [
+      "failure-analyst-contact-15",
+      "failure-analyst-contact-03"
+    ],
+    "hopCount": 2,
+    "edgeCertainty": "INFERRED",
+    "firstHopReadiness": 7.45,
+    "functionalRelevance": 2,
+    "companyTeamProximity": 8,
+    "askRequired": "SECOND_DEGREE_INTRO_REQUEST",
+    "socialCost": 10.05,
+    "informationValue": 5.1,
+    "routingValue": 7.45,
+    "credibilityValue": 5.271599999999999,
+    "pathScore": 3.594339252026145,
+    "confidence": 0.5525,
+    "explanation": "Second-degree route through first-hop contact; certainty exposed separately."
+  },
+  {
+    "id": "path-job-070-failure-analyst-contact-03",
+    "opportunityId": "job-070",
+    "pathType": "DIRECT",
+    "peopleIds": [
+      "failure-analyst-contact-03"
+    ],
+    "hopCount": 1,
+    "edgeCertainty": "USER_REPORTED",
+    "firstHopReadiness": 4.525,
+    "functionalRelevance": 9,
+    "companyTeamProximity": 5.5,
+    "askRequired": "COMPANY_INFORMATION",
+    "socialCost": 9.05,
+    "informationValue": 5.9799999999999995,
+    "routingValue": 4.525,
+    "credibilityValue": 8.226,
+    "pathScore": 3.5886752520261447,
+    "confidence": 0.8525,
+    "explanation": "Direct known contact path."
+  },
+  {
     "id": "path-job-diff-title-same-fa-2-failure-analyst-contact-07",
     "opportunityId": "job-diff-title-same-fa-2",
     "pathType": "DIRECT",
@@ -674,6 +823,27 @@
     "pathScore": 3.1204263584313727,
     "confidence": 0.5875,
     "explanation": "Second-degree route through first-hop contact; certainty exposed separately."
+  },
+  {
+    "id": "path-job-070-failure-analyst-contact-07",
+    "opportunityId": "job-070",
+    "pathType": "DIRECT",
+    "peopleIds": [
+      "failure-analyst-contact-07"
+    ],
+    "hopCount": 1,
+    "edgeCertainty": "USER_REPORTED",
+    "firstHopReadiness": 4.525,
+    "functionalRelevance": 2,
+    "companyTeamProximity": 2.5,
+    "askRequired": "COMPANY_INFORMATION",
+    "socialCost": 10,
+    "informationValue": 2.92,
+    "routingValue": 4.525,
+    "credibilityValue": 7.946000000000001,
+    "pathScore": 3.0274888520261447,
+    "confidence": 0.7725,
+    "explanation": "Direct known contact path."
   },
   {
     "id": "path-job-083-failure-analyst-contact-01-failure-analyst-contact-13",
