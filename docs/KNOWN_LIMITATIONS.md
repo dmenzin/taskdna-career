@@ -8,4 +8,7 @@
 - Commute is simulated conceptually through work mode and documented provider semantics.
 - Provider interfaces exist for future integrations, but local heuristic implementations are still concentrated in the domain engine and should be split before production growth.
 - Novelty is gated on fit and transfer, but real non-obvious discovery quality cannot be proven from synthetic jobs alone.
+- Human Opportunity Graph V2 uses synthetic fictional contacts only; it does not import real contacts or persist user-edited network state yet.
+- V2 outreach is strategy/draft/simulated/manual only. No messages are sent and no LinkedIn/email automation is implemented.
+- Next-best-action priorities are deterministic heuristics, not outcome probabilities.
 - No production auth, payment, external LLM, job API, Supabase, or deployment integration is included.

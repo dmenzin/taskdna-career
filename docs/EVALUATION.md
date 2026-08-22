@@ -32,9 +32,16 @@ pnpm lint
 pnpm typecheck
 pnpm test      # 6 files, 28 tests
 pnpm eval
+pnpm eval:network
 pnpm test:e2e  # 12 Playwright tests
 pnpm export:demo
 pnpm build
 ```
 
 All passed on 2026-08-22.
+
+V2 update:
+
+- `pnpm test` now includes `tests/network-engine.test.ts` for Human Opportunity Graph behavior.
+- `pnpm eval:network` checks golden human-strategy cases and generic network invariants.
+- `pnpm test:e2e` now runs 16 Playwright tests, including V2 dashboard and standalone opportunity graph export.

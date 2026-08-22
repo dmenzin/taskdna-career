@@ -62,14 +62,16 @@ const graph = ${JSON.stringify({
   actions: graph.nextBestActions.slice(0, 10),
   people: graph.people,
   relationships: graph.relationships,
+  assessments: graph.contactAssessments,
   access: graph.accessAssessments.slice(0, 8),
   paths: graph.paths.slice(0, 12),
 })};
 function esc(value){ return String(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch])); }
+function pathLabel(pathType){ return pathType === "DIRECT" ? "Direct path" : pathType === "SECOND_DEGREE" ? "Second-degree path" : "Hypothetical path"; }
 document.getElementById("actions").innerHTML = graph.actions.map(a => \`<div class="item"><strong>\${esc(a.title)}</strong><p>\${esc(a.whyNow)}</p><span class="badge">Priority \${a.priority.toFixed(1)}</span><span class="badge">Social cost \${a.socialCost.toFixed(1)}</span><span class="badge">\${esc(a.actionType.replaceAll("_"," "))}</span></div>\`).join("");
-document.getElementById("contacts").innerHTML = graph.people.slice(0,12).map(p => { const r=graph.relationships.find(x=>x.personId===p.id); return \`<div class="item"><strong>\${esc(p.name)}</strong><p>\${esc(p.title)} · \${esc(r?.relationshipType.replaceAll("_"," ")||"")}</p><span class="badge">\${esc(p.functionalAreas[0])}</span><span class="badge">\${esc(r?.preferredChannel||"")}</span></div>\`; }).join("");
+document.getElementById("contacts").innerHTML = graph.people.slice(0,12).map(p => { const r=graph.relationships.find(x=>x.personId===p.id); const a=graph.assessments.find(x=>x.personId===p.id); return \`<div class="item"><strong>\${esc(p.name)}</strong><p>\${esc(p.title)} · \${esc(r?.relationshipType.replaceAll("_"," ")||"")}</p><span class="badge">\${esc(p.functionalAreas[0])}</span><span class="badge">Routing \${a ? a.routingValue.toFixed(1) : "--"}</span><span class="badge">Credibility \${a ? a.credibilityValue.toFixed(1) : "--"}</span><span class="badge">\${esc(r?.preferredChannel||"")}</span></div>\`; }).join("");
 document.getElementById("access").innerHTML = graph.access.map(a => \`<div class="item"><strong>\${esc(a.opportunityId)}</strong><div class="scores"><div class="score"><strong>\${a.informationAccess.toFixed(1)}</strong>Info</div><div class="score"><strong>\${a.routingAccess.toFixed(1)}</strong>Routing</div><div class="score"><strong>\${a.credibilityAccess.toFixed(1)}</strong>Cred</div><div class="score"><strong>\${a.referralAccess.toFixed(1)}</strong>Referral</div></div><p>\${esc(a.networkAccessSummary)}</p></div>\`).join("");
-document.getElementById("paths").innerHTML = graph.paths.map(p => \`<div class="item"><strong>\${esc(p.pathType.replaceAll("_"," "))}</strong><p>\${esc(p.explanation)}</p><span class="badge">Score \${p.pathScore.toFixed(1)}</span><span class="badge">\${esc(p.edgeCertainty)}</span><span class="badge">Hop \${p.hopCount}</span></div>\`).join("");
+document.getElementById("paths").innerHTML = graph.paths.map(p => \`<div class="item"><strong>\${esc(pathLabel(p.pathType))}</strong><p>\${esc(p.explanation)}</p><span class="badge">Score \${p.pathScore.toFixed(1)}</span><span class="badge">\${esc(p.edgeCertainty)}</span><span class="badge">Hop \${p.hopCount}</span></div>\`).join("");
 </script>
 </body>
 </html>`;

@@ -18,3 +18,12 @@
 - Added all-persona UI access, all-function ranking visibility, freshness filtering, richer decision trace/debug details, and safer standalone export HTML escaping.
 - Added provider boundary interfaces and domain helpers for canonicalization, hard filters, freshness transitions, and simulated commute.
 - Fixed Playwright hydration by using `localhost` instead of `127.0.0.1`.
+
+## 0.3.0-v2-human-opportunity-graph
+
+- Added Human Opportunity Graph V2 domain models for people, organizations, teams, relationships, interactions, ask types, paths, access assessments, pursuit plans, drafts, and next-best actions.
+- Added synthetic network universe with 160 fictional contacts, 160 relationships, 50+ interaction histories, explicit offers/boundaries, dormant ties, weak ties, recruiters, and second-degree paths.
+- Added relationship/readiness, contact-opportunity assessment, opportunity access, pathfinding, interaction planning, deterministic message drafting, and daily next-best-action engines.
+- Added `pnpm eval:network` and standalone `artifacts/opportunity_graph_demo.html` plus network JSON exports.
+- Added Human Opportunity Graph dashboard, contact explorer, job-level network access tab, network coverage, warm paths, and next-best-action UI.
+- Expanded E2E coverage to 16 Playwright tests including V2 dashboard and standalone opportunity graph export.

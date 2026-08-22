@@ -383,7 +383,7 @@ export default function Home() {
           <div className="path-grid">
             {opportunityGraph.paths.slice(0, 6).map((path) => (
               <article className="path-card" key={path.id}>
-                <strong>{path.pathType.replaceAll("_", " ")} · score {path.pathScore.toFixed(1)}</strong>
+                <strong>{pathLabel(path.pathType)} · score {path.pathScore.toFixed(1)}</strong>
                 <p>{path.explanation}</p>
                 <div className="badge-row">
                   <Badge>{path.edgeCertainty}</Badge>
@@ -467,4 +467,10 @@ function Badge({ children, tone }: { children: React.ReactNode; tone?: "spark" }
 
 function InfoList({ title, items }: { title: string; items: string[] }) {
   return <div><h3>{title}</h3><ul>{items.map((item) => <li key={item}>{item}</li>)}</ul></div>;
+}
+
+function pathLabel(pathType: string) {
+  if (pathType === "DIRECT") return "Direct path";
+  if (pathType === "SECOND_DEGREE") return "Second-degree path";
+  return "Hypothetical path";
 }

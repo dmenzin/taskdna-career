@@ -73,5 +73,5 @@ test("standalone opportunity graph export works without the app server", async (
   await expect(page.locator("#actions")).toContainText("Priority");
   await expect(page.locator("#contacts")).toContainText("Routing");
   await expect(page.locator("#access")).toContainText("Referral");
-  await expect(page.locator("#paths")).toContainText(/DIRECT|SECOND DEGREE/);
+  await expect(page.locator("#paths")).toContainText(/Direct path|Second-degree path/);
 });
