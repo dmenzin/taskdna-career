@@ -59,6 +59,26 @@ export const scoringConfig = {
     coreApply: { hireability: 7.5 },
     highFitStretch: { hireabilityMin: 6.5, hireabilityMax: 7.49, fit: 8.7, confidence: 0.65 },
   },
+  novelty: {
+    threshold: 7.5,
+    minimumRelevantFit: 7.4,
+    minimumCapabilityTransfer: 0.35,
+  },
+  hardFilters: {
+    extremeSeniority: ["Manager"],
+    specializedGapKeywords: ["clinical credential", "10+", "PLC", "high-voltage"],
+  },
+  freshnessTransitions: {
+    reverify_success: "REVERIFIED_LIVE",
+    reverify_failed: "POSSIBLY_STALE",
+    closure_evidence: "CONFIRMED_CLOSED",
+  },
+  commuteRules: {
+    noPenaltyMinutes: 45,
+    acceptableMinutes: 55,
+    mildPenaltyMinutes: 60,
+    stretchMinutes: 70,
+  },
   featureFlags: {
     experimentalScoring: false,
     adaptiveInterview: true,

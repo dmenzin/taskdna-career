@@ -38,6 +38,7 @@ export type EvidenceLevel =
   | "NO_EVIDENCE";
 
 export type Reaction = "LOVE" | "INTERESTING" | "NEUTRAL" | "DISLIKE";
+export type ScenarioAnswer = Reaction | "BOTH" | "NEITHER";
 export type ActionTier = "ATTACK_FIRST" | "CORE_APPLY" | "HIGH_FIT_STRETCH" | "FUTURE_EXEMPLAR" | "LOWER_PRIORITY";
 export type Sellability = "DIRECT_SELL" | "SELL_HARDER" | "STRATEGIC_STRETCH" | "REAL_SKILL_GAP";
 export type FreshnessState =
@@ -178,6 +179,7 @@ export interface JobAnalysis {
 }
 
 export interface ScoreBreakdown {
+  rawPredictedFit: number;
   predictedFit: number;
   confidence: number;
   confidenceAdjustedFit: number;
@@ -191,6 +193,17 @@ export interface ScoreBreakdown {
   overall: number;
   actionTier: ActionTier;
   sellability: Sellability;
+  scoringVersion: string;
+  formulaInputs: {
+    weights: {
+      hireability: number;
+      confidenceAdjustedFit: number;
+      careerDirection: number;
+      technicalGrowth: number;
+      durability: number;
+    };
+    confidenceAdjustedFitPenalty: number;
+  };
 }
 
 export interface ScoredJob {
@@ -214,6 +227,45 @@ export interface FeedbackEvent {
   jobId: string;
   reaction: Reaction;
   reasonTags: string[];
+}
+
+export interface ProfileSnapshot {
+  profileId: string;
+  taskDna: Record<DimensionId, { value: number; confidence: number }>;
+  capabilityIds: string[];
+}
+
+export interface FeedbackResult {
+  updatedProfile: UserProfile;
+  beforeProfileSnapshot: ProfileSnapshot;
+  feedbackEvent: FeedbackEvent;
+  afterProfileSnapshot: ProfileSnapshot;
+  changedDimensions: { id: DimensionId; before: number; after: number }[];
+  explanation: string;
+}
+
+export interface Scenario {
+  id: string;
+  title: string;
+  prompt: string;
+  targetDimensions: DimensionId[];
+  positiveVector: Partial<Vector>;
+  negativeVector?: Partial<Vector>;
+  informationValue: number;
+  clarifiesRepellents: string[];
+}
+
+export interface ScenarioResponse {
+  scenarioId: string;
+  answer: ScenarioAnswer;
+  confidence?: number;
+  freeText?: string;
+}
+
+export interface InterviewPlan {
+  scenarios: Scenario[];
+  earlyStopped: boolean;
+  rationale: string[];
 }
 
 export interface SearchRun {

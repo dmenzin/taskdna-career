@@ -43,6 +43,7 @@ const html = `<!doctype html>
       <input id="search" placeholder="Search jobs, functions, skills, gaps" />
       <select id="function">${["<option value=''>All functions</option>", ...functions.map((item) => `<option value="${item.function.id}">${item.function.shortName}</option>`)].join("")}</select>
       <select id="sort"><option value="overall">Overall</option><option value="fit">Work Fit</option><option value="hireability">Hireability</option><option value="novelty">Novelty</option></select>
+      <select id="freshness"><option value="">All freshness</option><option value="VERIFIED_LIVE">Verified live</option><option value="REVERIFIED_LIVE">Reverified live</option><option value="PREVIOUSLY_FOUND_NOT_RECHECKED">Previously found</option><option value="POSSIBLY_STALE">Possibly stale</option><option value="CONFIRMED_CLOSED">Confirmed closed</option></select>
       <button id="savedOnly">Saved only</button>
     </div>
     <div class="layout">
@@ -58,24 +59,26 @@ let saved = new Set(JSON.parse(localStorage.getItem("taskdna-saved") || "[]"));
 let savedOnly = false;
 const list = document.getElementById("list");
 const detail = document.getElementById("detail");
+function esc(value){ return String(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch])); }
 function filtered(){
   const q = document.getElementById("search").value.toLowerCase();
   const f = document.getElementById("function").value;
   const s = document.getElementById("sort").value;
-  return jobs.filter(j => (!f || j.analysis.primaryFunctionId === f) && (!savedOnly || saved.has(j.job.canonicalId)) && [j.job.title,j.job.company,j.job.domain,j.analysis.whatThisJobIsReallyAbout,j.analysis.requiredCapabilities.join(" "),j.analysis.frictionFactors.join(" ")].join(" ").toLowerCase().includes(q))
+  const freshness = document.getElementById("freshness").value;
+  return jobs.filter(j => (!f || j.analysis.primaryFunctionId === f) && (!freshness || j.job.freshnessState === freshness) && (!savedOnly || saved.has(j.job.canonicalId)) && [j.job.title,j.job.company,j.job.domain,j.analysis.whatThisJobIsReallyAbout,j.analysis.requiredCapabilities.join(" "),j.analysis.frictionFactors.join(" ")].join(" ").toLowerCase().includes(q))
     .sort((a,b)=> s==="fit" ? b.score.predictedFit-a.score.predictedFit : s==="hireability" ? b.score.hireability-a.score.hireability : s==="novelty" ? b.score.novelty-a.score.novelty : b.score.overall-a.score.overall);
 }
 function render(){
   const rows = filtered();
   if (!rows.some(r => r.job.canonicalId === selected)) selected = rows[0]?.job.canonicalId;
-  list.innerHTML = rows.map(j => \`<button class="job \${j.job.canonicalId===selected ? "active" : ""}" data-id="\${j.job.canonicalId}"><strong>\${j.job.title}</strong><br><span>\${j.job.company} · \${j.job.workMode}</span><p>\${j.analysis.whatThisJobIsReallyAbout}</p><span class="badge">Fit \${j.score.predictedFit.toFixed(1)}</span><span class="badge">Hire \${j.score.hireability.toFixed(1)}</span>\${j.score.novelty>=7.5?'<span class="badge spark">Non-obvious</span>':''}</button>\`).join("");
+  list.innerHTML = rows.map(j => \`<button class="job \${j.job.canonicalId===selected ? "active" : ""}" data-id="\${esc(j.job.canonicalId)}"><strong>\${esc(j.job.title)}</strong><br><span>\${esc(j.job.company)} · \${esc(j.job.workMode)}</span><p>\${esc(j.analysis.whatThisJobIsReallyAbout)}</p><span class="badge">Fit \${j.score.predictedFit.toFixed(1)}</span><span class="badge">Hire \${j.score.hireability.toFixed(1)}</span>\${j.score.novelty>=7.5?'<span class="badge spark">Non-obvious</span>':''}</button>\`).join("");
   list.querySelectorAll("button").forEach(btn => btn.onclick = () => { selected = btn.dataset.id; render(); });
   const j = rows.find(r => r.job.canonicalId === selected);
-  detail.innerHTML = j ? \`<p><strong>\${j.job.freshnessState.replaceAll("_"," ")}</strong> · DEMO DATA</p><h2>\${j.job.title}</h2><p>\${j.job.company} · \${j.job.location} · \${j.job.compensation}</p><div class="scores"><div class="score"><strong>\${j.score.predictedFit.toFixed(1)}</strong>Work Fit</div><div class="score"><strong>\${j.score.hireability.toFixed(1)}</strong>Hireability</div><div class="score"><strong>\${j.score.careerDirection.toFixed(1)}</strong>Direction</div><div class="score"><strong>\${j.score.novelty.toFixed(1)}</strong>Novelty</div></div><h3>Actual work</h3><p>\${j.analysis.whatThisJobIsReallyAbout}</p><h3>Why / friction / gaps</h3><ul>\${[...j.analysis.strongMatchFactors,...j.analysis.frictionFactors,...(j.analysis.hardGaps.length?j.analysis.hardGaps:["No fatal core gap"])].map(x=>\`<li>\${x}</li>\`).join("")}</ul><p><span class="badge">\${j.score.actionTier.replaceAll("_"," ")}</span><span class="badge">\${j.score.sellability.replaceAll("_"," ")}</span></p><button id="save"> \${saved.has(j.job.canonicalId) ? "Unsave" : "Save"} </button><h3>Decision trace</h3><ol>\${j.decisionTrace.map(x=>\`<li>\${x}</li>\`).join("")}</ol>\` : "<p>No matches.</p>";
+  detail.innerHTML = j ? \`<p><strong>\${esc(j.job.freshnessState.replaceAll("_"," "))}</strong> · DEMO DATA</p><h2>\${esc(j.job.title)}</h2><p>\${esc(j.job.company)} · \${esc(j.job.location)} · \${esc(j.job.compensation)}</p><div class="scores"><div class="score"><strong>\${j.score.predictedFit.toFixed(1)}</strong>Work Fit</div><div class="score"><strong>\${j.score.hireability.toFixed(1)}</strong>Hireability</div><div class="score"><strong>\${j.score.careerDirection.toFixed(1)}</strong>Direction</div><div class="score"><strong>\${j.score.novelty.toFixed(1)}</strong>Novelty</div></div><h3>Actual work</h3><p>\${esc(j.analysis.whatThisJobIsReallyAbout)}</p><h3>Why / friction / gaps</h3><ul>\${[...j.analysis.strongMatchFactors,...j.analysis.frictionFactors,...(j.analysis.hardGaps.length?j.analysis.hardGaps:["No fatal core gap"])].map(x=>\`<li>\${esc(x)}</li>\`).join("")}</ul><p><span class="badge">CAF \${j.score.confidenceAdjustedFit.toFixed(1)}</span><span class="badge">Overall \${j.score.overall.toFixed(1)}</span><span class="badge">\${esc(j.score.actionTier.replaceAll("_"," "))}</span><span class="badge">\${esc(j.score.sellability.replaceAll("_"," "))}</span></p><button id="save"> \${saved.has(j.job.canonicalId) ? "Unsave" : "Save"} </button><h3>Decision trace</h3><ol>\${j.decisionTrace.map(x=>\`<li>\${esc(x)}</li>\`).join("")}</ol>\` : "<p>No matches.</p>";
   const save = document.getElementById("save");
   if (save && j) save.onclick = () => { saved.has(j.job.canonicalId) ? saved.delete(j.job.canonicalId) : saved.add(j.job.canonicalId); localStorage.setItem("taskdna-saved", JSON.stringify([...saved])); render(); };
 }
-["search","function","sort"].forEach(id => document.getElementById(id).addEventListener("input", render));
+["search","function","sort","freshness"].forEach(id => document.getElementById(id).addEventListener("input", render));
 document.getElementById("savedOnly").onclick = () => { savedOnly = !savedOnly; render(); };
 render();
 </script>

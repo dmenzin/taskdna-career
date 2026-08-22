@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { ArrowRight, Beaker, BrainCircuit, Bug, FlaskConical, Heart, Search, Sparkles, Target, TrendingUp } from "lucide-react";
 import { careerFunctions, dimensions } from "@/config/model";
-import { applyFeedback, buildUserProfile, createDemoDataset, filterAndSortJobs, scoreFunctions, scoreJobs } from "@/domain/engine";
+import { applyFeedback, applyScenarioResponses, buildUserProfile, createDemoDataset, filterAndSortJobs, scoreFunctions, scoreJobs, selectAdaptiveScenarios } from "@/domain/engine";
 import type { FeedbackEvent, Reaction, ScoredJob } from "@/domain/types";
 
 const demo = createDemoDataset();
@@ -15,16 +15,19 @@ export default function Home() {
   const [query, setQuery] = useState("");
   const [functionId, setFunctionId] = useState("");
   const [sortKey, setSortKey] = useState("overall");
+  const [freshnessFilter, setFreshnessFilter] = useState("");
   const [noveltyOnly, setNoveltyOnly] = useState(false);
   const [saved, setSaved] = useState<string[]>([]);
   const [dismissed, setDismissed] = useState<string[]>([]);
   const [feedbackLog, setFeedbackLog] = useState<string[]>([]);
+  const [answeredScenarioIds, setAnsweredScenarioIds] = useState<string[]>([]);
   const [profileOverride, setProfileOverride] = useState<ReturnType<typeof buildUserProfile> | null>(null);
 
   const profile = useMemo(() => profileOverride ?? buildUserProfile(personaId, careerText || undefined), [careerText, personaId, profileOverride]);
   const functionScores = useMemo(() => scoreFunctions(profile), [profile]);
   const scoredJobs = useMemo(() => scoreJobs(profile, demo.jobs).filter((item) => !dismissed.includes(item.job.canonicalId)), [profile, dismissed]);
-  const visibleJobs = useMemo(() => filterAndSortJobs(scoredJobs, query, functionId, sortKey, noveltyOnly), [scoredJobs, query, functionId, sortKey, noveltyOnly]);
+  const interviewPlan = useMemo(() => selectAdaptiveScenarios(profile, answeredScenarioIds, 3), [profile, answeredScenarioIds]);
+  const visibleJobs = useMemo(() => filterAndSortJobs(scoredJobs, query, functionId, sortKey, noveltyOnly).filter((item) => !freshnessFilter || item.job.freshnessState === freshnessFilter), [scoredJobs, query, functionId, sortKey, noveltyOnly, freshnessFilter]);
   const selectedJob = visibleJobs.find((item) => item.job.canonicalId === selectedJobId) ?? visibleJobs[0];
 
   function choosePersona(nextPersonaId: string) {
@@ -35,6 +38,8 @@ export default function Home() {
     setDismissed([]);
     setSaved([]);
     setFeedbackLog([]);
+    setAnsweredScenarioIds([]);
+    setFreshnessFilter("");
   }
 
   function reactToJob(job: ScoredJob, reaction: Reaction, reasonTags: string[]) {
@@ -42,6 +47,12 @@ export default function Home() {
     const result = applyFeedback(profile, scoredJobs, event);
     setProfileOverride(result.updatedProfile);
     setFeedbackLog((items) => [`${reaction} on ${job.job.title}: ${result.explanation}`, ...items].slice(0, 5));
+  }
+
+  function answerScenario(scenarioId: string, answer: "LOVE" | "DISLIKE" | "INTERESTING") {
+    const result = applyScenarioResponses(profile, [{ scenarioId, answer, confidence: 0.78 }]);
+    setProfileOverride(result.updatedProfile);
+    setAnsweredScenarioIds((items) => [...items, scenarioId]);
   }
 
   return (
@@ -66,12 +77,12 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="card-grid onboarding" aria-labelledby="onboarding-title">
+      <section className="card-grid onboarding" aria-labelledby="onboarding-title" data-testid="onboarding">
         <div className="card span-2">
           <h2 id="onboarding-title">Start with demo or career input</h2>
           <div className="persona-grid">
-            {demo.personas.slice(0, 8).map((persona) => (
-              <button key={persona.id} className={persona.id === personaId ? "persona active" : "persona"} onClick={() => choosePersona(persona.id)}>
+            {demo.personas.map((persona) => (
+              <button key={persona.id} data-testid={`persona-${persona.id}`} className={persona.id === personaId ? "persona active" : "persona"} onClick={() => choosePersona(persona.id)}>
                 <strong>{persona.name}</strong>
                 <span>{persona.summary}</span>
               </button>
@@ -100,7 +111,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="card-grid" id="profile">
+      <section className="card-grid" id="profile" data-testid="profile">
         <div className="card">
           <h2><BrainCircuit size={22} /> Task DNA profile</h2>
           <p className="muted">Confidence: {Math.round(profile.confidence * 100)}%. Inferences are heuristic, not psychometric claims.</p>
@@ -136,7 +147,32 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="card" id="functions">
+      <section className="card" id="interview" data-testid="adaptive-interview">
+        <div className="section-heading">
+          <div>
+            <p className="eyebrow">Adaptive scenario interview</p>
+            <h2>Clarify uncertain work preferences</h2>
+          </div>
+          <span className="pill">{interviewPlan.earlyStopped ? "Early stopped" : `${interviewPlan.scenarios.length} next scenarios`}</span>
+        </div>
+        <p className="muted">{interviewPlan.rationale.join(" ")}</p>
+        <div className="scenario-grid">
+          {interviewPlan.scenarios.length ? interviewPlan.scenarios.map((scenario) => (
+            <article className="scenario-card" key={scenario.id}>
+              <strong>{scenario.title}</strong>
+              <p>{scenario.prompt}</p>
+              <small>Targets: {scenario.targetDimensions.join(", ")}</small>
+              <div className="reaction-row">
+                <button data-testid={`scenario-love-${scenario.id}`} onClick={() => answerScenario(scenario.id, "LOVE")}>Love this</button>
+                <button onClick={() => answerScenario(scenario.id, "INTERESTING")}>Interesting</button>
+                <button onClick={() => answerScenario(scenario.id, "DISLIKE")}>Dislike this</button>
+              </div>
+            </article>
+          )) : <p>The profile has enough confidence for now. You can still refine it by reacting to jobs.</p>}
+        </div>
+      </section>
+
+      <section className="card" id="functions" data-testid="functions">
         <div className="section-heading">
           <div>
             <p className="eyebrow">Work functions, not titles</p>
@@ -161,7 +197,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="explorer" id="job-explorer">
+      <section className="explorer" id="job-explorer" data-testid="job-explorer">
         <div className="explorer-header">
           <div>
             <p className="eyebrow">Job explorer</p>
@@ -182,6 +218,14 @@ export default function Home() {
               <option value="novelty">Novelty</option>
               <option value="company">Company A-Z</option>
             </select>
+            <select value={freshnessFilter} onChange={(event) => setFreshnessFilter(event.target.value)} aria-label="Filter by freshness" data-testid="freshness-filter">
+              <option value="">All freshness states</option>
+              <option value="VERIFIED_LIVE">Verified live</option>
+              <option value="REVERIFIED_LIVE">Reverified live</option>
+              <option value="PREVIOUSLY_FOUND_NOT_RECHECKED">Previously found</option>
+              <option value="POSSIBLY_STALE">Possibly stale</option>
+              <option value="CONFIRMED_CLOSED">Confirmed closed</option>
+            </select>
             <button className={noveltyOnly ? "button primary" : "button"} onClick={() => setNoveltyOnly((value) => !value)}>Non-obvious only</button>
           </div>
         </div>
@@ -189,7 +233,7 @@ export default function Home() {
         <div className="two-pane">
           <div className="job-list" aria-label="Ranked job list">
             {visibleJobs.slice(0, 45).map((item) => (
-              <button key={item.job.canonicalId} className={selectedJob?.job.canonicalId === item.job.canonicalId ? "job-card active" : "job-card"} onClick={() => setSelectedJobId(item.job.canonicalId)}>
+              <button key={item.job.canonicalId} data-testid="job-card" className={selectedJob?.job.canonicalId === item.job.canonicalId ? "job-card active" : "job-card"} onClick={() => setSelectedJobId(item.job.canonicalId)}>
                 <div>
                   <strong>{item.job.title}</strong>
                   <span>{item.job.company} · {item.job.location} · {item.job.workMode}</span>
@@ -206,7 +250,7 @@ export default function Home() {
           </div>
 
           {selectedJob && (
-            <article className="job-detail">
+            <article className="job-detail" data-testid="job-detail">
               <div className="detail-top">
                 <div>
                   <p className="eyebrow">{selectedJob.job.freshnessState.replaceAll("_", " ")} · DEMO DATA</p>
@@ -233,17 +277,19 @@ export default function Home() {
               <div className="badge-row">
                 <Badge>{selectedJob.score.sellability.replaceAll("_", " ")}</Badge>
                 <Badge>{selectedJob.score.actionTier.replaceAll("_", " ")}</Badge>
+                <Badge>CAF {selectedJob.score.confidenceAdjustedFit.toFixed(1)}</Badge>
+                <Badge>Overall {selectedJob.score.overall.toFixed(1)}</Badge>
                 <Badge>Confidence {Math.round(selectedJob.score.confidence * 100)}%</Badge>
                 <Badge>Commute simulated</Badge>
               </div>
               <div className="reaction-row" aria-label="Job reactions">
-                <button onClick={() => reactToJob(selectedJob, "LOVE", ["love troubleshooting", "love signals/data"])}>Love</button>
+                <button data-testid="reaction-love" onClick={() => reactToJob(selectedJob, "LOVE", ["love troubleshooting", "love signals/data"])}>Love</button>
                 <button onClick={() => reactToJob(selectedJob, "INTERESTING", ["love experimentation"])}>Interesting</button>
-                <button onClick={() => reactToJob(selectedJob, "DISLIKE", ["too much documentation", "too much coordination"])}>Dislike</button>
+                <button data-testid="reaction-dislike" onClick={() => reactToJob(selectedJob, "DISLIKE", ["too much documentation", "too much coordination"])}>Dislike</button>
                 <button onClick={() => setDismissed((items) => [...items, selectedJob.job.canonicalId])}>Dismiss</button>
               </div>
               {feedbackLog.length > 0 && (
-                <div className="changed">
+                <div className="changed" data-testid="recommendation-change">
                   <strong>Your recommendations changed because...</strong>
                   {feedbackLog.map((item) => <p key={item}>{item}</p>)}
                 </div>
@@ -253,7 +299,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="card-grid lab" id="debug">
+      <section className="card-grid lab" id="debug" data-testid="debug-console">
         <div className="card">
           <h2><Bug size={22} /> Decision trace</h2>
           <p className="muted">For the selected recommendation, the reasoning is inspectable from raw evidence to tier.</p>
