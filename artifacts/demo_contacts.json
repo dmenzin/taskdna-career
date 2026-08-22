@@ -1,0 +1,226 @@
+[
+  {
+    "id": "failure-analyst-contact-01",
+    "name": "Mira Chen",
+    "title": "Failure analysis Lead",
+    "organizationId": "org-1",
+    "location": "Boston, MA",
+    "currentRoleSummary": "Synthetic failure analysis contact at Northstar Instruments.",
+    "functionalAreas": [
+      "failure-analysis",
+      "test-development"
+    ],
+    "seniority": "Manager",
+    "synthetic": true
+  },
+  {
+    "id": "failure-analyst-contact-02",
+    "name": "Jon Patel",
+    "title": "Sensor performance Lead",
+    "organizationId": "org-2",
+    "location": "San Diego, CA",
+    "currentRoleSummary": "Synthetic sensor performance contact at Helio Robotics.",
+    "functionalAreas": [
+      "sensor-algorithm-performance",
+      "systems-integration-debug"
+    ],
+    "seniority": "IC",
+    "synthetic": true
+  },
+  {
+    "id": "failure-analyst-contact-03",
+    "name": "Priya Rivera",
+    "title": "Professor of Engineering",
+    "organizationId": "org-3",
+    "location": "Remote - US",
+    "currentRoleSummary": "Synthetic test development contact at Aster Medical.",
+    "functionalAreas": [
+      "test-development",
+      "engineering-tools"
+    ],
+    "seniority": "Professor",
+    "synthetic": true
+  },
+  {
+    "id": "failure-analyst-contact-04",
+    "name": "Theo Morgan",
+    "title": "Systems debug Lead",
+    "organizationId": "org-4",
+    "location": "Pittsburgh, PA",
+    "currentRoleSummary": "Synthetic systems debug contact at SignalForge.",
+    "functionalAreas": [
+      "systems-integration-debug",
+      "clinical-real-world-performance"
+    ],
+    "seniority": "Lead",
+    "synthetic": true
+  },
+  {
+    "id": "failure-analyst-contact-05",
+    "name": "Nadia Singh",
+    "title": "Engineering tools Lead",
+    "organizationId": "org-5",
+    "location": "Boston, MA",
+    "currentRoleSummary": "Synthetic engineering tools contact at Kinetic Labs.",
+    "functionalAreas": [
+      "engineering-tools",
+      "field-applications"
+    ],
+    "seniority": "IC",
+    "synthetic": true
+  },
+  {
+    "id": "failure-analyst-contact-06",
+    "name": "Sam Klein",
+    "title": "Real-world performance Lead",
+    "organizationId": "org-6",
+    "location": "San Diego, CA",
+    "currentRoleSummary": "Synthetic real-world performance contact at VectorWell.",
+    "functionalAreas": [
+      "clinical-real-world-performance",
+      "robotics-field-performance"
+    ],
+    "seniority": "Manager",
+    "synthetic": true
+  },
+  {
+    "id": "failure-analyst-contact-07",
+    "name": "Elena Sato",
+    "title": "Technical Recruiter",
+    "organizationId": "org-7",
+    "location": "Remote - US",
+    "currentRoleSummary": "Synthetic field applications contact at OrbitWorks.",
+    "functionalAreas": [
+      "field-applications",
+      "controls-characterization"
+    ],
+    "seniority": "Recruiter",
+    "synthetic": true
+  },
+  {
+    "id": "failure-analyst-contact-08",
+    "name": "Marco Nguyen",
+    "title": "Robotics performance Lead",
+    "organizationId": "org-8",
+    "location": "Pittsburgh, PA",
+    "currentRoleSummary": "Synthetic robotics performance contact at Reliant Devices.",
+    "functionalAreas": [
+      "robotics-field-performance",
+      "scientific-software"
+    ],
+    "seniority": "IC",
+    "synthetic": true
+  },
+  {
+    "id": "failure-analyst-contact-09",
+    "name": "Asha Brooks",
+    "title": "Controls characterization Lead",
+    "organizationId": "org-9",
+    "location": "Boston, MA",
+    "currentRoleSummary": "Synthetic controls characterization contact at Mesa Automation.",
+    "functionalAreas": [
+      "controls-characterization",
+      "verification-validation"
+    ],
+    "seniority": "IC",
+    "synthetic": true
+  },
+  {
+    "id": "failure-analyst-contact-10",
+    "name": "Noah Ibrahim",
+    "title": "Scientific software Lead",
+    "organizationId": "org-10",
+    "location": "San Diego, CA",
+    "currentRoleSummary": "Synthetic scientific software contact at Cobalt Analytics.",
+    "functionalAreas": [
+      "scientific-software",
+      "modeling-simulation"
+    ],
+    "seniority": "Lead",
+    "synthetic": true
+  },
+  {
+    "id": "failure-analyst-contact-11",
+    "name": "Iris Carter",
+    "title": "V&V Lead",
+    "organizationId": "org-11",
+    "location": "Remote - US",
+    "currentRoleSummary": "Synthetic v&v contact at Civic BioSystems.",
+    "functionalAreas": [
+      "verification-validation",
+      "product-systems-engineering"
+    ],
+    "seniority": "Manager",
+    "synthetic": true
+  },
+  {
+    "id": "failure-analyst-contact-12",
+    "name": "Victor Rossi",
+    "title": "Modeling Lead",
+    "organizationId": "org-12",
+    "location": "Pittsburgh, PA",
+    "currentRoleSummary": "Synthetic modeling contact at Lattice Mobility.",
+    "functionalAreas": [
+      "modeling-simulation",
+      "failure-analysis"
+    ],
+    "seniority": "IC",
+    "synthetic": true
+  },
+  {
+    "id": "failure-analyst-contact-13",
+    "name": "Leah Okafor",
+    "title": "Product systems Lead",
+    "organizationId": "org-1",
+    "location": "Boston, MA",
+    "currentRoleSummary": "Synthetic product systems contact at Northstar Instruments.",
+    "functionalAreas": [
+      "product-systems-engineering",
+      "sensor-algorithm-performance"
+    ],
+    "seniority": "Lead",
+    "synthetic": true
+  },
+  {
+    "id": "failure-analyst-contact-14",
+    "name": "Owen Kim",
+    "title": "Failure analysis Lead",
+    "organizationId": "org-2",
+    "location": "San Diego, CA",
+    "currentRoleSummary": "Synthetic failure analysis contact at Helio Robotics.",
+    "functionalAreas": [
+      "failure-analysis",
+      "test-development"
+    ],
+    "seniority": "IC",
+    "synthetic": true
+  },
+  {
+    "id": "failure-analyst-contact-15",
+    "name": "Talia Hayes",
+    "title": "Technical Recruiter",
+    "organizationId": "org-3",
+    "location": "Remote - US",
+    "currentRoleSummary": "Synthetic sensor performance contact at Aster Medical.",
+    "functionalAreas": [
+      "sensor-algorithm-performance",
+      "systems-integration-debug"
+    ],
+    "seniority": "Recruiter",
+    "synthetic": true
+  },
+  {
+    "id": "failure-analyst-contact-16",
+    "name": "Ben Bennett",
+    "title": "Test development Lead",
+    "organizationId": "org-4",
+    "location": "Pittsburgh, PA",
+    "currentRoleSummary": "Synthetic test development contact at SignalForge.",
+    "functionalAreas": [
+      "test-development",
+      "engineering-tools"
+    ],
+    "seniority": "Manager",
+    "synthetic": true
+  }
+]

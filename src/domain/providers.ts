@@ -9,7 +9,7 @@ import type {
   UserEvidence,
   UserProfile,
 } from "@/domain/types";
-import type { HumanOpportunityGraph, InteractionEvent, InteractionPlan, MessageDraft, NextBestAction, OpportunityAccessAssessment, Person, Relationship } from "@/domain/networkTypes";
+import type { HumanOpportunityGraph, InteractionEvent, InteractionPlan, MessageDraft, OpportunityAccessAssessment, Person, Relationship } from "@/domain/networkTypes";
 
 export interface ResumeParserProvider {
   parse(input: string): string[];

@@ -187,8 +187,13 @@ export function composeDeterministicDraft(plan: InteractionPlan, person: Person,
 }
 
 export function evaluateNetworkStrategy(graph: HumanOpportunityGraph) {
+  const formerManagerRelationship = graph.relationships.find((relationship) => relationship.relationshipType === "FORMER_MANAGER");
+  const formerManagerPerson = formerManagerRelationship ? graph.people.find((person) => person.id === formerManagerRelationship.personId) : undefined;
+  const formerManagerAssessment = formerManagerRelationship ? graph.contactAssessments.find((assessment) => assessment.personId === formerManagerRelationship.personId) : undefined;
+  const formerManagerJob = formerManagerAssessment ? graph.scoredJobs.find((job) => job.job.canonicalId === formerManagerAssessment.opportunityId) : undefined;
+  const formerManagerPlan = formerManagerPerson && formerManagerRelationship && formerManagerAssessment ? createInteractionPlan(formerManagerPerson, formerManagerRelationship, formerManagerAssessment, formerManagerJob, graph.interactions) : undefined;
   const cases = [
-    { id: "former-manager-direct", pass: graph.nextBestActions.some((action) => action.interactionPlan?.recommendedAskType === "REFERRAL_REQUEST" || action.interactionPlan?.recommendedAskType === "HIRING_MANAGER_INTRO_REQUEST") },
+    { id: "former-manager-direct", pass: formerManagerPlan?.recommendedAskType === "REFERRAL_REQUEST" || formerManagerPlan?.recommendedAskType === "HIRING_MANAGER_INTRO_REQUEST" },
     { id: "explicit-offer-materials", pass: graph.nextBestActions.some((action) => action.interactionPlan?.recommendedAskType === "SEND_REQUESTED_MATERIAL") },
     { id: "boundaries-respected", pass: graph.nextBestActions.every((action) => !action.interactionPlan?.thingsNotToAskYet.includes(action.interactionPlan.recommendedAskType)) },
     { id: "network-does-not-change-work-fit", pass: graph.scoredJobs.every((job) => typeof job.score.predictedFit === "number" && !Number.isNaN(job.score.predictedFit)) },
@@ -310,6 +315,7 @@ function planNextBestActions(profile: UserProfile, jobs: ScoredJob[], pursuitPla
   return actions
     .map((action) => ({ ...action, priority: actionPriority(action) }))
     .sort((a, b) => b.priority - a.priority)
+    .filter((action, index, sorted) => sorted.findIndex((candidate) => candidate.actionType === action.actionType && candidate.relatedPersonId === action.relatedPersonId && candidate.title === action.title) === index)
     .slice(0, 12);
 }
 
@@ -367,6 +373,7 @@ function chooseAskType(relationship: Relationship, assessment: ContactOpportunit
   if (explicitOffer) return "SEND_REQUESTED_MATERIAL";
   if (relationship.relationshipType === "RECRUITER") return "ROLE_REALITY";
   if (referralBoundary) return assessment.informationValue >= 6 ? "COMPANY_INFORMATION" : "CAREER_PERSPECTIVE";
+  if (relationship.relationshipType === "FORMER_MANAGER" && assessment.credibilityValue >= 7 && scoredJob && scoredJob.score.overall >= 7.2) return assessment.referralAbility >= 6 ? "REFERRAL_REQUEST" : "HIRING_MANAGER_INTRO_REQUEST";
   if (relationship.relationshipType === "DORMANT_FORMER_STRONG_TIE") return "RECONNECT";
   if (relationship.relationshipType === "ALUM" || relationship.relationshipType === "COLD_CONTEXTUAL_CONTACT") return assessment.routingValue >= 6 ? "WHO_SHOULD_I_TALK_TO" : "COMPANY_INFORMATION";
   if (assessment.referralAbility >= 7.5 && scoredJob && scoredJob.score.overall >= 7.4) return "REFERRAL_REQUEST";

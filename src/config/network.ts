@@ -1,4 +1,4 @@
-import type { AskType, Channel, NetworkingPrinciple, RelationshipType } from "@/domain/networkTypes";
+import type { AskType, Channel, ExecutionMode, NetworkingPrinciple, RelationshipType } from "@/domain/networkTypes";
 
 export const networkModelConfig = {
   versions: {
