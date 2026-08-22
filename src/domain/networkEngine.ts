@@ -1,5 +1,6 @@
 import { askRules, channelExecutionPolicy, networkModelConfig, networkingPrinciples } from "@/config/network";
 import { careerFunctions } from "@/config/model";
+import { scoreFunctions } from "@/domain/engine";
 import { createEmptyGraph, createSyntheticNetworkUniverse } from "@/fixtures/network";
 import type {
   AskType,
@@ -24,21 +25,33 @@ export function createHumanOpportunityGraph(profile: UserProfile, scoredJobs: Sc
   const personaRelationships = universe.relationships.filter((relationship) => relationship.personaId === profile.persona.id);
   const personaPeople = universe.people.filter((person) => personaRelationships.some((relationship) => relationship.personId === person.id));
   const personaInteractions = universe.interactions.filter((interaction) => personaRelationships.some((relationship) => relationship.id === interaction.relationshipId));
-  const jobs = scoredJobs;
-  const contactAssessments = personaRelationships.flatMap((relationship) => {
-    const person = personaPeople.find((candidate) => candidate.id === relationship.personId);
-    if (!person) return [];
-    return jobs.map((job) => assessContactForOpportunity(person, relationship, personaInteractions, job));
-  });
-  const paths = findNetworkPaths(personaPeople, personaRelationships, personaInteractions, jobs, contactAssessments);
-  const accessAssessments = jobs.map((job) => assessOpportunityAccess(job, contactAssessments, paths));
-  const pursuitPlans = jobs.slice(0, 8).map((job) => createPursuitPlan(job, accessAssessments.find((item) => item.opportunityId === job.job.canonicalId)!, contactAssessments, paths, personaPeople, personaRelationships, personaInteractions));
-  const nextBestActions = planNextBestActions(profile, jobs, pursuitPlans, contactAssessments, personaPeople, personaRelationships, personaInteractions);
-  return {
-    ...createEmptyGraph(profile.persona.id, jobs),
+  return createHumanOpportunityGraphFromIntake(profile, scoredJobs, {
     people: personaPeople,
     relationships: personaRelationships,
     interactions: personaInteractions,
+  });
+}
+
+export function createHumanOpportunityGraphFromIntake(
+  profile: UserProfile,
+  scoredJobs: ScoredJob[],
+  intake: { people: Person[]; relationships: Relationship[]; interactions: InteractionEvent[] },
+): HumanOpportunityGraph {
+  const jobs = scoredJobs;
+  const contactAssessments = intake.relationships.flatMap((relationship) => {
+    const person = intake.people.find((candidate) => candidate.id === relationship.personId);
+    if (!person) return [];
+    return jobs.map((job) => assessContactForOpportunity(person, relationship, intake.interactions, job));
+  });
+  const paths = findNetworkPaths(intake.people, intake.relationships, intake.interactions, jobs, contactAssessments);
+  const accessAssessments = jobs.map((job) => assessOpportunityAccess(job, contactAssessments, paths));
+  const pursuitPlans = jobs.slice(0, 8).map((job) => createPursuitPlan(job, accessAssessments.find((item) => item.opportunityId === job.job.canonicalId)!, contactAssessments, paths, intake.people, intake.relationships, intake.interactions));
+  const nextBestActions = planNextBestActions(profile, jobs, pursuitPlans, contactAssessments, intake.people, intake.relationships, intake.interactions);
+  return {
+    ...createEmptyGraph(profile.persona.id, jobs),
+    people: intake.people,
+    relationships: intake.relationships,
+    interactions: intake.interactions,
     principles: networkingPrinciples,
     contactAssessments,
     paths,
@@ -199,6 +212,14 @@ export function evaluateNetworkStrategy(graph: HumanOpportunityGraph) {
     { id: "network-does-not-change-work-fit", pass: graph.scoredJobs.every((job) => typeof job.score.predictedFit === "number" && !Number.isNaN(job.score.predictedFit)) },
     { id: "second-degree-paths", pass: graph.paths.some((path) => path.pathType === "SECOND_DEGREE") },
     { id: "daily-plan-balanced", pass: new Set(graph.nextBestActions.slice(0, 6).map((action) => action.actionType)).size >= 3 },
+    {
+      id: "do-not-contact-respected",
+      pass: graph.nextBestActions.every((action) => {
+        if (!action.relatedPersonId) return true;
+        const relationship = graph.relationships.find((item) => item.personId === action.relatedPersonId);
+        return relationship ? !isDoNotContact(relationship.id, graph.interactions) : true;
+      }),
+    },
   ];
   return { passed: cases.every((item) => item.pass), cases, counts: { contacts: graph.people.length, relationships: graph.relationships.length, interactions: graph.interactions.length, paths: graph.paths.length, actions: graph.nextBestActions.length } };
 }
@@ -256,7 +277,13 @@ function pathFromAssessment(job: ScoredJob, assessment: ContactOpportunityAssess
 }
 
 function createPursuitPlan(scoredJob: ScoredJob, access: OpportunityAccessAssessment, assessments: ContactOpportunityAssessment[], paths: NetworkPath[], people: Person[], relationships: Relationship[], interactions: InteractionEvent[]): OpportunityPursuitPlan {
-  const bestAssessment = assessments.filter((assessment) => assessment.opportunityId === scoredJob.job.canonicalId).sort((a, b) => Math.max(b.referralAbility, b.routingValue, b.informationValue) - Math.max(a.referralAbility, a.routingValue, a.informationValue))[0];
+  const bestAssessment = assessments
+    .filter((assessment) => assessment.opportunityId === scoredJob.job.canonicalId)
+    .filter((assessment) => {
+      const relationship = relationships.find((item) => item.personId === assessment.personId);
+      return relationship ? !isDoNotContact(relationship.id, interactions) : true;
+    })
+    .sort((a, b) => Math.max(b.referralAbility, b.routingValue, b.informationValue) - Math.max(a.referralAbility, a.routingValue, a.informationValue))[0];
   const bestPerson = bestAssessment ? people.find((person) => person.id === bestAssessment.personId) : undefined;
   const bestRelationship = bestPerson ? relationships.find((relationship) => relationship.personId === bestPerson.id) : undefined;
   const bestPlan = bestPerson && bestRelationship ? createInteractionPlan(bestPerson, bestRelationship, bestAssessment, scoredJob, interactions) : undefined;
@@ -286,6 +313,10 @@ function createPursuitPlan(scoredJob: ScoredJob, access: OpportunityAccessAssess
   };
 }
 
+export function isDoNotContact(relationshipId: string, interactions: InteractionEvent[]) {
+  return interactions.some((event) => event.relationshipId === relationshipId && event.eventType === "DO_NOT_CONTACT");
+}
+
 function planNextBestActions(profile: UserProfile, jobs: ScoredJob[], pursuitPlans: OpportunityPursuitPlan[], assessments: ContactOpportunityAssessment[], people: Person[], relationships: Relationship[], interactions: InteractionEvent[]): NextBestAction[] {
   const actions: NextBestAction[] = [];
   for (const plan of pursuitPlans) {
@@ -296,6 +327,7 @@ function planNextBestActions(profile: UserProfile, jobs: ScoredJob[], pursuitPla
     if (plan.bestContactId) {
       const person = people.find((item) => item.id === plan.bestContactId)!;
       const relationship = relationships.find((item) => item.personId === person.id)!;
+      if (isDoNotContact(relationship.id, interactions)) continue;
       const assessment = assessments.find((item) => item.personId === person.id && item.opportunityId === plan.opportunityId)!;
       const interactionPlan = createInteractionPlan(person, relationship, assessment, job, interactions);
       actions.push({
@@ -305,7 +337,7 @@ function planNextBestActions(profile: UserProfile, jobs: ScoredJob[], pursuitPla
       });
     }
   }
-  const topFunctions = profile.persona.expectedHighFunctions.slice(0, 2);
+  const topFunctions = scoreFunctions(profile).slice(0, 2).map((item) => item.function.id);
   for (const functionId of topFunctions) {
     const coverage = assessments.filter((assessment) => people.find((person) => person.id === assessment.personId)?.functionalAreas.includes(functionId));
     if (coverage.length < 2) {
@@ -384,7 +416,7 @@ function chooseAskType(relationship: Relationship, assessment: ContactOpportunit
 
 function computeFunctionCoverage(profile: UserProfile, assessments: ContactOpportunityAssessment[]) {
   const coverage: HumanOpportunityGraph["topFunctionCoverage"] = {};
-  for (const functionId of profile.persona.expectedHighFunctions) {
+  for (const functionId of scoreFunctions(profile).slice(0, 3).map((item) => item.function.id)) {
     const relevant = assessments.filter((assessment) => assessment.functionalRelevance >= 7 && assessment.informationValue >= 6);
     coverage[functionId] = relevant.length >= 4 ? "STRONG_COVERAGE" : relevant.length >= 2 ? "MODERATE_COVERAGE" : relevant.length >= 1 ? "UNKNOWN" : "NETWORK_GAP";
   }
@@ -392,7 +424,8 @@ function computeFunctionCoverage(profile: UserProfile, assessments: ContactOppor
 }
 
 function computeNetworkGaps(profile: UserProfile, assessments: ContactOpportunityAssessment[]) {
-  return profile.persona.expectedHighFunctions.flatMap((functionId) => {
+  return scoreFunctions(profile).slice(0, 3).flatMap((item) => {
+    const functionId = item.function.id;
     const coverage = assessments.filter((assessment) => assessment.functionalRelevance >= 7);
     return coverage.length < 2 ? [{ functionId, missingNodeType: `${functionId.replaceAll("-", " ")} insider or manager`, rationale: "High-fit function has limited information/routing coverage." }] : [];
   });

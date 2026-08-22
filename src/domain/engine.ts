@@ -1,6 +1,6 @@
-import { careerFunctions, dimensions, scoringConfig } from "@/config/model";
+import { allCareerFunctions, careerFunctions, dimensions, scoringConfig, skillLexicon, vector } from "@/config/model";
 import { scenarioBank } from "@/config/scenarios";
-import { createJobSourceObservations, createSyntheticJobs, inferJobVector } from "@/fixtures/jobs";
+import { createJobSourceObservations, createSyntheticJobs, inferJobVector, matchFunctionByTasks } from "@/fixtures/jobs";
 import { personas } from "@/fixtures/personas";
 import type {
   Capability,
@@ -69,12 +69,48 @@ export function buildUserProfile(personaId = "failure-analyst", careerText?: str
   return { persona: { ...persona, careerText: careerText ?? persona.careerText }, evidence, taskDna, capabilities, contradictions, confidence };
 }
 
+export interface CareerInput {
+  id?: string;
+  name?: string;
+  currentField?: string;
+  careerText: string;
+  explicitPreferences?: string[];
+  explicitDislikes?: string[];
+  skills?: string[];
+}
+
+// Generic persona-free entry point: inference sees only observable input, never fixture priors.
+export function buildProfileFromCareerInput(input: CareerInput): UserProfile {
+  const combinedText = [input.careerText, ...(input.explicitPreferences ?? []), ...(input.explicitDislikes ?? [])].join(" ");
+  const detectedSkills = input.skills?.length ? input.skills : skillLexicon.filter((skill) => combinedText.toLowerCase().includes(skill));
+  const genericPersona: (typeof personas)[number] = {
+    id: input.id ?? "generic-user",
+    name: input.name ?? "Generic user",
+    summary: "Persona-free generic career input",
+    currentField: input.currentField ?? "unknown",
+    careerText: combinedText,
+    preferenceVector: vector({}),
+    capabilityKeywords: detectedSkills,
+    repellents: input.explicitDislikes ?? [],
+    desiredConstraints: [],
+    expectedHighFunctions: [],
+    expectedLowFunctions: [],
+  };
+  const evidence = extractEvidence(genericPersona, combinedText);
+  const taskDna = inferTaskDna(genericPersona, evidence, { neutralPrior: true });
+  const capabilities = inferCapabilities(genericPersona, evidence);
+  const contradictions = inferContradictions(genericPersona, evidence);
+  const confidence = average(taskDna.map((dimension) => dimension.confidence));
+  return { persona: genericPersona, evidence, taskDna, capabilities, contradictions, confidence };
+}
+
 export function extractEvidence(persona: (typeof personas)[number], careerText: string): UserEvidence[] {
   const sentences = careerText
     .split(/[.!?]+/)
     .map((sentence) => sentence.trim())
     .filter(Boolean);
-  const fallback = sentences.length ? sentences : [careerText];
+  const uniqueSentences = Array.from(new Map(sentences.map((sentence) => [sentence.toLowerCase(), sentence])).values());
+  const fallback = uniqueSentences.length ? uniqueSentences : [careerText];
   return fallback.slice(0, 8).map((sentence, index) => ({
     id: `ev-${persona.id}-${index + 1}`,
     sourceType: index === 0 ? "RESUME" : sentence.toLowerCase().includes("dislike") || sentence.toLowerCase().includes("avoid") ? "EXPLICIT_DISLIKE" : "WORK_HISTORY",
@@ -91,24 +127,28 @@ export function extractEvidence(persona: (typeof personas)[number], careerText: 
     dislikeSignals: sentence.toLowerCase().includes("dislike") || sentence.toLowerCase().includes("avoid") ? [sentence] : [],
     inferredTaskDimensions: inferSentenceDimensions(sentence),
     recency: 0.8,
-    reliability: persona.id === "low-information" ? 0.45 : 0.78 + index * 0.02,
+    reliability: evidenceReliability(sentence, index),
   }));
 }
 
-export function inferTaskDna(persona: (typeof personas)[number], evidence: UserEvidence[]): TaskDNADimension[] {
-  const sparse = persona.id === "low-information";
+export function inferTaskDna(persona: (typeof personas)[number], evidence: UserEvidence[], options: { neutralPrior?: boolean } = {}): TaskDNADimension[] {
+  const sparse = evidence.length < scoringConfig.inference.sparseEvidenceThreshold;
   return dimensions.map((definition) => {
     const signals = evidence
       .map((item) => ({ item, value: item.inferredTaskDimensions[definition.id] }))
       .filter((item): item is { item: UserEvidence; value: number } => typeof item.value === "number");
-    const baseValue = persona.preferenceVector[definition.id];
+    const baseValue = options.neutralPrior ? 5 : persona.preferenceVector[definition.id];
     const evidenceValue = signals.length ? weightedAverage(signals.map(({ item, value }) => ({ value, weight: item.reliability }))) : baseValue;
-    const evidenceWeight = signals.length >= 2 ? 0.62 : signals.length === 1 ? 0.42 : 0;
+    const evidenceWeight = signals.length >= 2 ? scoringConfig.inference.evidenceWeightTwoPlus : signals.length === 1 ? scoringConfig.inference.evidenceWeightSingle : 0;
     const value = clamp(baseValue * (1 - evidenceWeight) + evidenceValue * evidenceWeight, 0, 10);
     const supportingEvidenceIds = signals.filter(({ value: signal }) => sameSide(signal, value)).map(({ item }) => item.id);
     const contradictoryEvidenceIds = signals.filter(({ value: signal }) => !sameSide(signal, value) && Math.abs(signal - value) >= 2.2).map(({ item }) => item.id);
-    const signalCount = signals.length;
-    const confidence = clamp((sparse ? 0.3 : 0.48) + signalCount * 0.075 + Math.abs(value - 5) * 0.04 - contradictoryEvidenceIds.length * 0.14, 0.2, 0.94);
+    // Diminishing returns: repeated/duplicated signals cannot buy unbounded confidence.
+    const effectiveSignals = Math.min(scoringConfig.inference.maxEffectiveSignals, new Set(signals.map(({ item }) => item.originalText.toLowerCase())).size);
+    const unknown = options.neutralPrior && signals.length === 0;
+    const confidence = unknown
+      ? scoringConfig.inference.unknownDimensionConfidence
+      : clamp((sparse ? 0.3 : 0.48) + effectiveSignals * scoringConfig.inference.signalConfidenceStep + Math.abs(value - 5) * 0.04 - contradictoryEvidenceIds.length * 0.14, 0.2, 0.94);
     return {
       dimensionId: definition.id,
       value,
@@ -116,24 +156,35 @@ export function inferTaskDna(persona: (typeof personas)[number], evidence: UserE
       supportingEvidenceIds,
       contradictoryEvidenceIds,
       inferenceMethod: "HeuristicTaskDNAProvider",
-      inferenceVersion: "taskdna.v1",
-      interpretation: value >= 6 ? `Leans toward ${definition.high}.` : `Leans away from ${definition.high}; ${definition.low} may be more natural or less aversive.`,
+      inferenceVersion: scoringConfig.inference.version,
+      interpretation: unknown
+        ? "Unknown: no evidence observed for this dimension yet."
+        : value >= 6 ? `Leans toward ${definition.high}.` : `Leans away from ${definition.high}; ${definition.low} may be more natural or less aversive.`,
     };
   });
 }
 
+function evidenceReliability(sentence: string, index: number) {
+  const words = sentence.trim().split(/\s+/).length;
+  const vague = /some projects|not sure|things|stuff|maybe/i.test(sentence);
+  const specific = /\d|python|c\+\+|sql|matlab|logs|protocol|customers|experiments|root cause|stakeholder/i.test(sentence);
+  return clamp(0.5 + Math.min(0.24, words * 0.015) + (specific ? 0.08 : 0) - (vague ? 0.18 : 0) + index * 0.01, 0.35, 0.92);
+}
+
 export function inferCapabilities(persona: (typeof personas)[number], evidence: UserEvidence[]): Capability[] {
   const keywords = Array.from(new Set(persona.capabilityKeywords));
+  const career = persona.careerText.toLowerCase();
   return keywords.map((keyword, index) => {
     const evidenceIds = evidence.filter((item) => item.originalText.toLowerCase().includes(keyword.toLowerCase()) || item.capabilitySignals.some((signal) => signal.toLowerCase() === keyword.toLowerCase())).map((item) => item.id);
     const direct = evidenceIds.length > 0;
+    const interestOnly = !direct && /coursework|hobby|interested|no professional|not yet/.test(career);
     return {
       id: `cap-${persona.id}-${index + 1}`,
       name: keyword,
       category: keyword.match(/python|typescript|sql|matlab|c\+\+|react/i) ? "technical tool" : "work capability",
-      evidenceLevel: direct ? "DIRECT_PROFESSIONAL" : persona.id.includes("robotics") && keyword.match(/robot|sensor/i) ? "INTEREST_ONLY" : "ADJACENT_TRANSFERABLE",
+      evidenceLevel: direct ? "DIRECT_PROFESSIONAL" : interestOnly ? "INTEREST_ONLY" : "ADJACENT_TRANSFERABLE",
       directExperience: direct ? [`Mentioned in ${evidenceIds.length} evidence item(s)`] : [],
-      adjacentExperience: direct ? [] : ["Related but not directly demonstrated in the fixture"],
+      adjacentExperience: direct ? [] : ["Related but not directly demonstrated in the supplied evidence"],
       demonstratedOutcomes: direct ? ["Evidence-supported history exists"] : [],
       recency: direct ? 0.8 : 0.45,
       recruiterLegibility: direct ? 0.82 : 0.42,
@@ -143,8 +194,13 @@ export function inferCapabilities(persona: (typeof personas)[number], evidence: 
   });
 }
 
-export function scoreFunctions(profile: UserProfile) {
-  return careerFunctions
+export function functionsForProfile(profile: UserProfile): CareerFunction[] {
+  const isDemoPersona = personas.some((persona) => persona.id === profile.persona.id);
+  return isDemoPersona ? careerFunctions : allCareerFunctions;
+}
+
+export function scoreFunctions(profile: UserProfile, functionSet = functionsForProfile(profile)) {
+  return functionSet
     .map((fn) => {
       const fit = vectorFit(profileVector(profile), fn.taskDnaVector);
       const confidence = profile.confidence;
@@ -166,10 +222,10 @@ export function scoreFunctions(profile: UserProfile) {
     .sort((a, b) => b.overallPriority - a.overallPriority);
 }
 
-export function analyzeJob(job: JobPosting): JobAnalysis {
+export function analyzeJob(job: JobPosting, functionSet: CareerFunction[] = careerFunctions): JobAnalysis {
   const jobVector = inferJobVector(job);
   const text = `${job.title} ${job.description} ${job.responsibilities.join(" ")} ${job.requirements.join(" ")}`.toLowerCase();
-  const primary = pickPrimaryFunction(job, jobVector);
+  const primary = pickPrimaryFunction(job, jobVector, functionSet);
   const secondary = careerFunctions
     .filter((fn) => fn.id !== primary.id)
     .map((fn) => ({ fn, fit: vectorFit(jobVector, fn.taskDnaVector) }))
@@ -197,14 +253,14 @@ export function analyzeJob(job: JobPosting): JobAnalysis {
   };
 }
 
-export function scoreJobs(profile: UserProfile, jobs = createDemoDataset().jobs): ScoredJob[] {
+export function scoreJobs(profile: UserProfile, jobs = createDemoDataset().jobs, functionSet = functionsForProfile(profile)): ScoredJob[] {
   return jobs
     .map((job) => {
-      const analysis = analyzeJob(job);
+      const analysis = analyzeJob(job, functionSet);
       const rawPredictedFit = vectorFit(profileVector(profile), analysis.jobTaskDnaVector);
       const confidence = clamp((profile.confidence + analysis.classificationConfidence) / 2, 0.2, 0.95);
       const negativeFitRisk = negativeFit(profile, analysis.frictionFactors);
-      const predictedFit = clamp(rawPredictedFit - negativeFitRisk * 0.5, 1, 10);
+      const predictedFit = clamp(rawPredictedFit - negativeFitRisk * scoringConfig.inference.negativeFitPenalty, 1, 10);
       const caf = confidenceAdjustedFit(predictedFit, confidence);
       const capabilityAlignment = capabilityAlignmentFor(profile, analysis.requiredCapabilities) * 10;
       const gapPenalty = analysis.hardGaps.length * 0.65;
@@ -242,7 +298,7 @@ export function scoreJobs(profile: UserProfile, jobs = createDemoDataset().jobs)
         },
         decisionTrace: [
           `Evidence profile ${profile.persona.name} produced ${profile.taskDna.length} Task-DNA dimensions at ${pct(profile.confidence)} confidence.`,
-          `Job vector maps primarily to ${careerFunctions.find((fn) => fn.id === analysis.primaryFunctionId)?.name}.`,
+          `Job vector maps primarily to ${functionSet.find((fn) => fn.id === analysis.primaryFunctionId)?.name}.`,
           `Raw Work Fit ${formatScore(rawPredictedFit)} minus negative-fit penalty ${formatScore(negativeFitRisk * 0.5)} gives displayed Work Fit ${formatScore(predictedFit)}.`,
           `Confidence ${formatScore(confidence)} and CAF ${formatScore(caf)} use CAF = fit - ${scoringConfig.confidenceAdjustedFitPenalty} * (1 - confidence).`,
           `Hireability ${formatScore(hireability)} uses capability alignment ${formatScore(capabilityAlignment)}, requirements, seniority, and hard gaps: ${analysis.hardGaps.join(", ") || "none"}.`,
@@ -315,6 +371,7 @@ export function applyFeedback(profile: UserProfile, scoredJobs: ScoredJob[], fee
 export function selectAdaptiveScenarios(profile: UserProfile, answeredScenarioIds: string[] = [], maxScenarios = 6): InterviewPlan {
   const answered = new Set(answeredScenarioIds);
   const lowConfidenceDimensions = profile.taskDna.filter((dimension) => dimension.confidence < 0.62).map((dimension) => dimension.dimensionId);
+  const unknownDimensions = profile.taskDna.filter((dimension) => dimension.supportingEvidenceIds.length === 0 || dimension.confidence < 0.4).map((dimension) => dimension.dimensionId);
   const contradictionText = profile.contradictions.join(" ").toLowerCase();
   if (profile.confidence >= 0.74 && profile.contradictions.length === 0 && lowConfidenceDimensions.length <= 2) {
     return {
@@ -323,25 +380,29 @@ export function selectAdaptiveScenarios(profile: UserProfile, answeredScenarioId
       rationale: [`Profile confidence ${pct(profile.confidence)} is high and contradictions are low, so the interview can stop early.`],
     };
   }
+  const topTwo = scoreFunctions(profile).slice(0, 2);
   const ranked = scenarioBank
     .filter((scenario) => !answered.has(scenario.id))
     .map((scenario) => {
-      const uncertaintyScore = scenario.targetDimensions.filter((dimension) => lowConfidenceDimensions.includes(dimension)).length * 1.8;
+      const uncertaintyScore = scenario.targetDimensions.filter((dimension) => lowConfidenceDimensions.includes(dimension)).length * 1.1;
+      const unknownScore = scenario.targetDimensions.filter((dimension) => unknownDimensions.includes(dimension)).length * 1.4;
+      const leanScore = scenario.targetDimensions.reduce((sum, dimension) => {
+        const current = profile.taskDna.find((item) => item.dimensionId === dimension);
+        return sum + Math.abs((current?.value ?? 5) - 5) * (current?.confidence ?? 0.3) * 1.35;
+      }, 0);
       const contradictionScore = scenario.clarifiesRepellents.some((repellent) => contradictionText.includes(repellent.replace("too much ", ""))) ? 2.4 : 0;
-      const functionSeparationScore = scoreFunctions(profile)
-        .slice(0, 3)
-        .some((item) => scenario.targetDimensions.some((dimension) => Math.abs(item.function.taskDnaVector[dimension] - 5) >= 2.5))
-        ? 0.8
+      const functionSeparationScore = topTwo.length === 2
+        ? scenario.targetDimensions.reduce((sum, dimension) => sum + Math.abs(topTwo[0].function.taskDnaVector[dimension] - topTwo[1].function.taskDnaVector[dimension]) * 0.18, 0)
         : 0;
-      return { scenario, score: scenario.informationValue + uncertaintyScore + contradictionScore + functionSeparationScore };
+      return { scenario, score: scenario.informationValue + uncertaintyScore + unknownScore + leanScore + contradictionScore + functionSeparationScore };
     })
-    .sort((a, b) => b.score - a.score);
+    .sort((a, b) => b.score - a.score || a.scenario.id.localeCompare(b.scenario.id));
   return {
     scenarios: ranked.slice(0, maxScenarios).map((item) => item.scenario),
     earlyStopped: false,
     rationale: [
-      `Selected scenarios target ${lowConfidenceDimensions.length} low-confidence dimensions.`,
-      profile.contradictions.length ? `Contradictions detected: ${profile.contradictions.slice(0, 2).join(" ")}` : "No major contradiction, so selection emphasizes information value and function separation.",
+      `Selected scenarios target ${lowConfidenceDimensions.length} low-confidence dimensions and ${unknownDimensions.length} unknown dimensions.`,
+      profile.contradictions.length ? `Contradictions detected: ${profile.contradictions.slice(0, 2).join(" ")}` : "No major contradiction, so selection emphasizes preference lean, unknown coverage, and function separation.",
     ],
   };
 }
@@ -463,11 +524,11 @@ export function runEvaluation() {
   return { results, checks, passed: checks.every((check) => check.pass), searchRun: dataset.searchRun };
 }
 
-function profileVector(profile: UserProfile): Vector {
+export function profileVector(profile: UserProfile): Vector {
   return Object.fromEntries(profile.taskDna.map((item) => [item.dimensionId, item.value])) as Vector;
 }
 
-function vectorFit(a: Vector, b: Vector) {
+export function vectorFit(a: Vector, b: Vector) {
   const distance = dimensions.reduce((sum, definition) => sum + Math.abs(a[definition.id] - b[definition.id]), 0) / dimensions.length;
   return clamp(10 - distance, 1, 10);
 }
@@ -510,7 +571,9 @@ function noveltyScore(profile: UserProfile, job: JobPosting, analysis: JobAnalys
 }
 
 function noveltyFromFunction(profile: UserProfile, fn: CareerFunction) {
-  return profile.persona.expectedHighFunctions.includes(fn.id) ? 6.5 : 8.2;
+  const field = profile.persona.currentField.toLowerCase();
+  const obvious = Boolean(field) && field !== "unknown" && fn.typicalDomains.some((domain) => domain.includes(field) || field.includes(domain));
+  return obvious ? 6.5 : 8.2;
 }
 
 export function calculateOverallScore(input: { hireability: number; confidenceAdjustedFit: number; careerDirection: number; technicalGrowth: number; durability: number }) {
@@ -552,17 +615,12 @@ function sellabilityFor(hireability: number, capabilityAlignment: number, hardGa
   return determineSellability(hireability, capabilityAlignment, hardGaps);
 }
 
-function pickPrimaryFunction(job: JobPosting, jobVector: Vector) {
-  const text = `${job.title} ${job.description} ${job.responsibilities.join(" ")}`.toLowerCase();
-  if (text.includes("integration troubleshooting") || text.includes("cross-layer") || (text.includes("logs") && text.includes("root-cause"))) {
-    return careerFunctions.find((fn) => fn.id === "systems-integration-debug")!;
-  }
-  if (text.includes("product failures") || text.includes("field failures") || text.includes("failure analysis")) {
-    return careerFunctions.find((fn) => fn.id === "failure-analysis")!;
-  }
-  const exact = careerFunctions.find((fn) => job.title.toLowerCase().includes(fn.shortName.toLowerCase()) || fn.typicalTitles.some((title) => title.toLowerCase() === job.title.toLowerCase()));
-  if (exact && !job.description.toLowerCase().includes("traceability")) return exact;
-  return careerFunctions.map((fn) => ({ fn, fit: vectorFit(jobVector, fn.taskDnaVector) })).sort((a, b) => b.fit - a.fit)[0].fn;
+function pickPrimaryFunction(job: JobPosting, jobVector: Vector, functionSet: CareerFunction[] = careerFunctions) {
+  const match = matchFunctionByTasks(job);
+  const taskMatched = functionSet.find((fn) => fn.id === match.functionId);
+  if (taskMatched) return taskMatched;
+  // Documentation-heavy or unmatched jobs fall back to nearest vector, never raw title.
+  return functionSet.map((fn) => ({ fn, fit: vectorFit(jobVector, fn.taskDnaVector) })).sort((a, b) => b.fit - a.fit)[0].fn;
 }
 
 function actualWorkSummary(job: JobPosting, primary: CareerFunction, frictionFactors: string[]) {
@@ -596,8 +654,7 @@ function inferContradictions(persona: (typeof personas)[number], evidence: UserE
     }
   }
   if (persona.repellents.some((repellent) => repellent.includes("customer")) && evidence.some((item) => item.originalText.toLowerCase().includes("field"))) contradictions.push("User dislikes customer-facing work but has field troubleshooting evidence.");
-  if (persona.id === "quality-dislikes-compliance") contradictions.push("Quality capability is strong, but compliance preference is negative; hireability and work fit should diverge.");
-  if (persona.id === "low-information") contradictions.push("Sparse evidence: recommendations are deliberately lower-confidence and more exploratory.");
+  if (evidence.length < scoringConfig.inference.sparseEvidenceThreshold) contradictions.push("Sparse evidence: recommendations are deliberately lower-confidence and more exploratory.");
   return Array.from(new Set(contradictions));
 }
 
@@ -698,7 +755,7 @@ export function transitionFreshnessState(current: FreshnessState, event: keyof t
   return scoringConfig.freshnessTransitions[event] as FreshnessState;
 }
 
-export function estimateSimulatedCommute(job: Pick<JobPosting, "location" | "workMode">, homeRegion = "Boston, MA", toleranceMinutes = 60) {
+export function estimateSimulatedCommute(job: Pick<JobPosting, "location" | "workMode">, homeRegion = scoringConfig.commuteRules.defaultHomeRegion, toleranceMinutes = 60) {
   if (job.workMode === "Remote") return { minutes: 0, penalty: 0, label: "Remote" };
   const sameRegion = job.location.toLowerCase().includes(homeRegion.split(",")[0].toLowerCase());
   const base = sameRegion ? 38 : job.workMode === "Hybrid" ? 58 : 76;

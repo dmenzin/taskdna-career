@@ -103,6 +103,9 @@ export function createSyntheticNetworkUniverse(): SyntheticNetworkUniverse {
       if (relIndex % 11 === 0) {
         interactions.push(makeInteraction(relationship, "NO_RESPONSE", "No response to a prior low-burden note.", undefined, undefined));
       }
+      if (relIndex === 9) {
+        interactions.push(makeInteraction(relationship, "DO_NOT_CONTACT", "Please don't contact me about job searching.", undefined, undefined));
+      }
     });
   });
 

@@ -205,20 +205,39 @@ export function createSyntheticJobs(count = 120): JobPosting[] {
   ];
 }
 
+// Task-content-first function matching: titles are only a last-resort signal so
+// title/keyword leakage cannot dominate actual-work interpretation.
+export function matchFunctionByTasks(job: Pick<JobPosting, "title" | "description" | "responsibilities" | "requirements">) {
+  const taskText = `${job.description} ${job.responsibilities.join(" ")} ${job.requirements.join(" ")}`.toLowerCase();
+  if (taskText.includes("mbse") || taskText.includes("traceability") || taskText.includes("qms")) {
+    return { functionId: "documentation-heavy-systems", source: "task-content" as const };
+  }
+  const byResponsibilities = careerFunctions
+    .map((fn) => ({ fn, overlap: job.responsibilities.filter((responsibility) => responsibilitiesByFunction[fn.id]?.includes(responsibility)).length }))
+    .filter((item) => item.overlap > 0)
+    .sort((a, b) => b.overlap - a.overlap)[0];
+  if (byResponsibilities) return { functionId: byResponsibilities.fn.id, source: "task-content" as const };
+  if (taskText.includes("integration troubleshooting") || taskText.includes("cross-layer") || (taskText.includes("logs") && taskText.includes("root-cause"))) {
+    return { functionId: "systems-integration-debug", source: "task-content" as const };
+  }
+  if (taskText.includes("product failures") || taskText.includes("field failures") || taskText.includes("failure analysis")) {
+    return { functionId: "failure-analysis", source: "task-content" as const };
+  }
+  const byTaskLoop = careerFunctions.find((fn) => taskText.includes(fn.oneSentenceTaskLoop.toLowerCase().slice(0, 42)));
+  if (byTaskLoop) return { functionId: byTaskLoop.id, source: "task-content" as const };
+  const titleText = job.title.toLowerCase();
+  const byTitle =
+    careerFunctions.find((fn) => titleByFunction[fn.id]?.some((title) => titleText.includes(title.toLowerCase()))) ??
+    careerFunctions.find((fn) => fn.typicalTitles.some((title) => titleText.includes(title.toLowerCase())));
+  if (byTitle) return { functionId: byTitle.id, source: "title-fallback" as const };
+  return { functionId: null, source: "none" as const };
+}
+
 export function inferJobVector(job: JobPosting): Vector {
-  const text = `${job.title} ${job.description} ${job.responsibilities.join(" ")} ${job.requirements.join(" ")}`.toLowerCase();
-  if (text.includes("mbse") || text.includes("traceability") || text.includes("qms")) {
+  const match = matchFunctionByTasks(job);
+  if (match.functionId === "documentation-heavy-systems") {
     return vector({ problem_structure: 8.8, repetition_tolerance: 8.9, coordination_preference: 8.2, investigation_orientation: 4.1, experimentation_preference: 3.8, closure_preference: 8.4 });
   }
-  if (text.includes("integration troubleshooting") || text.includes("cross-layer") || (text.includes("logs") && text.includes("root-cause"))) {
-    return careerFunctions.find((fn) => fn.id === "systems-integration-debug")!.taskDnaVector;
-  }
-  if (text.includes("product failures") || text.includes("field failures") || text.includes("failure analysis")) {
-    return careerFunctions.find((fn) => fn.id === "failure-analysis")!.taskDnaVector;
-  }
-  const matched =
-    careerFunctions.find((fn) => titleByFunction[fn.id]?.some((title) => text.includes(title.toLowerCase()))) ??
-    careerFunctions.find((fn) => fn.typicalTitles.some((title) => text.includes(title.toLowerCase()))) ??
-    careerFunctions.find((fn) => job.description.toLowerCase().includes(fn.shortName.toLowerCase()));
+  const matched = careerFunctions.find((fn) => fn.id === match.functionId);
   return matched?.taskDnaVector ?? vector({});
 }
