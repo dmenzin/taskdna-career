@@ -1,7 +1,7 @@
 {
-  "phase": "sandbox prototype",
-  "current_milestone": "M41 clean acceptance run",
-  "current_task": "Final PR update",
+  "phase": "adversarial audit hardening",
+  "current_milestone": "M42 audit fix cycles complete",
+  "current_task": "Final commit, PR update, and walkthrough artifact",
   "completed": [
     "M0 inspected greenfield repository; no reference artifacts found",
     "M1 architecture, documentation, and build state",
@@ -22,11 +22,15 @@
     "M24 freshness and simulated commute semantics",
     "M25-M32 UI, reactions, debug console, analytics/Product Lab",
     "M33-M34 evaluation harness and regression tests",
-    "M36 standalone HTML/JSON exports"
+    "M36 standalone HTML/JSON exports",
+    "Audit cycle 1: evidence-driven Task-DNA blending, contradiction-aware confidence, adaptive interview, provider interfaces, freshness filtering, safer export, expanded tests",
+    "Audit cycle 2: larger scenario bank, full function map visibility, richer debug console, Playwright hydration fix"
   ],
   "in_progress": [],
   "next": [
-    "Expand SQLite persistence from seeded JSON boundary to real migrations"
+    "Expand SQLite persistence from seeded JSON boundary to real migrations",
+    "Split the now-larger domain engine into smaller provider/service modules",
+    "Add empirically calibrated scoring once real user feedback exists"
   ],
   "blockers": [],
   "known_defects": [
@@ -35,8 +39,8 @@
   ],
   "failing_tests": [],
   "evaluation_failures": [],
-  "last_successful_build": "pnpm lint && pnpm typecheck && pnpm test && pnpm eval && pnpm export:demo && pnpm build passed on 2026-08-22T15:22:17Z",
-  "last_e2e_run": "Manual browser walkthrough passed with /opt/cursor/artifacts/taskdna_core_walkthrough_short.mp4 on 2026-08-22T15:30Z",
-  "last_eval_run": "pnpm eval passed on 2026-08-22T15:22:17Z",
-  "last_updated": "2026-08-22T15:30:00.000Z"
+  "last_successful_build": "pnpm lint && pnpm typecheck && pnpm test && pnpm eval && pnpm test:e2e && pnpm export:demo && pnpm build passed on 2026-08-22T16:15Z",
+  "last_e2e_run": "pnpm test:e2e passed 12 Playwright tests across desktop/mobile plus standalone export on 2026-08-22T16:15Z",
+  "last_eval_run": "pnpm eval passed on 2026-08-22T16:15Z",
+  "last_updated": "2026-08-22T16:15:00.000Z"
 }
