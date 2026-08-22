@@ -15,13 +15,16 @@ The lab exists to test whether the engine works for people who are not the origi
 
 ## Occupational skeletons
 
-`src/lab/occupations.ts` is an O*NET-inspired local snapshot (`onet-inspired.v1`): 24 occupations across 21 families, each with tasks, generalized work activities, skills, and work context.
+Two labs exist:
 
-Occupation is a **work skeleton**. It does **not** determine whether the virtual human likes that work.
+- **v1** (`src/lab/occupations.ts`, `onet-inspired.v1`): 24-occupation snapshot, 200 subjects, seed `20260822`. Still used by `pnpm audit:logic` / `subjects:*`.
+- **v2** (`src/lab/onetLab.ts`, `subject-lab.v2-onet`): real O*NET 30.3 corpus (1,016 occupations, 923 with tasks), seed `20260823`. Used by `pnpm eval:onet-shock`. Hard-fails if the derived corpus is missing — no silent snapshot fallback.
+
+Occupation is a **work skeleton**. It does **not** determine whether the virtual human likes that work. Preference is generated independently; only a minority is nudged toward occupation-shaped work.
 
 ## Population
 
-`pnpm subjects:generate` builds 200 subjects (seed `20260822` by default):
+`pnpm subjects:generate` builds 200 **v1** subjects (seed `20260822` by default):
 
 - 80 design
 - 40 validation
@@ -51,3 +54,9 @@ pnpm subjects:regenerate --seed=20260822
 ```
 
 Inspect prints observations and evaluation. It does not feed hidden truth into the engine.
+
+## O*NET v2 lab
+
+`generateOnetSubjects()` builds ~450 subjects: 150 development / 100 validation / 100 locked holdout / 100 adversarial, plus 600 twins and 1,000 observation-regime variants (sparse / contradictory / keyword-stuffed / misleading-title).
+
+`pnpm eval:onet-shock` writes `artifacts/logic_audit/onet_shock_latest.json`. The Phase A file `onet_external_shock_baseline.json` is never overwritten.

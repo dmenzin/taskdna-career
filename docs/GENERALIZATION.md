@@ -34,4 +34,6 @@ Reported in `artifacts/logic_audit/generalization.json`:
 
 Title-removal twins often produce identical resumes because many subjects already have misleading or generic titles. A no-op title strip is not proof of title independence. Task-first job matching and the same-title/different-work fixtures remain the stronger title-bias tests.
 
-Hidden-truth MAE is about 1.9 / 10. That is expected under messy evidence and anti-circular generation. It means the engine recovers **structure**, not a precise latent vector.
+Hidden-truth MAE is about 1.9 / 10 on both labs (v1 ~2.0 after pass 2; O*NET v2 1.875 vs frozen baseline 1.845). That is expected under messy evidence and anti-circular generation. Pass 2 improved **discrimination and coverage**, not latent-vector recovery. Do not leak occupation into preference to chase MAE.
+
+See `docs/PASS2_SCORECARD.md` and `docs/ONET_EXTERNAL_SHOCK_BASELINE.md`.

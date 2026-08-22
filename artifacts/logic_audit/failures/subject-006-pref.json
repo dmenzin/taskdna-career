@@ -1,0 +1,7 @@
+{
+  "id": "subject-006-pref",
+  "expected": "same_experience_different_preference",
+  "observed": "fitΔ 0.32 hireΔ 2.04",
+  "rootCause": "twin metamorphic failure",
+  "fixVersion": "subject-lab.v1"
+}

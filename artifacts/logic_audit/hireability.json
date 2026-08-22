@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-22T20:05:33.230Z",
+  "generatedAt": "2026-08-22T20:08:28.211Z",
   "stillMostlyLexical": false,
   "notes": "Hireability now uses a requirement-evidence matrix with gap classes. Residual weakness: recency/duration are still coarse heuristics.",
   "results": [
@@ -145,12 +145,12 @@
       "fit": 8.58235294117647,
       "hireability": 1,
       "hardDisqualifiers": [],
-      "coreCoverage": 0.1375,
+      "coreCoverage": 0,
       "professionalShare": 0,
       "trace": [
         "Hireability 1.0 from 4 structured requirements (hireability.v2).",
-        "Core coverage 14%, preferred 55%, professional share 0%.",
-        "Gaps: fatal 0, core 2, significant 2.",
+        "Core coverage 0%, preferred 55%, professional share 0%.",
+        "Gaps: fatal 0, core 3, significant 1.",
         "Seniority alignment 0.56; recruiter legibility 0.42.",
         "No fatal/legal disqualifiers."
       ]

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-22T19:26:19.144Z",
+  "generatedAt": "2026-08-22T20:08:29.335Z",
   "seed": 20260822,
   "labVersion": "subject-lab.v1",
   "occupationSource": {
@@ -42,17 +42,17 @@
       {
         "id": "evidence_changes_fit",
         "pass": true,
-        "detail": "investigator cyber-req gap 1.70 vs coordinator 0.09 (cyber 9.37/9.16)"
+        "detail": "investigator cyber-req gap 0.54 vs coordinator -2.13 (cyber 7.84/6.97)"
       },
       {
         "id": "preference_capability_not_collapsed",
         "pass": true,
-        "detail": "fit 9.37/9.16 hire 4.30/4.59"
+        "detail": "fit 8.48/8.06 hire 5.72/5.82"
       },
       {
         "id": "sparse_lower_confidence",
         "pass": true,
-        "detail": "sparse 0.24 rich 0.45"
+        "detail": "sparse 0.24 rich 0.36"
       },
       {
         "id": "caf_formula",
@@ -102,30 +102,30 @@
   },
   "subjects": {
     "count": 200,
-    "meanMae": 1.8658444272930566,
-    "propertyPassRate": 0.965556831228473,
+    "meanMae": 1.944381601357781,
+    "propertyPassRate": 0.9012629161882894,
     "byCohort": {
-      "design": 0.9487179487179487,
-      "validation": 0.9818181818181818,
-      "holdout": 0.9661016949152542,
-      "adversarial": 0.9831460674157303
+      "design": 0.8717948717948718,
+      "validation": 0.9515151515151515,
+      "holdout": 0.8926553672316384,
+      "adversarial": 0.9213483146067416
     }
   },
   "twins": {
     "count": 64,
-    "passRate": 0.984375,
+    "passRate": 0.78125,
     "sample": [
       {
         "id": "subject-001-pref",
         "kind": "same_experience_different_preference",
-        "pass": true,
-        "detail": "fitΔ 0.17 hireΔ 0.00"
+        "pass": false,
+        "detail": "fitΔ 0.52 hireΔ 1.05"
       },
       {
         "id": "subject-001-exp",
         "kind": "same_preference_different_experience",
         "pass": true,
-        "detail": "fitΔ 0.64 hireΔ 0.63"
+        "detail": "fitΔ 0.34 hireΔ 1.12"
       },
       {
         "id": "subject-001-net",
@@ -137,19 +137,19 @@
         "id": "subject-001-title",
         "kind": "title_removed",
         "pass": true,
-        "detail": "title-on 8.06 title-off 8.06"
+        "detail": "title-on 8.21 title-off 8.21"
       },
       {
         "id": "subject-002-pref",
         "kind": "same_experience_different_preference",
-        "pass": true,
-        "detail": "fitΔ 0.54 hireΔ 0.09"
+        "pass": false,
+        "detail": "fitΔ 0.22 hireΔ 1.65"
       },
       {
         "id": "subject-002-exp",
         "kind": "same_preference_different_experience",
         "pass": true,
-        "detail": "fitΔ 0.35 hireΔ 0.63"
+        "detail": "fitΔ 0.15 hireΔ 1.46"
       },
       {
         "id": "subject-002-net",
@@ -161,19 +161,19 @@
         "id": "subject-002-title",
         "kind": "title_removed",
         "pass": true,
-        "detail": "title-on 7.99 title-off 7.99"
+        "detail": "title-on 7.59 title-off 7.59"
       },
       {
         "id": "subject-003-pref",
         "kind": "same_experience_different_preference",
-        "pass": true,
-        "detail": "fitΔ 0.09 hireΔ 0.00"
+        "pass": false,
+        "detail": "fitΔ 0.43 hireΔ 1.16"
       },
       {
         "id": "subject-003-exp",
         "kind": "same_preference_different_experience",
         "pass": true,
-        "detail": "fitΔ 0.53 hireΔ 0.60"
+        "detail": "fitΔ 0.19 hireΔ 0.54"
       },
       {
         "id": "subject-003-net",
@@ -185,7 +185,7 @@
         "id": "subject-003-title",
         "kind": "title_removed",
         "pass": true,
-        "detail": "title-on 7.93 title-off 7.93"
+        "detail": "title-on 7.91 title-off 7.91"
       }
     ]
   },
@@ -195,62 +195,62 @@
       {
         "id": "subject-121",
         "pass": true,
-        "detail": "dna 17 functions 23 actions 7"
+        "detail": "dna 17 functions 23 actions 5"
       },
       {
         "id": "subject-122",
         "pass": true,
-        "detail": "dna 17 functions 23 actions 6"
+        "detail": "dna 17 functions 23 actions 5"
       },
       {
         "id": "subject-123",
         "pass": true,
-        "detail": "dna 17 functions 23 actions 8"
+        "detail": "dna 17 functions 23 actions 5"
       },
       {
         "id": "subject-124",
         "pass": true,
-        "detail": "dna 17 functions 23 actions 8"
+        "detail": "dna 17 functions 23 actions 5"
       },
       {
         "id": "subject-125",
         "pass": true,
-        "detail": "dna 17 functions 23 actions 7"
+        "detail": "dna 17 functions 23 actions 5"
       },
       {
         "id": "subject-126",
         "pass": true,
-        "detail": "dna 17 functions 23 actions 8"
+        "detail": "dna 17 functions 23 actions 5"
       },
       {
         "id": "subject-127",
         "pass": true,
-        "detail": "dna 17 functions 23 actions 7"
+        "detail": "dna 17 functions 23 actions 5"
       },
       {
         "id": "subject-128",
         "pass": true,
-        "detail": "dna 17 functions 23 actions 8"
+        "detail": "dna 17 functions 23 actions 5"
       },
       {
         "id": "subject-129",
         "pass": true,
-        "detail": "dna 17 functions 23 actions 7"
+        "detail": "dna 17 functions 23 actions 5"
       },
       {
         "id": "subject-130",
         "pass": true,
-        "detail": "dna 17 functions 23 actions 7"
+        "detail": "dna 17 functions 23 actions 5"
       },
       {
         "id": "subject-131",
         "pass": true,
-        "detail": "dna 17 functions 23 actions 8"
+        "detail": "dna 17 functions 23 actions 5"
       },
       {
         "id": "subject-132",
         "pass": true,
-        "detail": "dna 17 functions 23 actions 7"
+        "detail": "dna 17 functions 23 actions 4"
       }
     ]
   },
@@ -258,50 +258,50 @@
     {
       "family": "finance",
       "n": 4,
-      "passRate": 1,
-      "meanMae": 1.8159604976187491
+      "passRate": 0.9411764705882353,
+      "meanMae": 2.0050456207094296
     },
     {
       "family": "sales",
       "n": 4,
-      "passRate": 1,
-      "meanMae": 2.215163152457274
+      "passRate": 0.8888888888888888,
+      "meanMae": 2.2958612867566703
     },
     {
       "family": "operations_supply",
       "n": 4,
       "passRate": 1,
-      "meanMae": 1.780970521636061
+      "meanMae": 1.9736880242999395
     },
     {
       "family": "ux_design",
       "n": 3,
-      "passRate": 1,
-      "meanMae": 1.9455222261772294
+      "passRate": 0.9285714285714286,
+      "meanMae": 1.8874352200043403
     },
     {
       "family": "software_it",
       "n": 6,
-      "passRate": 1,
-      "meanMae": 1.9376403695831617
+      "passRate": 0.8846153846153846,
+      "meanMae": 1.9666746241935165
     },
     {
       "family": "engineering_hardware",
       "n": 6,
-      "passRate": 0.9545454545454546,
-      "meanMae": 2.023609705575255
+      "passRate": 1,
+      "meanMae": 2.0219764382284184
     }
   ],
   "unseen": {
     "n": 24,
-    "passRate": 0.9622641509433962,
-    "meanMae": 1.8770769519127564,
+    "passRate": 0.8962264150943396,
+    "meanMae": 1.954382219858503,
     "cases": [
       {
         "subjectId": "subject-121",
         "cohort": "holdout",
-        "confidence": 0.39150326050420176,
-        "taskDnaMae": 2.2056315191752813,
+        "confidence": 0.41294117647058826,
+        "taskDnaMae": 1.9822721283054126,
         "propertyResults": [
           {
             "id": "preference_capability_independence",
@@ -310,8 +310,8 @@
           },
           {
             "id": "occupation_does_not_define_preference",
-            "pass": false,
-            "detail": "inferred investigation 7.48 vs truth 3.40"
+            "pass": true,
+            "detail": "inferred investigation 6.52 vs truth 3.40"
           },
           {
             "id": "hireability_tracks_demonstrated_skills",
@@ -321,15 +321,15 @@
           {
             "id": "unknown_not_confident_neutral",
             "pass": true,
-            "detail": "confidence 0.39 sparse=false"
+            "detail": "confidence 0.41 sparse=false"
           }
         ]
       },
       {
         "subjectId": "subject-122",
         "cohort": "holdout",
-        "confidence": 0.42607529411764716,
-        "taskDnaMae": 2.035034886562868,
+        "confidence": 0.39176470588235307,
+        "taskDnaMae": 1.8636112409274233,
         "propertyResults": [
           {
             "id": "preference_capability_independence",
@@ -339,7 +339,7 @@
           {
             "id": "occupation_does_not_define_preference",
             "pass": true,
-            "detail": "inferred investigation 7.48 vs truth 4.16"
+            "detail": "inferred investigation 7.36 vs truth 4.16"
           },
           {
             "id": "hireability_tracks_demonstrated_skills",
@@ -349,15 +349,15 @@
           {
             "id": "unknown_not_confident_neutral",
             "pass": true,
-            "detail": "confidence 0.43 sparse=false"
+            "detail": "confidence 0.39 sparse=false"
           }
         ]
       },
       {
         "subjectId": "subject-123",
         "cohort": "holdout",
-        "confidence": 0.3613035294117648,
-        "taskDnaMae": 1.6378220201837557,
+        "confidence": 0.4129411764705883,
+        "taskDnaMae": 1.7952291101883986,
         "propertyResults": [
           {
             "id": "preference_capability_independence",
@@ -372,7 +372,7 @@
           {
             "id": "occupation_does_not_define_preference",
             "pass": true,
-            "detail": "inferred investigation 7.48 vs truth 6.87"
+            "detail": "inferred investigation 7.36 vs truth 6.87"
           },
           {
             "id": "hireability_tracks_demonstrated_skills",
@@ -382,15 +382,15 @@
           {
             "id": "unknown_not_confident_neutral",
             "pass": true,
-            "detail": "confidence 0.36 sparse=false"
+            "detail": "confidence 0.41 sparse=false"
           }
         ]
       },
       {
         "subjectId": "subject-124",
         "cohort": "holdout",
-        "confidence": 0.32864470588235306,
-        "taskDnaMae": 1.9078488402521128,
+        "confidence": 0.2400000000000001,
+        "taskDnaMae": 1.5446723696638773,
         "propertyResults": [
           {
             "id": "preference_capability_independence",
@@ -400,7 +400,7 @@
           {
             "id": "occupation_does_not_define_preference",
             "pass": true,
-            "detail": "inferred investigation 6.68 vs truth 3.65"
+            "detail": "inferred investigation 5.00 vs truth 3.65"
           },
           {
             "id": "hireability_tracks_demonstrated_skills",
@@ -410,15 +410,15 @@
           {
             "id": "unknown_not_confident_neutral",
             "pass": true,
-            "detail": "confidence 0.33 sparse=true"
+            "detail": "confidence 0.24 sparse=true"
           }
         ]
       },
       {
         "subjectId": "subject-125",
         "cohort": "holdout",
-        "confidence": 0.40145411764705896,
-        "taskDnaMae": 1.7746715450467656,
+        "confidence": 0.3858823529411766,
+        "taskDnaMae": 1.8254253881263542,
         "propertyResults": [
           {
             "id": "preference_capability_independence",
@@ -428,7 +428,7 @@
           {
             "id": "investigative_outranks_coordination",
             "pass": true,
-            "detail": "investigative 9.04 vs coordination 8.80"
+            "detail": "investigative 9.04 vs coordination 8.97"
           },
           {
             "id": "hireability_tracks_demonstrated_skills",
@@ -437,21 +437,21 @@
           },
           {
             "id": "same_structure_cross_industry",
-            "pass": true,
-            "detail": "cyber fit 9.40 vs requirements fit 8.80"
+            "pass": false,
+            "detail": "cyber fit 7.97 vs requirements fit 8.59"
           },
           {
             "id": "unknown_not_confident_neutral",
             "pass": true,
-            "detail": "confidence 0.40 sparse=false"
+            "detail": "confidence 0.39 sparse=false"
           }
         ]
       },
       {
         "subjectId": "subject-126",
         "cohort": "holdout",
-        "confidence": 0.4372547789311805,
-        "taskDnaMae": 2.156391069139026,
+        "confidence": 0.4388235294117648,
+        "taskDnaMae": 2.602245947780068,
         "propertyResults": [
           {
             "id": "preference_capability_independence",
@@ -461,7 +461,7 @@
           {
             "id": "investigative_outranks_coordination",
             "pass": false,
-            "detail": "investigative 8.48 vs coordination 8.81"
+            "detail": "investigative 8.14 vs coordination 9.06"
           },
           {
             "id": "hireability_tracks_demonstrated_skills",
@@ -470,8 +470,8 @@
           },
           {
             "id": "same_structure_cross_industry",
-            "pass": true,
-            "detail": "cyber fit 9.25 vs requirements fit 8.81"
+            "pass": false,
+            "detail": "cyber fit 7.43 vs requirements fit 8.47"
           },
           {
             "id": "unknown_not_confident_neutral",
@@ -483,8 +483,8 @@
       {
         "subjectId": "subject-127",
         "cohort": "holdout",
-        "confidence": 0.33771764705882357,
-        "taskDnaMae": 1.30559866265717,
+        "confidence": 0.4423529411764706,
+        "taskDnaMae": 1.4676303254550307,
         "propertyResults": [
           {
             "id": "preference_capability_independence",
@@ -494,7 +494,7 @@
           {
             "id": "occupation_does_not_define_preference",
             "pass": true,
-            "detail": "inferred investigation 5.00 vs truth 3.57"
+            "detail": "inferred investigation 5.74 vs truth 3.57"
           },
           {
             "id": "hireability_tracks_demonstrated_skills",
@@ -504,15 +504,15 @@
           {
             "id": "unknown_not_confident_neutral",
             "pass": true,
-            "detail": "confidence 0.34 sparse=false"
+            "detail": "confidence 0.44 sparse=false"
           }
         ]
       },
       {
         "subjectId": "subject-128",
         "cohort": "holdout",
-        "confidence": 0.37222588235294124,
-        "taskDnaMae": 1.7660325888193706,
+        "confidence": 0.3882352941176471,
+        "taskDnaMae": 1.6669233712216514,
         "propertyResults": [
           {
             "id": "preference_capability_independence",
@@ -522,7 +522,7 @@
           {
             "id": "occupation_does_not_define_preference",
             "pass": true,
-            "detail": "inferred investigation 6.68 vs truth 4.57"
+            "detail": "inferred investigation 7.36 vs truth 4.57"
           },
           {
             "id": "hireability_tracks_demonstrated_skills",
@@ -532,7 +532,7 @@
           {
             "id": "unknown_not_confident_neutral",
             "pass": true,
-            "detail": "confidence 0.37 sparse=false"
+            "detail": "confidence 0.39 sparse=false"
           }
         ]
       }
@@ -543,13 +543,13 @@
     "results": [
       {
         "dimension": "investigation_orientation",
-        "topMoved": 15,
-        "spearman": 0.9946607341490545
+        "topMoved": 19,
+        "spearman": 0.9701890989988876
       },
       {
         "dimension": "coordination_preference",
-        "topMoved": 3,
-        "spearman": 0.9986651835372636
+        "topMoved": 8,
+        "spearman": 0.996440489432703
       }
     ]
   },
@@ -569,8 +569,8 @@
       "confidenceHonesty": "A",
       "determinism": "A",
       "personalizationLeakage": "A",
-      "generalizationHoldout": "A",
-      "counterfactualTwins": "A",
+      "generalizationHoldout": "B",
+      "counterfactualTwins": "C",
       "zeroOrigin": "A",
       "domainHoldout": "A",
       "rankStability": "A",
@@ -587,9 +587,75 @@
   },
   "failures": [
     {
-      "id": "subject-016-exp",
-      "expected": "same_preference_different_experience",
-      "observed": "fitΔ 0.97 hireΔ 0.00",
+      "id": "subject-001-pref",
+      "expected": "same_experience_different_preference",
+      "observed": "fitΔ 0.52 hireΔ 1.05",
+      "rootCause": "twin metamorphic failure"
+    },
+    {
+      "id": "subject-002-pref",
+      "expected": "same_experience_different_preference",
+      "observed": "fitΔ 0.22 hireΔ 1.65",
+      "rootCause": "twin metamorphic failure"
+    },
+    {
+      "id": "subject-003-pref",
+      "expected": "same_experience_different_preference",
+      "observed": "fitΔ 0.43 hireΔ 1.16",
+      "rootCause": "twin metamorphic failure"
+    },
+    {
+      "id": "subject-004-pref",
+      "expected": "same_experience_different_preference",
+      "observed": "fitΔ 0.09 hireΔ 0.46",
+      "rootCause": "twin metamorphic failure"
+    },
+    {
+      "id": "subject-005-pref",
+      "expected": "same_experience_different_preference",
+      "observed": "fitΔ 0.53 hireΔ 1.48",
+      "rootCause": "twin metamorphic failure"
+    },
+    {
+      "id": "subject-006-pref",
+      "expected": "same_experience_different_preference",
+      "observed": "fitΔ 0.32 hireΔ 2.04",
+      "rootCause": "twin metamorphic failure"
+    },
+    {
+      "id": "subject-008-pref",
+      "expected": "same_experience_different_preference",
+      "observed": "fitΔ 0.52 hireΔ 1.60",
+      "rootCause": "twin metamorphic failure"
+    },
+    {
+      "id": "subject-009-pref",
+      "expected": "same_experience_different_preference",
+      "observed": "fitΔ 0.28 hireΔ 0.76",
+      "rootCause": "twin metamorphic failure"
+    },
+    {
+      "id": "subject-010-pref",
+      "expected": "same_experience_different_preference",
+      "observed": "fitΔ 0.18 hireΔ 1.70",
+      "rootCause": "twin metamorphic failure"
+    },
+    {
+      "id": "subject-011-pref",
+      "expected": "same_experience_different_preference",
+      "observed": "fitΔ 0.33 hireΔ 1.19",
+      "rootCause": "twin metamorphic failure"
+    },
+    {
+      "id": "subject-012-pref",
+      "expected": "same_experience_different_preference",
+      "observed": "fitΔ 0.55 hireΔ 1.60",
+      "rootCause": "twin metamorphic failure"
+    },
+    {
+      "id": "subject-014-pref",
+      "expected": "same_experience_different_preference",
+      "observed": "fitΔ 0.18 hireΔ 1.70",
       "rootCause": "twin metamorphic failure"
     }
   ]

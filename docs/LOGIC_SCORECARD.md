@@ -6,7 +6,9 @@ This scorecard grades **internal logical defensibility**, not labor-market truth
 
 ## Latest grades
 
-From the 2026-08-22 deeper pass (seed `20260822`, lab `subject-lab.v1`):
+Pass 2 24-component card and the 18 final questions: `docs/PASS2_SCORECARD.md`.
+
+From the 2026-08-22 pass-2 v1-lab re-run (seed `20260822`, lab `subject-lab.v1`) after evidence-class repairs:
 
 | Claim | Grade | Meaning |
 |---|---|---|
@@ -15,8 +17,8 @@ From the 2026-08-22 deeper pass (seed `20260822`, lab `subject-lab.v1`):
 | Confidence honesty | A | Sparse input stays low-confidence |
 | Determinism | A | Same input, same ranking |
 | Personalization leakage | A | No persona-id branches in the engine |
-| Holdout properties | A | Locked subjects keep coarse properties |
-| Counterfactual twins | A | Network variants do not change Work Fit |
+| Holdout properties | B | Locked v1 subjects keep coarse properties (89%) |
+| Counterfactual twins | C | 78% twin pass; same-experience / different-preference is harder once exposure cannot move preference |
 | Zero-origin | A | Generic users initialize without golden fixtures |
 | Domain holdout | A | Finance/sales/ops/UX/software/hardware slices run |
 | Rank stability | A | Tiny noise does not scramble ranks |
@@ -43,6 +45,6 @@ The engine is no longer a UI that only agrees with its own fixtures. It is still
 ## What would raise the grade
 
 - Calibrated confidence against real outcomes
-- A real O*NET/ESCO snapshot with license-clean tasks, not only an inspired local skeleton
+- Human-beta calibration of remaining weights (O*NET 30.3 is now ingested; it did not calibrate preference)
 - Human review of 30+ recommendations outside the technical demo pack
 - Tighter title-removal tests that actually change observable text

@@ -121,8 +121,9 @@ function classifyRequirement(description: string, fallbackType: RequirementType)
 
 export function matchRequirement(requirement: JobRequirement, profile: UserProfile): CandidateEvidence {
   const career = profile.persona.careerText.toLowerCase();
+  const careerWithoutDumps = stripKeywordDumps(career);
   const haystack = [
-    career,
+    careerWithoutDumps,
     ...profile.capabilities.map((capability) => capability.name),
     ...profile.persona.capabilityKeywords,
     ...profile.evidence.flatMap((item) => item.demonstratedSkills),
@@ -133,6 +134,9 @@ export function matchRequirement(requirement: JobRequirement, profile: UserProfi
     || capability?.evidenceLevel === "INTEREST_ONLY"
     || capability?.evidenceLevel === "DIRECT_ACADEMIC";
   const negated = needle.length > 2 && new RegExp(`\\b(no|not|without|lacking|lack of)\\b[\\s\\w]{0,24}${escapeNeedle(needle)}`, "i").test(career);
+  if (keywordDumpOnly(career, needle) && !hasProfessionalContext(careerWithoutDumps, needle)) {
+    return { matchType: "INFERRED_WEAK", level: 2, recency: 0.2, duration: 0.1, provenance: "keyword dump without work context", confidence: 0.22 };
+  }
   if (!negated && (capability?.evidenceLevel === "DIRECT_PROFESSIONAL" || (haystack.includes(needle) && needle.length > 3 && !academic))) {
     return { matchType: "DIRECT_PROFESSIONAL", level: 7.5, recency: capability?.recency ?? 0.7, duration: 0.6, provenance: capability?.id ?? "career text", confidence: 0.78 };
   }
@@ -246,10 +250,25 @@ function seniorityAlignmentFor(profile: UserProfile, job: JobPosting) {
 }
 
 function adjacentMatch(requirement: string, profile: UserProfile) {
-  const haystack = [profile.persona.careerText, ...profile.persona.capabilityKeywords, ...profile.capabilities.map((capability) => capability.name)].join(" ").toLowerCase();
+  const haystack = [stripKeywordDumps(profile.persona.careerText), ...profile.persona.capabilityKeywords, ...profile.capabilities.map((capability) => capability.name)].join(" ").toLowerCase();
   const key = Object.keys(ALIASES).find((alias) => requirement.toLowerCase().includes(alias));
   if (!key) return false;
   return ALIASES[key]!.some((alias) => haystack.includes(alias));
+}
+
+function stripKeywordDumps(text: string) {
+  return text.replace(/\b(?:skills|keywords)\s*:[^.]*\.?/gi, " ").replace(/\s+/g, " ").trim();
+}
+
+function keywordDumpOnly(fullText: string, needle: string) {
+  if (needle.length < 3) return false;
+  const inDump = new RegExp(`\\b(?:skills|keywords)\\s*:[^.]{0,500}${escapeNeedle(needle)}`, "i").test(fullText);
+  return inDump && !stripKeywordDumps(fullText).includes(needle);
+}
+
+function hasProfessionalContext(text: string, needle: string) {
+  const escaped = escapeNeedle(needle);
+  return new RegExp(`(delivered|professional|production|years?|used|built|owned|implemented|wrote|ran).{0,48}${escaped}|${escaped}.{0,40}(delivered|professional|production|years?|in production)`, "i").test(text);
 }
 
 function escapeNeedle(text: string) {

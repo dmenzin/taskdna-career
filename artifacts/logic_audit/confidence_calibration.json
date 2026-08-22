@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-08-22T20:08:00.000Z",
+  "labVersion": "subject-lab.v2-onet",
+  "seed": 20260823,
+  "claim": "Confidence is a heuristic honesty signal, not a probability.",
+  "overall": [
+    { "bucket": "<0.35", "n": 221, "meanMae": 1.843 },
+    { "bucket": "0.35-0.5", "n": 228, "meanMae": 1.908 },
+    { "bucket": "0.5-0.65", "n": 1, "meanMae": 1.580 },
+    { "bucket": ">=0.65", "n": 0, "meanMae": null }
+  ],
+  "association": "weak / uninformative. Almost nobody exceeds 0.5. The single 0.5-0.65 observation is not a calibration curve.",
+  "source": "artifacts/logic_audit/onet_shock_latest.json overall.confidenceErrorBuckets"
+}

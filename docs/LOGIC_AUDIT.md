@@ -75,11 +75,34 @@ pnpm subjects:regenerate --seed=20260822
 
 Outputs land in `artifacts/logic_audit/` and `artifacts/subjects/`.
 
+## Pass 2 (O*NET)
+
+Phase A froze `artifacts/logic_audit/onet_external_shock_baseline.json` on the unchanged pass-1 engine. Phases B–D repaired generic logic, then `pnpm eval:onet-shock` wrote `onet_shock_latest.json` without touching the baseline.
+
+Headline comparison (450 O*NET-backed subjects, seed `20260823`):
+
+| Metric | Phase A baseline | Pass 2 candidate |
+|---|---|---|
+| Hidden-truth MAE | 1.845 | 1.875 (no gain; do not leak truth) |
+| Work-Fit spread | 0.29 | 1.99 |
+| Work-Fit mean | 9.53 | 7.41 |
+| Neutral job vectors | 99.6% | work-structure reading; 94.7% of occupations hit ≥1 dimension |
+| Technical-demo top function | ~100% modeling-simulation on the universe | 36% of subjects |
+| Hireability stuffing | false | false (after dump-stripping repair) |
+| Twin pass | 68% same-pref/diff-exp | 85% overall; 95% same-pref/diff-exp |
+| Invariants | pass | pass |
+| NBA feasible | 100% | 100% |
+
+See `docs/PASS2_SCORECARD.md`, `docs/ONET_EXTERNAL_SHOCK_BASELINE.md`, `docs/TASKDNA_DIMENSION_COVERAGE.md`, `docs/HIREABILITY_AUDIT.md`, `docs/NETWORK_LOGIC_AUDIT.md`, `docs/NEXT_BEST_ACTION_AUDIT.md`.
+
 ## Related docs
 
 - `docs/LOGIC_SCORECARD.md`
+- `docs/PASS2_SCORECARD.md`
 - `docs/LOGIC_INVARIANTS.md`
 - `docs/LOGIC_PARAMETER_REGISTRY.md`
 - `docs/VIRTUAL_SUBJECT_LAB.md`
 - `docs/GENERALIZATION.md`
 - `docs/PRODUCT_SCOPE.md`
+- `docs/ONET_INTEGRATION.md`
+- `docs/EXTERNAL_DATA.md`

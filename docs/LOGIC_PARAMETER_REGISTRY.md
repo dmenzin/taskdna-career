@@ -18,6 +18,8 @@ This is the human-readable map of the numbers that actually change recommendatio
 
 Unknown is not treated as a confident 5. Generic inference uses a neutral prior and `unknownDimensionConfidence`.
 
+Pass 2 added **rules** rather than new scoring coefficients: evidence-class weights (exposure = 0), source-group dependence, work-structure majority-side aggregation, Hireability gap classes, and ask-eligibility gates. `pnpm audit:parameters` still reports **74** free `scoringConfig` numbers. That count did not go down.
+
 ## Overall priority (`scoringConfig.weights`)
 
 Displayed Overall is a weighted mix:

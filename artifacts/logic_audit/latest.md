@@ -1,6 +1,6 @@
 # Logic audit results
 
-Generated: 2026-08-22T19:26:19.144Z
+Generated: 2026-08-22T20:08:29.335Z
 Lab version: subject-lab.v1
 Seed: 20260822
 
@@ -11,8 +11,8 @@ Seed: 20260822
 - confidenceHonesty: A
 - determinism: A
 - personalizationLeakage: A
-- generalizationHoldout: A
-- counterfactualTwins: A
+- generalizationHoldout: B
+- counterfactualTwins: C
 - zeroOrigin: A
 - domainHoldout: A
 - rankStability: A
@@ -25,11 +25,11 @@ Recommendation: Sandbox-coherent, not production-calibrated. Rankings are inspec
 
 - Invariants: PASS (8/8)
 - Personalization must-fix leaks: 0
-- Subject property pass rate: 96.6%
-- Twin pass rate: 98.4%
+- Subject property pass rate: 90.1%
+- Twin pass rate: 78.1%
 - Zero-origin pass rate: 100.0%
-- Holdout property pass rate: 96.6%
-- Adversarial/OOD pass rate: 98.3%
+- Holdout property pass rate: 89.3%
+- Adversarial/OOD pass rate: 92.1%
 - Rank stability Spearman: 1.000
 
 ## What this does and does not prove

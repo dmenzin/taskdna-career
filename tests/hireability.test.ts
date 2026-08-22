@@ -53,6 +53,16 @@ describe("structured Hireability", () => {
     expect(matrix.hireability).toBeLessThan(5);
   });
 
+  it("does not treat a Skills: keyword dump as professional evidence", () => {
+    const stuffed = buildProfileFromCareerInput({
+      id: "stuffed",
+      careerText: "I enjoy analyzing messy data. Skills: C++, ROS, embedded systems, SysML, ISO 13485, Critical Thinking.",
+      skills: ["python"],
+    });
+    const job = dataset.jobs.find((item) => item.canonicalId === "job-high-fit-low-hireability-robotics")!;
+    expect(buildRequirementMatrix(stuffed, job).hireability).toBeLessThan(5);
+  });
+
   it("gives academic-only evidence less credit than professional evidence", () => {
     const academic = buildProfileFromCareerInput({
       id: "academic",

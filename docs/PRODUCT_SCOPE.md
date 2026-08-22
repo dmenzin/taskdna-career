@@ -32,6 +32,8 @@ Commute defaults live in `scoringConfig.commuteRules.defaultHomeRegion` (current
 
 The demo job corpus and original function map are still densest in technical / biomedical / software work. That is a **scope limit**.
 
+Pass 2 adds a real O*NET 30.3 occupational corpus for evaluation and generic job reading. O*NET describes work exposure. It is **not** preference ground truth and is not endorsed as a TaskDNA validation set.
+
 It is a **logic failure** if the engine claims generic behavior while requiring the original failure-analyst persona, medical-device function list, or golden network to initialize.
 
 Zero-origin mode (`pnpm audit:zero-origin`) is the check for that failure.

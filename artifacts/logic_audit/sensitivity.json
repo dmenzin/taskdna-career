@@ -3,13 +3,13 @@
   "results": [
     {
       "dimension": "investigation_orientation",
-      "topMoved": 15,
-      "spearman": 0.9946607341490545
+      "topMoved": 19,
+      "spearman": 0.9701890989988876
     },
     {
       "dimension": "coordination_preference",
-      "topMoved": 3,
-      "spearman": 0.9986651835372636
+      "topMoved": 8,
+      "spearman": 0.996440489432703
     }
   ]
 }

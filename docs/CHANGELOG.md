@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.5.0-onet-pass-2
+
+- Ingested official O*NET 30.3 (CC BY 4.0, USDOL/ETA) with fetch/verify/corpus commands and frozen `onet_external_shock_baseline.json`.
+- Expanded the Virtual Subject Lab to ~450 O*NET-backed subjects plus 1,600 counterfactuals (`subject-lab.v2-onet`).
+- Separated exposure / success / preference / dislike / aspirational evidence. Exposure never moves TaskDNA.
+- Replaced title/neutral-vector job reading with a versioned work-structure lexicon including official GWA names.
+- Rebuilt Hireability as a requirement-evidence matrix (`hireability.v2`) with fatal/core/significant/minor gaps.
+- Hardened network asks (credibility/observed-work gates) and Next Best Action (90-minute diversified portfolio).
+- Published pass-2 audits, scorecard, and the 18 final questions. Hidden-truth recovery remains D. No psychometric or probability claims.
+
 ## 0.1.0
 
 - Created greenfield Next.js sandbox prototype.

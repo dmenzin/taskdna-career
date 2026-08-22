@@ -80,3 +80,17 @@ Fixes applied:
 - Virtual Subject Laboratory (200 subjects, 21 families, twins, holdout, OOD).
 - `pnpm audit:*` / `pnpm subjects:*` / `pnpm eval:unseen`.
 - Honest B sandbox-trust scorecard with a separate D for hidden-truth recovery.
+
+## Pass 2 (O*NET generalization)
+
+Highest-impact issue: the v1 lab’s 24-occupation snapshot hid a collapse. On real O*NET 30.3, 99.6% of jobs became a neutral TaskDNA vector and Work Fit saturated near 9.5.
+
+Fixes applied (after freezing the external-shock baseline):
+
+- Evidence classes so exposure never moves preference
+- Generic work-structure reading of official GWA / task language
+- Title fallback no longer mints a job vector
+- Structured Hireability matrix; `Skills:` dumps do not count as professional evidence
+- Ask eligibility gates and a 90-minute NBA portfolio
+
+What we refused to “fix”: hidden-truth MAE (1.845 → 1.875). Improving it by treating occupation as preference would reintroduce the leak the lab exists to prevent.

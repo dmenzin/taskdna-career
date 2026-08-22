@@ -252,12 +252,15 @@ function evidenceReliability(sentence: string, index: number) {
 }
 
 export function inferCapabilities(persona: (typeof personas)[number], evidence: UserEvidence[]): Capability[] {
-  const fromText = skillLexicon.filter((skill) => persona.careerText.toLowerCase().includes(skill) || evidence.some((item) => item.originalText.toLowerCase().includes(skill)));
+  const careerWithoutDumps = persona.careerText.replace(/\b(?:skills|keywords)\s*:[^.]*\.?/gi, " ");
+  const fromText = skillLexicon.filter((skill) => careerWithoutDumps.toLowerCase().includes(skill) || evidence.some((item) => !/\b(?:skills|keywords)\s*:/i.test(item.originalText) && item.originalText.toLowerCase().includes(skill)));
   const keywords = Array.from(new Set([...persona.capabilityKeywords, ...fromText]));
-  const career = persona.careerText.toLowerCase();
   return keywords.map((keyword, index) => {
-    const evidenceIds = evidence.filter((item) => item.originalText.toLowerCase().includes(keyword.toLowerCase()) || item.capabilitySignals.some((signal) => signal.toLowerCase() === keyword.toLowerCase())).map((item) => item.id);
-    const interestOnly = new RegExp(`(coursework|hobby|no professional|not yet).{0,32}${keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}|${keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}.{0,32}(coursework|hobby|no professional|not yet)`, "i").test(career);
+    const evidenceIds = evidence.filter((item) => {
+      if (/\b(?:skills|keywords)\s*:/i.test(item.originalText)) return false;
+      return item.originalText.toLowerCase().includes(keyword.toLowerCase()) || item.capabilitySignals.some((signal) => signal.toLowerCase() === keyword.toLowerCase());
+    }).map((item) => item.id);
+    const interestOnly = new RegExp(`(coursework|hobby|no professional|not yet).{0,32}${keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}|${keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}.{0,32}(coursework|hobby|no professional|not yet)`, "i").test(careerWithoutDumps);
     const direct = evidenceIds.length > 0 && !interestOnly;
     return {
       id: `cap-${persona.id}-${index + 1}`,
