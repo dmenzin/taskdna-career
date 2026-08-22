@@ -45,7 +45,7 @@ const cases = [
   {
     id: "seniority-mismatch",
     profile: buildProfileFromCareerInput({ id: "h", careerText: "Two years of Excel analysis. I enjoy building forecasts.", skills: ["excel"] }),
-    job: { ...compliance, canonicalId: "staff", title: "Staff Quality Engineer", seniority: "Staff", requirements: ["excel", "quality systems"], preferredRequirements: [] },
+    job: { ...compliance, canonicalId: "staff", title: "Staff Quality Engineer", seniority: "Staff" as const, requirements: ["excel", "quality systems"], preferredRequirements: [] },
   },
   {
     id: "same-title-different-requirements",
