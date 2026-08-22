@@ -13,7 +13,7 @@ import { loadOnetCorpus } from "@/onet/corpus";
 import { ONET_STRATA, isKnowledgeWorkScope, stratumFor, type OnetStratum } from "@/onet/strata";
 import type { OnetOccupationSkeleton } from "@/onet/types";
 import { between, chance, hashSeed, mulberry32, pick, pickN, type Rng } from "@/lab/rng";
-import type { OccupationSkeleton, SubjectCohortV2, TwinPair, VirtualSubject, VirtualSubjectObservations, VirtualSubjectTruth } from "@/lab/types";
+import type { SubjectCohortV2, TwinPair, VirtualSubject, VirtualSubjectObservations, VirtualSubjectTruth } from "@/lab/types";
 
 export const ONET_LAB_VERSION = "subject-lab.v2-onet";
 export const ONET_LAB_SEED = 20260823;

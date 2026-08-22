@@ -1,0 +1,38 @@
+{
+  "generatedAt": "2026-08-22T20:05:33.589Z",
+  "passed": true,
+  "cases": [
+    {
+      "id": "high-warmth-low-credibility",
+      "pass": true
+    },
+    {
+      "id": "low-warmth-high-credibility",
+      "pass": true
+    },
+    {
+      "id": "high-routing-no-credibility",
+      "pass": true
+    },
+    {
+      "id": "former-manager-outside-company",
+      "pass": true
+    },
+    {
+      "id": "explicit-referral-refusal",
+      "pass": true
+    },
+    {
+      "id": "repeated-submission",
+      "pass": true
+    },
+    {
+      "id": "do-not-contact",
+      "pass": true
+    },
+    {
+      "id": "weak-job-still-eligible-if-credible",
+      "pass": true
+    }
+  ]
+}

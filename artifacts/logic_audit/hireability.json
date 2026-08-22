@@ -1,0 +1,159 @@
+{
+  "generatedAt": "2026-08-22T20:05:33.230Z",
+  "stillMostlyLexical": false,
+  "notes": "Hireability now uses a requirement-evidence matrix with gap classes. Residual weakness: recency/duration are still coarse heuristics.",
+  "results": [
+    {
+      "id": "high-fit-low-hireability",
+      "fit": 8.686117647058824,
+      "hireability": 1,
+      "hardDisqualifiers": [],
+      "coreCoverage": 0,
+      "professionalShare": 0,
+      "trace": [
+        "Hireability 1.0 from 4 structured requirements (hireability.v2).",
+        "Core coverage 0%, preferred 55%, professional share 0%.",
+        "Gaps: fatal 0, core 3, significant 1.",
+        "Seniority alignment 0.56; recruiter legibility 0.82.",
+        "No fatal/legal disqualifiers."
+      ]
+    },
+    {
+      "id": "low-fit-high-hireability",
+      "fit": 8.887058823529411,
+      "hireability": 8.403000000000002,
+      "hardDisqualifiers": [],
+      "coreCoverage": 0.75,
+      "professionalShare": 0.75,
+      "trace": [
+        "Hireability 8.4 from 4 structured requirements (hireability.v2).",
+        "Core coverage 75%, preferred 55%, professional share 75%.",
+        "Gaps: fatal 0, core 0, significant 1.",
+        "Seniority alignment 0.78; recruiter legibility 0.74.",
+        "No fatal/legal disqualifiers."
+      ]
+    },
+    {
+      "id": "direct-professional",
+      "fit": 8.58235294117647,
+      "hireability": 9.8775,
+      "hardDisqualifiers": [],
+      "coreCoverage": 1,
+      "professionalShare": 1,
+      "trace": [
+        "Hireability 10.0 from 1 structured requirements (hireability.v2).",
+        "Core coverage 100%, preferred 55%, professional share 100%.",
+        "Gaps: fatal 0, core 0, significant 0.",
+        "Seniority alignment 0.56; recruiter legibility 0.82.",
+        "No fatal/legal disqualifiers."
+      ]
+    },
+    {
+      "id": "academic-only",
+      "fit": 8.58235294117647,
+      "hireability": 5.183500000000001,
+      "hardDisqualifiers": [],
+      "coreCoverage": 0.55,
+      "professionalShare": 0,
+      "trace": [
+        "Hireability 5.3 from 1 structured requirements (hireability.v2).",
+        "Core coverage 55%, preferred 55%, professional share 0%.",
+        "Gaps: fatal 0, core 0, significant 1.",
+        "Seniority alignment 0.56; recruiter legibility 0.42.",
+        "No fatal/legal disqualifiers."
+      ]
+    },
+    {
+      "id": "license-gap",
+      "fit": 9.035294117647059,
+      "hireability": 1,
+      "hardDisqualifiers": [
+        "RN license"
+      ],
+      "coreCoverage": 0,
+      "professionalShare": 0,
+      "trace": [
+        "Hireability 1.0 from 1 structured requirements (hireability.v2).",
+        "Core coverage 0%, preferred 55%, professional share 0%.",
+        "Gaps: fatal 1, core 0, significant 0.",
+        "Seniority alignment 0.78; recruiter legibility 0.42.",
+        "Hard disqualifiers: RN license"
+      ]
+    },
+    {
+      "id": "optional-tool-gap",
+      "fit": 9.035294117647059,
+      "hireability": 9.408000000000001,
+      "hardDisqualifiers": [],
+      "coreCoverage": 1,
+      "professionalShare": 0.5,
+      "trace": [
+        "Hireability 9.4 from 2 structured requirements (hireability.v2).",
+        "Core coverage 100%, preferred 0%, professional share 50%.",
+        "Gaps: fatal 0, core 0, significant 0.",
+        "Seniority alignment 0.78; recruiter legibility 0.82.",
+        "No fatal/legal disqualifiers."
+      ]
+    },
+    {
+      "id": "career-changer",
+      "fit": 8.58235294117647,
+      "hireability": 1,
+      "hardDisqualifiers": [],
+      "coreCoverage": 0,
+      "professionalShare": 0,
+      "trace": [
+        "Hireability 1.0 from 4 structured requirements (hireability.v2).",
+        "Core coverage 0%, preferred 55%, professional share 0%.",
+        "Gaps: fatal 0, core 3, significant 1.",
+        "Seniority alignment 0.56; recruiter legibility 0.62.",
+        "No fatal/legal disqualifiers."
+      ]
+    },
+    {
+      "id": "seniority-mismatch",
+      "fit": 8.971058823529411,
+      "hireability": 5.374,
+      "hardDisqualifiers": [],
+      "coreCoverage": 0.5,
+      "professionalShare": 0.5,
+      "trace": [
+        "Hireability 5.7 from 2 structured requirements (hireability.v2).",
+        "Core coverage 50%, preferred 55%, professional share 50%.",
+        "Gaps: fatal 0, core 0, significant 1.",
+        "Seniority alignment 0.34; recruiter legibility 0.82.",
+        "No fatal/legal disqualifiers."
+      ]
+    },
+    {
+      "id": "same-title-different-requirements",
+      "fit": 8.58235294117647,
+      "hireability": 9.8775,
+      "hardDisqualifiers": [],
+      "coreCoverage": 1,
+      "professionalShare": 1,
+      "trace": [
+        "Hireability 10.0 from 2 structured requirements (hireability.v2).",
+        "Core coverage 100%, preferred 55%, professional share 100%.",
+        "Gaps: fatal 0, core 0, significant 0.",
+        "Seniority alignment 0.56; recruiter legibility 0.82.",
+        "No fatal/legal disqualifiers."
+      ]
+    },
+    {
+      "id": "keyword-stuffed-resume",
+      "fit": 8.58235294117647,
+      "hireability": 1,
+      "hardDisqualifiers": [],
+      "coreCoverage": 0.1375,
+      "professionalShare": 0,
+      "trace": [
+        "Hireability 1.0 from 4 structured requirements (hireability.v2).",
+        "Core coverage 14%, preferred 55%, professional share 0%.",
+        "Gaps: fatal 0, core 2, significant 2.",
+        "Seniority alignment 0.56; recruiter legibility 0.42.",
+        "No fatal/legal disqualifiers."
+      ]
+    }
+  ]
+}

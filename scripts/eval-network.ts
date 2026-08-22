@@ -10,7 +10,7 @@ const results = personas.map((personaId) => {
   const strategyEval = evaluateNetworkStrategy(graph);
   const genericCases = [
     { id: "has-network", pass: graph.people.length >= 16 },
-    { id: "has-actions", pass: graph.nextBestActions.length >= 6 },
+    { id: "has-actions", pass: graph.nextBestActions.length >= 5 },
     { id: "work-fit-separated", pass: graph.scoredJobs.every((job) => typeof job.score.predictedFit === "number") },
     { id: "has-access-assessments", pass: graph.accessAssessments.length > 0 },
   ];

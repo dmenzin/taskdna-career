@@ -45,7 +45,10 @@ export function createHumanOpportunityGraphFromIntake(
   });
   const paths = findNetworkPaths(intake.people, intake.relationships, intake.interactions, jobs, contactAssessments);
   const accessAssessments = jobs.map((job) => assessOpportunityAccess(job, contactAssessments, paths));
-  const pursuitPlans = jobs.slice(0, 8).map((job) => createPursuitPlan(job, accessAssessments.find((item) => item.opportunityId === job.job.canonicalId)!, contactAssessments, paths, intake.people, intake.relationships, intake.interactions));
+  const topOverall = jobs.slice(0, 6);
+  const liveJobs = jobs.filter((job) => job.job.freshnessState === "VERIFIED_LIVE" || job.job.freshnessState === "REVERIFIED_LIVE").slice(0, 3);
+  const pursuitJobs = [...new Map([...topOverall, ...liveJobs].map((job) => [job.job.canonicalId, job])).values()].slice(0, 8);
+  const pursuitPlans = pursuitJobs.map((job) => createPursuitPlan(job, accessAssessments.find((item) => item.opportunityId === job.job.canonicalId)!, contactAssessments, paths, intake.people, intake.relationships, intake.interactions));
   const nextBestActions = planNextBestActions(profile, jobs, pursuitPlans, contactAssessments, intake.people, intake.relationships, intake.interactions);
   return {
     ...createEmptyGraph(profile.persona.id, jobs),
@@ -290,7 +293,11 @@ function createPursuitPlan(scoredJob: ScoredJob, access: OpportunityAccessAssess
   const bestPerson = bestAssessment ? people.find((person) => person.id === bestAssessment.personId) : undefined;
   const bestRelationship = bestPerson ? relationships.find((relationship) => relationship.personId === bestPerson.id) : undefined;
   const bestPlan = bestPerson && bestRelationship ? createInteractionPlan(bestPerson, bestRelationship, bestAssessment, scoredJob, interactions) : undefined;
-  const applyNow = scoredJob.job.freshnessState === "VERIFIED_LIVE" || scoredJob.score.hireability >= 7.5 || access.routingAccess < 5;
+  const applyNow =
+    scoredJob.job.freshnessState === "VERIFIED_LIVE" ||
+    scoredJob.job.freshnessState === "REVERIFIED_LIVE" ||
+    scoredJob.score.hireability >= 7.5 ||
+    access.routingAccess < 5;
   const strategy: OpportunityPursuitPlan["applicationStrategy"] = scoredJob.score.overall < 6.5 && access.referralAccess > 7 ? "DO_NOT_SPEND_SOCIAL_CAPITAL" : applyNow && access.routingAccess >= 5 ? "APPLY_NOW_NETWORK_IN_PARALLEL" : applyNow ? "DIRECT_APPLY_ONLY" : access.informationAccess >= 6 ? "INFORMATION_FIRST" : "APPLY_FIRST_THEN_ROUTE";
   return {
     opportunityId: scoredJob.job.canonicalId,
@@ -330,7 +337,18 @@ function planNextBestActions(profile: UserProfile, jobs: ScoredJob[], pursuitPla
     if (plan.applyNow) {
       candidates.push(makeAction("APPLY_TO_JOB", `Apply to ${job.job.title}`, plan.freshnessRationale, job.score.overall, 0, 0.5, 15, urgencyFor(job), 0, [], job.job.canonicalId));
     }
+  }
+  // Protect against all-networking portfolios when Hireability is honestly low:
+  // still surface the strongest live/open job as an apply.
+  if (!candidates.some((action) => action.actionType === "APPLY_TO_JOB")) {
+    const fallback = jobs.find((job) => job.job.freshnessState !== "CONFIRMED_CLOSED") ?? jobs[0];
+    if (fallback) {
+      candidates.push(makeAction("APPLY_TO_JOB", `Apply to ${fallback.job.title}`, "Keep at least one application in the portfolio so planning is not all networking.", fallback.score.overall, 0, 0.5, 15, urgencyFor(fallback), 0, [], fallback.job.canonicalId));
+    }
+  }
+  for (const plan of pursuitPlans) {
     if (noNetworking || !plan.bestContactId) continue;
+    const job = jobs.find((item) => item.job.canonicalId === plan.opportunityId)!;
     const person = people.find((item) => item.id === plan.bestContactId)!;
     const relationship = relationships.find((item) => item.personId === person.id)!;
     if (isDoNotContact(relationship.id, interactions)) continue;
@@ -372,7 +390,10 @@ function planNextBestActions(profile: UserProfile, jobs: ScoredJob[], pursuitPla
   const unique = candidates
     .map((action) => ({ ...action, priority: actionPriority(action) }))
     .sort((a, b) => b.priority - a.priority || b.urgency - a.urgency)
-    .filter((action, index, sorted) => sorted.findIndex((candidate) => candidate.actionType === action.actionType && candidate.relatedPersonId === action.relatedPersonId && candidate.relatedOpportunityId === action.relatedOpportunityId) === index);
+    .filter((action, index, sorted) => sorted.findIndex((candidate) => {
+      if (action.relatedPersonId) return candidate.actionType === action.actionType && candidate.relatedPersonId === action.relatedPersonId;
+      return candidate.actionType === action.actionType && candidate.relatedOpportunityId === action.relatedOpportunityId;
+    }) === index);
 
   // STAGE 5 — small portfolio under a time budget with type diversity.
   const portfolio: NextBestAction[] = [];
@@ -460,6 +481,9 @@ export function askIsEligible(
   interactions: InteractionEvent[],
   scoredJob?: ScoredJob,
 ): boolean {
+  // Weak-job filtering is an NBA portfolio rule, not an ask-gate. scoredJob is
+  // accepted so callers can pass context without unlocking a forbidden ask.
+  void scoredJob;
   if (isDoNotContact(relationship.id, interactions)) return false;
   const explicitOffer = interactions.some((event) => event.relationshipId === relationship.id && event.explicitOffer);
   const referralBoundary = interactions.some((event) => event.relationshipId === relationship.id && event.explicitBoundary === "REFERRAL_REQUEST") || relationship.explicitBoundaries.some((boundary) => boundary.toLowerCase().includes("referral"));

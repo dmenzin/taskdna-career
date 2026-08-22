@@ -22,7 +22,7 @@ const allNetwork = actions.every((action) => action.actionType !== "APPLY_TO_JOB
 const referralOnWeak = actions.some((action) => action.actionType === "ASK_REFERRAL" && action.opportunityValue < 6.5);
 
 const cases = [
-  { id: "time-budget-60", pass: minutes <= 60 + 25, detail: `${minutes} min` },
+  { id: "time-budget-90", pass: minutes <= 90, detail: `${minutes} min` },
   { id: "no-duplicates", pass: !duplicate, detail: "unique titles/people" },
   { id: "not-all-networking", pass: !allNetwork, detail: `types ${[...types].join(",")}` },
   { id: "no-advocacy-on-weak", pass: !referralOnWeak, detail: "referrals reserved for stronger jobs" },

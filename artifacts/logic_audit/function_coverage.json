@@ -1,0 +1,41 @@
+{
+  "generatedAt": "2026-08-22T20:06:06.432Z",
+  "occupations": 1016,
+  "distribution": {
+    "product-discovery": 48,
+    "operations-coordination": 178,
+    "consultative-selling": 40,
+    "field-applications": 281,
+    "customer-success-support": 45,
+    "engineering-tools": 16,
+    "people-operations": 14,
+    "verification-validation": 34,
+    "investigative-analysis": 26,
+    "modeling-simulation": 81,
+    "compliance-administration": 42,
+    "instructional-delivery": 25,
+    "test-development": 29,
+    "sensor-algorithm-performance": 24,
+    "product-systems-engineering": 1,
+    "clinical-real-world-performance": 70,
+    "controls-characterization": 22,
+    "failure-analysis": 32,
+    "scientific-software": 1,
+    "financial-analysis-audit": 7
+  },
+  "noPlausibleFunction": 79,
+  "technicalDemoMapped": 591,
+  "technicalDemoShare": 0.5816929133858267,
+  "overCompressed": [
+    {
+      "id": "field-applications",
+      "count": 281
+    }
+  ],
+  "genericVsDomainVsUser": {
+    "genericWorkStructureDimensions": 17,
+    "domainFunctionPacks": 10,
+    "currentUserFunctionHypotheses": 13
+  },
+  "newFunctionRecommendation": "No new function concepts added. Coverage holes are matching/extraction, not missing occupation-specific packs."
+}

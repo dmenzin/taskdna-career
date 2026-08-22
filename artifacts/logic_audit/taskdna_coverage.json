@@ -1,0 +1,82 @@
+{
+  "generatedAt": "2026-08-22T20:06:05.542Z",
+  "occupations": 1016,
+  "occupationsWithAnyDimension": 962,
+  "residuals": [
+    {
+      "id": "integration_preference",
+      "occupationHitRate": 0.04429133858267716
+    },
+    {
+      "id": "causal_reasoning",
+      "occupationHitRate": 0.24311023622047245
+    },
+    {
+      "id": "experimentation_preference",
+      "occupationHitRate": 0.33267716535433073
+    },
+    {
+      "id": "reasoning_style",
+      "occupationHitRate": 0.8838582677165354
+    },
+    {
+      "id": "software_as_tool",
+      "occupationHitRate": 0.8877952755905512
+    },
+    {
+      "id": "scope_preference",
+      "occupationHitRate": 0.8946850393700787
+    },
+    {
+      "id": "repetition_tolerance",
+      "occupationHitRate": 0.8946850393700787
+    },
+    {
+      "id": "closure_preference",
+      "occupationHitRate": 0.8976377952755905
+    },
+    {
+      "id": "problem_structure",
+      "occupationHitRate": 0.8996062992125984
+    },
+    {
+      "id": "measurable_feedback",
+      "occupationHitRate": 0.9035433070866141
+    },
+    {
+      "id": "evidence_density",
+      "occupationHitRate": 0.9045275590551181
+    },
+    {
+      "id": "creation_style",
+      "occupationHitRate": 0.9045275590551181
+    },
+    {
+      "id": "investigation_orientation",
+      "occupationHitRate": 0.9084645669291339
+    },
+    {
+      "id": "customer_interaction_preference",
+      "occupationHitRate": 0.9163385826771654
+    },
+    {
+      "id": "real_system_grounding",
+      "occupationHitRate": 0.9173228346456693
+    },
+    {
+      "id": "coordination_preference",
+      "occupationHitRate": 0.9212598425196851
+    },
+    {
+      "id": "theory_vs_application",
+      "occupationHitRate": 0.9212598425196851
+    }
+  ],
+  "recurringUncoveredClusters": [
+    [
+      "no-gwa",
+      77
+    ]
+  ],
+  "newDimensionRecommendation": "None added. Residuals are coverage holes in existing dimensions (especially scope_preference and creation_style), not a new recurring preference construct."
+}

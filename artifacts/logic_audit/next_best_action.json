@@ -1,0 +1,74 @@
+{
+  "generatedAt": "2026-08-22T20:06:04.755Z",
+  "passed": true,
+  "minutes": 90,
+  "types": [
+    "APPLY_TO_JOB",
+    "SEND_REQUESTED_MATERIAL",
+    "ASK_ADVICE"
+  ],
+  "cases": [
+    {
+      "id": "time-budget-90",
+      "pass": true,
+      "detail": "90 min"
+    },
+    {
+      "id": "no-duplicates",
+      "pass": true,
+      "detail": "unique titles/people"
+    },
+    {
+      "id": "not-all-networking",
+      "pass": true,
+      "detail": "types APPLY_TO_JOB,SEND_REQUESTED_MATERIAL,ASK_ADVICE"
+    },
+    {
+      "id": "no-advocacy-on-weak",
+      "pass": true,
+      "detail": "referrals reserved for stronger jobs"
+    },
+    {
+      "id": "has-actions",
+      "pass": true,
+      "detail": "6 actions"
+    },
+    {
+      "id": "type-diversity",
+      "pass": true,
+      "detail": "3 types"
+    }
+  ],
+  "sample": [
+    {
+      "type": "APPLY_TO_JOB",
+      "title": "Apply to Systems Engineer",
+      "minutes": 15
+    },
+    {
+      "type": "APPLY_TO_JOB",
+      "title": "Apply to Workflow Platform Engineer",
+      "minutes": 15
+    },
+    {
+      "type": "SEND_REQUESTED_MATERIAL",
+      "title": "Send requested material: Nadia Singh",
+      "minutes": 12
+    },
+    {
+      "type": "SEND_REQUESTED_MATERIAL",
+      "title": "Send requested material: Leah Okafor",
+      "minutes": 12
+    },
+    {
+      "type": "ASK_ADVICE",
+      "title": "role reality: Owen Kim",
+      "minutes": 18
+    },
+    {
+      "type": "ASK_ADVICE",
+      "title": "role reality: Victor Rossi",
+      "minutes": 18
+    }
+  ]
+}
