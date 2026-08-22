@@ -1,7 +1,7 @@
 {
   "phase": "sandbox prototype",
   "current_milestone": "M41 clean acceptance run",
-  "current_task": "Verify build, tests, eval, exports, and manual walkthrough",
+  "current_task": "Final PR update",
   "completed": [
     "M0 inspected greenfield repository; no reference artifacts found",
     "M1 architecture, documentation, and build state",
@@ -24,13 +24,8 @@
     "M33-M34 evaluation harness and regression tests",
     "M36 standalone HTML/JSON exports"
   ],
-  "in_progress": [
-    "M37 accessibility/responsive polish validation",
-    "M38-M40 critique cycles"
-  ],
+  "in_progress": [],
   "next": [
-    "Run pnpm test, pnpm eval, pnpm build, pnpm export:demo",
-    "Perform browser smoke walkthrough and capture artifact",
     "Expand SQLite persistence from seeded JSON boundary to real migrations"
   ],
   "blockers": [],
@@ -40,8 +35,8 @@
   ],
   "failing_tests": [],
   "evaluation_failures": [],
-  "last_successful_build": "",
-  "last_e2e_run": "",
-  "last_eval_run": "",
-  "last_updated": "2026-08-22T15:07:00.000Z"
+  "last_successful_build": "pnpm lint && pnpm typecheck && pnpm test && pnpm eval && pnpm export:demo && pnpm build passed on 2026-08-22T15:22:17Z",
+  "last_e2e_run": "Manual browser walkthrough passed with /opt/cursor/artifacts/taskdna_core_walkthrough_short.mp4 on 2026-08-22T15:30Z",
+  "last_eval_run": "pnpm eval passed on 2026-08-22T15:22:17Z",
+  "last_updated": "2026-08-22T15:30:00.000Z"
 }

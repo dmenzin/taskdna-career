@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ArrowRight, Beaker, BrainCircuit, BriefcaseBusiness, Bug, FlaskConical, Heart, Search, Sparkles, Target, TrendingUp } from "lucide-react";
+import { ArrowRight, Beaker, BrainCircuit, Bug, FlaskConical, Heart, Search, Sparkles, Target, TrendingUp } from "lucide-react";
 import { careerFunctions, dimensions } from "@/config/model";
 import { applyFeedback, buildUserProfile, createDemoDataset, filterAndSortJobs, scoreFunctions, scoreJobs } from "@/domain/engine";
 import type { FeedbackEvent, Reaction, ScoredJob } from "@/domain/types";

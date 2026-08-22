@@ -1,4 +1,4 @@
-import { careerFunctions, dimensions, scoringConfig, vector } from "@/config/model";
+import { careerFunctions, dimensions, scoringConfig } from "@/config/model";
 import { createJobSourceObservations, createSyntheticJobs, inferJobVector } from "@/fixtures/jobs";
 import { personas } from "@/fixtures/personas";
 import type {
@@ -8,8 +8,9 @@ import type {
   FeedbackEvent,
   JobAnalysis,
   JobPosting,
-  Reaction,
+  ActionTier,
   ScoredJob,
+  Sellability,
   SearchRun,
   TaskDNADimension,
   UserEvidence,
@@ -189,13 +190,14 @@ export function scoreJobs(profile: UserProfile, jobs = createDemoDataset().jobs)
   return jobs
     .map((job) => {
       const analysis = analyzeJob(job);
-      const predictedFit = vectorFit(profileVector(profile), analysis.jobTaskDnaVector);
+      const rawPredictedFit = vectorFit(profileVector(profile), analysis.jobTaskDnaVector);
       const confidence = clamp((profile.confidence + analysis.classificationConfidence) / 2, 0.2, 0.95);
+      const negativeFitRisk = negativeFit(profile, analysis.frictionFactors);
+      const predictedFit = clamp(rawPredictedFit - negativeFitRisk * 0.5, 1, 10);
       const caf = confidenceAdjustedFit(predictedFit, confidence);
       const capabilityAlignment = capabilityAlignmentFor(profile, analysis.requiredCapabilities) * 10;
       const gapPenalty = analysis.hardGaps.length * 0.65;
       const hireability = clamp(capabilityAlignment * 0.72 + requirementsLegibility(profile, analysis.requiredCapabilities) * 2.8 - gapPenalty - seniorityPenalty(job), 1, 10);
-      const negativeFitRisk = negativeFit(profile, analysis.frictionFactors);
       const careerDirection = clamp(predictedFit * 0.62 + capabilityAlignment * 0.18 + (10 - negativeFitRisk) * 0.2, 1, 10);
       const technicalGrowth = clamp(6 + analysis.hardGaps.length * 0.55 + analysis.requiredCapabilities.length * 0.05, 1, 10);
       const durability = clamp(job.domain.match(/software|analytics|robotics|medical|energy/) ? 7.9 : 6.8, 1, 10);
@@ -253,31 +255,29 @@ export function applyFeedback(profile: UserProfile, scoredJobs: ScoredJob[], fee
       supportingEvidenceIds: [...dimension.supportingEvidenceIds, `feedback-${feedback.jobId}`],
     };
   });
+  const feedbackEvidence: UserEvidence = {
+    id: `feedback-${feedback.jobId}`,
+    sourceType: "USER_FEEDBACK",
+    sourceReference: target.job.title,
+    originalText: `${feedback.reaction}: ${feedback.reasonTags.join(", ")}`,
+    activity: "job reaction",
+    context: "active learning",
+    tools: [],
+    problemType: "preference feedback",
+    outcome: "Task DNA updated; capability evidence unchanged",
+    demonstratedSkills: [],
+    capabilitySignals: [],
+    enjoymentSignals: feedback.reaction === "LOVE" || feedback.reaction === "INTERESTING" ? feedback.reasonTags : [],
+    dislikeSignals: feedback.reaction === "DISLIKE" ? feedback.reasonTags : [],
+    inferredTaskDimensions: target.analysis.jobTaskDnaVector,
+    recency: 1,
+    reliability: 0.7,
+  };
   return {
     updatedProfile: {
       ...profile,
       taskDna: updatedTaskDna,
-      evidence: [
-        ...profile.evidence,
-        {
-          id: `feedback-${feedback.jobId}`,
-          sourceType: "USER_FEEDBACK",
-          sourceReference: target.job.title,
-          originalText: `${feedback.reaction}: ${feedback.reasonTags.join(", ")}`,
-          activity: "job reaction",
-          context: "active learning",
-          tools: [],
-          problemType: "preference feedback",
-          outcome: "Task DNA updated; capability evidence unchanged",
-          demonstratedSkills: [],
-          capabilitySignals: [],
-          enjoymentSignals: feedback.reaction === "LOVE" || feedback.reaction === "INTERESTING" ? feedback.reasonTags : [],
-          dislikeSignals: feedback.reaction === "DISLIKE" ? feedback.reasonTags : [],
-          inferredTaskDimensions: target.analysis.jobTaskDnaVector,
-          recency: 1,
-          reliability: 0.7,
-        },
-      ],
+      evidence: [...profile.evidence, feedbackEvidence],
     },
     changedDimensions,
     explanation: `Recommendations changed because ${feedback.reaction.toLowerCase()} feedback nudged Task-DNA preferences (${changedDimensions.slice(0, 4).map((item) => item.id).join(", ")}). Capability evidence was not changed.`,
@@ -409,7 +409,7 @@ function overallScore(input: { hireability: number; confidenceAdjustedFit: numbe
   );
 }
 
-function actionTierFor(input: { overall: number; hireability: number; predictedFit: number; confidence: number; hardGaps: string[] }) {
+function actionTierFor(input: { overall: number; hireability: number; predictedFit: number; confidence: number; hardGaps: string[] }): ActionTier {
   if (input.overall >= scoringConfig.tiers.attackFirst.overall && input.hireability >= scoringConfig.tiers.attackFirst.hireability && input.predictedFit >= scoringConfig.tiers.attackFirst.fit) return "ATTACK_FIRST";
   if (input.hireability >= scoringConfig.tiers.coreApply.hireability) return "CORE_APPLY";
   if (input.hireability >= scoringConfig.tiers.highFitStretch.hireabilityMin && input.hireability <= scoringConfig.tiers.highFitStretch.hireabilityMax && input.predictedFit >= scoringConfig.tiers.highFitStretch.fit && input.confidence >= scoringConfig.tiers.highFitStretch.confidence && input.hardGaps.length < 2) return "HIGH_FIT_STRETCH";
@@ -417,7 +417,7 @@ function actionTierFor(input: { overall: number; hireability: number; predictedF
   return "LOWER_PRIORITY";
 }
 
-function sellabilityFor(hireability: number, capabilityAlignment: number, hardGaps: string[]) {
+function sellabilityFor(hireability: number, capabilityAlignment: number, hardGaps: string[]): Sellability {
   if (hardGaps.length >= 3) return "REAL_SKILL_GAP";
   if (hireability >= 8) return "DIRECT_SELL";
   if (capabilityAlignment >= 5.5) return "SELL_HARDER";
@@ -425,6 +425,13 @@ function sellabilityFor(hireability: number, capabilityAlignment: number, hardGa
 }
 
 function pickPrimaryFunction(job: JobPosting, jobVector: Vector) {
+  const text = `${job.title} ${job.description} ${job.responsibilities.join(" ")}`.toLowerCase();
+  if (text.includes("integration troubleshooting") || text.includes("cross-layer") || (text.includes("logs") && text.includes("root-cause"))) {
+    return careerFunctions.find((fn) => fn.id === "systems-integration-debug")!;
+  }
+  if (text.includes("product failures") || text.includes("field failures") || text.includes("failure analysis")) {
+    return careerFunctions.find((fn) => fn.id === "failure-analysis")!;
+  }
   const exact = careerFunctions.find((fn) => job.title.toLowerCase().includes(fn.shortName.toLowerCase()) || fn.typicalTitles.some((title) => title.toLowerCase() === job.title.toLowerCase()));
   if (exact && !job.description.toLowerCase().includes("traceability")) return exact;
   return careerFunctions.map((fn) => ({ fn, fit: vectorFit(jobVector, fn.taskDnaVector) })).sort((a, b) => b.fit - a.fit)[0].fn;

@@ -210,6 +210,15 @@ export function inferJobVector(job: JobPosting): Vector {
   if (text.includes("mbse") || text.includes("traceability") || text.includes("qms")) {
     return vector({ problem_structure: 8.8, repetition_tolerance: 8.9, coordination_preference: 8.2, investigation_orientation: 4.1, experimentation_preference: 3.8, closure_preference: 8.4 });
   }
-  const matched = careerFunctions.find((fn) => titleByFunction[fn.id]?.some((title) => text.includes(title.toLowerCase()))) ?? careerFunctions.find((fn) => job.description.toLowerCase().includes(fn.shortName.toLowerCase()));
+  if (text.includes("integration troubleshooting") || text.includes("cross-layer") || (text.includes("logs") && text.includes("root-cause"))) {
+    return careerFunctions.find((fn) => fn.id === "systems-integration-debug")!.taskDnaVector;
+  }
+  if (text.includes("product failures") || text.includes("field failures") || text.includes("failure analysis")) {
+    return careerFunctions.find((fn) => fn.id === "failure-analysis")!.taskDnaVector;
+  }
+  const matched =
+    careerFunctions.find((fn) => titleByFunction[fn.id]?.some((title) => text.includes(title.toLowerCase()))) ??
+    careerFunctions.find((fn) => fn.typicalTitles.some((title) => text.includes(title.toLowerCase()))) ??
+    careerFunctions.find((fn) => job.description.toLowerCase().includes(fn.shortName.toLowerCase()));
   return matched?.taskDnaVector ?? vector({});
 }
