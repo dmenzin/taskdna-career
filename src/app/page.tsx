@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { ArrowRight, Beaker, BrainCircuit, Bug, FlaskConical, Heart, Search, Sparkles, Target, TrendingUp } from "lucide-react";
 import { careerFunctions, dimensions } from "@/config/model";
 import { applyFeedback, applyScenarioResponses, buildUserProfile, createDemoDataset, filterAndSortJobs, scoreFunctions, scoreJobs, selectAdaptiveScenarios } from "@/domain/engine";
+import { createHumanOpportunityGraph } from "@/domain/networkEngine";
 import type { FeedbackEvent, Reaction, ScoredJob } from "@/domain/types";
 
 const demo = createDemoDataset();
@@ -26,9 +27,12 @@ export default function Home() {
   const profile = useMemo(() => profileOverride ?? buildUserProfile(personaId, careerText || undefined), [careerText, personaId, profileOverride]);
   const functionScores = useMemo(() => scoreFunctions(profile), [profile]);
   const scoredJobs = useMemo(() => scoreJobs(profile, demo.jobs).filter((item) => !dismissed.includes(item.job.canonicalId)), [profile, dismissed]);
+  const opportunityGraph = useMemo(() => createHumanOpportunityGraph(profile, scoredJobs), [profile, scoredJobs]);
   const interviewPlan = useMemo(() => selectAdaptiveScenarios(profile, answeredScenarioIds, 3), [profile, answeredScenarioIds]);
   const visibleJobs = useMemo(() => filterAndSortJobs(scoredJobs, query, functionId, sortKey, noveltyOnly).filter((item) => !freshnessFilter || item.job.freshnessState === freshnessFilter), [scoredJobs, query, functionId, sortKey, noveltyOnly, freshnessFilter]);
   const selectedJob = visibleJobs.find((item) => item.job.canonicalId === selectedJobId) ?? visibleJobs[0];
+  const selectedAccess = selectedJob ? opportunityGraph.accessAssessments.find((item) => item.opportunityId === selectedJob.job.canonicalId) : undefined;
+  const selectedPursuit = selectedJob ? opportunityGraph.pursuitPlans.find((item) => item.opportunityId === selectedJob.job.canonicalId) : undefined;
 
   function choosePersona(nextPersonaId: string) {
     setPersonaId(nextPersonaId);
@@ -282,6 +286,21 @@ export default function Home() {
                 <Badge>Confidence {Math.round(selectedJob.score.confidence * 100)}%</Badge>
                 <Badge>Commute simulated</Badge>
               </div>
+              {selectedAccess && (
+                <div className="network-tab" data-testid="job-network-tab">
+                  <h3>Network access does not change Work Fit</h3>
+                  <p>{selectedAccess.networkAccessSummary}</p>
+                  <div className="score-row">
+                    <Score label="Info" value={selectedAccess.informationAccess} />
+                    <Score label="Route" value={selectedAccess.routingAccess} />
+                    <Score label="Cred" value={selectedAccess.credibilityAccess} />
+                    <Score label="Refer" value={selectedAccess.referralAccess} />
+                  </div>
+                  {selectedPursuit && (
+                    <p className="small"><strong>Recommended sequence:</strong> {selectedPursuit.recommendedSequence.join(" -> ")}. {selectedPursuit.delayWarning ?? selectedPursuit.freshnessRationale}</p>
+                  )}
+                </div>
+              )}
               <div className="reaction-row" aria-label="Job reactions">
                 <button data-testid="reaction-love" onClick={() => reactToJob(selectedJob, "LOVE", ["love troubleshooting", "love signals/data"])}>Love</button>
                 <button onClick={() => reactToJob(selectedJob, "INTERESTING", ["love experimentation"])}>Interesting</button>
@@ -303,6 +322,79 @@ export default function Home() {
             {feedbackLog.map((item) => <p key={item}>{item}</p>)}
           </div>
         )}
+      </section>
+
+      <section className="card-grid network-dashboard" id="opportunity-graph" data-testid="network-dashboard">
+        <div className="card span-2">
+          <p className="eyebrow">Human Opportunity Graph V2</p>
+          <h2>Today: next best actions</h2>
+          <p className="muted">Balances intrinsic job priority, access gain, urgency, readiness, social cost, and time. It never changes Work Fit.</p>
+          <div className="action-list">
+            {opportunityGraph.nextBestActions.slice(0, 6).map((action) => (
+              <article className="action-card" key={action.id}>
+                <strong>{action.title}</strong>
+                <p>{action.whyNow}</p>
+                <div className="badge-row">
+                  <Badge>Priority {action.priority.toFixed(1)}</Badge>
+                  <Badge>{action.actionType.replaceAll("_", " ")}</Badge>
+                  <Badge>Social cost {action.socialCost.toFixed(1)}</Badge>
+                  <Badge>{action.interactionPlan?.executionMode ?? "SIMULATE"}</Badge>
+                </div>
+                {action.interactionPlan && <small>Best ask: {action.interactionPlan.recommendedAskType.replaceAll("_", " ")} · What not to ask yet: {action.interactionPlan.thingsNotToAskYet.join(", ") || "none"}</small>}
+              </article>
+            ))}
+          </div>
+        </div>
+        <div className="card">
+          <h2>Network coverage</h2>
+          <div className="pill-list">
+            {Object.entries(opportunityGraph.topFunctionCoverage).map(([functionId, coverage]) => (
+              <span className="pill" key={functionId}>{functionId.replaceAll("-", " ")} · {coverage.replaceAll("_", " ")}</span>
+            ))}
+          </div>
+          <h3>Network gaps</h3>
+          <ul>
+            {(opportunityGraph.networkGaps.length ? opportunityGraph.networkGaps : [{ functionId: "none", missingNodeType: "No major gap", rationale: "Synthetic network has some coverage for top functions." }]).map((gap) => <li key={`${gap.functionId}-${gap.missingNodeType}`}>{gap.missingNodeType}: {gap.rationale}</li>)}
+          </ul>
+        </div>
+        <div className="card">
+          <h2>Contact explorer</h2>
+          <div className="contact-list">
+            {opportunityGraph.people.slice(0, 10).map((person) => {
+              const relationship = opportunityGraph.relationships.find((item) => item.personId === person.id);
+              const assessment = opportunityGraph.contactAssessments.find((item) => item.personId === person.id);
+              return (
+                <article className="contact-card" key={person.id}>
+                  <strong>{person.name}</strong>
+                  <p>{person.title} · {relationship?.relationshipType.replaceAll("_", " ")}</p>
+                  <div className="badge-row">
+                    <Badge>Info {assessment?.informationValue.toFixed(1) ?? "--"}</Badge>
+                    <Badge>Routing {assessment?.routingValue.toFixed(1) ?? "--"}</Badge>
+                    <Badge>Cred {assessment?.credibilityValue.toFixed(1) ?? "--"}</Badge>
+                  </div>
+                  <small>{relationship?.memorableContext}</small>
+                </article>
+              );
+            })}
+          </div>
+        </div>
+        <div className="card span-2">
+          <h2>Best warm paths</h2>
+          <div className="path-grid">
+            {opportunityGraph.paths.slice(0, 6).map((path) => (
+              <article className="path-card" key={path.id}>
+                <strong>{path.pathType.replaceAll("_", " ")} · score {path.pathScore.toFixed(1)}</strong>
+                <p>{path.explanation}</p>
+                <div className="badge-row">
+                  <Badge>{path.edgeCertainty}</Badge>
+                  <Badge>Hops {path.hopCount}</Badge>
+                  <Badge>Ask {path.askRequired.replaceAll("_", " ")}</Badge>
+                  <Badge>Social cost {path.socialCost.toFixed(1)}</Badge>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
       </section>
 
       <section className="card-grid lab" id="debug" data-testid="debug-console">

@@ -9,6 +9,7 @@ import type {
   UserEvidence,
   UserProfile,
 } from "@/domain/types";
+import type { HumanOpportunityGraph, InteractionEvent, InteractionPlan, MessageDraft, NextBestAction, OpportunityAccessAssessment, Person, Relationship } from "@/domain/networkTypes";
 
 export interface ResumeParserProvider {
   parse(input: string): string[];
@@ -57,4 +58,36 @@ export interface AnalyticsProvider {
 export interface ScenarioInterviewProvider {
   plan(profile: UserProfile, answeredScenarioIds?: string[]): InterviewPlan;
   apply(profile: UserProfile, responses: ScenarioResponse[]): UserProfile;
+}
+
+export interface ContactImportProvider {
+  importContacts(source: string): { people: Person[]; relationships: Relationship[] };
+}
+
+export interface RelationshipInferenceProvider {
+  infer(relationship: Relationship, events: InteractionEvent[]): Relationship;
+}
+
+export interface NetworkGraphProvider {
+  build(profile: UserProfile, jobs: JobPosting[]): HumanOpportunityGraph;
+}
+
+export interface OpportunityPathProvider {
+  assess(graph: HumanOpportunityGraph): OpportunityAccessAssessment[];
+}
+
+export interface HumanStrategyProvider {
+  plan(graph: HumanOpportunityGraph): InteractionPlan[];
+}
+
+export interface MessageComposerProvider {
+  compose(plan: InteractionPlan): MessageDraft;
+}
+
+export interface OutreachExecutionProvider {
+  execute(plan: InteractionPlan, draft: MessageDraft): { mode: string; event: InteractionEvent };
+}
+
+export interface OutcomeProvider {
+  record(event: InteractionEvent): HumanOpportunityGraph;
 }
