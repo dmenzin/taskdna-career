@@ -1,6 +1,6 @@
 # Logic audit results
 
-Generated: 2026-08-22T18:59:59.319Z
+Generated: 2026-08-22T19:26:19.144Z
 Lab version: subject-lab.v1
 Seed: 20260822
 

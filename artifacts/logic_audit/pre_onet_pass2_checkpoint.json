@@ -1,0 +1,102 @@
+{
+  "checkpoint": "pre-onet-generalization-pass-2",
+  "recordedAt": "2026-08-22T19:27:15.975Z",
+  "gates": {
+    "lint": "pass",
+    "typecheck": "pass",
+    "test": "pass",
+    "eval": "pass",
+    "eval:network": "pass",
+    "eval:unseen": "pass",
+    "audit:logic": "pass",
+    "audit:generalization": "pass",
+    "audit:zero-origin": "pass",
+    "audit:domain-holdout": "pass",
+    "audit:sensitivity": "pass",
+    "audit:stability": "pass",
+    "audit:parameters": "pass",
+    "subjects:validate": "pass"
+  },
+  "metrics": {
+    "occupationSource": {
+      "name": "O*NET-inspired local snapshot",
+      "version": "onet-inspired.v1",
+      "licenseNote": "Locally versioned public occupational/task structure synthesized from publicly documented O*NET occupation titles, task patterns, and generalized work activities. Not a full O*NET download and not used as preference ground truth."
+    },
+    "subjectCounts": {
+      "design": 80,
+      "validation": 40,
+      "holdout": 40,
+      "adversarial": 40
+    },
+    "meanHiddenTruthMae": 1.8658444272930566,
+    "propertyPassRate": 0.965556831228473,
+    "byCohort": {
+      "design": 0.9487179487179487,
+      "validation": 0.9818181818181818,
+      "holdout": 0.9661016949152542,
+      "adversarial": 0.9831460674157303
+    },
+    "twinPassRate": 0.984375,
+    "zeroOriginPassRate": 1,
+    "rankStabilitySpearman": 1,
+    "unseen": {
+      "n": 24,
+      "passRate": 0.9622641509433962,
+      "meanMae": 1.8770769519127564
+    },
+    "parameterCount": 74,
+    "scorecard": {
+      "evidenceDependence": "A",
+      "preferenceCapabilityIndependence": "A",
+      "confidenceHonesty": "A",
+      "determinism": "A",
+      "personalizationLeakage": "A",
+      "generalizationHoldout": "A",
+      "counterfactualTwins": "A",
+      "zeroOrigin": "A",
+      "domainHoldout": "A",
+      "rankStability": "A",
+      "hiddenTruthRecovery": "D",
+      "overallTrust": "B"
+    },
+    "domainHoldout": [
+      {
+        "family": "finance",
+        "n": 4,
+        "passRate": 1,
+        "meanMae": 1.8159604976187491
+      },
+      {
+        "family": "sales",
+        "n": 4,
+        "passRate": 1,
+        "meanMae": 2.215163152457274
+      },
+      {
+        "family": "operations_supply",
+        "n": 4,
+        "passRate": 1,
+        "meanMae": 1.780970521636061
+      },
+      {
+        "family": "ux_design",
+        "n": 3,
+        "passRate": 1,
+        "meanMae": 1.9455222261772294
+      },
+      {
+        "family": "software_it",
+        "n": 6,
+        "passRate": 1,
+        "meanMae": 1.9376403695831617
+      },
+      {
+        "family": "engineering_hardware",
+        "n": 6,
+        "passRate": 0.9545454545454546,
+        "meanMae": 2.023609705575255
+      }
+    ]
+  }
+}

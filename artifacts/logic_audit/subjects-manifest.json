@@ -1,7 +1,7 @@
 {
   "version": "subject-lab.v1",
   "seed": 20260822,
-  "generatedAt": "2026-08-22T18:59:59.319Z",
+  "generatedAt": "2026-08-22T19:26:19.144Z",
   "occupationSource": {
     "name": "O*NET-inspired local snapshot",
     "version": "onet-inspired.v1",
