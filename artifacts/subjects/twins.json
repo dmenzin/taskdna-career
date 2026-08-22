@@ -1,0 +1,258 @@
+[
+  {
+    "id": "subject-001-pref",
+    "kind": "same_experience_different_preference"
+  },
+  {
+    "id": "subject-001-exp",
+    "kind": "same_preference_different_experience"
+  },
+  {
+    "id": "subject-001-net",
+    "kind": "same_user_different_network"
+  },
+  {
+    "id": "subject-001-title",
+    "kind": "title_removed"
+  },
+  {
+    "id": "subject-002-pref",
+    "kind": "same_experience_different_preference"
+  },
+  {
+    "id": "subject-002-exp",
+    "kind": "same_preference_different_experience"
+  },
+  {
+    "id": "subject-002-net",
+    "kind": "same_user_different_network"
+  },
+  {
+    "id": "subject-002-title",
+    "kind": "title_removed"
+  },
+  {
+    "id": "subject-003-pref",
+    "kind": "same_experience_different_preference"
+  },
+  {
+    "id": "subject-003-exp",
+    "kind": "same_preference_different_experience"
+  },
+  {
+    "id": "subject-003-net",
+    "kind": "same_user_different_network"
+  },
+  {
+    "id": "subject-003-title",
+    "kind": "title_removed"
+  },
+  {
+    "id": "subject-004-pref",
+    "kind": "same_experience_different_preference"
+  },
+  {
+    "id": "subject-004-exp",
+    "kind": "same_preference_different_experience"
+  },
+  {
+    "id": "subject-004-net",
+    "kind": "same_user_different_network"
+  },
+  {
+    "id": "subject-004-title",
+    "kind": "title_removed"
+  },
+  {
+    "id": "subject-005-pref",
+    "kind": "same_experience_different_preference"
+  },
+  {
+    "id": "subject-005-exp",
+    "kind": "same_preference_different_experience"
+  },
+  {
+    "id": "subject-005-net",
+    "kind": "same_user_different_network"
+  },
+  {
+    "id": "subject-005-title",
+    "kind": "title_removed"
+  },
+  {
+    "id": "subject-006-pref",
+    "kind": "same_experience_different_preference"
+  },
+  {
+    "id": "subject-006-exp",
+    "kind": "same_preference_different_experience"
+  },
+  {
+    "id": "subject-006-net",
+    "kind": "same_user_different_network"
+  },
+  {
+    "id": "subject-006-title",
+    "kind": "title_removed"
+  },
+  {
+    "id": "subject-007-pref",
+    "kind": "same_experience_different_preference"
+  },
+  {
+    "id": "subject-007-exp",
+    "kind": "same_preference_different_experience"
+  },
+  {
+    "id": "subject-007-net",
+    "kind": "same_user_different_network"
+  },
+  {
+    "id": "subject-007-title",
+    "kind": "title_removed"
+  },
+  {
+    "id": "subject-008-pref",
+    "kind": "same_experience_different_preference"
+  },
+  {
+    "id": "subject-008-exp",
+    "kind": "same_preference_different_experience"
+  },
+  {
+    "id": "subject-008-net",
+    "kind": "same_user_different_network"
+  },
+  {
+    "id": "subject-008-title",
+    "kind": "title_removed"
+  },
+  {
+    "id": "subject-009-pref",
+    "kind": "same_experience_different_preference"
+  },
+  {
+    "id": "subject-009-exp",
+    "kind": "same_preference_different_experience"
+  },
+  {
+    "id": "subject-009-net",
+    "kind": "same_user_different_network"
+  },
+  {
+    "id": "subject-009-title",
+    "kind": "title_removed"
+  },
+  {
+    "id": "subject-010-pref",
+    "kind": "same_experience_different_preference"
+  },
+  {
+    "id": "subject-010-exp",
+    "kind": "same_preference_different_experience"
+  },
+  {
+    "id": "subject-010-net",
+    "kind": "same_user_different_network"
+  },
+  {
+    "id": "subject-010-title",
+    "kind": "title_removed"
+  },
+  {
+    "id": "subject-011-pref",
+    "kind": "same_experience_different_preference"
+  },
+  {
+    "id": "subject-011-exp",
+    "kind": "same_preference_different_experience"
+  },
+  {
+    "id": "subject-011-net",
+    "kind": "same_user_different_network"
+  },
+  {
+    "id": "subject-011-title",
+    "kind": "title_removed"
+  },
+  {
+    "id": "subject-012-pref",
+    "kind": "same_experience_different_preference"
+  },
+  {
+    "id": "subject-012-exp",
+    "kind": "same_preference_different_experience"
+  },
+  {
+    "id": "subject-012-net",
+    "kind": "same_user_different_network"
+  },
+  {
+    "id": "subject-012-title",
+    "kind": "title_removed"
+  },
+  {
+    "id": "subject-013-pref",
+    "kind": "same_experience_different_preference"
+  },
+  {
+    "id": "subject-013-exp",
+    "kind": "same_preference_different_experience"
+  },
+  {
+    "id": "subject-013-net",
+    "kind": "same_user_different_network"
+  },
+  {
+    "id": "subject-013-title",
+    "kind": "title_removed"
+  },
+  {
+    "id": "subject-014-pref",
+    "kind": "same_experience_different_preference"
+  },
+  {
+    "id": "subject-014-exp",
+    "kind": "same_preference_different_experience"
+  },
+  {
+    "id": "subject-014-net",
+    "kind": "same_user_different_network"
+  },
+  {
+    "id": "subject-014-title",
+    "kind": "title_removed"
+  },
+  {
+    "id": "subject-015-pref",
+    "kind": "same_experience_different_preference"
+  },
+  {
+    "id": "subject-015-exp",
+    "kind": "same_preference_different_experience"
+  },
+  {
+    "id": "subject-015-net",
+    "kind": "same_user_different_network"
+  },
+  {
+    "id": "subject-015-title",
+    "kind": "title_removed"
+  },
+  {
+    "id": "subject-016-pref",
+    "kind": "same_experience_different_preference"
+  },
+  {
+    "id": "subject-016-exp",
+    "kind": "same_preference_different_experience"
+  },
+  {
+    "id": "subject-016-net",
+    "kind": "same_user_different_network"
+  },
+  {
+    "id": "subject-016-title",
+    "kind": "title_removed"
+  }
+]

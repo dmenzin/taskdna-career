@@ -1,0 +1,596 @@
+{
+  "generatedAt": "2026-08-22T18:59:59.319Z",
+  "seed": 20260822,
+  "labVersion": "subject-lab.v1",
+  "occupationSource": {
+    "name": "O*NET-inspired local snapshot",
+    "version": "onet-inspired.v1",
+    "licenseNote": "Locally versioned public occupational/task structure synthesized from publicly documented O*NET occupation titles, task patterns, and generalized work activities. Not a full O*NET download and not used as preference ground truth."
+  },
+  "counts": {
+    "design": 80,
+    "validation": 40,
+    "holdout": 40,
+    "adversarial": 40
+  },
+  "occupationFamilies": [
+    "engineering_hardware",
+    "software_it",
+    "data_analytics",
+    "scientific_research",
+    "healthcare_professional",
+    "healthcare_operations",
+    "finance",
+    "accounting_audit",
+    "consulting",
+    "product",
+    "project_program",
+    "operations_supply",
+    "sales",
+    "marketing",
+    "hr_recruiting",
+    "legal_compliance",
+    "education",
+    "ux_design",
+    "customer_success",
+    "field_technical",
+    "public_sector"
+  ],
+  "invariants": {
+    "passed": true,
+    "checks": [
+      {
+        "id": "evidence_changes_fit",
+        "pass": true,
+        "detail": "investigator cyber-req gap 1.70 vs coordinator 0.09 (cyber 9.37/9.16)"
+      },
+      {
+        "id": "preference_capability_not_collapsed",
+        "pass": true,
+        "detail": "fit 9.37/9.16 hire 4.30/4.59"
+      },
+      {
+        "id": "sparse_lower_confidence",
+        "pass": true,
+        "detail": "sparse 0.24 rich 0.45"
+      },
+      {
+        "id": "caf_formula",
+        "pass": true,
+        "detail": "CAF 7"
+      },
+      {
+        "id": "overall_hireability_weight",
+        "pass": true,
+        "detail": "overall from hireability-only 4.00"
+      },
+      {
+        "id": "tier_monotonic_overall",
+        "pass": true,
+        "detail": "high overall is not lower priority"
+      },
+      {
+        "id": "determinism",
+        "pass": true,
+        "detail": "identical rerun rankings"
+      },
+      {
+        "id": "feedback_does_not_fabricate_capability",
+        "pass": true,
+        "detail": "Recommendations changed because dislike feedback nudged Task-DNA preferences (problem_structure, measurable_feedback, investigation_orientation, evidence_density). Capability evidence was not changed."
+      }
+    ]
+  },
+  "leakage": {
+    "mustFix": 0,
+    "hits": [
+      {
+        "file": "src/lab/leakage.ts",
+        "line": 29,
+        "snippet": "{ pattern: \"original design user\", classification: \"PERSONALIZATION_LEAK_MUST_FIX\" as const },",
+        "pattern": "original design user",
+        "classification": "PERSONALIZATION_LEAK_MUST_FIX"
+      },
+      {
+        "file": "src/lab/leakage.ts",
+        "line": 30,
+        "snippet": "{ pattern: \"golden score\", classification: \"DEMO_OR_GOLDEN_FIXTURE\" as const },",
+        "pattern": "golden score",
+        "classification": "DEMO_OR_GOLDEN_FIXTURE"
+      }
+    ]
+  },
+  "subjects": {
+    "count": 200,
+    "meanMae": 1.8658444272930566,
+    "propertyPassRate": 0.965556831228473,
+    "byCohort": {
+      "design": 0.9487179487179487,
+      "validation": 0.9818181818181818,
+      "holdout": 0.9661016949152542,
+      "adversarial": 0.9831460674157303
+    }
+  },
+  "twins": {
+    "count": 64,
+    "passRate": 0.984375,
+    "sample": [
+      {
+        "id": "subject-001-pref",
+        "kind": "same_experience_different_preference",
+        "pass": true,
+        "detail": "fitΔ 0.17 hireΔ 0.00"
+      },
+      {
+        "id": "subject-001-exp",
+        "kind": "same_preference_different_experience",
+        "pass": true,
+        "detail": "fitΔ 0.64 hireΔ 0.63"
+      },
+      {
+        "id": "subject-001-net",
+        "kind": "same_user_different_network",
+        "pass": true,
+        "detail": "Work Fit invariant across network variants"
+      },
+      {
+        "id": "subject-001-title",
+        "kind": "title_removed",
+        "pass": true,
+        "detail": "title-on 8.06 title-off 8.06"
+      },
+      {
+        "id": "subject-002-pref",
+        "kind": "same_experience_different_preference",
+        "pass": true,
+        "detail": "fitΔ 0.54 hireΔ 0.09"
+      },
+      {
+        "id": "subject-002-exp",
+        "kind": "same_preference_different_experience",
+        "pass": true,
+        "detail": "fitΔ 0.35 hireΔ 0.63"
+      },
+      {
+        "id": "subject-002-net",
+        "kind": "same_user_different_network",
+        "pass": true,
+        "detail": "Work Fit invariant across network variants"
+      },
+      {
+        "id": "subject-002-title",
+        "kind": "title_removed",
+        "pass": true,
+        "detail": "title-on 7.99 title-off 7.99"
+      },
+      {
+        "id": "subject-003-pref",
+        "kind": "same_experience_different_preference",
+        "pass": true,
+        "detail": "fitΔ 0.09 hireΔ 0.00"
+      },
+      {
+        "id": "subject-003-exp",
+        "kind": "same_preference_different_experience",
+        "pass": true,
+        "detail": "fitΔ 0.53 hireΔ 0.60"
+      },
+      {
+        "id": "subject-003-net",
+        "kind": "same_user_different_network",
+        "pass": true,
+        "detail": "Work Fit invariant across network variants"
+      },
+      {
+        "id": "subject-003-title",
+        "kind": "title_removed",
+        "pass": true,
+        "detail": "title-on 7.93 title-off 7.93"
+      }
+    ]
+  },
+  "zeroOrigin": {
+    "passRate": 1,
+    "cases": [
+      {
+        "id": "subject-121",
+        "pass": true,
+        "detail": "dna 17 functions 23 actions 7"
+      },
+      {
+        "id": "subject-122",
+        "pass": true,
+        "detail": "dna 17 functions 23 actions 6"
+      },
+      {
+        "id": "subject-123",
+        "pass": true,
+        "detail": "dna 17 functions 23 actions 8"
+      },
+      {
+        "id": "subject-124",
+        "pass": true,
+        "detail": "dna 17 functions 23 actions 8"
+      },
+      {
+        "id": "subject-125",
+        "pass": true,
+        "detail": "dna 17 functions 23 actions 7"
+      },
+      {
+        "id": "subject-126",
+        "pass": true,
+        "detail": "dna 17 functions 23 actions 8"
+      },
+      {
+        "id": "subject-127",
+        "pass": true,
+        "detail": "dna 17 functions 23 actions 7"
+      },
+      {
+        "id": "subject-128",
+        "pass": true,
+        "detail": "dna 17 functions 23 actions 8"
+      },
+      {
+        "id": "subject-129",
+        "pass": true,
+        "detail": "dna 17 functions 23 actions 7"
+      },
+      {
+        "id": "subject-130",
+        "pass": true,
+        "detail": "dna 17 functions 23 actions 7"
+      },
+      {
+        "id": "subject-131",
+        "pass": true,
+        "detail": "dna 17 functions 23 actions 8"
+      },
+      {
+        "id": "subject-132",
+        "pass": true,
+        "detail": "dna 17 functions 23 actions 7"
+      }
+    ]
+  },
+  "domainHoldout": [
+    {
+      "family": "finance",
+      "n": 4,
+      "passRate": 1,
+      "meanMae": 1.8159604976187491
+    },
+    {
+      "family": "sales",
+      "n": 4,
+      "passRate": 1,
+      "meanMae": 2.215163152457274
+    },
+    {
+      "family": "operations_supply",
+      "n": 4,
+      "passRate": 1,
+      "meanMae": 1.780970521636061
+    },
+    {
+      "family": "ux_design",
+      "n": 3,
+      "passRate": 1,
+      "meanMae": 1.9455222261772294
+    },
+    {
+      "family": "software_it",
+      "n": 6,
+      "passRate": 1,
+      "meanMae": 1.9376403695831617
+    },
+    {
+      "family": "engineering_hardware",
+      "n": 6,
+      "passRate": 0.9545454545454546,
+      "meanMae": 2.023609705575255
+    }
+  ],
+  "unseen": {
+    "n": 24,
+    "passRate": 0.9622641509433962,
+    "meanMae": 1.8770769519127564,
+    "cases": [
+      {
+        "subjectId": "subject-121",
+        "cohort": "holdout",
+        "confidence": 0.39150326050420176,
+        "taskDnaMae": 2.2056315191752813,
+        "propertyResults": [
+          {
+            "id": "preference_capability_independence",
+            "pass": true,
+            "detail": "capabilities remain evidence-tied"
+          },
+          {
+            "id": "occupation_does_not_define_preference",
+            "pass": false,
+            "detail": "inferred investigation 7.48 vs truth 3.40"
+          },
+          {
+            "id": "hireability_tracks_demonstrated_skills",
+            "pass": true,
+            "detail": "capabilities materials,root cause,excel,writing"
+          },
+          {
+            "id": "unknown_not_confident_neutral",
+            "pass": true,
+            "detail": "confidence 0.39 sparse=false"
+          }
+        ]
+      },
+      {
+        "subjectId": "subject-122",
+        "cohort": "holdout",
+        "confidence": 0.42607529411764716,
+        "taskDnaMae": 2.035034886562868,
+        "propertyResults": [
+          {
+            "id": "preference_capability_independence",
+            "pass": true,
+            "detail": "capabilities remain evidence-tied"
+          },
+          {
+            "id": "occupation_does_not_define_preference",
+            "pass": true,
+            "detail": "inferred investigation 7.48 vs truth 4.16"
+          },
+          {
+            "id": "hireability_tracks_demonstrated_skills",
+            "pass": true,
+            "detail": "capabilities process improvement,doe,communication,excel"
+          },
+          {
+            "id": "unknown_not_confident_neutral",
+            "pass": true,
+            "detail": "confidence 0.43 sparse=false"
+          }
+        ]
+      },
+      {
+        "subjectId": "subject-123",
+        "cohort": "holdout",
+        "confidence": 0.3613035294117648,
+        "taskDnaMae": 1.6378220201837557,
+        "propertyResults": [
+          {
+            "id": "preference_capability_independence",
+            "pass": true,
+            "detail": "capabilities remain evidence-tied"
+          },
+          {
+            "id": "documentation_has_friction",
+            "pass": true,
+            "detail": "doc risk 0.00"
+          },
+          {
+            "id": "occupation_does_not_define_preference",
+            "pass": true,
+            "detail": "inferred investigation 7.48 vs truth 6.87"
+          },
+          {
+            "id": "hireability_tracks_demonstrated_skills",
+            "pass": true,
+            "detail": "capabilities software,excel,communication,debugging"
+          },
+          {
+            "id": "unknown_not_confident_neutral",
+            "pass": true,
+            "detail": "confidence 0.36 sparse=false"
+          }
+        ]
+      },
+      {
+        "subjectId": "subject-124",
+        "cohort": "holdout",
+        "confidence": 0.32864470588235306,
+        "taskDnaMae": 1.9078488402521128,
+        "propertyResults": [
+          {
+            "id": "preference_capability_independence",
+            "pass": true,
+            "detail": "capabilities remain evidence-tied"
+          },
+          {
+            "id": "occupation_does_not_define_preference",
+            "pass": true,
+            "detail": "inferred investigation 6.68 vs truth 3.65"
+          },
+          {
+            "id": "hireability_tracks_demonstrated_skills",
+            "pass": true,
+            "detail": "capabilities writing"
+          },
+          {
+            "id": "unknown_not_confident_neutral",
+            "pass": true,
+            "detail": "confidence 0.33 sparse=true"
+          }
+        ]
+      },
+      {
+        "subjectId": "subject-125",
+        "cohort": "holdout",
+        "confidence": 0.40145411764705896,
+        "taskDnaMae": 1.7746715450467656,
+        "propertyResults": [
+          {
+            "id": "preference_capability_independence",
+            "pass": true,
+            "detail": "capabilities remain evidence-tied"
+          },
+          {
+            "id": "investigative_outranks_coordination",
+            "pass": true,
+            "detail": "investigative 9.04 vs coordination 8.80"
+          },
+          {
+            "id": "hireability_tracks_demonstrated_skills",
+            "pass": true,
+            "detail": "capabilities excel,python,data visualization,communication"
+          },
+          {
+            "id": "same_structure_cross_industry",
+            "pass": true,
+            "detail": "cyber fit 9.40 vs requirements fit 8.80"
+          },
+          {
+            "id": "unknown_not_confident_neutral",
+            "pass": true,
+            "detail": "confidence 0.40 sparse=false"
+          }
+        ]
+      },
+      {
+        "subjectId": "subject-126",
+        "cohort": "holdout",
+        "confidence": 0.4372547789311805,
+        "taskDnaMae": 2.156391069139026,
+        "propertyResults": [
+          {
+            "id": "preference_capability_independence",
+            "pass": true,
+            "detail": "capabilities remain evidence-tied"
+          },
+          {
+            "id": "investigative_outranks_coordination",
+            "pass": false,
+            "detail": "investigative 8.48 vs coordination 8.81"
+          },
+          {
+            "id": "hireability_tracks_demonstrated_skills",
+            "pass": true,
+            "detail": "capabilities writing,communication,clinical research,experimentation"
+          },
+          {
+            "id": "same_structure_cross_industry",
+            "pass": true,
+            "detail": "cyber fit 9.25 vs requirements fit 8.81"
+          },
+          {
+            "id": "unknown_not_confident_neutral",
+            "pass": true,
+            "detail": "confidence 0.44 sparse=false"
+          }
+        ]
+      },
+      {
+        "subjectId": "subject-127",
+        "cohort": "holdout",
+        "confidence": 0.33771764705882357,
+        "taskDnaMae": 1.30559866265717,
+        "propertyResults": [
+          {
+            "id": "preference_capability_independence",
+            "pass": true,
+            "detail": "capabilities remain evidence-tied"
+          },
+          {
+            "id": "occupation_does_not_define_preference",
+            "pass": true,
+            "detail": "inferred investigation 5.00 vs truth 3.57"
+          },
+          {
+            "id": "hireability_tracks_demonstrated_skills",
+            "pass": true,
+            "detail": "capabilities communication,excel,python,triage"
+          },
+          {
+            "id": "unknown_not_confident_neutral",
+            "pass": true,
+            "detail": "confidence 0.34 sparse=false"
+          }
+        ]
+      },
+      {
+        "subjectId": "subject-128",
+        "cohort": "holdout",
+        "confidence": 0.37222588235294124,
+        "taskDnaMae": 1.7660325888193706,
+        "propertyResults": [
+          {
+            "id": "preference_capability_independence",
+            "pass": true,
+            "detail": "capabilities remain evidence-tied"
+          },
+          {
+            "id": "occupation_does_not_define_preference",
+            "pass": true,
+            "detail": "inferred investigation 6.68 vs truth 4.57"
+          },
+          {
+            "id": "hireability_tracks_demonstrated_skills",
+            "pass": true,
+            "detail": "capabilities stakeholder management,healthcare administration,quality systems,operations"
+          },
+          {
+            "id": "unknown_not_confident_neutral",
+            "pass": true,
+            "detail": "confidence 0.37 sparse=false"
+          }
+        ]
+      }
+    ]
+  },
+  "sensitivity": {
+    "scoringVersion": "scoring.v1",
+    "results": [
+      {
+        "dimension": "investigation_orientation",
+        "topMoved": 15,
+        "spearman": 0.9946607341490545
+      },
+      {
+        "dimension": "coordination_preference",
+        "topMoved": 3,
+        "spearman": 0.9986651835372636
+      }
+    ]
+  },
+  "stability": {
+    "spearman": 1,
+    "top5Changed": 0,
+    "stable": true
+  },
+  "parameters": {
+    "count": 74,
+    "version": "scoring.v1"
+  },
+  "scorecard": {
+    "grades": {
+      "evidenceDependence": "A",
+      "preferenceCapabilityIndependence": "A",
+      "confidenceHonesty": "A",
+      "determinism": "A",
+      "personalizationLeakage": "A",
+      "generalizationHoldout": "A",
+      "counterfactualTwins": "A",
+      "zeroOrigin": "A",
+      "domainHoldout": "A",
+      "rankStability": "A",
+      "hiddenTruthRecovery": "D",
+      "overallTrust": "B"
+    },
+    "recommendation": "Sandbox-coherent, not production-calibrated. Rankings are inspectable hypotheses. Hidden Task DNA is only coarsely recovered from messy evidence (MAE ~2/10).",
+    "remainingArbitrary": [
+      "Overall weights are product judgments, not learned.",
+      "Social-cost and ask-readiness numbers are uncalibrated.",
+      "Confidence is a heuristic, not a probability.",
+      "Function ontology is still richer for technical work than for other knowledge work."
+    ]
+  },
+  "failures": [
+    {
+      "id": "subject-016-exp",
+      "expected": "same_preference_different_experience",
+      "observed": "fitΔ 0.97 hireΔ 0.00",
+      "rootCause": "twin metamorphic failure"
+    }
+  ]
+}

@@ -15,6 +15,8 @@ Useful commands:
 - `pnpm typecheck` - type-check the app and domain layer.
 - `pnpm test` - run recommendation engine regression tests.
 - `pnpm eval` - run the deterministic persona evaluation harness.
+- `pnpm audit:logic` - run the computational-brain audit and write `artifacts/logic_audit/`.
+- `pnpm subjects:generate` - build the 200-subject Virtual Subject Laboratory.
 - `pnpm build` - build the Next app.
 - `pnpm export:demo` - write standalone demo exports to `artifacts/`.
 - `pnpm reset` / `pnpm seed` - refresh deterministic local sandbox data.

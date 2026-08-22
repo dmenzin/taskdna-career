@@ -1,0 +1,524 @@
+{
+  "version": "scoring.v1",
+  "count": 74,
+  "parameters": [
+    {
+      "id": "inference.version",
+      "value": "taskdna.v2",
+      "kind": "version",
+      "owner": "TaskDNA inference",
+      "justification": "Versioned heuristic; not a calibrated probability."
+    },
+    {
+      "id": "inference.evidenceWeightTwoPlus",
+      "value": 0.62,
+      "kind": "coefficient",
+      "owner": "TaskDNA inference",
+      "justification": "Versioned heuristic; not a calibrated probability."
+    },
+    {
+      "id": "inference.evidenceWeightSingle",
+      "value": 0.42,
+      "kind": "coefficient",
+      "owner": "TaskDNA inference",
+      "justification": "Versioned heuristic; not a calibrated probability."
+    },
+    {
+      "id": "inference.maxEffectiveSignals",
+      "value": 4,
+      "kind": "coefficient",
+      "owner": "TaskDNA inference",
+      "justification": "Versioned heuristic; not a calibrated probability."
+    },
+    {
+      "id": "inference.signalConfidenceStep",
+      "value": 0.075,
+      "kind": "coefficient",
+      "owner": "TaskDNA inference",
+      "justification": "Versioned heuristic; not a calibrated probability."
+    },
+    {
+      "id": "inference.sparseEvidenceThreshold",
+      "value": 3,
+      "kind": "coefficient",
+      "owner": "TaskDNA inference",
+      "justification": "Versioned heuristic; not a calibrated probability."
+    },
+    {
+      "id": "inference.unknownDimensionConfidence",
+      "value": 0.24,
+      "kind": "coefficient",
+      "owner": "TaskDNA inference",
+      "justification": "Versioned heuristic; not a calibrated probability."
+    },
+    {
+      "id": "inference.negativeFitPenalty",
+      "value": 0.5,
+      "kind": "coefficient",
+      "owner": "TaskDNA inference",
+      "justification": "Versioned heuristic; not a calibrated probability."
+    },
+    {
+      "id": "overall.weight.hireability",
+      "value": 0.4,
+      "kind": "weight",
+      "owner": "Overall priority",
+      "justification": "Explicit overall mix; hireability currently dominates."
+    },
+    {
+      "id": "overall.weight.confidenceAdjustedFit",
+      "value": 0.3,
+      "kind": "weight",
+      "owner": "Overall priority",
+      "justification": "Explicit overall mix; hireability currently dominates."
+    },
+    {
+      "id": "overall.weight.careerDirection",
+      "value": 0.15,
+      "kind": "weight",
+      "owner": "Overall priority",
+      "justification": "Explicit overall mix; hireability currently dominates."
+    },
+    {
+      "id": "overall.weight.technicalGrowth",
+      "value": 0.1,
+      "kind": "weight",
+      "owner": "Overall priority",
+      "justification": "Explicit overall mix; hireability currently dominates."
+    },
+    {
+      "id": "overall.weight.durability",
+      "value": 0.05,
+      "kind": "weight",
+      "owner": "Overall priority",
+      "justification": "Explicit overall mix; hireability currently dominates."
+    },
+    {
+      "id": "tier.attackFirst.overall",
+      "value": 8.2,
+      "kind": "threshold",
+      "owner": "Action tiers",
+      "justification": "Configured cliff; small input changes can change labels."
+    },
+    {
+      "id": "tier.attackFirst.hireability",
+      "value": 7.5,
+      "kind": "threshold",
+      "owner": "Action tiers",
+      "justification": "Configured cliff; small input changes can change labels."
+    },
+    {
+      "id": "tier.attackFirst.fit",
+      "value": 8.4,
+      "kind": "threshold",
+      "owner": "Action tiers",
+      "justification": "Configured cliff; small input changes can change labels."
+    },
+    {
+      "id": "tier.coreApply.hireability",
+      "value": 7.5,
+      "kind": "threshold",
+      "owner": "Action tiers",
+      "justification": "Configured cliff; small input changes can change labels."
+    },
+    {
+      "id": "tier.highFitStretch.hireabilityMin",
+      "value": 6.5,
+      "kind": "threshold",
+      "owner": "Action tiers",
+      "justification": "Configured cliff; small input changes can change labels."
+    },
+    {
+      "id": "tier.highFitStretch.hireabilityMax",
+      "value": 7.49,
+      "kind": "threshold",
+      "owner": "Action tiers",
+      "justification": "Configured cliff; small input changes can change labels."
+    },
+    {
+      "id": "tier.highFitStretch.fit",
+      "value": 8.7,
+      "kind": "threshold",
+      "owner": "Action tiers",
+      "justification": "Configured cliff; small input changes can change labels."
+    },
+    {
+      "id": "tier.highFitStretch.confidence",
+      "value": 0.65,
+      "kind": "threshold",
+      "owner": "Action tiers",
+      "justification": "Configured cliff; small input changes can change labels."
+    },
+    {
+      "id": "novelty.threshold",
+      "value": 7.5,
+      "kind": "threshold",
+      "owner": "Novelty",
+      "justification": "Gates non-obvious discovery on fit and transfer."
+    },
+    {
+      "id": "novelty.minimumRelevantFit",
+      "value": 7.4,
+      "kind": "threshold",
+      "owner": "Novelty",
+      "justification": "Gates non-obvious discovery on fit and transfer."
+    },
+    {
+      "id": "novelty.minimumCapabilityTransfer",
+      "value": 0.35,
+      "kind": "threshold",
+      "owner": "Novelty",
+      "justification": "Gates non-obvious discovery on fit and transfer."
+    },
+    {
+      "id": "network.access.information",
+      "value": 0.25,
+      "kind": "weight",
+      "owner": "Network access",
+      "justification": "Heuristic access mix."
+    },
+    {
+      "id": "network.access.routing",
+      "value": 0.25,
+      "kind": "weight",
+      "owner": "Network access",
+      "justification": "Heuristic access mix."
+    },
+    {
+      "id": "network.access.credibility",
+      "value": 0.22,
+      "kind": "weight",
+      "owner": "Network access",
+      "justification": "Heuristic access mix."
+    },
+    {
+      "id": "network.access.advocacy",
+      "value": 0.18,
+      "kind": "weight",
+      "owner": "Network access",
+      "justification": "Heuristic access mix."
+    },
+    {
+      "id": "network.access.secondDegree",
+      "value": 0.1,
+      "kind": "weight",
+      "owner": "Network access",
+      "justification": "Heuristic access mix."
+    },
+    {
+      "id": "network.path.destinationRelevance",
+      "value": 0.22,
+      "kind": "weight",
+      "owner": "Pathfinding",
+      "justification": "Hop and certainty penalties."
+    },
+    {
+      "id": "network.path.firstHopReadiness",
+      "value": 0.2,
+      "kind": "weight",
+      "owner": "Pathfinding",
+      "justification": "Hop and certainty penalties."
+    },
+    {
+      "id": "network.path.edgeCertainty",
+      "value": 0.14,
+      "kind": "weight",
+      "owner": "Pathfinding",
+      "justification": "Hop and certainty penalties."
+    },
+    {
+      "id": "network.path.routingPlausibility",
+      "value": 0.14,
+      "kind": "weight",
+      "owner": "Pathfinding",
+      "justification": "Hop and certainty penalties."
+    },
+    {
+      "id": "network.path.credibilityTransfer",
+      "value": 0.1,
+      "kind": "weight",
+      "owner": "Pathfinding",
+      "justification": "Hop and certainty penalties."
+    },
+    {
+      "id": "network.path.advocacyPotential",
+      "value": 0.08,
+      "kind": "weight",
+      "owner": "Pathfinding",
+      "justification": "Hop and certainty penalties."
+    },
+    {
+      "id": "network.path.currentOrgRelevance",
+      "value": 0.07,
+      "kind": "weight",
+      "owner": "Pathfinding",
+      "justification": "Hop and certainty penalties."
+    },
+    {
+      "id": "network.path.confidence",
+      "value": 0.05,
+      "kind": "weight",
+      "owner": "Pathfinding",
+      "justification": "Hop and certainty penalties."
+    },
+    {
+      "id": "network.path.hopPenalty",
+      "value": 0.75,
+      "kind": "weight",
+      "owner": "Pathfinding",
+      "justification": "Hop and certainty penalties."
+    },
+    {
+      "id": "network.path.socialCostPenalty",
+      "value": 0.18,
+      "kind": "weight",
+      "owner": "Pathfinding",
+      "justification": "Hop and certainty penalties."
+    },
+    {
+      "id": "network.action.intrinsicOpportunityPriority",
+      "value": 0.26,
+      "kind": "weight",
+      "owner": "Next best action",
+      "justification": "Daily planner mix."
+    },
+    {
+      "id": "network.action.expectedAccessGain",
+      "value": 0.2,
+      "kind": "weight",
+      "owner": "Next best action",
+      "justification": "Daily planner mix."
+    },
+    {
+      "id": "network.action.informationGain",
+      "value": 0.12,
+      "kind": "weight",
+      "owner": "Next best action",
+      "justification": "Daily planner mix."
+    },
+    {
+      "id": "network.action.urgency",
+      "value": 0.12,
+      "kind": "weight",
+      "owner": "Next best action",
+      "justification": "Daily planner mix."
+    },
+    {
+      "id": "network.action.readiness",
+      "value": 0.14,
+      "kind": "weight",
+      "owner": "Next best action",
+      "justification": "Daily planner mix."
+    },
+    {
+      "id": "network.action.strategicNetworkValue",
+      "value": 0.08,
+      "kind": "weight",
+      "owner": "Next best action",
+      "justification": "Daily planner mix."
+    },
+    {
+      "id": "network.action.careerDirectionValue",
+      "value": 0.08,
+      "kind": "weight",
+      "owner": "Next best action",
+      "justification": "Daily planner mix."
+    },
+    {
+      "id": "network.action.socialCostPenalty",
+      "value": 0.18,
+      "kind": "weight",
+      "owner": "Next best action",
+      "justification": "Daily planner mix."
+    },
+    {
+      "id": "network.action.timeCostPenalty",
+      "value": 0.06,
+      "kind": "weight",
+      "owner": "Next best action",
+      "justification": "Daily planner mix."
+    },
+    {
+      "id": "ask.RECONNECT.socialCost",
+      "value": 2,
+      "kind": "cost",
+      "owner": "Ask ontology",
+      "justification": "Social-cost prior, not an observed outcome probability."
+    },
+    {
+      "id": "ask.CATCH_UP.socialCost",
+      "value": 3,
+      "kind": "cost",
+      "owner": "Ask ontology",
+      "justification": "Social-cost prior, not an observed outcome probability."
+    },
+    {
+      "id": "ask.CAREER_PERSPECTIVE.socialCost",
+      "value": 3,
+      "kind": "cost",
+      "owner": "Ask ontology",
+      "justification": "Social-cost prior, not an observed outcome probability."
+    },
+    {
+      "id": "ask.FUNCTION_INSIGHT.socialCost",
+      "value": 3,
+      "kind": "cost",
+      "owner": "Ask ontology",
+      "justification": "Social-cost prior, not an observed outcome probability."
+    },
+    {
+      "id": "ask.ROLE_REALITY.socialCost",
+      "value": 3,
+      "kind": "cost",
+      "owner": "Ask ontology",
+      "justification": "Social-cost prior, not an observed outcome probability."
+    },
+    {
+      "id": "ask.COMPANY_INFORMATION.socialCost",
+      "value": 3,
+      "kind": "cost",
+      "owner": "Ask ontology",
+      "justification": "Social-cost prior, not an observed outcome probability."
+    },
+    {
+      "id": "ask.TEAM_INFORMATION.socialCost",
+      "value": 4,
+      "kind": "cost",
+      "owner": "Ask ontology",
+      "justification": "Social-cost prior, not an observed outcome probability."
+    },
+    {
+      "id": "ask.SKILL_ADVICE.socialCost",
+      "value": 2,
+      "kind": "cost",
+      "owner": "Ask ontology",
+      "justification": "Social-cost prior, not an observed outcome probability."
+    },
+    {
+      "id": "ask.FIT_REALITY_CHECK.socialCost",
+      "value": 4,
+      "kind": "cost",
+      "owner": "Ask ontology",
+      "justification": "Social-cost prior, not an observed outcome probability."
+    },
+    {
+      "id": "ask.WHO_SHOULD_I_TALK_TO.socialCost",
+      "value": 3,
+      "kind": "cost",
+      "owner": "Ask ontology",
+      "justification": "Social-cost prior, not an observed outcome probability."
+    },
+    {
+      "id": "ask.INTRODUCTION_REQUEST.socialCost",
+      "value": 6,
+      "kind": "cost",
+      "owner": "Ask ontology",
+      "justification": "Social-cost prior, not an observed outcome probability."
+    },
+    {
+      "id": "ask.SECOND_DEGREE_INTRO_REQUEST.socialCost",
+      "value": 6,
+      "kind": "cost",
+      "owner": "Ask ontology",
+      "justification": "Social-cost prior, not an observed outcome probability."
+    },
+    {
+      "id": "ask.REFERRAL_REQUEST.socialCost",
+      "value": 8,
+      "kind": "cost",
+      "owner": "Ask ontology",
+      "justification": "Social-cost prior, not an observed outcome probability."
+    },
+    {
+      "id": "ask.RESUME_FORWARD_REQUEST.socialCost",
+      "value": 7,
+      "kind": "cost",
+      "owner": "Ask ontology",
+      "justification": "Social-cost prior, not an observed outcome probability."
+    },
+    {
+      "id": "ask.HIRING_MANAGER_INTRO_REQUEST.socialCost",
+      "value": 8,
+      "kind": "cost",
+      "owner": "Ask ontology",
+      "justification": "Social-cost prior, not an observed outcome probability."
+    },
+    {
+      "id": "ask.RECRUITER_INTRO_REQUEST.socialCost",
+      "value": 6,
+      "kind": "cost",
+      "owner": "Ask ontology",
+      "justification": "Social-cost prior, not an observed outcome probability."
+    },
+    {
+      "id": "ask.REFERENCE_REQUEST.socialCost",
+      "value": 8,
+      "kind": "cost",
+      "owner": "Ask ontology",
+      "justification": "Social-cost prior, not an observed outcome probability."
+    },
+    {
+      "id": "ask.HIDDEN_OPPORTUNITY_QUERY.socialCost",
+      "value": 4,
+      "kind": "cost",
+      "owner": "Ask ontology",
+      "justification": "Social-cost prior, not an observed outcome probability."
+    },
+    {
+      "id": "ask.APPLICATION_STATUS_HELP.socialCost",
+      "value": 5,
+      "kind": "cost",
+      "owner": "Ask ontology",
+      "justification": "Social-cost prior, not an observed outcome probability."
+    },
+    {
+      "id": "ask.POST_APPLICATION_NOTE.socialCost",
+      "value": 4,
+      "kind": "cost",
+      "owner": "Ask ontology",
+      "justification": "Social-cost prior, not an observed outcome probability."
+    },
+    {
+      "id": "ask.FOLLOW_UP.socialCost",
+      "value": 3,
+      "kind": "cost",
+      "owner": "Ask ontology",
+      "justification": "Social-cost prior, not an observed outcome probability."
+    },
+    {
+      "id": "ask.THANK_YOU.socialCost",
+      "value": 1,
+      "kind": "cost",
+      "owner": "Ask ontology",
+      "justification": "Social-cost prior, not an observed outcome probability."
+    },
+    {
+      "id": "ask.RELATIONSHIP_MAINTENANCE.socialCost",
+      "value": 2,
+      "kind": "cost",
+      "owner": "Ask ontology",
+      "justification": "Social-cost prior, not an observed outcome probability."
+    },
+    {
+      "id": "ask.SHARE_USEFUL_RESOURCE.socialCost",
+      "value": 2,
+      "kind": "cost",
+      "owner": "Ask ontology",
+      "justification": "Social-cost prior, not an observed outcome probability."
+    },
+    {
+      "id": "ask.SCHEDULE_CONVERSATION.socialCost",
+      "value": 4,
+      "kind": "cost",
+      "owner": "Ask ontology",
+      "justification": "Social-cost prior, not an observed outcome probability."
+    },
+    {
+      "id": "ask.SEND_REQUESTED_MATERIAL.socialCost",
+      "value": 1,
+      "kind": "cost",
+      "owner": "Ask ontology",
+      "justification": "Social-cost prior, not an observed outcome probability."
+    }
+  ]
+}

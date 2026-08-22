@@ -1,7 +1,7 @@
 {
-  "phase": "Human Opportunity Graph V2 sandbox",
-  "current_milestone": "V2-M30 standalone export complete",
-  "current_task": "Manual V2 walkthrough, final commit, PR update",
+  "phase": "Logic / generalization audit of Human Opportunity Graph V2",
+  "current_milestone": "Logic-audit scorecard published",
+  "current_task": "Deeper computational-brain audit complete",
   "completed": [
     "M0 inspected greenfield repository; no reference artifacts found",
     "M1 architecture, documentation, and build state",
@@ -24,20 +24,22 @@
     "M33-M34 evaluation harness and regression tests",
     "M36 standalone HTML/JSON exports",
     "Audit cycle 1: evidence-driven Task-DNA blending, contradiction-aware confidence, adaptive interview, provider interfaces, freshness filtering, safer export, expanded tests",
-    "Audit cycle 2: larger scenario bank, full function map visibility, richer debug console, Playwright hydration fix"
+    "Audit cycle 2: larger scenario bank, full function map visibility, richer debug console, Playwright hydration fix",
+    "Logic audit: persona-free inference, leakage scan, DO_NOT_CONTACT, extended ontology, Virtual Subject Lab, audit commands, honest B/D scorecard"
   ],
   "in_progress": [],
   "next": [
     "Expand SQLite persistence from seeded JSON boundary to real migrations",
     "Split the now-larger domain engine into smaller provider/service modules",
     "Add empirically calibrated scoring once real user feedback exists",
-    "Run deeper human-strategy adversarial review over 30+ recommendations",
-    "Improve V2 information architecture to reduce long-scroll density"
+    "Replace the O*NET-inspired snapshot with a license-clean full taxonomy if needed",
+    "Tighten title-removal tests so they actually change observable text"
   ],
   "blockers": [],
   "known_defects": [
     "SQLite/ORM boundary is documented and command-backed, but V1 uses deterministic JSON seed output instead of a full migration stack",
-    "Scenario interview is modeled as deterministic profile evidence and feedback updates; a dedicated 10-20 question flow is a next refinement"
+    "Hidden Task-DNA recovery on virtual subjects is coarse (MAE ≈ 1.9/10)",
+    "Demo job corpus remains technically dense relative to the extended function ontology"
   ],
   "failing_tests": [],
   "evaluation_failures": [],
@@ -59,7 +61,7 @@
     "V2-M15 network coverage",
     "V2-M16 opportunity access assessment",
     "V2-M17 application/network sequencing",
-    "V2-M18 social cost/ask fatigue",
+    "V2-M18 social-cost/ask fatigue",
     "V2-M19 Next Best Action",
     "V2-M21 contact explorer",
     "V2-M23 job network tab",
@@ -68,9 +70,7 @@
     "V2-M29 network E2E",
     "V2-M30 standalone export"
   ],
-  "network_in_progress": [
-    "V2-M32+ deeper adversarial human-strategy review"
-  ],
+  "network_in_progress": [],
   "network_blockers": [],
   "network_eval_failures": [],
   "human_strategy_known_defects": [
@@ -82,8 +82,25 @@
     "Daily action planner balances action types but has no real time-budget editor yet",
     "No persistent completion/outcome workflow beyond synthetic events"
   ],
-  "last_successful_build": "pnpm lint && pnpm typecheck && pnpm test && pnpm eval && pnpm eval:network && pnpm test:e2e && pnpm export:demo && pnpm build passed on 2026-08-22T17:42Z",
-  "last_e2e_run": "pnpm test:e2e passed 16 Playwright tests across desktop/mobile plus function-map and opportunity-graph standalone exports on 2026-08-22T17:42Z",
-  "last_eval_run": "pnpm eval and pnpm eval:network passed on 2026-08-22T17:42Z",
-  "last_updated": "2026-08-22T17:42:00.000Z"
+  "logic_audit_milestone": "scorecard published",
+  "logic_audit_completed": [
+    "pipeline map",
+    "parameter registry",
+    "invariants",
+    "personalization leakage scan",
+    "virtual subject laboratory",
+    "zero-origin mode",
+    "domain holdout",
+    "sensitivity/stability/unseen",
+    "honest scorecard"
+  ],
+  "logic_audit_known_defects": [
+    "Hidden-truth MAE ≈ 1.9/10",
+    "Title-removal twins often no-op",
+    "Overall weights and social costs remain uncalibrated"
+  ],
+  "last_successful_build": "pnpm lint && pnpm typecheck && pnpm test && pnpm eval && pnpm eval:network && pnpm audit:logic passed on 2026-08-22T18:58Z",
+  "last_e2e_run": "pending after logic-audit commit",
+  "last_eval_run": "pnpm eval, pnpm eval:network, and pnpm audit:logic passed on 2026-08-22T18:58Z",
+  "last_updated": "2026-08-22T18:58:00.000Z"
 }

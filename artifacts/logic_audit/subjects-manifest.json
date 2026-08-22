@@ -1,0 +1,39 @@
+{
+  "version": "subject-lab.v1",
+  "seed": 20260822,
+  "generatedAt": "2026-08-22T18:59:59.319Z",
+  "occupationSource": {
+    "name": "O*NET-inspired local snapshot",
+    "version": "onet-inspired.v1",
+    "licenseNote": "Locally versioned public occupational/task structure synthesized from publicly documented O*NET occupation titles, task patterns, and generalized work activities. Not a full O*NET download and not used as preference ground truth."
+  },
+  "counts": {
+    "design": 80,
+    "validation": 40,
+    "holdout": 40,
+    "adversarial": 40
+  },
+  "occupationFamilies": [
+    "engineering_hardware",
+    "software_it",
+    "data_analytics",
+    "scientific_research",
+    "healthcare_professional",
+    "healthcare_operations",
+    "finance",
+    "accounting_audit",
+    "consulting",
+    "product",
+    "project_program",
+    "operations_supply",
+    "sales",
+    "marketing",
+    "hr_recruiting",
+    "legal_compliance",
+    "education",
+    "ux_design",
+    "customer_success",
+    "field_technical",
+    "public_sector"
+  ]
+}

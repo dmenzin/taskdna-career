@@ -1,0 +1,3814 @@
+[
+  {
+    "subjectId": "subject-001",
+    "cohort": "design",
+    "occupation": "Mechanical Engineers",
+    "family": "engineering_hardware",
+    "observations": {
+      "resumeText": "Specialist working in manufacturing. Investigate component failures from field or lab evidence. Coordinate with manufacturing on tolerances. Improved a messy workflow around coordinate with manufacturing on tolerances using engineering design. I enjoy stakeholder orchestration. I avoid open-ended ambiguity and status coordination and internal-only analysis. Struggled with status coordination even when the team called it a success.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-002",
+    "cohort": "design",
+    "occupation": "Industrial Engineers",
+    "family": "engineering_hardware",
+    "observations": {
+      "resumeText": "Industrial Engineer working in manufacturing. Design experiments that improve yield or cycle time. Analyze production bottlenecks with measurements. Improved a messy workflow around analyze production bottlenecks with measurements using python. I enjoy root-cause investigation and logs and measurements and building tools. I avoid internal-only analysis and solo deep work and abstract modeling. Burned out on repetitive measurement and the parts of the job that felt like internal-only analysis. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "manufacturing",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "documentation_has_friction",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-003",
+    "cohort": "design",
+    "occupation": "Software Developers",
+    "family": "software_it",
+    "observations": {
+      "resumeText": "Software Developer working in software. Review code and debug production incidents. Integrate APIs and data stores. Improved a messy workflow around review code and debug production incidents using software. I enjoy bounded diagnostic problems and root-cause investigation and customer-facing troubleshooting. I avoid abstract modeling and novel problem solving. Burned out on ambiguous requirements and the parts of the job that felt like abstract modeling.",
+      "apparentField": "software",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "documentation_has_friction",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-004",
+    "cohort": "design",
+    "occupation": "Information Security Analysts",
+    "family": "software_it",
+    "observations": {
+      "resumeText": "Program Lead working in cybersecurity. Contain and document attack paths. Recommend control changes. Improved a messy workflow around contain and document attack paths using communication. I enjoy . I avoid open-ended ambiguity and internal-only analysis and solo deep work. Struggled with internal-only analysis even when the team called it a success.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-005",
+    "cohort": "design",
+    "occupation": "Data Scientists",
+    "family": "data_analytics",
+    "observations": {
+      "resumeText": "Data Scientist working in analytics. Frame questions from messy datasets. Build models and evaluate error by cohort. Improved a messy workflow around build models and evaluate error by cohort using writing. I enjoy logs and measurements and customer-facing troubleshooting and stakeholder orchestration. I avoid open-ended ambiguity and status coordination and abstract modeling. Struggled with abstract modeling even when the team called it a success. Most of this is from an older role.",
+      "apparentField": "analytics",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "documentation_has_friction",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-006",
+    "cohort": "design",
+    "occupation": "Medical Scientists",
+    "family": "scientific_research",
+    "observations": {
+      "resumeText": "Medical Scientist working in healthcare. Investigate unexpected findings. Write protocols and papers. Improved a messy workflow around investigate unexpected findings using excel. I enjoy root-cause investigation and logs and measurements and repeatable protocols. I avoid open-ended ambiguity and hands-on field work and solo deep work. Burned out on grant constraints and the parts of the job that felt like open-ended ambiguity.",
+      "apparentField": "healthcare",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-007",
+    "cohort": "design",
+    "occupation": "Registered Nurses",
+    "family": "healthcare_professional",
+    "observations": {
+      "resumeText": "Registered Nurse working in healthcare. Assess patients and prioritize interventions. Document clinical status and handoffs. Improved a messy workflow around assess patients and prioritize interventions using triage. I enjoy logs and measurements. I avoid abstract modeling and novel problem solving. Struggled with abstract modeling even when the team called it a success.",
+      "apparentField": "healthcare",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "documentation_has_friction",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-008",
+    "cohort": "design",
+    "occupation": "Medical and Health Services Managers",
+    "family": "healthcare_operations",
+    "observations": {
+      "resumeText": "Associate working in healthcare operations. Coordinate staffing and throughput. Review quality metrics and exceptions. Improved a messy workflow around coordinate staffing and throughput using stakeholder management. I enjoy bounded diagnostic problems and root-cause investigation and logs and measurements. I avoid abstract modeling. Struggled with abstract modeling even when the team called it a success. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-009",
+    "cohort": "design",
+    "occupation": "Financial and Investment Analysts",
+    "family": "finance",
+    "observations": {
+      "resumeText": "Financial and Investment Analyst working in finance. Test assumptions against new evidence. Present tradeoffs to decision makers. Improved a messy workflow around test assumptions against new evidence using communication. I enjoy logs and measurements and building tools and stakeholder orchestration. I avoid internal-only analysis and novel problem solving. Burned out on ambiguous strategy asks and the parts of the job that felt like internal-only analysis.",
+      "apparentField": "finance",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "documentation_has_friction",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-010",
+    "cohort": "design",
+    "occupation": "Accountants and Auditors",
+    "family": "accounting_audit",
+    "observations": {
+      "resumeText": "Accountants and Auditor working in accounting. Prepare audit evidence packages. Reconcile accounts and test exceptions. Improved a messy workflow around prepare audit evidence packages using accounting. I enjoy building tools and stakeholder orchestration and repeatable protocols. I avoid status coordination and internal-only analysis. Struggled with internal-only analysis even when the team called it a success. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "accounting",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-011",
+    "cohort": "design",
+    "occupation": "Management Analysts",
+    "family": "consulting",
+    "observations": {
+      "resumeText": "Management Analyst working in consulting. Facilitate decisions across owners. Structure findings and options. Improved a messy workflow around structure findings and options using consulting. I enjoy building tools and stakeholder orchestration and applied experiments. I avoid status coordination and internal-only analysis. Struggled with internal-only analysis even when the team called it a success. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "consulting",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-012",
+    "cohort": "design",
+    "occupation": "Marketing Managers",
+    "family": "product",
+    "observations": {
+      "resumeText": "Marketing Manager working in product. Prioritize a roadmap from customer and revenue evidence. Negotiate scope across teams. Improved a messy workflow around prioritize a roadmap from customer and revenue evidence using customer interviews. I enjoy logs and measurements. I avoid open-ended ambiguity and status coordination and hands-on field work. Struggled with status coordination even when the team called it a success. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "product",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-013",
+    "cohort": "design",
+    "occupation": "Project Management Specialists",
+    "family": "project_program",
+    "observations": {
+      "resumeText": "Project Management Specialist. I have done some projects and like solving problems but I am not sure what kind. Build plans and track dependencies Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "operations",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-014",
+    "cohort": "design",
+    "occupation": "Logisticians",
+    "family": "operations_supply",
+    "observations": {
+      "resumeText": "Logistician working in supply chain. Measure on-time performance. Reroute when a node fails. Improved a messy workflow around reroute when a node fails using communication. I enjoy root-cause investigation and building tools and customer-facing troubleshooting. I avoid open-ended ambiguity and administrative packets. Burned out on vendor delays and the parts of the job that felt like open-ended ambiguity. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "supply chain",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-015",
+    "cohort": "design",
+    "occupation": "Sales Representatives, Wholesale and Manufacturing",
+    "family": "sales",
+    "observations": {
+      "resumeText": "Sales Representatives, Wholesale and Manufacturing working in sales. Negotiate terms and close decisions. Qualify customer problems and budget. Improved a messy workflow around negotiate terms and close decisions using customer interviews. I enjoy root-cause investigation and logs and measurements and applied experiments. I avoid open-ended ambiguity and hands-on field work and solo deep work. Struggled with solo deep work even when the team called it a success.",
+      "apparentField": "sales",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-016",
+    "cohort": "design",
+    "occupation": "Market Research Analysts",
+    "family": "marketing",
+    "observations": {
+      "resumeText": "Analyst working in marketing. Recommend positioning changes. Analyze campaign or segment performance. Improved a messy workflow around analyze campaign or segment performance using customer interviews. I enjoy bounded diagnostic problems and root-cause investigation and customer-facing troubleshooting. I avoid hands-on field work. Struggled with hands-on field work even when the team called it a success. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-017",
+    "cohort": "design",
+    "occupation": "Human Resources Specialists",
+    "family": "hr_recruiting",
+    "observations": {
+      "resumeText": "Human Resources Specialist working in hr. Coordinate interviews and offers. Advise managers on process. Improved a messy workflow around advise managers on process using writing. I enjoy bounded diagnostic problems and building tools and stakeholder orchestration. I avoid internal-only analysis and abstract modeling. Struggled with abstract modeling even when the team called it a success. Most of this is from an older role.",
+      "apparentField": "hr",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-018",
+    "cohort": "design",
+    "occupation": "Lawyers",
+    "family": "legal_compliance",
+    "observations": {
+      "resumeText": "Lawyer. I have done some projects and like solving problems but I am not sure what kind. Negotiate or litigate outcomes",
+      "apparentField": "legal",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "documentation_has_friction",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-019",
+    "cohort": "design",
+    "occupation": "Compliance Officers",
+    "family": "legal_compliance",
+    "observations": {
+      "resumeText": "Compliance Officer. I have done some projects and like solving problems but I am not sure what kind. Train teams on required controls",
+      "apparentField": "compliance",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-020",
+    "cohort": "design",
+    "occupation": "Secondary School Teachers",
+    "family": "education",
+    "observations": {
+      "resumeText": "Secondary School Teacher. I have done some projects and like solving problems but I am not sure what kind. Coordinate with families and staff Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "education",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-021",
+    "cohort": "design",
+    "occupation": "Web and Digital Interface Designers",
+    "family": "ux_design",
+    "observations": {
+      "resumeText": "Web and Digital Interface Designer working in ux. Interview users and map pain points. Prototype interfaces and test them. Improved a messy workflow around prototype interfaces and test them using ux research. I enjoy bounded diagnostic problems and root-cause investigation and logs and measurements. I avoid internal-only analysis and solo deep work and novel problem solving. Struggled with internal-only analysis even when the team called it a success. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "ux",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "documentation_has_friction",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-022",
+    "cohort": "design",
+    "occupation": "Customer Service Representatives",
+    "family": "customer_success",
+    "observations": {
+      "resumeText": "Customer Service Representative working in customer success. Escalate recurring product defects. Restore service and document the pattern. Improved a messy workflow around restore service and document the pattern using excel. I enjoy root-cause investigation and applied experiments and repeatable protocols. I avoid administrative packets and solo deep work. Struggled with administrative packets even when the team called it a success. I say I dislike administrative packets, but I also spent a year doing it because it paid the bills. Most of this is from an older role.",
+      "apparentField": "customer success",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-023",
+    "cohort": "design",
+    "occupation": "Electrical and Electronics Repairers",
+    "family": "field_technical",
+    "observations": {
+      "resumeText": "Program Lead working in field service. Troubleshoot equipment onsite. Capture field evidence for engineering. Improved a messy workflow around capture field evidence for engineering using instrumentation. I enjoy bounded diagnostic problems and customer-facing troubleshooting and repeatable protocols. I avoid abstract modeling. Struggled with abstract modeling even when the team called it a success. I say I dislike abstract modeling, but I also spent a year doing it because it paid the bills.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-024",
+    "cohort": "design",
+    "occupation": "Administrative Services Managers",
+    "family": "public_sector",
+    "observations": {
+      "resumeText": "Administrative Services Manager working in public sector. Maintain records and procurement evidence. Coordinate vendors and internal service requests. Improved a messy workflow around maintain records and procurement evidence using procurement. I enjoy bounded diagnostic problems and root-cause investigation and logs and measurements. I avoid internal-only analysis and solo deep work. Burned out on process load and the parts of the job that felt like internal-only analysis. Outside work I tinker with side projects that are more interesting than my title suggests. Most of this is from an older role.",
+      "apparentField": "public sector",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-025",
+    "cohort": "design",
+    "occupation": "Mechanical Engineers",
+    "family": "engineering_hardware",
+    "observations": {
+      "resumeText": "Mechanical Engineer. I have done some projects and like solving problems but I am not sure what kind. Investigate component failures from field or lab evidence",
+      "apparentField": "manufacturing",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "documentation_has_friction",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-026",
+    "cohort": "design",
+    "occupation": "Industrial Engineers",
+    "family": "engineering_hardware",
+    "observations": {
+      "resumeText": "Industrial Engineer working in manufacturing. Analyze production bottlenecks with measurements. Design experiments that improve yield or cycle time. Improved a messy workflow around design experiments that improve yield or cycle time using statistics. I enjoy building tools and stakeholder orchestration and applied experiments. I avoid open-ended ambiguity. Struggled with open-ended ambiguity even when the team called it a success.",
+      "apparentField": "manufacturing",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-027",
+    "cohort": "design",
+    "occupation": "Software Developers",
+    "family": "software_it",
+    "observations": {
+      "resumeText": "Software Developer working in software. Integrate APIs and data stores. Review code and debug production incidents. Improved a messy workflow around review code and debug production incidents using communication. I enjoy bounded diagnostic problems and customer-facing troubleshooting and stakeholder orchestration. I avoid status coordination and administrative packets and hands-on field work. Struggled with status coordination even when the team called it a success. I say I dislike status coordination, but I also spent a year doing it because it paid the bills.",
+      "apparentField": "software",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "documentation_has_friction",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-028",
+    "cohort": "design",
+    "occupation": "Information Security Analysts",
+    "family": "software_it",
+    "observations": {
+      "resumeText": "Information Security Analyst working in cybersecurity. Recommend control changes. Investigate security incidents from logs and alerts. Improved a messy workflow around recommend control changes using python. I enjoy stakeholder orchestration. I avoid open-ended ambiguity and status coordination and administrative packets. Struggled with open-ended ambiguity even when the team called it a success.",
+      "apparentField": "cybersecurity",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "documentation_has_friction",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-029",
+    "cohort": "design",
+    "occupation": "Data Scientists",
+    "family": "data_analytics",
+    "observations": {
+      "resumeText": "Data Scientist working in analytics. Build models and evaluate error by cohort. Frame questions from messy datasets. Improved a messy workflow around build models and evaluate error by cohort using excel. I enjoy building tools and customer-facing troubleshooting and stakeholder orchestration. I avoid administrative packets and abstract modeling. Struggled with abstract modeling even when the team called it a success. I say I dislike administrative packets, but I also spent a year doing it because it paid the bills. Most of this is from an older role.",
+      "apparentField": "analytics",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-030",
+    "cohort": "design",
+    "occupation": "Medical Scientists",
+    "family": "scientific_research",
+    "observations": {
+      "resumeText": "Medical Scientist working in healthcare. Write protocols and papers. Design studies and interpret experimental results. Improved a messy workflow around design studies and interpret experimental results using biology. I enjoy logs and measurements and building tools and applied experiments. I avoid status coordination and novel problem solving. Struggled with novel problem solving even when the team called it a success. I say I dislike status coordination, but I also spent a year doing it because it paid the bills. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "healthcare",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-031",
+    "cohort": "design",
+    "occupation": "Registered Nurses",
+    "family": "healthcare_professional",
+    "observations": {
+      "resumeText": "Registered Nurse working in healthcare. Assess patients and prioritize interventions. Document clinical status and handoffs. Improved a messy workflow around assess patients and prioritize interventions using communication. I enjoy stakeholder orchestration and applied experiments and repeatable protocols. I avoid open-ended ambiguity and internal-only analysis. Struggled with open-ended ambiguity even when the team called it a success.",
+      "apparentField": "healthcare",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-032",
+    "cohort": "design",
+    "occupation": "Medical and Health Services Managers",
+    "family": "healthcare_operations",
+    "observations": {
+      "resumeText": "Medical and Health Services Manager working in healthcare operations. Coordinate staffing and throughput. Review quality metrics and exceptions. Improved a messy workflow around coordinate staffing and throughput using communication. I enjoy logs and measurements and building tools. I avoid open-ended ambiguity and abstract modeling. Struggled with open-ended ambiguity even when the team called it a success. Outside work I tinker with side projects that are more interesting than my title suggests. Most of this is from an older role.",
+      "apparentField": "healthcare operations",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-033",
+    "cohort": "design",
+    "occupation": "Financial and Investment Analysts",
+    "family": "finance",
+    "observations": {
+      "resumeText": "Financial and Investment Analyst working in finance. Test assumptions against new evidence. Present tradeoffs to decision makers. Improved a messy workflow around present tradeoffs to decision makers using excel. I enjoy bounded diagnostic problems and customer-facing troubleshooting and stakeholder orchestration. I avoid status coordination and hands-on field work. Struggled with status coordination even when the team called it a success.",
+      "apparentField": "finance",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-034",
+    "cohort": "design",
+    "occupation": "Accountants and Auditors",
+    "family": "accounting_audit",
+    "observations": {
+      "resumeText": "Program Lead. I have done some projects and like solving problems but I am not sure what kind. Explain control gaps Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "unknown",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-035",
+    "cohort": "design",
+    "occupation": "Management Analysts",
+    "family": "consulting",
+    "observations": {
+      "resumeText": "Coordinator working in consulting. Facilitate decisions across owners. Structure findings and options. Improved a messy workflow around facilitate decisions across owners using consulting. I enjoy logs and measurements and building tools and customer-facing troubleshooting. I avoid solo deep work. Struggled with solo deep work even when the team called it a success.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-036",
+    "cohort": "design",
+    "occupation": "Marketing Managers",
+    "family": "product",
+    "observations": {
+      "resumeText": "Marketing Manager working in product. Negotiate scope across teams. Write decision records. Improved a messy workflow around negotiate scope across teams using customer interviews. I enjoy bounded diagnostic problems. I avoid status coordination and hands-on field work and solo deep work. Struggled with hands-on field work even when the team called it a success. I say I dislike status coordination, but I also spent a year doing it because it paid the bills. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "product",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-037",
+    "cohort": "design",
+    "occupation": "Project Management Specialists",
+    "family": "project_program",
+    "observations": {
+      "resumeText": "Program Lead. I have done some projects and like solving problems but I am not sure what kind. Run status and risk reviews",
+      "apparentField": "unknown",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "documentation_has_friction",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-038",
+    "cohort": "design",
+    "occupation": "Logisticians",
+    "family": "operations_supply",
+    "observations": {
+      "resumeText": "Logistician working in supply chain. Measure on-time performance. Track shipments and inventory exceptions. Improved a messy workflow around measure on-time performance using communication. I enjoy root-cause investigation and logs and measurements and customer-facing troubleshooting. I avoid open-ended ambiguity and hands-on field work and solo deep work. Struggled with open-ended ambiguity even when the team called it a success. Most of this is from an older role.",
+      "apparentField": "supply chain",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-039",
+    "cohort": "design",
+    "occupation": "Sales Representatives, Wholesale and Manufacturing",
+    "family": "sales",
+    "observations": {
+      "resumeText": "Analyst. I have done some projects and like solving problems but I am not sure what kind. Qualify customer problems and budget",
+      "apparentField": "unknown",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-040",
+    "cohort": "design",
+    "occupation": "Market Research Analysts",
+    "family": "marketing",
+    "observations": {
+      "resumeText": "Market Research Analyst working in marketing. Design surveys or interviews. Recommend positioning changes. Improved a messy workflow around design surveys or interviews using excel. I enjoy bounded diagnostic problems and building tools and stakeholder orchestration. I avoid status coordination. Burned out on stakeholder taste fights and the parts of the job that felt like status coordination. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "marketing",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-041",
+    "cohort": "design",
+    "occupation": "Human Resources Specialists",
+    "family": "hr_recruiting",
+    "observations": {
+      "resumeText": "Program Lead working in hr. Coordinate interviews and offers. Advise managers on process. Improved a messy workflow around coordinate interviews and offers using python. I enjoy stakeholder orchestration and applied experiments. I avoid status coordination and administrative packets and hands-on field work. Struggled with hands-on field work even when the team called it a success.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-042",
+    "cohort": "design",
+    "occupation": "Lawyers",
+    "family": "legal_compliance",
+    "observations": {
+      "resumeText": "Lawyer working in legal. Research precedent and draft arguments. Negotiate or litigate outcomes. Improved a messy workflow around negotiate or litigate outcomes using negotiation. I enjoy customer-facing troubleshooting and applied experiments and repeatable protocols. I avoid status coordination and administrative packets and solo deep work. Struggled with solo deep work even when the team called it a success.",
+      "apparentField": "legal",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-043",
+    "cohort": "design",
+    "occupation": "Compliance Officers",
+    "family": "legal_compliance",
+    "observations": {
+      "resumeText": "Analyst working in compliance. Interpret policy and collect proof. Train teams on required controls. Improved a messy workflow around train teams on required controls using policy. I enjoy . I avoid open-ended ambiguity and status coordination and internal-only analysis. Struggled with status coordination even when the team called it a success. Most of this is from an older role.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-044",
+    "cohort": "design",
+    "occupation": "Secondary School Teachers",
+    "family": "education",
+    "observations": {
+      "resumeText": "Secondary School Teacher. I have done some projects and like solving problems but I am not sure what kind. Adapt explanations for different students",
+      "apparentField": "education",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "documentation_has_friction",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-045",
+    "cohort": "design",
+    "occupation": "Web and Digital Interface Designers",
+    "family": "ux_design",
+    "observations": {
+      "resumeText": "Web and Digital Interface Designer working in ux. Prototype interfaces and test them. Interview users and map pain points. Improved a messy workflow around interview users and map pain points using design. I enjoy root-cause investigation and logs and measurements and customer-facing troubleshooting. I avoid open-ended ambiguity and hands-on field work and solo deep work. Struggled with hands-on field work even when the team called it a success.",
+      "apparentField": "ux",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-046",
+    "cohort": "design",
+    "occupation": "Customer Service Representatives",
+    "family": "customer_success",
+    "observations": {
+      "resumeText": "Customer Service Representative working in customer success. Escalate recurring product defects. Diagnose a blocked customer from incomplete tickets. Improved a messy workflow around diagnose a blocked customer from incomplete tickets using communication. I enjoy stakeholder orchestration and applied experiments and repeatable protocols. I avoid open-ended ambiguity. Struggled with open-ended ambiguity even when the team called it a success. Outside work I tinker with side projects that are more interesting than my title suggests. Most of this is from an older role.",
+      "apparentField": "customer success",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-047",
+    "cohort": "design",
+    "occupation": "Electrical and Electronics Repairers",
+    "family": "field_technical",
+    "observations": {
+      "resumeText": "Electrical and Electronics Repairer. I have done some projects and like solving problems but I am not sure what kind. Replace modules and verify recovery Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "field service",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "documentation_has_friction",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-048",
+    "cohort": "design",
+    "occupation": "Administrative Services Managers",
+    "family": "public_sector",
+    "observations": {
+      "resumeText": "Administrative Services Manager working in public sector. Maintain records and procurement evidence. Coordinate vendors and internal service requests. Improved a messy workflow around coordinate vendors and internal service requests using coordination. I enjoy root-cause investigation and logs and measurements and building tools. I avoid solo deep work. Struggled with solo deep work even when the team called it a success.",
+      "apparentField": "public sector",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-049",
+    "cohort": "design",
+    "occupation": "Mechanical Engineers",
+    "family": "engineering_hardware",
+    "observations": {
+      "resumeText": "Mechanical Engineer working in manufacturing. Investigate component failures from field or lab evidence. Coordinate with manufacturing on tolerances. Improved a messy workflow around investigate component failures from field or lab evidence using root cause. I enjoy stakeholder orchestration. I avoid open-ended ambiguity and abstract modeling and novel problem solving. Burned out on time pressure and the parts of the job that felt like open-ended ambiguity.",
+      "apparentField": "manufacturing",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "documentation_has_friction",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-050",
+    "cohort": "design",
+    "occupation": "Industrial Engineers",
+    "family": "engineering_hardware",
+    "observations": {
+      "resumeText": "Associate working in manufacturing. Document process changes. Design experiments that improve yield or cycle time. Improved a messy workflow around document process changes using communication. I enjoy bounded diagnostic problems and root-cause investigation and building tools. I avoid administrative packets and solo deep work and abstract modeling. Struggled with solo deep work even when the team called it a success. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-051",
+    "cohort": "design",
+    "occupation": "Software Developers",
+    "family": "software_it",
+    "observations": {
+      "resumeText": "Software Developer working in software. Integrate APIs and data stores. Build and maintain application features. Improved a messy workflow around build and maintain application features using typescript. I enjoy root-cause investigation and logs and measurements and repeatable protocols. I avoid open-ended ambiguity and hands-on field work and internal-only analysis. Burned out on sprint cadence and the parts of the job that felt like open-ended ambiguity.",
+      "apparentField": "software",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-052",
+    "cohort": "design",
+    "occupation": "Information Security Analysts",
+    "family": "software_it",
+    "observations": {
+      "resumeText": "Coordinator working in cybersecurity. Investigate security incidents from logs and alerts. Recommend control changes. Improved a messy workflow around investigate security incidents from logs and alerts using communication. I enjoy root-cause investigation and stakeholder orchestration and repeatable protocols. I avoid open-ended ambiguity and hands-on field work and internal-only analysis. Struggled with open-ended ambiguity even when the team called it a success. I say I dislike open-ended ambiguity, but I also spent a year doing it because it paid the bills.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-053",
+    "cohort": "design",
+    "occupation": "Data Scientists",
+    "family": "data_analytics",
+    "observations": {
+      "resumeText": "Coordinator working in analytics. Communicate limitations to stakeholders. Build models and evaluate error by cohort. Improved a messy workflow around communicate limitations to stakeholders using python. I enjoy repeatable protocols. I avoid administrative packets and internal-only analysis and solo deep work. Struggled with administrative packets even when the team called it a success. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-054",
+    "cohort": "design",
+    "occupation": "Medical Scientists",
+    "family": "scientific_research",
+    "observations": {
+      "resumeText": "Medical Scientist working in healthcare. Investigate unexpected findings. Design studies and interpret experimental results. Improved a messy workflow around design studies and interpret experimental results using biology. I enjoy customer-facing troubleshooting and stakeholder orchestration. I avoid abstract modeling. Struggled with abstract modeling even when the team called it a success. Most of this is from an older role.",
+      "apparentField": "healthcare",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-055",
+    "cohort": "design",
+    "occupation": "Registered Nurses",
+    "family": "healthcare_professional",
+    "observations": {
+      "resumeText": "Registered Nurse working in healthcare. Coordinate with physicians and families. Document clinical status and handoffs. Improved a messy workflow around coordinate with physicians and families using triage. I enjoy bounded diagnostic problems and customer-facing troubleshooting and stakeholder orchestration. I avoid administrative packets. Struggled with administrative packets even when the team called it a success. I say I dislike administrative packets, but I also spent a year doing it because it paid the bills. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "healthcare",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-056",
+    "cohort": "design",
+    "occupation": "Medical and Health Services Managers",
+    "family": "healthcare_operations",
+    "observations": {
+      "resumeText": "Medical and Health Services Manager working in healthcare operations. Translate policy into unit practice. Review quality metrics and exceptions. Improved a messy workflow around review quality metrics and exceptions using stakeholder management. I enjoy root-cause investigation and logs and measurements and customer-facing troubleshooting. I avoid solo deep work. Burned out on regulatory documentation and the parts of the job that felt like solo deep work.",
+      "apparentField": "healthcare operations",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-057",
+    "cohort": "design",
+    "occupation": "Financial and Investment Analysts",
+    "family": "finance",
+    "observations": {
+      "resumeText": "Financial and Investment Analyst. I have done some projects and like solving problems but I am not sure what kind. Test assumptions against new evidence Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "finance",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-058",
+    "cohort": "design",
+    "occupation": "Accountants and Auditors",
+    "family": "accounting_audit",
+    "observations": {
+      "resumeText": "Program Lead working in accounting. Reconcile accounts and test exceptions. Explain control gaps. Improved a messy workflow around reconcile accounts and test exceptions using writing. I enjoy bounded diagnostic problems and root-cause investigation and building tools. I avoid administrative packets and abstract modeling. Struggled with abstract modeling even when the team called it a success.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-059",
+    "cohort": "design",
+    "occupation": "Management Analysts",
+    "family": "consulting",
+    "observations": {
+      "resumeText": "Analyst working in consulting. Facilitate decisions across owners. Structure findings and options. Improved a messy workflow around structure findings and options using communication. I enjoy customer-facing troubleshooting and stakeholder orchestration and applied experiments. I avoid open-ended ambiguity and hands-on field work. Struggled with open-ended ambiguity even when the team called it a success.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-060",
+    "cohort": "design",
+    "occupation": "Marketing Managers",
+    "family": "product",
+    "observations": {
+      "resumeText": "Specialist. I have done some projects and like solving problems but I am not sure what kind. Prioritize a roadmap from customer and revenue evidence",
+      "apparentField": "unknown",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-061",
+    "cohort": "design",
+    "occupation": "Project Management Specialists",
+    "family": "project_program",
+    "observations": {
+      "resumeText": "Coordinator working in operations. Unblock owners when work stalls. Run status and risk reviews. Improved a messy workflow around unblock owners when work stalls using program management. I enjoy root-cause investigation and building tools and stakeholder orchestration. I avoid open-ended ambiguity and internal-only analysis and novel problem solving. Struggled with open-ended ambiguity even when the team called it a success. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "documentation_has_friction",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-062",
+    "cohort": "design",
+    "occupation": "Logisticians",
+    "family": "operations_supply",
+    "observations": {
+      "resumeText": "Coordinator working in supply chain. Reroute when a node fails. Measure on-time performance. Improved a messy workflow around reroute when a node fails using excel. I enjoy logs and measurements. I avoid open-ended ambiguity and hands-on field work and internal-only analysis. Struggled with hands-on field work even when the team called it a success.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-063",
+    "cohort": "design",
+    "occupation": "Sales Representatives, Wholesale and Manufacturing",
+    "family": "sales",
+    "observations": {
+      "resumeText": "Sales Representatives, Wholesale and Manufacturing working in sales. Negotiate terms and close decisions. Maintain account relationships. Improved a messy workflow around maintain account relationships using writing. I enjoy root-cause investigation and logs and measurements and customer-facing troubleshooting. I avoid open-ended ambiguity and hands-on field work and solo deep work. Struggled with open-ended ambiguity even when the team called it a success.",
+      "apparentField": "sales",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-064",
+    "cohort": "design",
+    "occupation": "Market Research Analysts",
+    "family": "marketing",
+    "observations": {
+      "resumeText": "Market Research Analyst working in marketing. Recommend positioning changes. Design surveys or interviews. Improved a messy workflow around design surveys or interviews using communication. I enjoy root-cause investigation and logs and measurements and repeatable protocols. I avoid solo deep work. Burned out on stakeholder taste fights and the parts of the job that felt like solo deep work.",
+      "apparentField": "marketing",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-065",
+    "cohort": "design",
+    "occupation": "Human Resources Specialists",
+    "family": "hr_recruiting",
+    "observations": {
+      "resumeText": "Human Resources Specialist. I have done some projects and like solving problems but I am not sure what kind. Coordinate interviews and offers Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "hr",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "documentation_has_friction",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-066",
+    "cohort": "design",
+    "occupation": "Lawyers",
+    "family": "legal_compliance",
+    "observations": {
+      "resumeText": "Lawyer working in legal. Advise clients on risk. Research precedent and draft arguments. Improved a messy workflow around research precedent and draft arguments using communication. I enjoy logs and measurements and customer-facing troubleshooting and stakeholder orchestration. I avoid open-ended ambiguity. Struggled with open-ended ambiguity even when the team called it a success.",
+      "apparentField": "legal",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-067",
+    "cohort": "design",
+    "occupation": "Compliance Officers",
+    "family": "legal_compliance",
+    "observations": {
+      "resumeText": "Compliance Officer working in compliance. Document findings for audit. Interpret policy and collect proof. Improved a messy workflow around interpret policy and collect proof using audit. I enjoy root-cause investigation and logs and measurements. I avoid hands-on field work and solo deep work and novel problem solving. Struggled with novel problem solving even when the team called it a success. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "compliance",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "documentation_has_friction",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-068",
+    "cohort": "design",
+    "occupation": "Secondary School Teachers",
+    "family": "education",
+    "observations": {
+      "resumeText": "Analyst working in education. Coordinate with families and staff. Adapt explanations for different students. Improved a messy workflow around coordinate with families and staff using communication. I enjoy customer-facing troubleshooting and repeatable protocols. I avoid open-ended ambiguity and status coordination and administrative packets. Struggled with administrative packets even when the team called it a success.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-069",
+    "cohort": "design",
+    "occupation": "Web and Digital Interface Designers",
+    "family": "ux_design",
+    "observations": {
+      "resumeText": "Program Lead working in ux. Interview users and map pain points. Prototype interfaces and test them. Improved a messy workflow around interview users and map pain points using figma. I enjoy customer-facing troubleshooting and stakeholder orchestration. I avoid open-ended ambiguity and abstract modeling and novel problem solving. Struggled with open-ended ambiguity even when the team called it a success.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "documentation_has_friction",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-070",
+    "cohort": "design",
+    "occupation": "Customer Service Representatives",
+    "family": "customer_success",
+    "observations": {
+      "resumeText": "Customer Service Representative. I have done some projects and like solving problems but I am not sure what kind. Restore service and document the pattern",
+      "apparentField": "customer success",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-071",
+    "cohort": "design",
+    "occupation": "Electrical and Electronics Repairers",
+    "family": "field_technical",
+    "observations": {
+      "resumeText": "Electrical and Electronics Repairer working in field service. Replace modules and verify recovery. Capture field evidence for engineering. Improved a messy workflow around capture field evidence for engineering using troubleshooting. I enjoy root-cause investigation and logs and measurements and building tools. I avoid open-ended ambiguity and solo deep work. Struggled with open-ended ambiguity even when the team called it a success. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "field service",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-072",
+    "cohort": "design",
+    "occupation": "Administrative Services Managers",
+    "family": "public_sector",
+    "observations": {
+      "resumeText": "Administrative Services Manager working in public sector. Coordinate vendors and internal service requests. Translate policy into office practice. Improved a messy workflow around coordinate vendors and internal service requests using python. I enjoy stakeholder orchestration and repeatable protocols. I avoid status coordination and hands-on field work and internal-only analysis. Struggled with internal-only analysis even when the team called it a success. I say I dislike status coordination, but I also spent a year doing it because it paid the bills.",
+      "apparentField": "public sector",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-073",
+    "cohort": "design",
+    "occupation": "Mechanical Engineers",
+    "family": "engineering_hardware",
+    "observations": {
+      "resumeText": "Mechanical Engineer working in manufacturing. Coordinate with manufacturing on tolerances. Investigate component failures from field or lab evidence. Improved a messy workflow around coordinate with manufacturing on tolerances using mechanical. I enjoy customer-facing troubleshooting. I avoid administrative packets and hands-on field work and solo deep work. Struggled with hands-on field work even when the team called it a success. Most of this is from an older role.",
+      "apparentField": "manufacturing",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-074",
+    "cohort": "design",
+    "occupation": "Industrial Engineers",
+    "family": "engineering_hardware",
+    "observations": {
+      "resumeText": "Industrial Engineer working in manufacturing. Design experiments that improve yield or cycle time. Analyze production bottlenecks with measurements. Improved a messy workflow around analyze production bottlenecks with measurements using statistics. I enjoy customer-facing troubleshooting and stakeholder orchestration and applied experiments. I avoid open-ended ambiguity and status coordination. Struggled with open-ended ambiguity even when the team called it a success. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "manufacturing",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-075",
+    "cohort": "design",
+    "occupation": "Software Developers",
+    "family": "software_it",
+    "observations": {
+      "resumeText": "Software Developer working in software. Build and maintain application features. Integrate APIs and data stores. Improved a messy workflow around build and maintain application features using python. I enjoy root-cause investigation and logs and measurements and customer-facing troubleshooting. I avoid solo deep work and novel problem solving. Struggled with solo deep work even when the team called it a success. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "software",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-076",
+    "cohort": "design",
+    "occupation": "Information Security Analysts",
+    "family": "software_it",
+    "observations": {
+      "resumeText": "Coordinator working in cybersecurity. Contain and document attack paths. Investigate security incidents from logs and alerts. Improved a messy workflow around investigate security incidents from logs and alerts using log analysis. I enjoy root-cause investigation and logs and measurements and applied experiments. I avoid open-ended ambiguity and internal-only analysis. Struggled with internal-only analysis even when the team called it a success.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-077",
+    "cohort": "design",
+    "occupation": "Data Scientists",
+    "family": "data_analytics",
+    "observations": {
+      "resumeText": "Data Scientist working in analytics. Build models and evaluate error by cohort. Communicate limitations to stakeholders. Improved a messy workflow around communicate limitations to stakeholders using analytics. I enjoy bounded diagnostic problems and root-cause investigation and logs and measurements. I avoid internal-only analysis and solo deep work. Struggled with internal-only analysis even when the team called it a success.",
+      "apparentField": "analytics",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-078",
+    "cohort": "design",
+    "occupation": "Medical Scientists",
+    "family": "scientific_research",
+    "observations": {
+      "resumeText": "Medical Scientist working in healthcare. Write protocols and papers. Design studies and interpret experimental results. Improved a messy workflow around write protocols and papers using clinical research. I enjoy root-cause investigation and logs and measurements and building tools. I avoid internal-only analysis and solo deep work and abstract modeling. Struggled with abstract modeling even when the team called it a success. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "healthcare",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-079",
+    "cohort": "design",
+    "occupation": "Registered Nurses",
+    "family": "healthcare_professional",
+    "observations": {
+      "resumeText": "Registered Nurse. I have done some projects and like solving problems but I am not sure what kind. Document clinical status and handoffs Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "healthcare",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-080",
+    "cohort": "design",
+    "occupation": "Medical and Health Services Managers",
+    "family": "healthcare_operations",
+    "observations": {
+      "resumeText": "Medical and Health Services Manager. I have done some projects and like solving problems but I am not sure what kind. Review quality metrics and exceptions",
+      "apparentField": "healthcare operations",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-081",
+    "cohort": "validation",
+    "occupation": "Financial and Investment Analysts",
+    "family": "finance",
+    "observations": {
+      "resumeText": "Financial and Investment Analyst working in finance. Build forecasts and variance explanations. Present tradeoffs to decision makers. Improved a messy workflow around present tradeoffs to decision makers using python. I enjoy bounded diagnostic problems and root-cause investigation and logs and measurements. I avoid internal-only analysis and abstract modeling. Struggled with internal-only analysis even when the team called it a success.",
+      "apparentField": "finance",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-082",
+    "cohort": "validation",
+    "occupation": "Accountants and Auditors",
+    "family": "accounting_audit",
+    "observations": {
+      "resumeText": "Program Lead working in accounting. Explain control gaps. Prepare audit evidence packages. Improved a messy workflow around explain control gaps using excel. I enjoy building tools. I avoid open-ended ambiguity and status coordination. Struggled with status coordination even when the team called it a success. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-083",
+    "cohort": "validation",
+    "occupation": "Management Analysts",
+    "family": "consulting",
+    "observations": {
+      "resumeText": "Management Analyst working in consulting. Interview stakeholders about a broken process. Facilitate decisions across owners. Improved a messy workflow around interview stakeholders about a broken process using consulting. I enjoy stakeholder orchestration and applied experiments. I avoid open-ended ambiguity and hands-on field work. Burned out on travel and the parts of the job that felt like open-ended ambiguity.",
+      "apparentField": "consulting",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-084",
+    "cohort": "validation",
+    "occupation": "Marketing Managers",
+    "family": "product",
+    "observations": {
+      "resumeText": "Marketing Manager working in product. Negotiate scope across teams. Prioritize a roadmap from customer and revenue evidence. Improved a messy workflow around prioritize a roadmap from customer and revenue evidence using prioritization. I enjoy customer-facing troubleshooting and stakeholder orchestration. I avoid administrative packets and hands-on field work. Struggled with hands-on field work even when the team called it a success. Most of this is from an older role.",
+      "apparentField": "product",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-085",
+    "cohort": "validation",
+    "occupation": "Project Management Specialists",
+    "family": "project_program",
+    "observations": {
+      "resumeText": "Project Management Specialist. I have done some projects and like solving problems but I am not sure what kind. Unblock owners when work stalls Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "operations",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-086",
+    "cohort": "validation",
+    "occupation": "Logisticians",
+    "family": "operations_supply",
+    "observations": {
+      "resumeText": "Logistician working in supply chain. Track shipments and inventory exceptions. Measure on-time performance. Improved a messy workflow around track shipments and inventory exceptions using logistics. I enjoy bounded diagnostic problems. I avoid status coordination and administrative packets. Struggled with status coordination even when the team called it a success.",
+      "apparentField": "supply chain",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-087",
+    "cohort": "validation",
+    "occupation": "Sales Representatives, Wholesale and Manufacturing",
+    "family": "sales",
+    "observations": {
+      "resumeText": "Sales Representatives, Wholesale and Manufacturing working in sales. Maintain account relationships. Negotiate terms and close decisions. Improved a messy workflow around negotiate terms and close decisions using python. I enjoy bounded diagnostic problems and customer-facing troubleshooting and stakeholder orchestration. I avoid hands-on field work. Struggled with hands-on field work even when the team called it a success. I say I dislike hands-on field work, but I also spent a year doing it because it paid the bills. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "sales",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-088",
+    "cohort": "validation",
+    "occupation": "Market Research Analysts",
+    "family": "marketing",
+    "observations": {
+      "resumeText": "Market Research Analyst working in marketing. Design surveys or interviews. Recommend positioning changes. Improved a messy workflow around recommend positioning changes using excel. I enjoy bounded diagnostic problems and stakeholder orchestration and applied experiments. I avoid status coordination and administrative packets. Struggled with administrative packets even when the team called it a success.",
+      "apparentField": "marketing",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-089",
+    "cohort": "validation",
+    "occupation": "Human Resources Specialists",
+    "family": "hr_recruiting",
+    "observations": {
+      "resumeText": "Coordinator working in hr. Advise managers on process. Source and screen candidates. Improved a messy workflow around advise managers on process using python. I enjoy bounded diagnostic problems and stakeholder orchestration and applied experiments. I avoid administrative packets and hands-on field work and internal-only analysis. Struggled with hands-on field work even when the team called it a success.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-090",
+    "cohort": "validation",
+    "occupation": "Lawyers",
+    "family": "legal_compliance",
+    "observations": {
+      "resumeText": "Program Lead working in legal. Negotiate or litigate outcomes. Research precedent and draft arguments. Improved a messy workflow around research precedent and draft arguments using python. I enjoy logs and measurements and stakeholder orchestration and repeatable protocols. I avoid hands-on field work and internal-only analysis. Struggled with internal-only analysis even when the team called it a success.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-091",
+    "cohort": "validation",
+    "occupation": "Compliance Officers",
+    "family": "legal_compliance",
+    "observations": {
+      "resumeText": "Compliance Officer. I have done some projects and like solving problems but I am not sure what kind. Document findings for audit",
+      "apparentField": "compliance",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "documentation_has_friction",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-092",
+    "cohort": "validation",
+    "occupation": "Secondary School Teachers",
+    "family": "education",
+    "observations": {
+      "resumeText": "Analyst working in education. Plan lessons and assess learning. Adapt explanations for different students. Improved a messy workflow around plan lessons and assess learning using communication. I enjoy logs and measurements. I avoid status coordination and internal-only analysis and solo deep work. Struggled with status coordination even when the team called it a success. I say I dislike status coordination, but I also spent a year doing it because it paid the bills.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "documentation_has_friction",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-093",
+    "cohort": "validation",
+    "occupation": "Web and Digital Interface Designers",
+    "family": "ux_design",
+    "observations": {
+      "resumeText": "Web and Digital Interface Designer working in ux. Translate findings into design changes. Interview users and map pain points. Improved a messy workflow around translate findings into design changes using customer interviews. I enjoy bounded diagnostic problems and building tools and customer-facing troubleshooting. I avoid . Struggled with undefined even when the team called it a success.",
+      "apparentField": "ux",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-094",
+    "cohort": "validation",
+    "occupation": "Customer Service Representatives",
+    "family": "customer_success",
+    "observations": {
+      "resumeText": "Analyst working in customer success. Diagnose a blocked customer from incomplete tickets. Escalate recurring product defects. Improved a messy workflow around diagnose a blocked customer from incomplete tickets using python. I enjoy bounded diagnostic problems and logs and measurements and building tools. I avoid status coordination. Struggled with status coordination even when the team called it a success. I say I dislike status coordination, but I also spent a year doing it because it paid the bills.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-095",
+    "cohort": "validation",
+    "occupation": "Electrical and Electronics Repairers",
+    "family": "field_technical",
+    "observations": {
+      "resumeText": "Electrical and Electronics Repairer. I have done some projects and like solving problems but I am not sure what kind. Troubleshoot equipment onsite",
+      "apparentField": "field service",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-096",
+    "cohort": "validation",
+    "occupation": "Administrative Services Managers",
+    "family": "public_sector",
+    "observations": {
+      "resumeText": "Administrative Services Manager. I have done some projects and like solving problems but I am not sure what kind. Maintain records and procurement evidence",
+      "apparentField": "public sector",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "documentation_has_friction",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-097",
+    "cohort": "validation",
+    "occupation": "Mechanical Engineers",
+    "family": "engineering_hardware",
+    "observations": {
+      "resumeText": "Mechanical Engineer working in manufacturing. Coordinate with manufacturing on tolerances. Investigate component failures from field or lab evidence. Improved a messy workflow around coordinate with manufacturing on tolerances using root cause. I enjoy root-cause investigation and stakeholder orchestration. I avoid open-ended ambiguity and administrative packets and hands-on field work. Struggled with open-ended ambiguity even when the team called it a success.",
+      "apparentField": "manufacturing",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-098",
+    "cohort": "validation",
+    "occupation": "Industrial Engineers",
+    "family": "engineering_hardware",
+    "observations": {
+      "resumeText": "Industrial Engineer working in manufacturing. Document process changes. Design experiments that improve yield or cycle time. Improved a messy workflow around design experiments that improve yield or cycle time using statistics. I enjoy bounded diagnostic problems and root-cause investigation and customer-facing troubleshooting. I avoid novel problem solving. Struggled with novel problem solving even when the team called it a success.",
+      "apparentField": "manufacturing",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-099",
+    "cohort": "validation",
+    "occupation": "Software Developers",
+    "family": "software_it",
+    "observations": {
+      "resumeText": "Software Developer working in software. Integrate APIs and data stores. Review code and debug production incidents. Improved a messy workflow around integrate apis and data stores using typescript. I enjoy bounded diagnostic problems and customer-facing troubleshooting and stakeholder orchestration. I avoid status coordination and hands-on field work and novel problem solving. Struggled with hands-on field work even when the team called it a success. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "software",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-100",
+    "cohort": "validation",
+    "occupation": "Information Security Analysts",
+    "family": "software_it",
+    "observations": {
+      "resumeText": "Information Security Analyst working in cybersecurity. Investigate security incidents from logs and alerts. Contain and document attack paths. Improved a messy workflow around investigate security incidents from logs and alerts using cybersecurity. I enjoy building tools and customer-facing troubleshooting and stakeholder orchestration. I avoid open-ended ambiguity and administrative packets and novel problem solving. Struggled with administrative packets even when the team called it a success.",
+      "apparentField": "cybersecurity",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-101",
+    "cohort": "validation",
+    "occupation": "Data Scientists",
+    "family": "data_analytics",
+    "observations": {
+      "resumeText": "Data Scientist working in analytics. Frame questions from messy datasets. Communicate limitations to stakeholders. Improved a messy workflow around frame questions from messy datasets using excel. I enjoy root-cause investigation and applied experiments. I avoid hands-on field work and novel problem solving. Struggled with novel problem solving even when the team called it a success. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "analytics",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "documentation_has_friction",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-102",
+    "cohort": "validation",
+    "occupation": "Medical Scientists",
+    "family": "scientific_research",
+    "observations": {
+      "resumeText": "Program Lead working in healthcare. Write protocols and papers. Investigate unexpected findings. Improved a messy workflow around investigate unexpected findings using experimentation. I enjoy root-cause investigation and logs and measurements. I avoid open-ended ambiguity and internal-only analysis and abstract modeling. Struggled with abstract modeling even when the team called it a success.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-103",
+    "cohort": "validation",
+    "occupation": "Registered Nurses",
+    "family": "healthcare_professional",
+    "observations": {
+      "resumeText": "Registered Nurse working in healthcare. Coordinate with physicians and families. Document clinical status and handoffs. Improved a messy workflow around document clinical status and handoffs using communication. I enjoy . I avoid open-ended ambiguity and status coordination and administrative packets. Struggled with status coordination even when the team called it a success. I say I dislike open-ended ambiguity, but I also spent a year doing it because it paid the bills. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "healthcare",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-104",
+    "cohort": "validation",
+    "occupation": "Medical and Health Services Managers",
+    "family": "healthcare_operations",
+    "observations": {
+      "resumeText": "Medical and Health Services Manager working in healthcare operations. Coordinate staffing and throughput. Translate policy into unit practice. Improved a messy workflow around coordinate staffing and throughput using writing. I enjoy bounded diagnostic problems and root-cause investigation and logs and measurements. I avoid internal-only analysis and solo deep work. Struggled with internal-only analysis even when the team called it a success. Most of this is from an older role.",
+      "apparentField": "healthcare operations",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-105",
+    "cohort": "validation",
+    "occupation": "Financial and Investment Analysts",
+    "family": "finance",
+    "observations": {
+      "resumeText": "Analyst working in finance. Build forecasts and variance explanations. Present tradeoffs to decision makers. Improved a messy workflow around present tradeoffs to decision makers using python. I enjoy building tools. I avoid abstract modeling and novel problem solving. Struggled with novel problem solving even when the team called it a success. I say I dislike abstract modeling, but I also spent a year doing it because it paid the bills. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "documentation_has_friction",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-106",
+    "cohort": "validation",
+    "occupation": "Accountants and Auditors",
+    "family": "accounting_audit",
+    "observations": {
+      "resumeText": "Accountants and Auditor working in accounting. Explain control gaps. Prepare audit evidence packages. Improved a messy workflow around prepare audit evidence packages using excel. I enjoy stakeholder orchestration. I avoid open-ended ambiguity and internal-only analysis and novel problem solving. Struggled with open-ended ambiguity even when the team called it a success. I say I dislike open-ended ambiguity, but I also spent a year doing it because it paid the bills. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "accounting",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "documentation_has_friction",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-107",
+    "cohort": "validation",
+    "occupation": "Management Analysts",
+    "family": "consulting",
+    "observations": {
+      "resumeText": "Specialist working in consulting. Interview stakeholders about a broken process. Facilitate decisions across owners. Improved a messy workflow around interview stakeholders about a broken process using stakeholder management. I enjoy logs and measurements and customer-facing troubleshooting and applied experiments. I avoid status coordination and hands-on field work and solo deep work. Struggled with hands-on field work even when the team called it a success.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "documentation_has_friction",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-108",
+    "cohort": "validation",
+    "occupation": "Marketing Managers",
+    "family": "product",
+    "observations": {
+      "resumeText": "Marketing Manager working in product. Write decision records. Prioritize a roadmap from customer and revenue evidence. Improved a messy workflow around prioritize a roadmap from customer and revenue evidence using communication. I enjoy root-cause investigation and logs and measurements and building tools. I avoid solo deep work and novel problem solving. Struggled with novel problem solving even when the team called it a success. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "product",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-109",
+    "cohort": "validation",
+    "occupation": "Project Management Specialists",
+    "family": "project_program",
+    "observations": {
+      "resumeText": "Project Management Specialist working in operations. Run status and risk reviews. Unblock owners when work stalls. Improved a messy workflow around run status and risk reviews using writing. I enjoy stakeholder orchestration and applied experiments and repeatable protocols. I avoid open-ended ambiguity and administrative packets and hands-on field work. Struggled with hands-on field work even when the team called it a success. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "operations",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-110",
+    "cohort": "validation",
+    "occupation": "Logisticians",
+    "family": "operations_supply",
+    "observations": {
+      "resumeText": "Associate working in supply chain. Track shipments and inventory exceptions. Reroute when a node fails. Improved a messy workflow around track shipments and inventory exceptions using writing. I enjoy logs and measurements and stakeholder orchestration. I avoid open-ended ambiguity and internal-only analysis and abstract modeling. Struggled with abstract modeling even when the team called it a success.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-111",
+    "cohort": "validation",
+    "occupation": "Sales Representatives, Wholesale and Manufacturing",
+    "family": "sales",
+    "observations": {
+      "resumeText": "Sales Representatives, Wholesale and Manufacturing working in sales. Negotiate terms and close decisions. Qualify customer problems and budget. Improved a messy workflow around negotiate terms and close decisions using writing. I enjoy root-cause investigation and logs and measurements and building tools. I avoid open-ended ambiguity and solo deep work. Burned out on quota pressure and the parts of the job that felt like open-ended ambiguity.",
+      "apparentField": "sales",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-112",
+    "cohort": "validation",
+    "occupation": "Market Research Analysts",
+    "family": "marketing",
+    "observations": {
+      "resumeText": "Analyst. I have done some projects and like solving problems but I am not sure what kind. Recommend positioning changes Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "unknown",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "documentation_has_friction",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-113",
+    "cohort": "validation",
+    "occupation": "Human Resources Specialists",
+    "family": "hr_recruiting",
+    "observations": {
+      "resumeText": "Analyst working in hr. Coordinate interviews and offers. Advise managers on process. Improved a messy workflow around advise managers on process using human resources. I enjoy bounded diagnostic problems and root-cause investigation and logs and measurements. I avoid internal-only analysis. Struggled with internal-only analysis even when the team called it a success.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-114",
+    "cohort": "validation",
+    "occupation": "Lawyers",
+    "family": "legal_compliance",
+    "observations": {
+      "resumeText": "Analyst working in legal. Research precedent and draft arguments. Advise clients on risk. Improved a messy workflow around advise clients on risk using writing. I enjoy stakeholder orchestration. I avoid open-ended ambiguity and hands-on field work and internal-only analysis. Struggled with internal-only analysis even when the team called it a success. I say I dislike open-ended ambiguity, but I also spent a year doing it because it paid the bills. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-115",
+    "cohort": "validation",
+    "occupation": "Compliance Officers",
+    "family": "legal_compliance",
+    "observations": {
+      "resumeText": "Compliance Officer working in compliance. Document findings for audit. Train teams on required controls. Improved a messy workflow around train teams on required controls using policy. I enjoy bounded diagnostic problems and logs and measurements and building tools. I avoid internal-only analysis. Struggled with internal-only analysis even when the team called it a success. I say I dislike internal-only analysis, but I also spent a year doing it because it paid the bills. Outside work I tinker with side projects that are more interesting than my title suggests. Most of this is from an older role.",
+      "apparentField": "compliance",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-116",
+    "cohort": "validation",
+    "occupation": "Secondary School Teachers",
+    "family": "education",
+    "observations": {
+      "resumeText": "Secondary School Teacher working in education. Coordinate with families and staff. Adapt explanations for different students. Improved a messy workflow around adapt explanations for different students using communication. I enjoy building tools and customer-facing troubleshooting and stakeholder orchestration. I avoid administrative packets. Struggled with administrative packets even when the team called it a success.",
+      "apparentField": "education",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-117",
+    "cohort": "validation",
+    "occupation": "Web and Digital Interface Designers",
+    "family": "ux_design",
+    "observations": {
+      "resumeText": "Web and Digital Interface Designer working in ux. Interview users and map pain points. Prototype interfaces and test them. Improved a messy workflow around interview users and map pain points using design. I enjoy root-cause investigation and logs and measurements and building tools. I avoid internal-only analysis and novel problem solving. Struggled with novel problem solving even when the team called it a success.",
+      "apparentField": "ux",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "documentation_has_friction",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-118",
+    "cohort": "validation",
+    "occupation": "Customer Service Representatives",
+    "family": "customer_success",
+    "observations": {
+      "resumeText": "Customer Service Representative working in customer success. Escalate recurring product defects. Restore service and document the pattern. Improved a messy workflow around escalate recurring product defects using troubleshooting. I enjoy bounded diagnostic problems and root-cause investigation and stakeholder orchestration. I avoid hands-on field work and internal-only analysis and abstract modeling. Struggled with hands-on field work even when the team called it a success.",
+      "apparentField": "customer success",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-119",
+    "cohort": "validation",
+    "occupation": "Electrical and Electronics Repairers",
+    "family": "field_technical",
+    "observations": {
+      "resumeText": "Associate working in field service. Replace modules and verify recovery. Capture field evidence for engineering. Improved a messy workflow around replace modules and verify recovery using excel. I enjoy logs and measurements and stakeholder orchestration. I avoid open-ended ambiguity and status coordination and hands-on field work. Struggled with status coordination even when the team called it a success.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-120",
+    "cohort": "validation",
+    "occupation": "Administrative Services Managers",
+    "family": "public_sector",
+    "observations": {
+      "resumeText": "Administrative Services Manager working in public sector. Translate policy into office practice. Coordinate vendors and internal service requests. Improved a messy workflow around translate policy into office practice using public administration. I enjoy bounded diagnostic problems and root-cause investigation and logs and measurements. I avoid hands-on field work and internal-only analysis and solo deep work. Struggled with hands-on field work even when the team called it a success.",
+      "apparentField": "public sector",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-121",
+    "cohort": "holdout",
+    "occupation": "Mechanical Engineers",
+    "family": "engineering_hardware",
+    "observations": {
+      "resumeText": "Specialist working in manufacturing. Investigate component failures from field or lab evidence. Coordinate with manufacturing on tolerances. Improved a messy workflow around coordinate with manufacturing on tolerances using excel. I enjoy bounded diagnostic problems. I avoid status coordination and administrative packets and hands-on field work. Struggled with hands-on field work even when the team called it a success.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-122",
+    "cohort": "holdout",
+    "occupation": "Industrial Engineers",
+    "family": "engineering_hardware",
+    "observations": {
+      "resumeText": "Industrial Engineer working in manufacturing. Analyze production bottlenecks with measurements. Design experiments that improve yield or cycle time. Improved a messy workflow around design experiments that improve yield or cycle time using communication. I enjoy bounded diagnostic problems and logs and measurements and applied experiments. I avoid . Struggled with undefined even when the team called it a success.",
+      "apparentField": "manufacturing",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-123",
+    "cohort": "holdout",
+    "occupation": "Software Developers",
+    "family": "software_it",
+    "observations": {
+      "resumeText": "Software Developer working in software. Review code and debug production incidents. Build and maintain application features. Improved a messy workflow around review code and debug production incidents using communication. I enjoy bounded diagnostic problems and root-cause investigation and building tools. I avoid internal-only analysis and novel problem solving. Struggled with internal-only analysis even when the team called it a success. Most of this is from an older role.",
+      "apparentField": "software",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "documentation_has_friction",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-124",
+    "cohort": "holdout",
+    "occupation": "Information Security Analysts",
+    "family": "software_it",
+    "observations": {
+      "resumeText": "Information Security Analyst. I have done some projects and like solving problems but I am not sure what kind. Investigate security incidents from logs and alerts",
+      "apparentField": "cybersecurity",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-125",
+    "cohort": "holdout",
+    "occupation": "Data Scientists",
+    "family": "data_analytics",
+    "observations": {
+      "resumeText": "Data Scientist working in analytics. Frame questions from messy datasets. Build models and evaluate error by cohort. Improved a messy workflow around frame questions from messy datasets using python. I enjoy bounded diagnostic problems and root-cause investigation and logs and measurements. I avoid solo deep work. Struggled with solo deep work even when the team called it a success. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "analytics",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-126",
+    "cohort": "holdout",
+    "occupation": "Medical Scientists",
+    "family": "scientific_research",
+    "observations": {
+      "resumeText": "Medical Scientist working in healthcare. Write protocols and papers. Investigate unexpected findings. Improved a messy workflow around write protocols and papers using writing. I enjoy bounded diagnostic problems and root-cause investigation and logs and measurements. I avoid hands-on field work and internal-only analysis and solo deep work. Struggled with hands-on field work even when the team called it a success. I say I dislike hands-on field work, but I also spent a year doing it because it paid the bills.",
+      "apparentField": "healthcare",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-127",
+    "cohort": "holdout",
+    "occupation": "Registered Nurses",
+    "family": "healthcare_professional",
+    "observations": {
+      "resumeText": "Registered Nurse working in healthcare. Coordinate with physicians and families. Assess patients and prioritize interventions. Improved a messy workflow around coordinate with physicians and families using python. I enjoy building tools and repeatable protocols. I avoid open-ended ambiguity and status coordination and administrative packets. Struggled with status coordination even when the team called it a success. I say I dislike open-ended ambiguity, but I also spent a year doing it because it paid the bills.",
+      "apparentField": "healthcare",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-128",
+    "cohort": "holdout",
+    "occupation": "Medical and Health Services Managers",
+    "family": "healthcare_operations",
+    "observations": {
+      "resumeText": "Medical and Health Services Manager working in healthcare operations. Review quality metrics and exceptions. Translate policy into unit practice. Improved a messy workflow around translate policy into unit practice using operations. I enjoy customer-facing troubleshooting and applied experiments. I avoid . Struggled with undefined even when the team called it a success. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "healthcare operations",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-129",
+    "cohort": "holdout",
+    "occupation": "Financial and Investment Analysts",
+    "family": "finance",
+    "observations": {
+      "resumeText": "Financial and Investment Analyst. I have done some projects and like solving problems but I am not sure what kind. Present tradeoffs to decision makers Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "finance",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-130",
+    "cohort": "holdout",
+    "occupation": "Accountants and Auditors",
+    "family": "accounting_audit",
+    "observations": {
+      "resumeText": "Specialist working in accounting. Explain control gaps. Prepare audit evidence packages. Improved a messy workflow around prepare audit evidence packages using communication. I enjoy logs and measurements and applied experiments and repeatable protocols. I avoid open-ended ambiguity and status coordination and internal-only analysis. Struggled with internal-only analysis even when the team called it a success.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-131",
+    "cohort": "holdout",
+    "occupation": "Management Analysts",
+    "family": "consulting",
+    "observations": {
+      "resumeText": "Management Analyst working in consulting. Facilitate decisions across owners. Structure findings and options. Improved a messy workflow around structure findings and options using analysis. I enjoy bounded diagnostic problems and stakeholder orchestration and applied experiments. I avoid hands-on field work and internal-only analysis. Struggled with hands-on field work even when the team called it a success. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "consulting",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-132",
+    "cohort": "holdout",
+    "occupation": "Marketing Managers",
+    "family": "product",
+    "observations": {
+      "resumeText": "Marketing Manager working in product. Negotiate scope across teams. Write decision records. Improved a messy workflow around write decision records using product. I enjoy root-cause investigation and logs and measurements. I avoid open-ended ambiguity and solo deep work. Struggled with solo deep work even when the team called it a success.",
+      "apparentField": "product",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-133",
+    "cohort": "holdout",
+    "occupation": "Project Management Specialists",
+    "family": "project_program",
+    "observations": {
+      "resumeText": "Project Management Specialist. I have done some projects and like solving problems but I am not sure what kind. Unblock owners when work stalls",
+      "apparentField": "operations",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-134",
+    "cohort": "holdout",
+    "occupation": "Logisticians",
+    "family": "operations_supply",
+    "observations": {
+      "resumeText": "Logistician working in supply chain. Measure on-time performance. Reroute when a node fails. Improved a messy workflow around reroute when a node fails using supply chain. I enjoy . I avoid open-ended ambiguity and status coordination and administrative packets. Struggled with administrative packets even when the team called it a success. I say I dislike open-ended ambiguity, but I also spent a year doing it because it paid the bills.",
+      "apparentField": "supply chain",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "documentation_has_friction",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-135",
+    "cohort": "holdout",
+    "occupation": "Sales Representatives, Wholesale and Manufacturing",
+    "family": "sales",
+    "observations": {
+      "resumeText": "Sales Representatives, Wholesale and Manufacturing working in sales. Qualify customer problems and budget. Maintain account relationships. Improved a messy workflow around qualify customer problems and budget using python. I enjoy root-cause investigation and logs and measurements and applied experiments. I avoid open-ended ambiguity and hands-on field work and internal-only analysis. Struggled with hands-on field work even when the team called it a success. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "sales",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-136",
+    "cohort": "holdout",
+    "occupation": "Market Research Analysts",
+    "family": "marketing",
+    "observations": {
+      "resumeText": "Specialist working in marketing. Analyze campaign or segment performance. Design surveys or interviews. Improved a messy workflow around design surveys or interviews using marketing. I enjoy root-cause investigation and logs and measurements and stakeholder orchestration. I avoid abstract modeling and novel problem solving. Struggled with novel problem solving even when the team called it a success.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "documentation_has_friction",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-137",
+    "cohort": "holdout",
+    "occupation": "Human Resources Specialists",
+    "family": "hr_recruiting",
+    "observations": {
+      "resumeText": "Human Resources Specialist working in hr. Source and screen candidates. Coordinate interviews and offers. Improved a messy workflow around source and screen candidates using writing. I enjoy root-cause investigation and logs and measurements and building tools. I avoid open-ended ambiguity. Struggled with open-ended ambiguity even when the team called it a success.",
+      "apparentField": "hr",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-138",
+    "cohort": "holdout",
+    "occupation": "Lawyers",
+    "family": "legal_compliance",
+    "observations": {
+      "resumeText": "Lawyer working in legal. Research precedent and draft arguments. Advise clients on risk. Improved a messy workflow around research precedent and draft arguments using writing. I enjoy root-cause investigation and stakeholder orchestration. I avoid hands-on field work and abstract modeling. Burned out on adversarial context and the parts of the job that felt like hands-on field work. Outside work I tinker with side projects that are more interesting than my title suggests. Most of this is from an older role.",
+      "apparentField": "legal",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-139",
+    "cohort": "holdout",
+    "occupation": "Compliance Officers",
+    "family": "legal_compliance",
+    "observations": {
+      "resumeText": "Analyst. I have done some projects and like solving problems but I am not sure what kind. Document findings for audit Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "unknown",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "documentation_has_friction",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-140",
+    "cohort": "holdout",
+    "occupation": "Secondary School Teachers",
+    "family": "education",
+    "observations": {
+      "resumeText": "Secondary School Teacher working in education. Coordinate with families and staff. Plan lessons and assess learning. Improved a messy workflow around plan lessons and assess learning using excel. I enjoy root-cause investigation and applied experiments. I avoid internal-only analysis. Struggled with internal-only analysis even when the team called it a success.",
+      "apparentField": "education",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-141",
+    "cohort": "holdout",
+    "occupation": "Web and Digital Interface Designers",
+    "family": "ux_design",
+    "observations": {
+      "resumeText": "Program Lead working in ux. Prototype interfaces and test them. Interview users and map pain points. Improved a messy workflow around interview users and map pain points using writing. I enjoy bounded diagnostic problems and logs and measurements and customer-facing troubleshooting. I avoid abstract modeling. Burned out on taste debates and the parts of the job that felt like abstract modeling. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-142",
+    "cohort": "holdout",
+    "occupation": "Customer Service Representatives",
+    "family": "customer_success",
+    "observations": {
+      "resumeText": "Customer Service Representative working in customer success. Restore service and document the pattern. Escalate recurring product defects. Improved a messy workflow around restore service and document the pattern using writing. I enjoy root-cause investigation and stakeholder orchestration and repeatable protocols. I avoid open-ended ambiguity and administrative packets and hands-on field work. Struggled with open-ended ambiguity even when the team called it a success. Outside work I tinker with side projects that are more interesting than my title suggests. Most of this is from an older role.",
+      "apparentField": "customer success",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-143",
+    "cohort": "holdout",
+    "occupation": "Electrical and Electronics Repairers",
+    "family": "field_technical",
+    "observations": {
+      "resumeText": "Electrical and Electronics Repairer working in field service. Capture field evidence for engineering. Replace modules and verify recovery. Improved a messy workflow around replace modules and verify recovery using customer communication. I enjoy root-cause investigation and logs and measurements and building tools. I avoid open-ended ambiguity and internal-only analysis and solo deep work. Struggled with solo deep work even when the team called it a success.",
+      "apparentField": "field service",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "documentation_has_friction",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-144",
+    "cohort": "holdout",
+    "occupation": "Administrative Services Managers",
+    "family": "public_sector",
+    "observations": {
+      "resumeText": "Administrative Services Manager working in public sector. Maintain records and procurement evidence. Translate policy into office practice. Improved a messy workflow around maintain records and procurement evidence using documentation. I enjoy root-cause investigation and logs and measurements and repeatable protocols. I avoid open-ended ambiguity and hands-on field work and internal-only analysis. Struggled with hands-on field work even when the team called it a success. I say I dislike open-ended ambiguity, but I also spent a year doing it because it paid the bills. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "public sector",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-145",
+    "cohort": "holdout",
+    "occupation": "Mechanical Engineers",
+    "family": "engineering_hardware",
+    "observations": {
+      "resumeText": "Mechanical Engineer working in manufacturing. Investigate component failures from field or lab evidence. Design mechanical systems and specify test methods. Improved a messy workflow around design mechanical systems and specify test methods using writing. I enjoy root-cause investigation and building tools and stakeholder orchestration. I avoid open-ended ambiguity and abstract modeling. Struggled with abstract modeling even when the team called it a success. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "manufacturing",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-146",
+    "cohort": "holdout",
+    "occupation": "Industrial Engineers",
+    "family": "engineering_hardware",
+    "observations": {
+      "resumeText": "Program Lead working in manufacturing. Design experiments that improve yield or cycle time. Analyze production bottlenecks with measurements. Improved a messy workflow around analyze production bottlenecks with measurements using process improvement. I enjoy building tools and customer-facing troubleshooting and stakeholder orchestration. I avoid status coordination and abstract modeling. Struggled with abstract modeling even when the team called it a success. I say I dislike status coordination, but I also spent a year doing it because it paid the bills. Outside work I tinker with side projects that are more interesting than my title suggests. Most of this is from an older role.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-147",
+    "cohort": "holdout",
+    "occupation": "Software Developers",
+    "family": "software_it",
+    "observations": {
+      "resumeText": "Program Lead working in software. Build and maintain application features. Integrate APIs and data stores. Improved a messy workflow around integrate apis and data stores using software. I enjoy root-cause investigation and logs and measurements. I avoid hands-on field work and internal-only analysis and abstract modeling. Struggled with abstract modeling even when the team called it a success. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-148",
+    "cohort": "holdout",
+    "occupation": "Information Security Analysts",
+    "family": "software_it",
+    "observations": {
+      "resumeText": "Information Security Analyst working in cybersecurity. Contain and document attack paths. Recommend control changes. Improved a messy workflow around contain and document attack paths using cybersecurity. I enjoy bounded diagnostic problems and root-cause investigation and logs and measurements. I avoid internal-only analysis and solo deep work. Struggled with internal-only analysis even when the team called it a success.",
+      "apparentField": "cybersecurity",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-149",
+    "cohort": "holdout",
+    "occupation": "Data Scientists",
+    "family": "data_analytics",
+    "observations": {
+      "resumeText": "Data Scientist working in analytics. Communicate limitations to stakeholders. Frame questions from messy datasets. Improved a messy workflow around frame questions from messy datasets using communication. I enjoy root-cause investigation and logs and measurements and customer-facing troubleshooting. I avoid open-ended ambiguity and solo deep work. Struggled with open-ended ambiguity even when the team called it a success.",
+      "apparentField": "analytics",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-150",
+    "cohort": "holdout",
+    "occupation": "Medical Scientists",
+    "family": "scientific_research",
+    "observations": {
+      "resumeText": "Associate working in healthcare. Write protocols and papers. Investigate unexpected findings. Improved a messy workflow around investigate unexpected findings using writing. I enjoy bounded diagnostic problems and building tools and repeatable protocols. I avoid status coordination and administrative packets and internal-only analysis. Burned out on long feedback loops and the parts of the job that felt like status coordination.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-151",
+    "cohort": "holdout",
+    "occupation": "Registered Nurses",
+    "family": "healthcare_professional",
+    "observations": {
+      "resumeText": "Specialist working in healthcare. Assess patients and prioritize interventions. Coordinate with physicians and families. Improved a messy workflow around assess patients and prioritize interventions using communication. I enjoy stakeholder orchestration and repeatable protocols. I avoid open-ended ambiguity and status coordination and administrative packets. Burned out on emotional load and the parts of the job that felt like open-ended ambiguity. I say I dislike open-ended ambiguity, but I also spent a year doing it because it paid the bills.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-152",
+    "cohort": "holdout",
+    "occupation": "Medical and Health Services Managers",
+    "family": "healthcare_operations",
+    "observations": {
+      "resumeText": "Medical and Health Services Manager. I have done some projects and like solving problems but I am not sure what kind. Review quality metrics and exceptions",
+      "apparentField": "healthcare operations",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "documentation_has_friction",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-153",
+    "cohort": "holdout",
+    "occupation": "Financial and Investment Analysts",
+    "family": "finance",
+    "observations": {
+      "resumeText": "Financial and Investment Analyst working in finance. Test assumptions against new evidence. Present tradeoffs to decision makers. Improved a messy workflow around present tradeoffs to decision makers using forecasting. I enjoy logs and measurements and stakeholder orchestration and applied experiments. I avoid open-ended ambiguity and internal-only analysis and novel problem solving. Burned out on close calendar and the parts of the job that felt like open-ended ambiguity. I say I dislike open-ended ambiguity, but I also spent a year doing it because it paid the bills.",
+      "apparentField": "finance",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-154",
+    "cohort": "holdout",
+    "occupation": "Accountants and Auditors",
+    "family": "accounting_audit",
+    "observations": {
+      "resumeText": "Accountants and Auditor working in accounting. Explain control gaps. Prepare audit evidence packages. Improved a messy workflow around prepare audit evidence packages using accounting. I enjoy applied experiments. I avoid open-ended ambiguity and status coordination and hands-on field work. Struggled with open-ended ambiguity even when the team called it a success. Outside work I tinker with side projects that are more interesting than my title suggests. Most of this is from an older role.",
+      "apparentField": "accounting",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-155",
+    "cohort": "holdout",
+    "occupation": "Management Analysts",
+    "family": "consulting",
+    "observations": {
+      "resumeText": "Specialist working in consulting. Interview stakeholders about a broken process. Structure findings and options. Improved a messy workflow around interview stakeholders about a broken process using python. I enjoy logs and measurements and building tools and customer-facing troubleshooting. I avoid status coordination. Struggled with status coordination even when the team called it a success. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-156",
+    "cohort": "holdout",
+    "occupation": "Marketing Managers",
+    "family": "product",
+    "observations": {
+      "resumeText": "Marketing Manager working in product. Negotiate scope across teams. Write decision records. Improved a messy workflow around negotiate scope across teams using customer interviews. I enjoy applied experiments and repeatable protocols. I avoid open-ended ambiguity and status coordination and solo deep work. Struggled with open-ended ambiguity even when the team called it a success.",
+      "apparentField": "product",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-157",
+    "cohort": "holdout",
+    "occupation": "Project Management Specialists",
+    "family": "project_program",
+    "observations": {
+      "resumeText": "Project Management Specialist working in operations. Unblock owners when work stalls. Build plans and track dependencies. Improved a messy workflow around unblock owners when work stalls using communication. I enjoy root-cause investigation. I avoid hands-on field work and solo deep work and abstract modeling. Struggled with abstract modeling even when the team called it a success.",
+      "apparentField": "operations",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-158",
+    "cohort": "holdout",
+    "occupation": "Logisticians",
+    "family": "operations_supply",
+    "observations": {
+      "resumeText": "Specialist working in supply chain. Reroute when a node fails. Track shipments and inventory exceptions. Improved a messy workflow around track shipments and inventory exceptions using supply chain. I enjoy customer-facing troubleshooting and stakeholder orchestration. I avoid status coordination. Struggled with status coordination even when the team called it a success. I say I dislike status coordination, but I also spent a year doing it because it paid the bills.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-159",
+    "cohort": "holdout",
+    "occupation": "Sales Representatives, Wholesale and Manufacturing",
+    "family": "sales",
+    "observations": {
+      "resumeText": "Sales Representatives, Wholesale and Manufacturing working in sales. Maintain account relationships. Negotiate terms and close decisions. Improved a messy workflow around maintain account relationships using sales. I enjoy root-cause investigation and logs and measurements and customer-facing troubleshooting. I avoid hands-on field work and solo deep work and novel problem solving. Struggled with solo deep work even when the team called it a success. Most of this is from an older role.",
+      "apparentField": "sales",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "documentation_has_friction",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-160",
+    "cohort": "holdout",
+    "occupation": "Market Research Analysts",
+    "family": "marketing",
+    "observations": {
+      "resumeText": "Market Research Analyst working in marketing. Design surveys or interviews. Analyze campaign or segment performance. Improved a messy workflow around analyze campaign or segment performance using marketing. I enjoy logs and measurements and applied experiments. I avoid open-ended ambiguity and status coordination and internal-only analysis. Struggled with status coordination even when the team called it a success. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "marketing",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-161",
+    "cohort": "adversarial",
+    "occupation": "Human Resources Specialists",
+    "family": "hr_recruiting",
+    "observations": {
+      "resumeText": "Program Lead working in hr. Coordinate interviews and offers. Source and screen candidates. Improved a messy workflow around coordinate interviews and offers using recruiting. I enjoy bounded diagnostic problems and customer-facing troubleshooting and stakeholder orchestration. I avoid status coordination and hands-on field work and novel problem solving. Struggled with status coordination even when the team called it a success. I say I dislike status coordination, but I also spent a year doing it because it paid the bills. Most of this is from an older role.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "documentation_has_friction",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-162",
+    "cohort": "adversarial",
+    "occupation": "Lawyers",
+    "family": "legal_compliance",
+    "observations": {
+      "resumeText": "Program Lead. I have done some projects and like solving problems but I am not sure what kind. Negotiate or litigate outcomes",
+      "apparentField": "unknown",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "documentation_has_friction",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-163",
+    "cohort": "adversarial",
+    "occupation": "Compliance Officers",
+    "family": "legal_compliance",
+    "observations": {
+      "resumeText": "Specialist. I have done some projects and like solving problems but I am not sure what kind. Train teams on required controls Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "unknown",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-164",
+    "cohort": "adversarial",
+    "occupation": "Secondary School Teachers",
+    "family": "education",
+    "observations": {
+      "resumeText": "Coordinator. I have done some projects and like solving problems but I am not sure what kind. Adapt explanations for different students Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "unknown",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "documentation_has_friction",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-165",
+    "cohort": "adversarial",
+    "occupation": "Web and Digital Interface Designers",
+    "family": "ux_design",
+    "observations": {
+      "resumeText": "Program Lead working in ux. Translate findings into design changes. Prototype interfaces and test them. Improved a messy workflow around prototype interfaces and test them using ux research. I enjoy applied experiments and repeatable protocols. I avoid open-ended ambiguity and status coordination and internal-only analysis. Struggled with status coordination even when the team called it a success.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-166",
+    "cohort": "adversarial",
+    "occupation": "Customer Service Representatives",
+    "family": "customer_success",
+    "observations": {
+      "resumeText": "Analyst. I have done some projects and like solving problems but I am not sure what kind. Escalate recurring product defects Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "unknown",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-167",
+    "cohort": "adversarial",
+    "occupation": "Electrical and Electronics Repairers",
+    "family": "field_technical",
+    "observations": {
+      "resumeText": "Specialist working in field service. Replace modules and verify recovery. Troubleshoot equipment onsite. Improved a messy workflow around replace modules and verify recovery using communication. I enjoy logs and measurements and stakeholder orchestration and applied experiments. I avoid open-ended ambiguity and status coordination and hands-on field work. Struggled with open-ended ambiguity even when the team called it a success. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-168",
+    "cohort": "adversarial",
+    "occupation": "Administrative Services Managers",
+    "family": "public_sector",
+    "observations": {
+      "resumeText": "Associate working in public sector. Coordinate vendors and internal service requests. Translate policy into office practice. Improved a messy workflow around translate policy into office practice using writing. I enjoy root-cause investigation and building tools and applied experiments. I avoid open-ended ambiguity and solo deep work. Struggled with solo deep work even when the team called it a success. I say I dislike open-ended ambiguity, but I also spent a year doing it because it paid the bills.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-169",
+    "cohort": "adversarial",
+    "occupation": "Mechanical Engineers",
+    "family": "engineering_hardware",
+    "observations": {
+      "resumeText": "Analyst working in manufacturing. Coordinate with manufacturing on tolerances. Design mechanical systems and specify test methods. Improved a messy workflow around design mechanical systems and specify test methods using python. I enjoy root-cause investigation. I avoid open-ended ambiguity and hands-on field work and internal-only analysis. Struggled with hands-on field work even when the team called it a success. I say I dislike open-ended ambiguity, but I also spent a year doing it because it paid the bills. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "documentation_has_friction",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-170",
+    "cohort": "adversarial",
+    "occupation": "Industrial Engineers",
+    "family": "engineering_hardware",
+    "observations": {
+      "resumeText": "Analyst working in manufacturing. Analyze production bottlenecks with measurements. Document process changes. Improved a messy workflow around analyze production bottlenecks with measurements using statistics. I enjoy repeatable protocols. I avoid hands-on field work and internal-only analysis. Struggled with internal-only analysis even when the team called it a success. I say I dislike hands-on field work, but I also spent a year doing it because it paid the bills.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-171",
+    "cohort": "adversarial",
+    "occupation": "Software Developers",
+    "family": "software_it",
+    "observations": {
+      "resumeText": "Specialist. I have done some projects and like solving problems but I am not sure what kind. Review code and debug production incidents Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "unknown",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-172",
+    "cohort": "adversarial",
+    "occupation": "Information Security Analysts",
+    "family": "software_it",
+    "observations": {
+      "resumeText": "Associate working in cybersecurity. Recommend control changes. Investigate security incidents from logs and alerts. Improved a messy workflow around recommend control changes using writing. I enjoy bounded diagnostic problems and root-cause investigation and building tools. I avoid . Struggled with undefined even when the team called it a success. I say I dislike undefined, but I also spent a year doing it because it paid the bills.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-173",
+    "cohort": "adversarial",
+    "occupation": "Data Scientists",
+    "family": "data_analytics",
+    "observations": {
+      "resumeText": "Associate working in analytics. Communicate limitations to stakeholders. Build models and evaluate error by cohort. Improved a messy workflow around build models and evaluate error by cohort using communication. I enjoy logs and measurements and building tools and customer-facing troubleshooting. I avoid status coordination and abstract modeling and novel problem solving. Struggled with abstract modeling even when the team called it a success. Most of this is from an older role.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "documentation_has_friction",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-174",
+    "cohort": "adversarial",
+    "occupation": "Medical Scientists",
+    "family": "scientific_research",
+    "observations": {
+      "resumeText": "Coordinator working in healthcare. Design studies and interpret experimental results. Write protocols and papers. Improved a messy workflow around design studies and interpret experimental results using writing. I enjoy bounded diagnostic problems and root-cause investigation and logs and measurements. I avoid solo deep work. Struggled with solo deep work even when the team called it a success. I say I dislike solo deep work, but I also spent a year doing it because it paid the bills.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-175",
+    "cohort": "adversarial",
+    "occupation": "Registered Nurses",
+    "family": "healthcare_professional",
+    "observations": {
+      "resumeText": "Analyst. I have done some projects and like solving problems but I am not sure what kind. Document clinical status and handoffs Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "unknown",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "documentation_has_friction",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-176",
+    "cohort": "adversarial",
+    "occupation": "Medical and Health Services Managers",
+    "family": "healthcare_operations",
+    "observations": {
+      "resumeText": "Program Lead working in healthcare operations. Review quality metrics and exceptions. Coordinate staffing and throughput. Improved a messy workflow around review quality metrics and exceptions using excel. I enjoy bounded diagnostic problems and root-cause investigation and logs and measurements. I avoid hands-on field work and solo deep work. Burned out on regulatory documentation and the parts of the job that felt like hands-on field work. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-177",
+    "cohort": "adversarial",
+    "occupation": "Financial and Investment Analysts",
+    "family": "finance",
+    "observations": {
+      "resumeText": "Specialist. I have done some projects and like solving problems but I am not sure what kind. Test assumptions against new evidence Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "unknown",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-178",
+    "cohort": "adversarial",
+    "occupation": "Accountants and Auditors",
+    "family": "accounting_audit",
+    "observations": {
+      "resumeText": "Specialist. I have done some projects and like solving problems but I am not sure what kind. Reconcile accounts and test exceptions Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "unknown",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-179",
+    "cohort": "adversarial",
+    "occupation": "Management Analysts",
+    "family": "consulting",
+    "observations": {
+      "resumeText": "Program Lead working in consulting. Structure findings and options. Facilitate decisions across owners. Improved a messy workflow around facilitate decisions across owners using python. I enjoy stakeholder orchestration and applied experiments. I avoid hands-on field work and novel problem solving. Struggled with hands-on field work even when the team called it a success.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "documentation_has_friction",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-180",
+    "cohort": "adversarial",
+    "occupation": "Marketing Managers",
+    "family": "product",
+    "observations": {
+      "resumeText": "Associate. I have done some projects and like solving problems but I am not sure what kind. Write decision records Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "unknown",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-181",
+    "cohort": "adversarial",
+    "occupation": "Project Management Specialists",
+    "family": "project_program",
+    "observations": {
+      "resumeText": "Program Lead. I have done some projects and like solving problems but I am not sure what kind. Build plans and track dependencies",
+      "apparentField": "unknown",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-182",
+    "cohort": "adversarial",
+    "occupation": "Logisticians",
+    "family": "operations_supply",
+    "observations": {
+      "resumeText": "Program Lead working in supply chain. Measure on-time performance. Reroute when a node fails. Improved a messy workflow around reroute when a node fails using python. I enjoy applied experiments. I avoid open-ended ambiguity and solo deep work. Burned out on vendor delays and the parts of the job that felt like open-ended ambiguity. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-183",
+    "cohort": "adversarial",
+    "occupation": "Sales Representatives, Wholesale and Manufacturing",
+    "family": "sales",
+    "observations": {
+      "resumeText": "Specialist working in sales. Negotiate terms and close decisions. Maintain account relationships. Improved a messy workflow around maintain account relationships using communication. I enjoy root-cause investigation and logs and measurements and repeatable protocols. I avoid solo deep work and abstract modeling. Struggled with solo deep work even when the team called it a success. I say I dislike solo deep work, but I also spent a year doing it because it paid the bills.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-184",
+    "cohort": "adversarial",
+    "occupation": "Market Research Analysts",
+    "family": "marketing",
+    "observations": {
+      "resumeText": "Associate. I have done some projects and like solving problems but I am not sure what kind. Analyze campaign or segment performance",
+      "apparentField": "unknown",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-185",
+    "cohort": "adversarial",
+    "occupation": "Human Resources Specialists",
+    "family": "hr_recruiting",
+    "observations": {
+      "resumeText": "Analyst working in hr. Source and screen candidates. Advise managers on process. Improved a messy workflow around advise managers on process using python. I enjoy root-cause investigation and logs and measurements and building tools. I avoid solo deep work and abstract modeling and novel problem solving. Burned out on ambiguous scorecards and the parts of the job that felt like solo deep work. Most of this is from an older role.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "documentation_has_friction",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-186",
+    "cohort": "adversarial",
+    "occupation": "Lawyers",
+    "family": "legal_compliance",
+    "observations": {
+      "resumeText": "Specialist working in legal. Negotiate or litigate outcomes. Advise clients on risk. Improved a messy workflow around negotiate or litigate outcomes using research. I enjoy root-cause investigation and logs and measurements and repeatable protocols. I avoid solo deep work and abstract modeling. Struggled with abstract modeling even when the team called it a success. Most of this is from an older role.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "investigative_outranks_coordination",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-187",
+    "cohort": "adversarial",
+    "occupation": "Compliance Officers",
+    "family": "legal_compliance",
+    "observations": {
+      "resumeText": "Associate. I have done some projects and like solving problems but I am not sure what kind. Interpret policy and collect proof Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "unknown",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-188",
+    "cohort": "adversarial",
+    "occupation": "Secondary School Teachers",
+    "family": "education",
+    "observations": {
+      "resumeText": "Program Lead working in education. Coordinate with families and staff. Adapt explanations for different students. Improved a messy workflow around adapt explanations for different students using python. I enjoy bounded diagnostic problems and logs and measurements and customer-facing troubleshooting. I avoid novel problem solving. Struggled with novel problem solving even when the team called it a success. I say I dislike novel problem solving, but I also spent a year doing it because it paid the bills. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "documentation_has_friction",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-189",
+    "cohort": "adversarial",
+    "occupation": "Web and Digital Interface Designers",
+    "family": "ux_design",
+    "observations": {
+      "resumeText": "Specialist. I have done some projects and like solving problems but I am not sure what kind. Prototype interfaces and test them Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "unknown",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-190",
+    "cohort": "adversarial",
+    "occupation": "Customer Service Representatives",
+    "family": "customer_success",
+    "observations": {
+      "resumeText": "Analyst working in customer success. Diagnose a blocked customer from incomplete tickets. Escalate recurring product defects. Improved a messy workflow around escalate recurring product defects using service. I enjoy bounded diagnostic problems and building tools and applied experiments. I avoid administrative packets and solo deep work. Struggled with solo deep work even when the team called it a success. I say I dislike administrative packets, but I also spent a year doing it because it paid the bills.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-191",
+    "cohort": "adversarial",
+    "occupation": "Electrical and Electronics Repairers",
+    "family": "field_technical",
+    "observations": {
+      "resumeText": "Specialist. I have done some projects and like solving problems but I am not sure what kind. Replace modules and verify recovery",
+      "apparentField": "unknown",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-192",
+    "cohort": "adversarial",
+    "occupation": "Administrative Services Managers",
+    "family": "public_sector",
+    "observations": {
+      "resumeText": "Specialist working in public sector. Maintain records and procurement evidence. Translate policy into office practice. Improved a messy workflow around maintain records and procurement evidence using communication. I enjoy customer-facing troubleshooting and repeatable protocols. I avoid open-ended ambiguity. Burned out on slow approval cycles and the parts of the job that felt like open-ended ambiguity. I say I dislike open-ended ambiguity, but I also spent a year doing it because it paid the bills. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-193",
+    "cohort": "adversarial",
+    "occupation": "Mechanical Engineers",
+    "family": "engineering_hardware",
+    "observations": {
+      "resumeText": "Associate. I have done some projects and like solving problems but I am not sure what kind. Investigate component failures from field or lab evidence Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "unknown",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-194",
+    "cohort": "adversarial",
+    "occupation": "Industrial Engineers",
+    "family": "engineering_hardware",
+    "observations": {
+      "resumeText": "Analyst. I have done some projects and like solving problems but I am not sure what kind. Analyze production bottlenecks with measurements",
+      "apparentField": "unknown",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-195",
+    "cohort": "adversarial",
+    "occupation": "Software Developers",
+    "family": "software_it",
+    "observations": {
+      "resumeText": "Associate working in software. Build and maintain application features. Review code and debug production incidents. Improved a messy workflow around build and maintain application features using typescript. I enjoy logs and measurements and customer-facing troubleshooting. I avoid open-ended ambiguity and solo deep work and abstract modeling. Struggled with abstract modeling even when the team called it a success. I say I dislike open-ended ambiguity, but I also spent a year doing it because it paid the bills. Most of this is from an older role.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-196",
+    "cohort": "adversarial",
+    "occupation": "Information Security Analysts",
+    "family": "software_it",
+    "observations": {
+      "resumeText": "Specialist working in cybersecurity. Contain and document attack paths. Investigate security incidents from logs and alerts. Improved a messy workflow around investigate security incidents from logs and alerts using writing. I enjoy logs and measurements. I avoid open-ended ambiguity and status coordination and internal-only analysis. Struggled with internal-only analysis even when the team called it a success. I say I dislike open-ended ambiguity, but I also spent a year doing it because it paid the bills. Most of this is from an older role.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "documentation_has_friction",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-197",
+    "cohort": "adversarial",
+    "occupation": "Data Scientists",
+    "family": "data_analytics",
+    "observations": {
+      "resumeText": "Program Lead working in analytics. Communicate limitations to stakeholders. Frame questions from messy datasets. Improved a messy workflow around frame questions from messy datasets using data visualization. I enjoy customer-facing troubleshooting. I avoid open-ended ambiguity and status coordination and administrative packets. Struggled with open-ended ambiguity even when the team called it a success. I say I dislike open-ended ambiguity, but I also spent a year doing it because it paid the bills. Outside work I tinker with side projects that are more interesting than my title suggests.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-198",
+    "cohort": "adversarial",
+    "occupation": "Medical Scientists",
+    "family": "scientific_research",
+    "observations": {
+      "resumeText": "Coordinator working in healthcare. Design studies and interpret experimental results. Write protocols and papers. Improved a messy workflow around write protocols and papers using statistics. I enjoy bounded diagnostic problems and root-cause investigation. I avoid hands-on field work and abstract modeling. Struggled with abstract modeling even when the team called it a success. I say I dislike hands-on field work, but I also spent a year doing it because it paid the bills.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-199",
+    "cohort": "adversarial",
+    "occupation": "Registered Nurses",
+    "family": "healthcare_professional",
+    "observations": {
+      "resumeText": "Analyst working in healthcare. Assess patients and prioritize interventions. Document clinical status and handoffs. Improved a messy workflow around assess patients and prioritize interventions using communication. I enjoy customer-facing troubleshooting and stakeholder orchestration. I avoid open-ended ambiguity and status coordination and administrative packets. Struggled with administrative packets even when the team called it a success.",
+      "apparentField": "unknown",
+      "sparse": false
+    },
+    "hidden": {
+      "occupationFitsPreference": false,
+      "expected": [
+        "preference_capability_independence",
+        "occupation_does_not_define_preference",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  },
+  {
+    "subjectId": "subject-200",
+    "cohort": "adversarial",
+    "occupation": "Medical and Health Services Managers",
+    "family": "healthcare_operations",
+    "observations": {
+      "resumeText": "Associate. I have done some projects and like solving problems but I am not sure what kind. Coordinate staffing and throughput",
+      "apparentField": "unknown",
+      "sparse": true
+    },
+    "hidden": {
+      "occupationFitsPreference": true,
+      "expected": [
+        "preference_capability_independence",
+        "hireability_tracks_demonstrated_skills"
+      ]
+    }
+  }
+]

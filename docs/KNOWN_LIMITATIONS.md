@@ -12,3 +12,7 @@
 - V2 outreach is strategy/draft/simulated/manual only. No messages are sent and no LinkedIn/email automation is implemented.
 - Next-best-action priorities are deterministic heuristics, not outcome probabilities.
 - No production auth, payment, external LLM, job API, Supabase, or deployment integration is included.
+- Hidden Task-DNA recovery on virtual subjects is coarse (MAE ≈ 1.9/10). Property tests can pass while exact latent vectors stay wrong.
+- The occupation snapshot is O*NET-inspired and locally versioned, not a full licensed O*NET download.
+- Title-removal twins are often no-ops because many adversarial resumes already use misleading titles.
+- Extended knowledge-work functions exist for generic users; the demo job corpus is still technically dense.

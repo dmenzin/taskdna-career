@@ -30,18 +30,26 @@ Latest full gate:
 ```bash
 pnpm lint
 pnpm typecheck
-pnpm test      # 6 files, 28 tests
+pnpm test
 pnpm eval
 pnpm eval:network
-pnpm test:e2e  # 12 Playwright tests
+pnpm eval:unseen
+pnpm audit:logic
+pnpm test:e2e
 pnpm export:demo
 pnpm build
 ```
 
-All passed on 2026-08-22.
+Unit tests: 11 files / 47 tests after the logic-audit pass.
 
 V2 update:
 
 - `pnpm test` now includes `tests/network-engine.test.ts` for Human Opportunity Graph behavior.
 - `pnpm eval:network` checks golden human-strategy cases and generic network invariants.
 - `pnpm test:e2e` now runs 16 Playwright tests, including V2 dashboard and standalone opportunity graph export.
+
+Logic-audit update:
+
+- `tests/logic-invariants.test.ts`, `tests/virtual-subjects.test.ts`, `tests/zero-origin.test.ts`, `tests/logic-metamorphic.test.ts`.
+- `pnpm audit:logic` writes `artifacts/logic_audit/latest.json` and `latest.md`.
+- Hidden-truth MAE is reported separately from property pass rates so the scorecard cannot hide coarse recovery.

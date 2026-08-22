@@ -19,6 +19,15 @@
 - Added provider boundary interfaces and domain helpers for canonicalization, hard filters, freshness transitions, and simulated commute.
 - Fixed Playwright hydration by using `localhost` instead of `127.0.0.1`.
 
+## 0.4.0-logic-audit
+
+- Finished the deeper computational-brain audit without rebuilding the product.
+- Removed remaining persona-id and `expectedHighFunctions` model inputs.
+- Added a persona-free profile path, intake-based opportunity graphs, and an extended knowledge-work function ontology.
+- Built the Virtual Subject Laboratory: 200 subjects, O*NET-inspired occupations, hidden truth vs messy observations, twins, holdout, and OOD cohorts.
+- Added `pnpm audit:logic|sensitivity|stability|parameters|generalization|zero-origin|domain-holdout`, `pnpm eval:unseen`, and `pnpm subjects:*`.
+- Published the logic scorecard: sandbox trust B, hidden-truth recovery D. Not production-calibrated.
+
 ## 0.3.0-v2-human-opportunity-graph
 
 - Added Human Opportunity Graph V2 domain models for people, organizations, teams, relationships, interactions, ask types, paths, access assessments, pursuit plans, drafts, and next-best actions.

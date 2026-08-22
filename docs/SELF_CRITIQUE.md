@@ -60,3 +60,23 @@ Fixes applied:
 2. SQLite migrations remain a documented boundary rather than implemented persistence.
 3. Scoring is still heuristic and needs real-user calibration before production claims.
 4. The UI is more truthful, but still dense for a consumer product.
+
+## Deeper logic / generalization pass
+
+Issues found:
+
+1. Persona IDs and `expectedHighFunctions` were still model inputs after the earlier audit.
+2. Adaptive interview selection collapsed once those branches were removed.
+3. Generic users had no way to build a network graph without the golden persona universe.
+4. The function ontology was frozen on the original technical map.
+5. The first automated scorecard over-claimed an A while hidden-truth MAE was ~1.9/10.
+
+Fixes applied:
+
+- Persona-free inference entry point and leakage scan.
+- Preference-aware adaptive interview ranking.
+- `createHumanOpportunityGraphFromIntake` plus inferred (not fixture) network gaps.
+- Extended knowledge-work ontology for generic / lab subjects.
+- Virtual Subject Laboratory (200 subjects, 21 families, twins, holdout, OOD).
+- `pnpm audit:*` / `pnpm subjects:*` / `pnpm eval:unseen`.
+- Honest B sandbox-trust scorecard with a separate D for hidden-truth recovery.

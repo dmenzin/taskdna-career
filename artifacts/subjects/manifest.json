@@ -1,0 +1,9 @@
+{
+  "seed": 20260822,
+  "count": 200,
+  "occupationSource": {
+    "name": "O*NET-inspired local snapshot",
+    "version": "onet-inspired.v1",
+    "licenseNote": "Locally versioned public occupational/task structure synthesized from publicly documented O*NET occupation titles, task patterns, and generalized work activities. Not a full O*NET download and not used as preference ground truth."
+  }
+}

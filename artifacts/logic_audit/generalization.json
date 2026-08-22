@@ -1,0 +1,241 @@
+{
+  "propertyPassRate": 0.965556831228473,
+  "twinPassRate": 0.984375,
+  "holdoutPassRate": 0.9661016949152542,
+  "oodPassRate": 0.9831460674157303,
+  "titleRemoval": [
+    {
+      "id": "subject-001-title",
+      "kind": "title_removed",
+      "pass": true,
+      "detail": "title-on 8.06 title-off 8.06"
+    },
+    {
+      "id": "subject-002-title",
+      "kind": "title_removed",
+      "pass": true,
+      "detail": "title-on 7.99 title-off 7.99"
+    },
+    {
+      "id": "subject-003-title",
+      "kind": "title_removed",
+      "pass": true,
+      "detail": "title-on 7.93 title-off 7.93"
+    },
+    {
+      "id": "subject-004-title",
+      "kind": "title_removed",
+      "pass": true,
+      "detail": "title-on 8.01 title-off 8.01"
+    },
+    {
+      "id": "subject-005-title",
+      "kind": "title_removed",
+      "pass": true,
+      "detail": "title-on 8.38 title-off 8.38"
+    },
+    {
+      "id": "subject-006-title",
+      "kind": "title_removed",
+      "pass": true,
+      "detail": "title-on 8.46 title-off 8.46"
+    },
+    {
+      "id": "subject-007-title",
+      "kind": "title_removed",
+      "pass": true,
+      "detail": "title-on 8.65 title-off 8.65"
+    },
+    {
+      "id": "subject-008-title",
+      "kind": "title_removed",
+      "pass": true,
+      "detail": "title-on 7.99 title-off 7.99"
+    },
+    {
+      "id": "subject-009-title",
+      "kind": "title_removed",
+      "pass": true,
+      "detail": "title-on 8.06 title-off 8.06"
+    },
+    {
+      "id": "subject-010-title",
+      "kind": "title_removed",
+      "pass": true,
+      "detail": "title-on 8.47 title-off 8.47"
+    },
+    {
+      "id": "subject-011-title",
+      "kind": "title_removed",
+      "pass": true,
+      "detail": "title-on 7.91 title-off 7.91"
+    },
+    {
+      "id": "subject-012-title",
+      "kind": "title_removed",
+      "pass": true,
+      "detail": "title-on 7.80 title-off 7.80"
+    },
+    {
+      "id": "subject-013-title",
+      "kind": "title_removed",
+      "pass": true,
+      "detail": "title-on 8.12 title-off 8.12"
+    },
+    {
+      "id": "subject-014-title",
+      "kind": "title_removed",
+      "pass": true,
+      "detail": "title-on 8.08 title-off 8.08"
+    },
+    {
+      "id": "subject-015-title",
+      "kind": "title_removed",
+      "pass": true,
+      "detail": "title-on 7.81 title-off 7.81"
+    },
+    {
+      "id": "subject-016-title",
+      "kind": "title_removed",
+      "pass": true,
+      "detail": "title-on 7.85 title-off 7.85"
+    }
+  ],
+  "networkInvariance": [
+    {
+      "id": "subject-001-net",
+      "kind": "same_user_different_network",
+      "pass": true,
+      "detail": "Work Fit invariant across network variants"
+    },
+    {
+      "id": "subject-002-net",
+      "kind": "same_user_different_network",
+      "pass": true,
+      "detail": "Work Fit invariant across network variants"
+    },
+    {
+      "id": "subject-003-net",
+      "kind": "same_user_different_network",
+      "pass": true,
+      "detail": "Work Fit invariant across network variants"
+    },
+    {
+      "id": "subject-004-net",
+      "kind": "same_user_different_network",
+      "pass": true,
+      "detail": "Work Fit invariant across network variants"
+    },
+    {
+      "id": "subject-005-net",
+      "kind": "same_user_different_network",
+      "pass": true,
+      "detail": "Work Fit invariant across network variants"
+    },
+    {
+      "id": "subject-006-net",
+      "kind": "same_user_different_network",
+      "pass": true,
+      "detail": "Work Fit invariant across network variants"
+    },
+    {
+      "id": "subject-007-net",
+      "kind": "same_user_different_network",
+      "pass": true,
+      "detail": "Work Fit invariant across network variants"
+    },
+    {
+      "id": "subject-008-net",
+      "kind": "same_user_different_network",
+      "pass": true,
+      "detail": "Work Fit invariant across network variants"
+    },
+    {
+      "id": "subject-009-net",
+      "kind": "same_user_different_network",
+      "pass": true,
+      "detail": "Work Fit invariant across network variants"
+    },
+    {
+      "id": "subject-010-net",
+      "kind": "same_user_different_network",
+      "pass": true,
+      "detail": "Work Fit invariant across network variants"
+    },
+    {
+      "id": "subject-011-net",
+      "kind": "same_user_different_network",
+      "pass": true,
+      "detail": "Work Fit invariant across network variants"
+    },
+    {
+      "id": "subject-012-net",
+      "kind": "same_user_different_network",
+      "pass": true,
+      "detail": "Work Fit invariant across network variants"
+    },
+    {
+      "id": "subject-013-net",
+      "kind": "same_user_different_network",
+      "pass": true,
+      "detail": "Work Fit invariant across network variants"
+    },
+    {
+      "id": "subject-014-net",
+      "kind": "same_user_different_network",
+      "pass": true,
+      "detail": "Work Fit invariant across network variants"
+    },
+    {
+      "id": "subject-015-net",
+      "kind": "same_user_different_network",
+      "pass": true,
+      "detail": "Work Fit invariant across network variants"
+    },
+    {
+      "id": "subject-016-net",
+      "kind": "same_user_different_network",
+      "pass": true,
+      "detail": "Work Fit invariant across network variants"
+    }
+  ],
+  "leakageCount": 0,
+  "domainHoldout": [
+    {
+      "family": "finance",
+      "n": 4,
+      "passRate": 1,
+      "meanMae": 1.8159604976187491
+    },
+    {
+      "family": "sales",
+      "n": 4,
+      "passRate": 1,
+      "meanMae": 2.215163152457274
+    },
+    {
+      "family": "operations_supply",
+      "n": 4,
+      "passRate": 1,
+      "meanMae": 1.780970521636061
+    },
+    {
+      "family": "ux_design",
+      "n": 3,
+      "passRate": 1,
+      "meanMae": 1.9455222261772294
+    },
+    {
+      "family": "software_it",
+      "n": 6,
+      "passRate": 1,
+      "meanMae": 1.9376403695831617
+    },
+    {
+      "family": "engineering_hardware",
+      "n": 6,
+      "passRate": 0.9545454545454546,
+      "meanMae": 2.023609705575255
+    }
+  ]
+}
