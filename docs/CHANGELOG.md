@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.1-forensic-specs
+
+- Documented the current implementation as-is in `docs/ALGORITHM_SPEC.md`, `docs/EVALUATION_SPEC.md`, and `docs/COEFFICIENT_REGISTRY.md`.
+- No algorithm, coefficient, dataset, baseline, or evaluation-code changes.
+
 ## 0.5.0-onet-pass-2
 
 - Ingested official O*NET 30.3 (CC BY 4.0, USDOL/ETA) with fetch/verify/corpus commands and frozen `onet_external_shock_baseline.json`.

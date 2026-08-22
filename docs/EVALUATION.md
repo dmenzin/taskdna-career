@@ -1,5 +1,7 @@
 # Evaluation
 
+For the O*NET 450-subject lab, hidden-truth MAE, holdout, baseline freeze, and leakage audit, see `docs/EVALUATION_SPEC.md`. The 15-persona harness below is separate and does not define Hidden-truth MAE.
+
 The deterministic harness in `runEvaluation()` covers 15 personas and checks:
 
 - persona/function alignment,
