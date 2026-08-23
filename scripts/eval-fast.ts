@@ -108,6 +108,22 @@ export const FAST_SUBSYSTEMS: Subsystem[] = [
     ],
   },
   {
+    id: "agentic-research",
+    description: "Semantic-contract freeze, research-program governance, and preregistration gate.",
+    pathPatterns: [
+      /src\/agent\/(semanticContract|experimentRegistry|researchProgramView|researchLedger|agentArchitecture|splitAgents|fieldAblation|secretScan)\.ts/,
+      /config\/(agentic-research-program|experiment-registry|component-registry|prompt-render-freeze|architecture-evidence-ledger)\.json/,
+      /scripts\/(research-program|research-ledger|preregister-experiment)\.ts/,
+      /docs\/AGENTIC_(RESEARCH_PROGRAM|DEVELOPMENT_ROADMAP)\.md/,
+      /docs\/ARCHITECTURE_EVIDENCE_LEDGER\.md/,
+    ],
+    steps: [
+      { label: "prompt-render freeze", command: "pnpm", args: ["exec", "vitest", "run", "tests/prompt-render-freeze.test.ts"] },
+      { label: "research program + component registry", command: "pnpm", args: ["exec", "vitest", "run", "tests/research-program.test.ts"] },
+      { label: "preregistration gate", command: "pnpm", args: ["exec", "vitest", "run", "tests/experiment-registry.test.ts"] },
+    ],
+  },
+  {
     id: "network",
     description: "Relationship graph, next-best-action, opportunity graph.",
     pathPatterns: [/src\/domain\/(networkEngine|networkTypes)\.ts/, /src\/config\/network\.ts/],

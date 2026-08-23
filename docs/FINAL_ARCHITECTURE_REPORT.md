@@ -76,9 +76,16 @@ Jobs are now shuffled before ids are assigned, and a permanent gate requires a d
 | experience-lexical | 0.399 | 0.332 | 0.142 |
 | onet-canonical | 0.346 | 0.250 | 0.276 |
 | agent-blueprint (bag-of-tokens) | 0.645 | 0.545 | 0.700 |
-| **agent-field-match** | **0.748** | **0.592** | **0.818** |
+| **agent-field-match** † | **0.748** | **0.592** | **0.818** |
 | *oracle-normalizer (control)* | *0.808* | *0.616* | *0.993* |
 | *oracle-planted-truth (ceiling)* | *1.000* | *0.979* | *1.000* |
+
+† **UNVERIFIED, and now unreproducible.** Every other row in this table is reproducible from
+`artifacts/agent_experiments/agent-vs-lexical-semantic_bridge-n12.json`; the `agent-field-match`
+row is not in that artifact, which was never regenerated after the architecture was added. The
+Anthropic interpretation cache it was computed from no longer exists
+(`docs/PROVIDER_HANDOFF_STATE.md` §1), so the figure cannot be recovered on the Claude arm. Treat
+it as a recorded claim, not a measurement, until some arm regenerates it.
 
 Paired bootstrap over persons, `agent-blueprint` vs `experience-lexical`:
 
@@ -98,6 +105,12 @@ started and was cut off mid-run when API access became unavailable:
 | --- | --- |
 | person blueprints (`cache-person-lexical_trap.json`) | **12/12 — complete** |
 | job blueprints (`cache-job-lexical_trap.json`) | **218/288 — 70 short** |
+
+**Superseded on the resumability point.** The two counts above are the correct historical record,
+but the caches themselves were gitignored, never committed, and existed only on the disk of the
+machine that produced them. They are gone. Resuming therefore requires **300 Anthropic calls, not
+70**, and the paragraph below — written when the cache was still on disk — no longer describes a
+reachable state. See `docs/PROVIDER_HANDOFF_STATE.md` §1.
 
 The budget ledger confirms the stop point exactly (`12 + 218 = 230` recorded calls for
 `agent-vs-lexical:LEXICAL_TRAP`). `scripts/experiment-agent-vs-lexical.ts` hard-gates on

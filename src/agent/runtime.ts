@@ -1,10 +1,10 @@
 // Instrumented model-execution boundary and versioned prompt registry.
 //
-// STATUS: **no provider implementation exists and none ran in this research run.** The Claude
-// Code host holds the only credential and a child process cannot reuse it
-// (`docs/AUTONOMOUS_RESEARCH_STATE.md`). `EchoProvider` below is a deterministic stub for unit
-// tests ONLY. Any number produced with it measures the harness, not a model, and must never be
-// reported as agent quality, rescue rate, hallucination rate, or prompt performance.
+// STATUS: two real providers sit behind this boundary — `anthropicProvider.ts` (executed, arm now
+// frozen with credentials revoked) and `openaiProvider.ts` (active). `EchoProvider` below is a
+// deterministic stub for unit tests ONLY. Any number produced with it measures the harness, not
+// a model, and must never be reported as agent quality, rescue rate, hallucination rate, or
+// prompt performance.
 //
 // WHY THE BOUNDARY LOOKS LIKE THIS
 // --------------------------------
@@ -39,6 +39,21 @@ export interface ModelRequest {
   prompt: PromptSpec;
   input: Record<string, unknown>;
   decoding: DecodingParams;
+  /**
+   * The subject this call is about, for per-subject latency pairing. NOT part of the cache key —
+   * it is metadata about who the call concerns, not an input that changes the answer.
+   *
+   * Required to estimate parallel latency correctly. Aggregating first and then taking a maximum
+   * computes max(p50_A, p50_B), which is not the median of max(A_i, B_i) and is optimistically
+   * biased. The pairing has to happen per subject, before aggregation.
+   */
+  subjectId?: string;
+  /**
+   * Experiment-identity only. Does not change the rendered prompt. When set, it participates
+   * in the cache key so independent fresh trials cannot hit each other. Omitted from the key
+   * when unset so existing paid caches stay valid.
+   */
+  trialId?: string;
 }
 
 export interface ModelUsage {
@@ -48,19 +63,72 @@ export interface ModelUsage {
   costUsd: number | null;
   /** True when `costUsd` was derived from configured pricing rather than reported. */
   costIsEstimate: boolean;
+  /**
+   * Reasoning tokens, where the provider reports them separately.
+   *
+   * These are billed as output tokens and are ALREADY included in `outputTokens`. They are
+   * broken out because a reasoning setting can quietly multiply the bill, and because reasoning
+   * competes with the visible answer for the same output allowance — a truncation cause that is
+   * invisible unless the split is recorded.
+   */
+  reasoningTokens?: number | null;
+  /** Tokens served from the provider's own prompt cache, where reported. */
+  cachedInputTokens?: number | null;
+}
+
+/**
+ * Provider-specific execution facts that the caller cannot know in advance.
+ *
+ * `model` on `ModelProvider` is what was REQUESTED. When the request names a moving alias, the
+ * identifier the provider actually served is the only thing that makes the call reproducible —
+ * or that documents honestly why it is not.
+ */
+export interface ProviderMetadata {
+  /** Provider implementation version, so a provider-side change invalidates comparisons. */
+  providerVersion: string;
+  /** Model identifier the provider reports having served. Null when it reports none. */
+  resolvedModel: string | null;
+  /** Reasoning/effort setting as requested. Null for providers with no such control. */
+  reasoning: string | null;
+  /**
+   * True when the response was cut short (typically by the output allowance) rather than
+   * completing. A truncated structured response parses to nothing and would otherwise be
+   * indistinguishable from a model that found nothing to say.
+   */
+  truncated?: boolean;
 }
 
 /** Everything needed to reproduce or invalidate one model call. */
 export interface ModelCallRecord {
   provider: string;
+  /** Model as REQUESTED by the experiment. */
   model: string;
+  /** Model as RESOLVED by the provider, plus reasoning setting and provider version. */
+  providerMetadata: ProviderMetadata | null;
+  experimentId: string;
   promptId: string;
   promptVersion: string;
+  /** Hash of the fully rendered prompt text: catches a prompt edit that forgot a version bump. */
+  promptHash: string;
+  /** Schema identity, for providers whose output is schema-constrained. */
+  schemaVersion: string | null;
+  schemaHash: string | null;
   decoding: DecodingParams;
   inputHash: string;
   cacheKey: string;
   cacheHit: boolean;
+  /** Subject the call concerns, when supplied. Enables per-subject critical-path pairing. */
+  subjectId: string | null;
+  /** Wall-clock time of THIS invocation. Sub-millisecond for a cache hit. */
   latencyMs: number;
+  /**
+   * Wall-clock time of the call that originally produced this result.
+   *
+   * Equal to `latencyMs` for a fresh call. For a cache hit it is the recorded duration of the
+   * original call, or null when the cache entry predates latency persistence. This is the field a
+   * latency report should read: `latencyMs` on a cache hit measures a map lookup, not a model.
+   */
+  originalLatencyMs: number | null;
   usage: ModelUsage;
   outputText: string;
   timestamp: string;
@@ -68,28 +136,65 @@ export interface ModelCallRecord {
 
 export interface ModelProvider {
   readonly name: string;
+  /** Model identifier as requested. May be a moving alias. */
   readonly model: string;
-  complete(request: ModelRequest): Promise<{ text: string; usage: ModelUsage }>;
+  /** Stable identity of the schema this provider constrains output to, if any. */
+  readonly schemaVersion?: string | null;
+  readonly schemaHash?: string | null;
+  /**
+   * Every provider-side setting that changes the output, declared for the cache key.
+   *
+   * Reasoning effort, output allowance and constraining schema all change what comes back, and
+   * none of them is visible in `ModelRequest`. A provider that omits them here would serve a
+   * result produced under a different configuration as a hit — exactly the stale-result trade
+   * `docs/CACHE_AUDIT.md` forbids.
+   */
+  readonly cacheIdentity?: Record<string, unknown>;
+  complete(request: ModelRequest): Promise<{ text: string; usage: ModelUsage; metadata?: ProviderMetadata }>;
+}
+
+/** Stable hash of an arbitrary JSON value, used for schema and prompt identity. */
+export function hashJson(value: unknown): string {
+  return createHash("sha256").update(JSON.stringify(sortDeep(value))).digest("hex");
 }
 
 /**
  * Cache key over every behaviour-changing input.
  *
- * Source text, prompt id AND version, decoding parameters, provider and model all participate.
- * Changing any of them produces a different key, so a cached result can never outlive the
- * configuration that produced it. Trading a stale scientific result for speed is the failure
- * this exists to prevent.
+ * Source text, prompt id AND version, decoding parameters, provider, model, constraining schema
+ * and the provider's own declared settings all participate. Changing any of them produces a
+ * different key, so a cached result can never outlive the configuration that produced it.
+ * Trading a stale scientific result for speed is the failure this exists to prevent.
+ *
+ * `provider` and `model` participating is also what makes CROSS-PROVIDER CONTAMINATION
+ * structurally impossible: one provider's generated output can never be served as another
+ * provider's cache hit, even if the two share a cache file. Namespacing the files as well is
+ * defence in depth, not the primary guarantee.
  */
 export function cacheKeyFor(provider: ModelProvider, request: ModelRequest): string {
   const stable = JSON.stringify({
     provider: provider.name,
     model: provider.model,
+    schemaHash: provider.schemaHash ?? null,
+    providerCacheIdentity: sortDeep(provider.cacheIdentity ?? {}),
     promptId: request.prompt.id,
     promptVersion: request.prompt.version,
     decoding: request.decoding,
     input: sortDeep(request.input),
+    ...(request.trialId ? { trialId: request.trialId } : {}),
   });
   return createHash("sha256").update(stable).digest("hex");
+}
+
+/**
+ * Directory for one provider's persisted caches.
+ *
+ * Provider-specific by construction so a restored Anthropic arm and a running OpenAI arm cannot
+ * write into each other's files, and so an accidental path reuse is visible in a directory
+ * listing rather than only inside a hash.
+ */
+export function providerCacheDir(providerName: string): string {
+  return `artifacts/agent_runtime/${providerName}`;
 }
 
 function sortDeep(value: unknown): unknown {
@@ -137,8 +242,21 @@ export interface RunnerOptions {
   onError?: (error: unknown, request: ModelRequest) => { text: string; usage: ModelUsage } | null;
 }
 
+/**
+ * A persisted call result.
+ *
+ * `latencyMs` is stored because latency is now a product metric and a cache hit cannot re-measure
+ * it. Without this, a cache-warm rerun has no way to report what the call originally took, and the
+ * only options are to drop the architecture from the latency table or to substitute another
+ * configuration's number — both of which happened before this field existed.
+ *
+ * Entries written before this field are read back with it absent, which is reported as unavailable
+ * rather than filled in.
+ */
+type CachedCall = { text: string; usage: ModelUsage; metadata?: ProviderMetadata; latencyMs?: number };
+
 export class InstrumentedRunner {
-  private readonly cache = new Map<string, { text: string; usage: ModelUsage }>();
+  private readonly cache = new Map<string, CachedCall>();
   readonly records: ModelCallRecord[] = [];
   /** Calls that failed and were recorded as abstentions rather than aborting the run. */
   readonly errors: { cacheKey: string; message: string }[] = [];
@@ -148,7 +266,7 @@ export class InstrumentedRunner {
     private readonly options: RunnerOptions = {},
   ) {
     if (options.cachePath && existsSync(options.cachePath)) {
-      const stored = JSON.parse(readFileSync(options.cachePath, "utf8")) as Record<string, { text: string; usage: ModelUsage }>;
+      const stored = JSON.parse(readFileSync(options.cachePath, "utf8")) as Record<string, CachedCall>;
       for (const [key, value] of Object.entries(stored)) this.cache.set(key, value);
     }
   }
@@ -170,7 +288,7 @@ export class InstrumentedRunner {
     if (!cached && this.options.budget) {
       this.options.budget.reserve(this.options.projectedCostUsd?.(request) ?? 0);
     }
-    let result: { text: string; usage: ModelUsage };
+    let result: { text: string; usage: ModelUsage; metadata?: ProviderMetadata };
     if (cached) {
       result = cached;
     } else {
@@ -182,20 +300,32 @@ export class InstrumentedRunner {
         this.errors.push({ cacheKey, message: String(error).slice(0, 300) });
         result = recovered;
       }
-      this.cache.set(cacheKey, result);
+      this.cache.set(cacheKey, { ...result, latencyMs: Date.now() - started });
       this.persistCache();
     }
 
     const record: ModelCallRecord = {
       provider: this.provider.name,
       model: this.provider.model,
+      providerMetadata: result.metadata ?? null,
+      experimentId: this.options.experimentId ?? "unspecified",
       promptId: request.prompt.id,
       promptVersion: request.prompt.version,
+      promptHash: createHash("sha256").update(request.prompt.render(request.input)).digest("hex"),
+      schemaVersion: this.provider.schemaVersion ?? null,
+      schemaHash: this.provider.schemaHash ?? null,
       decoding: request.decoding,
       inputHash,
       cacheKey,
       cacheHit: Boolean(cached),
+      subjectId: request.subjectId ?? null,
       latencyMs: Date.now() - started,
+      /**
+       * What the call took when it was ORIGINALLY made, for a cache hit. Null when the entry
+       * predates latency persistence. This is what lets a cache-warm rerun still report the
+       * latency a user would experience, instead of the sub-millisecond cost of a map lookup.
+       */
+      originalLatencyMs: cached ? (cached.latencyMs ?? null) : Date.now() - started,
       usage: cached ? { ...result.usage, costUsd: 0, costIsEstimate: result.usage.costIsEstimate } : result.usage,
       outputText: result.text,
       timestamp: new Date().toISOString(),
@@ -229,8 +359,16 @@ export class InstrumentedRunner {
       errors: this.errors.length,
       inputTokens: sum((r) => r.usage.inputTokens),
       outputTokens: sum((r) => r.usage.outputTokens),
+      // Already inside outputTokens; reported separately because a reasoning setting can
+      // dominate the bill and the split is the only way to see that it did.
+      reasoningTokens: sum((r) => r.usage.reasoningTokens ?? null),
+      cachedInputTokens: sum((r) => r.usage.cachedInputTokens ?? null),
       costUsd: sum((r) => r.usage.costUsd),
       anyCostEstimated: this.records.some((r) => r.usage.costIsEstimate),
+      // A truncated structured response parses to nothing. Counting these keeps an output
+      // allowance that is too small for the reasoning setting from looking like an empty result.
+      truncated: this.records.filter((r) => r.providerMetadata?.truncated).length,
+      resolvedModels: [...new Set(this.records.map((r) => r.providerMetadata?.resolvedModel).filter((m): m is string => Boolean(m)))],
       p50LatencyMs: at(0.5),
       p95LatencyMs: at(0.95),
     };

@@ -23,40 +23,46 @@
 import { existsSync, readFileSync, mkdirSync, writeFileSync } from "node:fs";
 import { buildFrameCorpus } from "../src/bench/frameCorpus";
 import { cacheKeyFor, type ModelProvider, type ModelRequest } from "../src/agent/runtime";
-import { PERSON_BLUEPRINT_PROMPT, type CareerBlueprint, type StructuredWork } from "../src/agent/agentArchitecture";
-import { CONCEPTS_BY_ID, IDENTITY_ROLES, type RenderFamily } from "../src/bench/semanticFrame";
+import { PERSON_BLUEPRINT_PROMPT, PERSON_BLUEPRINT_SCHEMA, type CareerBlueprint } from "../src/agent/agentArchitecture";
+import { mentionsConcept } from "../src/agent/channelIntegrity";
+import { armCachePath, buildProvider, type ProviderName } from "../src/agent/providerRegistry";
+import { IDENTITY_ROLES, type RenderFamily } from "../src/bench/semanticFrame";
 
 const arg = (name: string, fallback: string) => process.argv.find((a) => a.startsWith(`--${name}=`))?.split("=")[1] ?? fallback;
 const people = Number(arg("people", "12"));
 const family = arg("family", "SEMANTIC_BRIDGE") as RenderFamily;
 
-const cachePath = `artifacts/agent_runtime/cache-person-${family.toLowerCase()}.json`;
+// Which arm's cache to read. The Anthropic cache no longer exists anywhere
+// (`docs/PROVIDER_HANDOFF_STATE.md`), so the default is the arm that does.
+const providerName = arg("provider", "openai");
+const modelId = arg("model", providerName === "openai" ? "gpt-5.6-sol" : "claude-opus-5");
+const effort = arg("effort", "low");
+const maxOutputTokens = Number(arg("person-max-output", providerName === "openai" ? "1800" : "1200"));
+
+const cachePath = providerName === "anthropic"
+  ? `artifacts/agent_runtime/cache-person-${family.toLowerCase()}.json`
+  : armCachePath({ provider: providerName as ProviderName, model: modelId, effort, family, kind: "person" });
 if (!existsSync(cachePath)) {
   process.stderr.write(`no cached interpretations at ${cachePath}; run the experiment first\n`);
   process.exit(1);
 }
 const cache = JSON.parse(readFileSync(cachePath, "utf8")) as Record<string, { text: string }>;
 
-// The provider identity participates in the cache key, so it must be reconstructed exactly.
-const provider = { name: "anthropic", model: "claude-opus-5" } as ModelProvider;
+// The provider identity participates in the cache key, so it must be reconstructed EXACTLY --
+// including the schema hash and the provider's declared settings, or every lookup misses.
+const provider: ModelProvider = providerName === "openai"
+  ? buildProvider({
+      provider: "openai", model: modelId, effort: effort as never, maxOutputTokens,
+      outputSchema: PERSON_BLUEPRINT_SCHEMA as unknown as Record<string, unknown>, schemaName: "career_blueprint",
+    })
+  : ({ name: "anthropic", model: modelId } as ModelProvider);
 const corpus = buildFrameCorpus({ people, split: "DEVELOPMENT", family });
 
-const words = (text: string) => new Set(text.toLowerCase().match(/[a-z]{3,}/g) ?? []);
-
-/** Do the interpreted fields mention this planted concept in any recognisable form? */
-function mentions(work: StructuredWork, conceptId: string): boolean {
-  const concept = CONCEPTS_BY_ID.get(conceptId);
-  if (!concept) return false;
-  const interpreted = words([work.action, work.object, work.purpose, work.method, work.domain].join(" "));
-  // The concept's own id carries meaning ("obj.safety_incident" -> safety, incident), and the
-  // NEUTRAL forms are the plain-English register the model was asked to produce.
-  const conceptWords = new Set<string>([
-    ...(conceptId.split(/[.\-_]/).flatMap((part) => [...words(part)])),
-    ...concept.neutralForms.flatMap((form) => [...words(form)]),
-  ]);
-  for (const word of conceptWords) if (interpreted.has(word)) return true;
-  return false;
-}
+// One implementation of concept mention, shared with the contamination metrics. The copy that
+// used to live here treated a concept id's TYPE PREFIX (`act.`, `obj.`, `dom.`) as a matchable
+// word, so any text containing "act" matched every action concept. Role-recovery figures
+// published before this fix should be read as having had that false-positive path open.
+const mentions = mentionsConcept;
 
 interface PersonAnalysis {
   personId: string;
@@ -82,7 +88,9 @@ for (const person of corpus.people) {
       disliked: person.preferenceEvidence.filter((e) => e.stance === "DISLIKE").map((e) => e.text).join("\n"),
       desired: person.aspirationEvidence.map((e) => e.text).join("\n"),
     },
-    decoding: { temperature: 0, maxOutputTokens: 1200 },
+    // Must equal the arm's allowance exactly: decoding participates in the cache key, so a
+    // hardcoded number here turns every lookup into a miss and the analysis reports zeroes.
+    decoding: { temperature: 0, maxOutputTokens },
   };
   const entry = cache[cacheKeyFor(provider, request)];
   if (!entry) {
@@ -170,9 +178,12 @@ process.stdout.write(`\nchannel separation and invention:\n`);
 process.stdout.write(`  disliked work leaking into LIKED: ${sum((a) => a.channelLeak)} across ${analyses.length} people\n`);
 process.stdout.write(`  interpreted experience matching no planted work: ${sum((a) => a.unmatchedExperience)} of ${sum((a) => a.counts.experience)}\n`);
 
+// The provider is in the FILENAME. Without it this script overwrites the Claude-era artifact,
+// which is the only surviving person-understanding evidence from an arm that can never be re-run.
 mkdirSync("artifacts/agent_experiments", { recursive: true });
+const outputPath = `artifacts/agent_experiments/person-understanding-${providerName}-${family.toLowerCase()}.json`;
 writeFileSync(
-  `artifacts/agent_experiments/person-understanding-${family.toLowerCase()}.json`,
-  JSON.stringify({ family, people: analyses.length, missing, analyses }, null, 2) + "\n",
+  outputPath,
+  JSON.stringify({ family, provider: providerName, model: modelId, effort, people: analyses.length, missing, analyses }, null, 2) + "\n",
 );
-process.stdout.write(`\nwrote artifacts/agent_experiments/person-understanding-${family.toLowerCase()}.json\n`);
+process.stdout.write(`\nwrote ${outputPath}\n`);

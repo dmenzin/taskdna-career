@@ -1,0 +1,157 @@
+{
+  "version": "component-registry.v1",
+  "purpose": "Classifies every component by what it actually does, so vocabulary cannot drift ahead of implementation. The forensic audit found that everything called an 'agent' in this repository is a single schema-constrained model call; calling those agents invites autonomous orchestration the evidence does not ask for.",
+  "reproducibilityRule": "Historical names are NOT changed. Cache keys and prompt versions depend on them, and renaming would orphan paid interpretations. The registry adds accurate classification alongside the existing name rather than replacing it.",
+  "classes": {
+    "STRUCTURED_INFERENCE": "One model call with schema-constrained output. No tool choice, no iteration, no planning.",
+    "WORKFLOW": "A deterministic sequence of operations. No model call, or model calls in a fixed order decided by code.",
+    "CRITIC_VALIDATOR": "Consumes another component's output and judges it. May be deterministic or model-mediated.",
+    "TOOL_USING_AGENT": "The model chooses which tools or actions to invoke.",
+    "PLANNER": "The model dynamically decides what to investigate next; control flow is not fixed by code.",
+    "RETRIEVAL_RANKING": "Deterministic retrieval, scoring or ranking over precomputed representations."
+  },
+  "namingRule": "A component may only carry 'Agent' in its name if its class is TOOL_USING_AGENT or PLANNER, OR it is listed in grandfatheredAgentNames below. tests/research-program.test.ts enforces this.",
+  "grandfatheredAgentNames": [
+    "experience-agent",
+    "direction-agent"
+  ],
+  "grandfatherRationale": "These two prompt ids are embedded in cache keys for 88 paid interpretations. Renaming them would make that evidence unreadable, which is a worse outcome than an inaccurate name. They are STRUCTURED_INFERENCE and are documented as such here and in the audit. No NEW component may be grandfathered.",
+  "components": [
+    {
+      "name": "shared CareerBlueprint interpreter",
+      "promptId": "person-blueprint",
+      "class": "STRUCTURED_INFERENCE",
+      "implemented": true,
+      "location": "src/agent/agentArchitecture.ts",
+      "note": "One call, four channels. The current research baseline when paired with agent-field-match."
+    },
+    {
+      "name": "Experience Agent",
+      "promptId": "experience-agent",
+      "class": "STRUCTURED_INFERENCE",
+      "implemented": true,
+      "location": "src/agent/splitAgents.ts",
+      "note": "Named 'Agent' historically; it is one schema-constrained call. Grandfathered for cache reproducibility."
+    },
+    {
+      "name": "Direction Agent",
+      "promptId": "direction-agent",
+      "class": "STRUCTURED_INFERENCE",
+      "implemented": true,
+      "location": "src/agent/splitAgents.ts",
+      "note": "Named 'Agent' historically; it is one schema-constrained call. v1 superseded by v2."
+    },
+    {
+      "name": "JobBlueprint interpreter",
+      "promptId": "job-blueprint",
+      "class": "STRUCTURED_INFERENCE",
+      "implemented": true,
+      "location": "src/agent/agentArchitecture.ts",
+      "note": "One call per job, globally cached, amortised across all users. Never per user-job pair."
+    },
+    {
+      "name": "Preference interpreter",
+      "promptId": null,
+      "class": "STRUCTURED_INFERENCE",
+      "implemented": false,
+      "location": null,
+      "note": "Not implemented as a dedicated component. Preference is currently produced only by the shared interpreter."
+    },
+    {
+      "name": "Qualification interpreter",
+      "promptId": null,
+      "class": "STRUCTURED_INFERENCE",
+      "implemented": false,
+      "location": null,
+      "note": "NOT IMPLEMENTED. Blocked on evidence visibility: planted qualifications appear only in the narrative field, which no component reads. Research program item Q-01."
+    },
+    {
+      "name": "field-aware matcher",
+      "promptId": null,
+      "class": "RETRIEVAL_RANKING",
+      "implemented": true,
+      "location": "src/agent/agentArchitecture.ts",
+      "note": "Deterministic per-field coverage. Source of the largest measured improvement in the program (+0.148) at zero model cost."
+    },
+    {
+      "name": "token-bag matcher",
+      "promptId": null,
+      "class": "RETRIEVAL_RANKING",
+      "implemented": true,
+      "location": "src/agent/agentArchitecture.ts",
+      "note": "Superseded by the field-aware matcher on both families; retained as an ablation control."
+    },
+    {
+      "name": "provenance validator",
+      "promptId": null,
+      "class": "CRITIC_VALIDATOR",
+      "implemented": true,
+      "location": "src/agent/provenance.ts",
+      "note": "Fully deterministic. Attributes each claim to the evidence channel that supports it. No model involved."
+    },
+    {
+      "name": "channel integrity validator",
+      "promptId": null,
+      "class": "CRITIC_VALIDATOR",
+      "implemented": true,
+      "location": "src/agent/channelIntegrity.ts",
+      "note": "Deterministic. Frame-collision and channel-volume diagnostics."
+    },
+    {
+      "name": "experiment orchestration",
+      "promptId": null,
+      "class": "WORKFLOW",
+      "implemented": true,
+      "location": "scripts/experiment-split-agents.ts, scripts/experiment-agent-vs-lexical.ts, scripts/experiment-p01.ts",
+      "note": "Fixed sequence decided by code: interpret persons, interpret jobs, evaluate. No model decides control flow."
+    },
+    {
+      "name": "networking and next-best-action logic",
+      "promptId": null,
+      "class": "WORKFLOW",
+      "implemented": true,
+      "location": "src/domain/networkEngine.ts",
+      "note": "Deterministic legacy. Out of scope for the core matching loop."
+    },
+    {
+      "name": "Career Landscape explorer",
+      "promptId": null,
+      "class": "PLANNER",
+      "implemented": false,
+      "location": null,
+      "note": "Not implemented. The first component whose task might genuinely require deciding what to investigate next. Research program item A-01, deferred until the representation is stable."
+    },
+    {
+      "name": "opportunity pursuit agent",
+      "promptId": null,
+      "class": "TOOL_USING_AGENT",
+      "implemented": false,
+      "location": null,
+      "note": "Not implemented. Would need narrow tool permissions, explicit user approval boundaries and draft-before-send. Research program item A-02."
+    },
+    {
+      "name": "selective specialist rescue",
+      "promptId": null,
+      "class": "WORKFLOW",
+      "implemented": false,
+      "location": null,
+      "note": "Not implemented. A trigger-based hybrid: shared baseline first, specialist only when a deterministic trigger fires. Research program item A-03."
+    },
+    {
+      "name": "domain context pack",
+      "promptId": null,
+      "class": "WORKFLOW",
+      "implemented": false,
+      "location": null,
+      "note": "Not implemented. Versioned, auditable interpretation-context modules. Not an Agent. D-CTX-01 tests oracle packs before any router. Must not redefine E/P/Q/D or become evidence."
+    },
+    {
+      "name": "domain router",
+      "promptId": null,
+      "class": "STRUCTURED_INFERENCE",
+      "implemented": false,
+      "location": null,
+      "note": "Not implemented. Blocked on D-CTX-01 oracle benefit. Prefer cheap multi-label classification with abstention, not an Agent. Must not be used as a job-retrieval filter."
+    }
+  ]
+}

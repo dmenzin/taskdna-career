@@ -1,0 +1,117 @@
+{
+  "audit": "provenance",
+  "version": "provenance.v1",
+  "family": "LEXICAL_TRAP",
+  "people": 12,
+  "provider": "openai",
+  "model": "gpt-5.6-sol",
+  "effort": "low",
+  "directionPromptVersion": "v2",
+  "experiencePromptVersion": "v1",
+  "modelCalls": 0,
+  "results": [
+    {
+      "architecture": "shared",
+      "experienceProvenance": {
+        "claims": 0,
+        "supported": 0,
+        "evidenceContamination": 0,
+        "evidenceContaminationFromVisibleSource": 0,
+        "interpretationDrift": 0,
+        "unsupportedClaims": 0,
+        "ambiguousProvenance": 0,
+        "evidenceContaminationRate": 0,
+        "unsupportedClaimRate": 0,
+        "bySourceChannel": {}
+      },
+      "directionProvenance": null,
+      "volumeRatios": {
+        "experience": 1,
+        "liked": 1,
+        "disliked": 1,
+        "desired": 1
+      },
+      "peopleAnalysed": 12,
+      "missing": 0
+    },
+    {
+      "architecture": "split-full-context",
+      "experienceProvenance": {
+        "claims": 125,
+        "supported": 72,
+        "evidenceContamination": 53,
+        "evidenceContaminationFromVisibleSource": 53,
+        "interpretationDrift": 0,
+        "unsupportedClaims": 0,
+        "ambiguousProvenance": 0,
+        "evidenceContaminationRate": 0.424,
+        "unsupportedClaimRate": 0,
+        "bySourceChannel": {
+          "PREFERENCE_LIKE": 47,
+          "PREFERENCE_DISLIKE": 6
+        }
+      },
+      "directionProvenance": {
+        "claims": 48,
+        "supported": 48,
+        "evidenceContamination": 0,
+        "evidenceContaminationFromVisibleSource": 0,
+        "interpretationDrift": 0,
+        "unsupportedClaims": 0,
+        "ambiguousProvenance": 0,
+        "evidenceContaminationRate": 0,
+        "unsupportedClaimRate": 0,
+        "bySourceChannel": {}
+      },
+      "volumeRatios": {
+        "experience": 1.7361111111111114,
+        "liked": 0,
+        "disliked": 0,
+        "desired": 1
+      },
+      "peopleAnalysed": 12,
+      "missing": 0
+    },
+    {
+      "architecture": "split-isolated",
+      "experienceProvenance": {
+        "claims": 72,
+        "supported": 72,
+        "evidenceContamination": 0,
+        "evidenceContaminationFromVisibleSource": 0,
+        "interpretationDrift": 0,
+        "unsupportedClaims": 0,
+        "ambiguousProvenance": 0,
+        "evidenceContaminationRate": 0,
+        "unsupportedClaimRate": 0,
+        "bySourceChannel": {}
+      },
+      "directionProvenance": {
+        "claims": 48,
+        "supported": 48,
+        "evidenceContamination": 0,
+        "evidenceContaminationFromVisibleSource": 0,
+        "interpretationDrift": 0,
+        "unsupportedClaims": 0,
+        "ambiguousProvenance": 0,
+        "evidenceContaminationRate": 0,
+        "unsupportedClaimRate": 0,
+        "bySourceChannel": {}
+      },
+      "volumeRatios": {
+        "experience": 1,
+        "liked": 0,
+        "disliked": 0,
+        "desired": 1
+      },
+      "peopleAnalysed": 12,
+      "missing": 0
+    }
+  ],
+  "notes": [
+    "Computed entirely from cached interpretations; no provider call was made.",
+    "The shared CareerBlueprint emits no supporting phrase, so its provenance is UNMEASURABLE rather than clean.",
+    "Contamination against a channel the agent never saw is recorded as interpretation drift, not leakage.",
+    "Attribution is phrase containment against the evidence sentence, with an ambiguity margin because the corpus plants liked work that overlaps performed work."
+  ]
+}

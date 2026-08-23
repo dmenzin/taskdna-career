@@ -21,10 +21,21 @@ import { dirname } from "node:path";
 
 export const RUNTIME_BUDGET_VERSION = "runtime-budget.v1";
 
-/** The contract ceilings. Changing these is a contract amendment, not a code tweak. */
+/**
+ * The contract ceilings. Changing these is a contract amendment, not a code tweak.
+ *
+ * AMENDMENT 2026-08-23 (§ B2): `maxCalls` is now an OBSERVABILITY THRESHOLD, not an
+ * authorization ceiling. Call count was only ever a proxy for spend, and treating a proxy as the
+ * hard control blocked cheap, high-information experiments while doing nothing a dollar cap does
+ * not already do. Crossing it warns; it does not refuse.
+ *
+ * `maxSpendUsd` remains HARD. Together with the bounded-architecture rule — interpret per person
+ * and per job, never per pair — it is what actually prevents runaway spend.
+ */
 export const RUNTIME_BUDGET_LIMITS = {
   maxSpendUsd: 25,
-  maxCalls: 1000,
+  /** Warn-only. See the amendment note above. */
+  callObservabilityThreshold: 1000,
 } as const;
 
 export interface ModelPricing {
@@ -38,22 +49,50 @@ export interface ModelPricing {
   cacheWritePerMTok: number;
 }
 
-// Published Anthropic list prices, USD per million tokens. Recorded here so a cost figure can
-// be audited against a number someone chose deliberately. NEVER invent a price: an unknown
-// model is charged at UNKNOWN_MODEL_PRICING below, which is deliberately the most expensive
-// entry, so an unpriced model can only ever cause us to UNDER-spend the cap.
+// Published list prices, USD per million tokens. Recorded here so a cost figure can be audited
+// against a number someone chose deliberately. NEVER invent a price: an unknown model is charged
+// at UNKNOWN_MODEL_PRICING below, which is deliberately the most expensive entry, so an unpriced
+// model can only ever cause us to UNDER-spend the cap.
 //
 // Sonnet 5 carries a promotional rate ($2/$10) through 2026-08-31. The full rate is used here
 // because the amendment requires conservative estimation; a promo that expires mid-run must
-// not silently push actual spend above a cap computed from the discounted price.
+// not silently push actual spend above a cap computed from the discounted price. The same
+// reasoning applies to gpt-5.6-sol, whose $4/$20 rate is promotional through at least
+// 2026-11-21: the pre-promotion $5/$30 is used, so a promo lapsing mid-run cannot push actual
+// spend above a cap computed from the discount.
+//
+// OpenAI bills REASONING tokens as output tokens. Callers must fold
+// `output_tokens_details.reasoning_tokens` into `outputTokens` (the Responses API already does,
+// in its top-level `output_tokens`), or a reasoning model will look far cheaper than it is.
 export const MODEL_PRICING: Record<string, ModelPricing> = {
   "claude-opus-5": { inputPerMTok: 5, outputPerMTok: 25, cacheReadPerMTok: 0.5, cacheWritePerMTok: 6.25 },
   "claude-sonnet-5": { inputPerMTok: 3, outputPerMTok: 15, cacheReadPerMTok: 0.3, cacheWritePerMTok: 3.75 },
   "claude-haiku-4-5": { inputPerMTok: 1, outputPerMTok: 5, cacheReadPerMTok: 0.1, cacheWritePerMTok: 1.25 },
+  "gpt-5.6-sol": { inputPerMTok: 5, outputPerMTok: 30, cacheReadPerMTok: 0.5, cacheWritePerMTok: 6.25 },
+  "gpt-5.6-terra": { inputPerMTok: 2.5, outputPerMTok: 15, cacheReadPerMTok: 0.25, cacheWritePerMTok: 3.125 },
+  "gpt-5.6-luna": { inputPerMTok: 1, outputPerMTok: 6, cacheReadPerMTok: 0.1, cacheWritePerMTok: 1.25 },
 };
 
 /** Charged for any model absent from the table. The most expensive known entry, on purpose. */
-export const UNKNOWN_MODEL_PRICING: ModelPricing = MODEL_PRICING["claude-opus-5"];
+export const UNKNOWN_MODEL_PRICING: ModelPricing = MODEL_PRICING["gpt-5.6-sol"];
+
+/**
+ * Worst-case cost of a call, for budget reservation BEFORE it is made.
+ *
+ * Reserving on actual cost would enforce nothing — by then the money is spent — so the
+ * reservation assumes the full output allowance is used. Provider-neutral on purpose: it lives
+ * here rather than in a provider module so that provider-agnostic code never has to import a
+ * specific vendor to price a call.
+ *
+ * On a reasoning model the full output allowance is the realistic case rather than the
+ * pessimistic one, because reasoning tokens are drawn from the same `max_output_tokens` pool.
+ */
+export function worstCaseCostUsd(model: string, promptText: string, maxOutputTokens: number): number {
+  // ~3 characters per token is a coarse but deliberately CONSERVATIVE input estimate; it
+  // overstates for prose, and overstating is the safe direction for a spend cap.
+  const approximateInputTokens = Math.ceil(promptText.length / 3);
+  return estimateCostUsd(model, { inputTokens: approximateInputTokens, outputTokens: maxOutputTokens }).costUsd;
+}
 
 export interface TokenUsage {
   inputTokens: number | null;
@@ -102,9 +141,16 @@ export interface BudgetLedgerEntry {
   cacheHit: boolean;
 }
 
+export interface BudgetLimits {
+  /** HARD. A call projected to breach this is refused. */
+  maxSpendUsd: number;
+  /** WARN-ONLY. Tracked for observability; never refuses a call. */
+  callObservabilityThreshold: number;
+}
+
 export interface BudgetLedgerState {
   version: string;
-  limits: { maxSpendUsd: number; maxCalls: number };
+  limits: BudgetLimits;
   calls: number;
   spentUsd: number;
   entries: BudgetLedgerEntry[];
@@ -112,7 +158,7 @@ export interface BudgetLedgerState {
 
 export class RuntimeBudgetExceededError extends Error {
   constructor(
-    readonly reason: "SPEND_CAP" | "CALL_CAP",
+    readonly reason: "SPEND_CAP",
     message: string,
   ) {
     super(message);
@@ -131,11 +177,16 @@ export class RuntimeBudgetLedger {
 
   constructor(
     private readonly path: string,
-    private readonly limits: { maxSpendUsd: number; maxCalls: number } = RUNTIME_BUDGET_LIMITS,
+    private readonly limits: BudgetLimits = RUNTIME_BUDGET_LIMITS,
   ) {
     this.state = existsSync(path)
       ? (JSON.parse(readFileSync(path, "utf8")) as BudgetLedgerState)
       : { version: RUNTIME_BUDGET_VERSION, limits, calls: 0, spentUsd: 0, entries: [] };
+    // Spend and call counts carry forward; the LIMITS do not. A ledger written before an
+    // amendment records the superseded ceilings, and a reader inspecting the file would see the
+    // wrong contract even though enforcement uses the current one. Refreshing on load keeps the
+    // persisted record honest rather than leaving a stale field to be misread later.
+    this.state.limits = limits;
   }
 
   get calls(): number {
@@ -150,24 +201,34 @@ export class RuntimeBudgetLedger {
     return Math.max(0, this.limits.maxSpendUsd - this.state.spentUsd);
   }
 
-  remainingCalls(): number {
-    return Math.max(0, this.limits.maxCalls - this.state.calls);
+  /**
+   * Calls remaining before the observability threshold is crossed. Informational only.
+   *
+   * Can legitimately be zero while the ledger keeps accepting calls, because the threshold does
+   * not gate anything. Read `remainingUsd()` for the number that actually constrains a run.
+   */
+  callsBeforeThreshold(): number {
+    return Math.max(0, this.limits.callObservabilityThreshold - this.state.calls);
+  }
+
+  /** Has the call count passed the point where a human should look at the architecture? */
+  pastCallThreshold(): boolean {
+    return this.state.calls >= this.limits.callObservabilityThreshold;
   }
 
   /**
-   * Refuse a call that would breach either ceiling.
+   * Refuse a call that would breach the DOLLAR ceiling.
    *
    * `projectedCostUsd` is the WORST-CASE cost of the call about to be made (computed from
    * max output tokens, not hoped-for output). Checking the actual cost afterwards would
    * enforce nothing — by then the money is spent.
+   *
+   * Call count is deliberately NOT enforced here. It is a proxy for spend, and enforcing a proxy
+   * alongside the real thing only blocks cheap experiments. What call count is genuinely good for
+   * is detecting an UNBOUNDED ARCHITECTURE — a person-by-job loop, a retry storm — and that is a
+   * design review trigger, not something to discover by having a batch die two thirds through.
    */
   reserve(projectedCostUsd: number): void {
-    if (this.state.calls + 1 > this.limits.maxCalls) {
-      throw new RuntimeBudgetExceededError(
-        "CALL_CAP",
-        `runtime call cap reached: ${this.state.calls}/${this.limits.maxCalls} calls already made`,
-      );
-    }
     if (this.state.spentUsd + projectedCostUsd > this.limits.maxSpendUsd) {
       throw new RuntimeBudgetExceededError(
         "SPEND_CAP",

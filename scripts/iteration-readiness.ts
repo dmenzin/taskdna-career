@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 import { AUTONOMOUS_PREFERENCE_DIMENSIONS_V1, ELIGIBILITY_COVERAGE_FLOOR_POLICY, PREFERENCE_DIMENSION_DECISIONS, PRIMARY_PREFERENCE_DECODER_METRIC } from "../src/lab/preferenceTarget";
+import { unexpectedSecretMatches } from "../src/agent/secretScan";
 import { V3_COEFFICIENT_GOVERNANCE } from "../src/v3/coefficientGovernance";
 import { assertLockedGuardRefusal } from "../src/lab/lockedGuard";
 
@@ -102,6 +103,10 @@ add("AGENTS.md contains persistent TaskDNA experiment rules",agentsMd.includes("
 const allowedGovernanceStatuses=new Set(["STRUCTURAL","PROVISIONAL_BASELINE","EMPIRICALLY_JUSTIFIED","UNJUSTIFIED","EXPERIMENTAL_DISABLED"]);
 add("active V3 coefficients have explicit governance status",V3_COEFFICIENT_GOVERNANCE.length>0&&V3_COEFFICIENT_GOVERNANCE.every(r=>allowedGovernanceStatuses.has(r.status)&&r.rationale.length>0),`${V3_COEFFICIENT_GOVERNANCE.length} coefficients: ${V3_COEFFICIENT_GOVERNANCE.map(r=>`${r.id}=${r.status}`).join(", ")}`);
 
+// [ ] agentic research program stays machine-checked
+const agenticGov=run("pnpm",["exec","vitest","run","tests/prompt-render-freeze.test.ts","tests/research-program.test.ts","tests/experiment-registry.test.ts"]);
+add("agentic research program governance",agenticGov.status===0,agenticGov.status===0?"rendered prompts frozen, research-program consistent, paid scripts preregistered":(agenticGov.stdout+agenticGov.stderr).slice(-800));
+
 // --- product-level metric readiness checks ---
 
 // [ ] every optimizable product-critical subsystem has a complete contract AND a runnable evaluator
@@ -143,5 +148,14 @@ const lockedVerdict=assertLockedGuardRefusal(locked);add("locked confirmation gu
 const v3=run("pnpm",["exec","vitest","run","tests/v3/bridge.test.ts","tests/v3/coefficientGovernance.test.ts"]);add("V3 canonical/mapper/four-channel invariants",v3.status===0,v3.status===0?"known answers and separation pass":(v3.stdout+v3.stderr).slice(-800));
 for(const [name,args] of [["unit tests",["test"]],["typecheck",["typecheck"]],["lint",["lint"]],["build",["build"]]] as [string,string[]][]){const result=run("pnpm",args);add(name,result.status===0,result.status===0?"pass":(result.stdout+result.stderr).slice(-800));}
 const secretPattern=["(AK","IA[0-9A-Z]{16}|-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----|s","k-[A-Za-z0-9_-]{20,})"].join("");
-const secrets=run("git",["grep","-IlE",secretPattern,"--",":!pnpm-lock.yaml"]);add("tracked secret-pattern scan",secrets.status===1,"filename-only scan; no candidates");
+const secrets=run("git",["grep","-IlE",secretPattern,"--",":!pnpm-lock.yaml"]);
+const secretFiles=(secrets.stdout??"").split("\n").map((line)=>line.trim()).filter(Boolean);
+const unexpectedSecrets=unexpectedSecretMatches(secretFiles);
+add(
+  "tracked secret-pattern scan",
+  (secrets.status===1&&secretFiles.length===0)||(secrets.status===0&&unexpectedSecrets.length===0),
+  unexpectedSecrets.length
+    ?`unexpected matches: ${unexpectedSecrets.join(", ")}`
+    :`filename-only scan; ${secretFiles.length} allowlisted fixture(s), no unexpected matches`,
+);
 console.log(JSON.stringify({readinessVersion:"iteration-readiness.v5-product",lockedConfirmationExecuted:false,checks,passed:checks.every(c=>c.pass)},null,2));process.exit(checks.every(c=>c.pass)?0:1);

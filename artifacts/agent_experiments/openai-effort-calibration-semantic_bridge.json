@@ -1,0 +1,128 @@
+{
+  "experiment": "openai-effort-calibration",
+  "purpose": "size the output allowance and choose a reasoning setting; NOT a quality measurement",
+  "family": "SEMANTIC_BRIDGE",
+  "requestedModel": "gpt-5.6-sol",
+  "resolvedModels": [
+    "gpt-5.6-sol"
+  ],
+  "probeAllowance": 8000,
+  "promptVersions": {
+    "person": "v1",
+    "job": "v1"
+  },
+  "schemaVersion": "agent-architecture.v1",
+  "rows": [
+    {
+      "effort": "low",
+      "kind": "person",
+      "resolvedModel": "gpt-5.6-sol",
+      "inputTokens": 1113,
+      "outputTokens": 886,
+      "reasoningTokens": 333,
+      "answerTokens": 553,
+      "truncated": false,
+      "parsed": true,
+      "latencyMs": 13213,
+      "costUsd": 0.032145
+    },
+    {
+      "effort": "low",
+      "kind": "job",
+      "resolvedModel": "gpt-5.6-sol",
+      "inputTokens": 339,
+      "outputTokens": 331,
+      "reasoningTokens": 143,
+      "answerTokens": 188,
+      "truncated": false,
+      "parsed": true,
+      "latencyMs": 6489,
+      "costUsd": 0.011625000000000002
+    },
+    {
+      "effort": "medium",
+      "kind": "person",
+      "resolvedModel": "gpt-5.6-sol",
+      "inputTokens": 1113,
+      "outputTokens": 2027,
+      "reasoningTokens": 1415,
+      "answerTokens": 612,
+      "truncated": false,
+      "parsed": true,
+      "latencyMs": 32382,
+      "costUsd": 0.066375
+    },
+    {
+      "effort": "medium",
+      "kind": "job",
+      "resolvedModel": "gpt-5.6-sol",
+      "inputTokens": 339,
+      "outputTokens": 451,
+      "reasoningTokens": 267,
+      "answerTokens": 184,
+      "truncated": false,
+      "parsed": true,
+      "latencyMs": 7076,
+      "costUsd": 0.015225
+    },
+    {
+      "effort": "high",
+      "kind": "person",
+      "resolvedModel": "gpt-5.6-sol",
+      "inputTokens": 1113,
+      "outputTokens": 1304,
+      "reasoningTokens": 771,
+      "answerTokens": 533,
+      "truncated": false,
+      "parsed": true,
+      "latencyMs": 17902,
+      "costUsd": 0.044685
+    },
+    {
+      "effort": "high",
+      "kind": "job",
+      "resolvedModel": "gpt-5.6-sol",
+      "inputTokens": 339,
+      "outputTokens": 515,
+      "reasoningTokens": 332,
+      "answerTokens": 183,
+      "truncated": false,
+      "parsed": true,
+      "latencyMs": 8285,
+      "costUsd": 0.017145
+    }
+  ],
+  "projections": [
+    {
+      "effort": "low",
+      "armCostUsd": 3.73374,
+      "suggestedPersonAllowance": 1800,
+      "suggestedJobAllowance": 700,
+      "anyTruncated": false
+    },
+    {
+      "effort": "medium",
+      "armCostUsd": 5.1813,
+      "suggestedPersonAllowance": 4100,
+      "suggestedJobAllowance": 1000,
+      "anyTruncated": false
+    },
+    {
+      "effort": "high",
+      "armCostUsd": 5.47398,
+      "suggestedPersonAllowance": 2700,
+      "suggestedJobAllowance": 1100,
+      "anyTruncated": false
+    }
+  ],
+  "anthropicArmTokensAtOpenAiPricing": {
+    "inputTokens": 224253,
+    "outputTokens": 77468,
+    "costUsd": 3.4453049999999994
+  },
+  "sampleSize": {
+    "people": 1,
+    "jobs": 1,
+    "note": "one of each; sufficient for sizing, never for a quality claim"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "preflight": "openai-arm",
+  "providerVersion": "openai-provider.v1",
+  "requestedModel": "gpt-5.6-sol",
+  "resolvedModel": "gpt-5.6-sol",
+  "blocker": null,
+  "checks": [
+    {
+      "name": "OpenAI credential present",
+      "pass": true,
+      "detail": "boolean presence only; the value is never read, logged or persisted"
+    },
+    {
+      "name": "model pricing configured",
+      "pass": true,
+      "detail": "gpt-5.6-sol priced from the table rather than the conservative unknown-model rate"
+    },
+    {
+      "name": "runtime budget available",
+      "pass": true,
+      "detail": "$25.00 of $25 and 1000 of 1000 calls remaining"
+    },
+    {
+      "name": "Anthropic arm state understood",
+      "pass": true,
+      "detail": "Anthropic credential absent; the Claude arm is frozen and its caches are gone (docs/PROVIDER_HANDOFF_STATE.md)"
+    },
+    {
+      "name": "provider reachable",
+      "pass": true,
+      "detail": "served by gpt-5.6-sol"
+    },
+    {
+      "name": "requested model identifier resolves",
+      "pass": true,
+      "detail": "requested and served identifiers match (gpt-5.6-sol); still a moving alias, so this is not a pin"
+    }
+  ],
+  "passed": true,
+  "timestamp": "2026-08-23T13:19:54.737Z"
+}

@@ -1,0 +1,102 @@
+{
+  "experiment": "R-01",
+  "diagnosticOnly": true,
+  "matcherFrozen": "agent-field-match.v1",
+  "personCachePath": "artifacts/agent_runtime/openai/cache-person-lexical_trap-gpt-5.6-sol-low.json",
+  "jobCachePath": "artifacts/agent_runtime/openai/cache-job-lexical_trap-gpt-5.6-sol-low.json",
+  "personHits": 12,
+  "jobHits": 288,
+  "version": "field-ablation.v1",
+  "family": "LEXICAL_TRAP",
+  "people": 12,
+  "note": "Diagnostic only. The production agent-field-match baseline is unchanged. P-01 must continue to use all five fields. A small or zero leave-one-out delta is a research observation, not a licence to drop a field.",
+  "full": {
+    "dropped": null,
+    "fields": [
+      "action",
+      "object",
+      "purpose",
+      "method",
+      "domain"
+    ],
+    "experience": 0.7452764509336977,
+    "preference": 0.6317246518486225,
+    "direction": 0.7316815094271113,
+    "experienceDeltaVsFull": null
+  },
+  "leaveOneOut": [
+    {
+      "dropped": "action",
+      "fields": [
+        "object",
+        "purpose",
+        "method",
+        "domain"
+      ],
+      "experience": 0.6776654272889636,
+      "preference": 0.5300192966640347,
+      "direction": 0.5268944415801428,
+      "experienceDeltaVsFull": -0.06761102364473404
+    },
+    {
+      "dropped": "object",
+      "fields": [
+        "action",
+        "purpose",
+        "method",
+        "domain"
+      ],
+      "experience": 0.6861865266986634,
+      "preference": 0.527846811552872,
+      "direction": 0.6021436259169365,
+      "experienceDeltaVsFull": -0.05908992423503423
+    },
+    {
+      "dropped": "purpose",
+      "fields": [
+        "action",
+        "object",
+        "method",
+        "domain"
+      ],
+      "experience": 0.7450802843410188,
+      "preference": 0.5778283671560115,
+      "direction": 0.715037996989265,
+      "experienceDeltaVsFull": -0.00019616659267884806
+    },
+    {
+      "dropped": "method",
+      "fields": [
+        "action",
+        "object",
+        "purpose",
+        "domain"
+      ],
+      "experience": 0.7172033925606836,
+      "preference": 0.6307214949038848,
+      "direction": 0.7249915751894603,
+      "experienceDeltaVsFull": -0.028073058373014104
+    },
+    {
+      "dropped": "domain",
+      "fields": [
+        "action",
+        "object",
+        "purpose",
+        "method"
+      ],
+      "experience": 0.729699318736562,
+      "preference": 0.6056184717433567,
+      "direction": 0.6708074000229418,
+      "experienceDeltaVsFull": -0.015577132197135635
+    }
+  ],
+  "redundantOnExperience": [
+    "purpose"
+  ],
+  "channels": [
+    "experience",
+    "preference",
+    "direction"
+  ]
+}
