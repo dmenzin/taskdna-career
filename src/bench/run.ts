@@ -48,6 +48,26 @@ import {
 export const BENCH_RUN_VERSION = "bench-run.v1";
 export type { BenchSplit, RenderDifficulty };
 export const DEFAULT_K = 5;
+
+/**
+ * Configuration the research loop must use as an optimization target, and why.
+ *
+ * The `standard` difficulty saturates the experience and direction channels at every sample
+ * size measured (NDCG 1.000, worst-case 1.000), so it can detect neither improvement nor
+ * regression. The `hard` tier has stable headroom from about 8 people upward; 12 is the
+ * declared minimum because the numbers stop moving there (experience 0.937, preference 0.618,
+ * direction 0.769 at both 12 and 16 people).
+ *
+ * `standard` and `verbatim` remain useful as DIAGNOSTICS: verbatim establishes the trivial
+ * upper bound, and the standard-to-hard drop isolates how much of the pipeline's performance
+ * depends on surface wording.
+ */
+export const OPTIMIZATION_TARGET_CONFIG = {
+  difficulty: "hard" as RenderDifficulty,
+  minimumPeople: 12,
+  k: DEFAULT_K,
+  rationale: "standard difficulty saturates experience and direction NDCG at 1.000; hard has headroom and is stable from 12 people",
+} as const;
 /** Declared catastrophe threshold for per-person NDCG. Below this, a person is unhelped. */
 export const CATASTROPHE_NDCG = 0.3;
 

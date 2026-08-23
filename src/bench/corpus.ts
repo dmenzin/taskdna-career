@@ -56,8 +56,10 @@ export const JOB_ARCHETYPES = [
   "CROSS_INDUSTRY_TRANSFER",
   /** The person's own title, but unrelated atoms. Title matching should be fooled; task matching should not. */
   "SAME_TITLE_DIFFERENT_WORK",
-  /** Performed atoms plus explicitly disliked atoms. High experience, low preference. */
+  /** Disliked atoms plus performed-but-not-liked atoms. High experience, low preference. */
   "EXPERIENCE_WITH_DISLIKED_WORK",
+  /** Liked AND disliked work in the same job: the case a mean-based preference score cancels. */
+  "MIXED_PREFERENCE",
   /** Liked and desired atoms the person has never performed. The career-transition case. */
   "TRANSITION_PREFERENCE_DIRECTION",
   /** Liked atoms only, no performed and no desired overlap. */
@@ -253,18 +255,23 @@ function buildPerson(
   const farStratum = pick(rng, otherStrata);
   const farAtoms = pool.byStratum.get(farStratum)!;
 
-  // PERFORMED: 6 atoms from the person's home stratum.
+  // Planting is arranged so that EVERY required channel combination occurs for every person,
+  // and so that each job archetype below has a clean, non-overlapping atom source.
+  //
+  //   performed          6 atoms from the home stratum
+  //   likedFromPerformed 3 performed atoms         -> performed AND liked
+  //   likedAndDesired    2 far atoms               -> liked AND desired, never performed
+  //   likedOnly          2 second-far atoms        -> liked ONLY (not performed, not desired)
+  //   disliked           2 performed atoms         -> performed AND disliked, never liked
+  //   desiredOnly        2 far atoms               -> desired ONLY (not liked, not performed)
   const performedAtoms = takeDistinct(rng, homeAtoms, 6);
-  // LIKED: 3 of the performed atoms plus 2 never-performed atoms from a different stratum.
-  // This plants "performed and liked" AND "liked but never performed" simultaneously.
   const likedFromPerformed = shuffle(rng, performedAtoms).slice(0, 3);
-  const likedNovel = takeDistinct(rng, farAtoms, 2);
-  // DISLIKED: 2 of the performed atoms NOT in the liked set. Plants "performed but disliked".
   const disliked = shuffle(rng, performedAtoms.filter((atom) => !likedFromPerformed.includes(atom))).slice(0, 2);
-  // DESIRED: the novel liked atoms plus 2 further never-performed atoms. Direction is never
-  // derived from experience.
-  const desiredExtra = takeDistinct(rng, farAtoms, 2, new Set(likedNovel));
-  const desired = [...likedNovel, ...desiredExtra];
+  const likedAndDesired = takeDistinct(rng, farAtoms, 2);
+  const desiredOnly = takeDistinct(rng, farAtoms, 2, new Set(likedAndDesired));
+  const secondFarStratum = pick(rng, otherStrata.filter((stratum) => stratum !== farStratum).length ? otherStrata.filter((stratum) => stratum !== farStratum) : otherStrata);
+  const likedOnly = takeDistinct(rng, pool.byStratum.get(secondFarStratum)!, 2, new Set([...likedAndDesired, ...desiredOnly]));
+  const desired = [...likedAndDesired, ...desiredOnly];
 
   const qualifications = shuffle(rng, QUALIFICATION_POOL).slice(0, 5);
   const homeTitle = pick(rng, TITLE_POOL[homeStratum] ?? TITLE_POOL.other!);
@@ -281,7 +288,7 @@ function buildPerson(
     evidenceId: experienceEvidence[order]!.id,
   }));
 
-  const liked = [...likedFromPerformed, ...likedNovel];
+  const liked = [...likedFromPerformed, ...likedAndDesired, ...likedOnly];
   const preferenceEvidence = [
     ...liked.map((atom, order) => ({ id: `${personId}-pref-like-${order + 1}`, stance: "LIKE" as const, rendered: renderPreferenceStatement(atom, rng, "LIKE", pick(rng, families), difficulty) })),
     ...disliked.map((atom, order) => ({ id: `${personId}-pref-dislike-${order + 1}`, stance: "DISLIKE" as const, rendered: renderPreferenceStatement(atom, rng, "DISLIKE", pick(rng, families), difficulty) })),
@@ -347,16 +354,23 @@ function buildJobsFor(
   add("CROSS_INDUSTRY_TRANSFER", shuffle(rng, performedAtoms).slice(0, 4), takeDistinct(rng, neutralAtoms, 1), pick(rng, otherStrata), pick(rng, INDUSTRY_POOL.filter((industry) => industry !== person.homeIndustry)), "person");
   // Same title, different work: the trap for title-based matching.
   add("SAME_TITLE_DIFFERENT_WORK", takeDistinct(rng, unrelatedAtoms(), 4, heldAtomIds as unknown as Set<WorkAtom>).filter((atom) => !heldAtomIds.has(atom.atomId)), [], person.homeStratum, person.homeIndustry, "person");
-  // High experience with explicitly disliked work.
-  add("EXPERIENCE_WITH_DISLIKED_WORK", [...person.disliked, ...shuffle(rng, performedAtoms.filter((atom) => !person.disliked.includes(atom))).slice(0, 2)], [], person.homeStratum, person.homeIndustry, "person");
+  // High experience, low preference: the burned-out expert. Built from disliked atoms plus
+  // performed atoms that are NOT liked, so liked and disliked contributions cannot cancel to
+  // the neutral centre and hide the dislike.
+  const performedNotLiked = performedAtoms.filter((atom) => !person.liked.includes(atom) && !person.disliked.includes(atom));
+  add("EXPERIENCE_WITH_DISLIKED_WORK", [...person.disliked, ...performedNotLiked.slice(0, 2)], [], person.homeStratum, person.homeIndustry, "person");
+  // Mixed preference: liked AND disliked work in the same job. Separated from the case above
+  // because a mean-based preference score cancels these to the neutral centre, which makes a
+  // genuinely mixed job look identical to one with no preference evidence at all.
+  add("MIXED_PREFERENCE", [...person.disliked.slice(0, 1), ...person.liked.filter((atom) => performedAtoms.includes(atom)).slice(0, 2)], [], person.homeStratum, person.homeIndustry, "person");
   // Career transition: liked and desired work never performed.
   add("TRANSITION_PREFERENCE_DIRECTION", shuffle(rng, person.desired).slice(0, 3), takeDistinct(rng, neutralAtoms, 1), pick(rng, otherStrata), pick(rng, INDUSTRY_POOL), "person");
-  // Preference only: liked-but-never-performed atoms with no desired overlap.
-  const likedNovelOnly = person.liked.filter((atom) => !performedAtoms.includes(atom) && !person.desired.includes(atom));
-  add("PREFERENCE_ONLY", likedNovelOnly.length ? likedNovelOnly : shuffle(rng, person.liked).slice(0, 2), [], pick(rng, otherStrata), pick(rng, INDUSTRY_POOL), "unrelated");
-  // Direction only: desired atoms that are not in the liked set.
-  const desiredOnly = person.desired.filter((atom) => !person.liked.includes(atom));
-  add("DIRECTION_ONLY", desiredOnly.length ? desiredOnly : shuffle(rng, person.desired).slice(0, 2), [], pick(rng, otherStrata), pick(rng, INDUSTRY_POOL), "unrelated");
+  // Preference only: liked, never performed, and NOT desired.
+  const likedOnlyAtoms = person.liked.filter((atom) => !performedAtoms.includes(atom) && !person.desired.includes(atom));
+  if (likedOnlyAtoms.length) add("PREFERENCE_ONLY", likedOnlyAtoms, [], pick(rng, otherStrata), pick(rng, INDUSTRY_POOL), "unrelated");
+  // Direction only: desired, never performed, and NOT liked.
+  const desiredOnlyAtoms = person.desired.filter((atom) => !person.liked.includes(atom) && !performedAtoms.includes(atom));
+  if (desiredOnlyAtoms.length) add("DIRECTION_ONLY", desiredOnlyAtoms, [], pick(rng, otherStrata), pick(rng, INDUSTRY_POOL), "unrelated");
   // Incidental-only: one performed atom buried among unrelated core work.
   add("INCIDENTAL_ONLY_MATCH", takeDistinct(rng, neutralAtoms, 4), [pick(rng, performedAtoms)], pick(rng, otherStrata), pick(rng, INDUSTRY_POOL), "unrelated");
   // Qualification only: requirements the person meets, work they have not done.
