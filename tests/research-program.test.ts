@@ -133,6 +133,8 @@ describe("the questions the audit found must not disappear", () => {
     ["Q-01", "Qualification is not implemented"],
     ["S-01", "stochastic stability is unknown"],
     ["M-01", "the benchmark pre-routes evidence"],
+    ["PTA-01", "prompt/benchmark lineage is unreconstructed"],
+    ["DATA-01", "benchmark provenance is uninventoried"],
     ["P-01", "the shared baseline has no provenance"],
     ["V-01", "VALIDATION is unused"],
     ["H-01", "there is no human validity"],
@@ -159,6 +161,7 @@ describe("the master directive cannot be forgotten into chat", () => {
   it("keeps S-02 as a different question from S-01", () => {
     const s01 = program.items.find((item) => item.id === "S-01")!;
     const s02 = program.items.find((item) => item.id === "S-02")!;
+    expect(s01.dependencies).toEqual(expect.arrayContaining(["PTA-01", "DATA-01"]));
     expect(s02.question).not.toBe(s01.question);
     expect(s01.question.toLowerCase()).toMatch(/identical/);
     expect(s02.question.toLowerCase()).toMatch(/phras|wording|perturb/);

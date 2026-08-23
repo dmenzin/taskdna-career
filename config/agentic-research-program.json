@@ -25,6 +25,34 @@
   ],
   "items": [
     {
+      "id": "PTA-01",
+      "stage": "S1",
+      "question": "What data and DEVELOPMENT failures shaped every executed person, job, and specialist prompt, and was VALIDATION or LOCKED ever used to tune them?",
+      "status": "SUPPORTED",
+      "dependencies": [],
+      "evidenceSoFar": "Zero-call git reconstruction in docs/PTA01_PROMPT_BENCHMARK_LINEAGE.md. Executed prompts: person-blueprint@v1/v2, job-blueprint@v1, experience-agent@v1, direction-agent@v1 (superseded) and v2. Scaffold runtime PROMPTS never executed. Freeze eb58f13 precedes first prompts 6088556. Every scored registry arm is DEVELOPMENT, almost always n=12. Direction v2 and person-blueprint v2 were written after inspecting the same 12 LEXICAL_TRAP DEVELOPMENT people. VALIDATION unused for agent experiments. LOCKED unfrozen and unexecuted. Claude Opus 5 co-authored the benchmark and the first CareerBlueprint prompts.",
+      "nextAction": "Treat current NDCGs as development-benchmark performance. Do not inspect VALIDATION instances. Do not spend on S-01 merely because it is the next cheap paid arm. See DATA-01 for the upstream data recommendation.",
+      "successCriterion": "Every executed prompt version is dated against the freeze, the DEVELOPMENT results that motivated it, and a yes/no on VALIDATION or LOCKED inspection.",
+      "split": "DEVELOPMENT",
+      "estimatedCalls": 0,
+      "estimatedCostUsd": 0,
+      "latencyRelevance": "None."
+    },
+    {
+      "id": "DATA-01",
+      "stage": "S1",
+      "question": "Where did the current agent prompt-development corpus come from, and what is invented versus independently validated?",
+      "status": "SUPPORTED",
+      "dependencies": ["PTA-01"],
+      "evidenceSoFar": "Zero-call inventory in docs/DATA01_BENCHMARK_PROVENANCE.md. Current CareerBlueprint truth is frame-corpus.v1 / semantic-frame.v2: 75 hand-authored concepts, explicit stance templates, fixed 6/7/2/4 planter, invented title/industry/qualification pools. O*NET and the 450-subject product lab are not this screen. Five-field identity matches the prompt schema. Qualification is planted only in narrative, which no interpreter reads. VALIDATION hashes exist; instances were not opened.",
+      "nextAction": "Do not collect a fine-tune set and do not mutate the freeze. Next data work is design-only: human ontology review, then a new MIXED_EVIDENCE renderer (M-01) and a diverse-planter corpus version (M-02). S-01 remains a stability question on the current pre-bucketed n=12 screen, not a fix for upstream data.",
+      "successCriterion": "Every concept family, template class, planter rule, seed, and freeze entry is classified as invented / real-world / mechanically validated / human-validated.",
+      "split": "DEVELOPMENT",
+      "estimatedCalls": 0,
+      "estimatedCostUsd": 0,
+      "latencyRelevance": "None."
+    },
+    {
       "id": "P-01",
       "stage": "S1",
       "question": "Can the strongest one-call baseline gain claim-level auditability without specialist inference?",
@@ -57,9 +85,9 @@
       "stage": "S2",
       "question": "How much variation is introduced by repeated inference under identical semantic input, and can that variation change TaskDNA's representation, recommendations, or architecture decisions?",
       "status": "PREREGISTERED",
-      "dependencies": ["P-01"],
-      "evidenceSoFar": "P-01 is one generation. Direction Δ −0.062 CI [−0.172, 0.043] is compatible with a meaningful regression or a small improvement. The first S-01 draft used sign-majority as the decision rule and was superseded before spend. Amended preregistration: stochastic-stability:openai:LEXICAL_TRAP:low:amended. 12 people × 4 trials; trialId in cache identity only; v1 is one frozen historical realization. Non-inferiority margins remain unresolved rather than invented. Distinct from S-02.",
-      "nextAction": "Dry-run the amended design. Paid execution is not authorized in this session. Do not replay the P-01 cache as trial 0. Do not contaminate S-01 with paraphrases (that is S-02).",
+      "dependencies": ["P-01", "PTA-01", "DATA-01"],
+      "evidenceSoFar": "P-01 is one generation. Direction Δ −0.062 CI [−0.172, 0.043] is compatible with a meaningful regression or a small improvement. The first S-01 draft used sign-majority as the decision rule and was superseded before spend. Amended preregistration: stochastic-stability:openai:LEXICAL_TRAP:low:amended. 12 people × 4 trials; trialId in cache identity only; v1 is one frozen historical realization. Non-inferiority margins remain unresolved rather than invented. Distinct from S-02. PTA-01/DATA-01 add that those 12 people are the same synthetic DEVELOPMENT prefix that already shaped Direction v2 and provenance v2.",
+      "nextAction": "Paid execution is not authorized. PTA-01 and DATA-01 are complete: S-01 would still be a 12-person LEXICAL_TRAP DEVELOPMENT screen on pre-bucketed synthetic text. Do not buy stability insurance on an input format the next data step (M-01) intends to replace. If later authorized, dry-run the amended design; do not replay the P-01 cache as trial 0; do not contaminate S-01 with paraphrases (that is S-02).",
       "successCriterion": "Do not compress S-01 into one PASS/FAIL. Produce REPRESENTATION_STABILITY, RANKING_STABILITY, PROVENANCE_STABILITY, and ARCHITECTURE_DECISION_STABILITY, each SUPPORTED / CONCERN / INCONCLUSIVE. Sign counts may be descriptive only. Recommendation churn is 1 - |TopK_A ∩ TopK_B| / K with K=10. Non-inferiority remains unresolved unless a later, separately justified margin is preregistered.",
       "split": "DEVELOPMENT",
       "estimatedCalls": 48,
@@ -731,7 +759,7 @@
       "one powerful universal model needs no explicit router because it infers domain context itself; if this wins, do not build extra machinery",
       "interpreter notices an ambiguity and retrieves only relevant domain knowledge — more agentic; do not implement until static/oracle context has value"
     ],
-    "immediatePriority": "S-01 remains the next candidate paid experiment. Domain work is not executable because its stability and architecture dependencies are unsatisfied. Interesting is not authorization.",
+    "immediatePriority": "S-01 remains the next candidate paid experiment, but PTA-01/DATA-01 show it would still be a 12-person synthetic DEVELOPMENT screen. Paid execution is not authorized. Domain work is not executable because its stability and architecture dependencies are unsatisfied. Interesting is not authorization.",
     "idMap": [
       { "addendumId": "DCTX-01", "liveId": "D-CTX-01", "note": "Oracle / none / wrong / multi-domain. Already existed; enriched." },
       { "addendumId": "DCTX-02", "liveId": "D-CTX-02", "note": "Taxonomy ablation plus routing-unit hypothesis. Already existed; enriched." },

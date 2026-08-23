@@ -18,6 +18,8 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 
 | id | status | question | depends on | next action | calls | cost |
 | --- | --- | --- | --- | --- | --- | --- |
+| `PTA-01` | **SUPPORTED** | What data and DEVELOPMENT failures shaped every executed person, job, and specialist prompt, and was VALIDATION or LOCKED ever used to tune them? | — | Treat current NDCGs as development-benchmark performance. Do not inspect VALIDATION instances. Do not spend on S-01 merely because it is the next cheap paid arm. See DATA-01 for the upstream data recommendation. | 0 | $0.00 |
+| `DATA-01` | **SUPPORTED** | Where did the current agent prompt-development corpus come from, and what is invented versus independently validated? | PTA-01 | Do not collect a fine-tune set and do not mutate the freeze. Next data work is design-only: human ontology review, then a new MIXED_EVIDENCE renderer (M-01) and a diverse-planter corpus version (M-02). S-01 remains a stability question on the current pre-bucketed n=12 screen, not a fix for upstream data. | 0 | $0.00 |
 | `P-01` | **SUPPORTED** | Can the strongest one-call baseline gain claim-level auditability without specialist inference? | — | Treat shared+provenance as a provisional research incumbent, not a settled baseline. Do not ship. Do not equate the P-01 CIs spanning zero with equivalence or non-inferiority. The amended S-01 design must characterize generation variance before architecture freeze. | 12 | $0.93 |
 | `D-01` | **INCONCLUSIVE** | Does a correctly-scoped Direction Agent beat the shared blueprint on Direction, or only tie it? | P-01, S-01 | P-01 Case A weakens always-on specialists. Do not rerun Direction because it is interesting. Remaining questions are S-01 architecture-decision stability (not sign-majority) and whether the extra call beats shared+provenance. Prefer A-03 (selective rescue) over always-on if S-01 holds. | 320 | $4.00 |
 | `CT-01` | **UNTESTED** | Do the five non-implications no v1 prompt states change interpretation quality when added? | P-01 | Define semantic-contract v2 with the full rule set plus contrastive examples, as a new prompt version. Never edit a v1 prompt. | 12 | $0.45 |
@@ -31,7 +33,7 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 | id | status | question | depends on | next action | calls | cost |
 | --- | --- | --- | --- | --- | --- | --- |
 | `T-01` | **SUPPORTED** | Are the provenance attribution thresholds (0.6 floor, 0.1 ambiguity margin) defensible? | P-01 | No further sweep. Revisit only if a later architecture produces non-zero contamination near the ceiling. | 0 | $0.00 |
-| `S-01` | **PREREGISTERED** | How much variation is introduced by repeated inference under identical semantic input, and can that variation change TaskDNA's representation, recommendations, or architecture decisions? | P-01 | Dry-run the amended design. Paid execution is not authorized in this session. Do not replay the P-01 cache as trial 0. Do not contaminate S-01 with paraphrases (that is S-02). | 48 | $3.73 |
+| `S-01` | **PREREGISTERED** | How much variation is introduced by repeated inference under identical semantic input, and can that variation change TaskDNA's representation, recommendations, or architecture decisions? | P-01, PTA-01, DATA-01 | Paid execution is not authorized. PTA-01 and DATA-01 are complete: S-01 would still be a 12-person LEXICAL_TRAP DEVELOPMENT screen on pre-bucketed synthetic text. Do not buy stability insurance on an input format the next data step (M-01) intends to replace. If later authorized, dry-run the amended design; do not replay the P-01 cache as trial 0; do not contaminate S-01 with paraphrases (that is S-02). | 48 | $3.73 |
 | `S-02` | **UNTESTED** | Does semantically equivalent evidence phrasing cause materially different TaskDNA understanding? | S-01 | After S-01, preregister controlled perturbations that preserve hidden truth: bullet vs prose, reorder, paraphrase, mild typos, first- vs third-person, inserted neutral sentences. No perturbation may change planted truth. | 48 | $3.70 |
 | `S-03` | **UNTESTED** | Do later provider/model/alias moves change TaskDNA understanding on a fixed regression panel? | S-01 | Define a tiny fixed panel and rerun it when the resolved model id changes. Do not interpret future behaviour changes as architecture changes when the model may have moved. | 12 | $0.90 |
 | `POW-01` | **UNTESTED** | For each planned architecture comparison, what sample size would materially answer the question? | — | Estimate paired effect size and variance from DEVELOPMENT before declaring future effects inconclusive forever. Do not silently enlarge a frozen split; unused frozen subjects must keep their designated split, otherwise create a new versioned generation. | 0 | $0.00 |
@@ -112,6 +114,26 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 
 ## Item detail
 
+### `PTA-01` — What data and DEVELOPMENT failures shaped every executed person, job, and specialist prompt, and was VALIDATION or LOCKED ever used to tune them?
+
+- **Status:** SUPPORTED · **Stage:** S1 · **Split:** DEVELOPMENT
+- **Depends on:** nothing
+- **Evidence so far:** Zero-call git reconstruction in docs/PTA01_PROMPT_BENCHMARK_LINEAGE.md. Executed prompts: person-blueprint@v1/v2, job-blueprint@v1, experience-agent@v1, direction-agent@v1 (superseded) and v2. Scaffold runtime PROMPTS never executed. Freeze eb58f13 precedes first prompts 6088556. Every scored registry arm is DEVELOPMENT, almost always n=12. Direction v2 and person-blueprint v2 were written after inspecting the same 12 LEXICAL_TRAP DEVELOPMENT people. VALIDATION unused for agent experiments. LOCKED unfrozen and unexecuted. Claude Opus 5 co-authored the benchmark and the first CareerBlueprint prompts.
+- **Next action:** Treat current NDCGs as development-benchmark performance. Do not inspect VALIDATION instances. Do not spend on S-01 merely because it is the next cheap paid arm. See DATA-01 for the upstream data recommendation.
+- **Success criterion:** Every executed prompt version is dated against the freeze, the DEVELOPMENT results that motivated it, and a yes/no on VALIDATION or LOCKED inspection.
+- **Cost if run:** 0 calls, ~$0.00
+- **Latency relevance:** None.
+
+### `DATA-01` — Where did the current agent prompt-development corpus come from, and what is invented versus independently validated?
+
+- **Status:** SUPPORTED · **Stage:** S1 · **Split:** DEVELOPMENT
+- **Depends on:** `PTA-01`
+- **Evidence so far:** Zero-call inventory in docs/DATA01_BENCHMARK_PROVENANCE.md. Current CareerBlueprint truth is frame-corpus.v1 / semantic-frame.v2: 75 hand-authored concepts, explicit stance templates, fixed 6/7/2/4 planter, invented title/industry/qualification pools. O*NET and the 450-subject product lab are not this screen. Five-field identity matches the prompt schema. Qualification is planted only in narrative, which no interpreter reads. VALIDATION hashes exist; instances were not opened.
+- **Next action:** Do not collect a fine-tune set and do not mutate the freeze. Next data work is design-only: human ontology review, then a new MIXED_EVIDENCE renderer (M-01) and a diverse-planter corpus version (M-02). S-01 remains a stability question on the current pre-bucketed n=12 screen, not a fix for upstream data.
+- **Success criterion:** Every concept family, template class, planter rule, seed, and freeze entry is classified as invented / real-world / mechanically validated / human-validated.
+- **Cost if run:** 0 calls, ~$0.00
+- **Latency relevance:** None.
+
 ### `P-01` — Can the strongest one-call baseline gain claim-level auditability without specialist inference?
 
 - **Status:** SUPPORTED · **Stage:** S1 · **Split:** DEVELOPMENT
@@ -135,9 +157,9 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 ### `S-01` — How much variation is introduced by repeated inference under identical semantic input, and can that variation change TaskDNA's representation, recommendations, or architecture decisions?
 
 - **Status:** PREREGISTERED · **Stage:** S2 · **Split:** DEVELOPMENT
-- **Depends on:** `P-01`
-- **Evidence so far:** P-01 is one generation. Direction Δ −0.062 CI [−0.172, 0.043] is compatible with a meaningful regression or a small improvement. The first S-01 draft used sign-majority as the decision rule and was superseded before spend. Amended preregistration: stochastic-stability:openai:LEXICAL_TRAP:low:amended. 12 people × 4 trials; trialId in cache identity only; v1 is one frozen historical realization. Non-inferiority margins remain unresolved rather than invented. Distinct from S-02.
-- **Next action:** Dry-run the amended design. Paid execution is not authorized in this session. Do not replay the P-01 cache as trial 0. Do not contaminate S-01 with paraphrases (that is S-02).
+- **Depends on:** `P-01`, `PTA-01`, `DATA-01`
+- **Evidence so far:** P-01 is one generation. Direction Δ −0.062 CI [−0.172, 0.043] is compatible with a meaningful regression or a small improvement. The first S-01 draft used sign-majority as the decision rule and was superseded before spend. Amended preregistration: stochastic-stability:openai:LEXICAL_TRAP:low:amended. 12 people × 4 trials; trialId in cache identity only; v1 is one frozen historical realization. Non-inferiority margins remain unresolved rather than invented. Distinct from S-02. PTA-01/DATA-01 add that those 12 people are the same synthetic DEVELOPMENT prefix that already shaped Direction v2 and provenance v2.
+- **Next action:** Paid execution is not authorized. PTA-01 and DATA-01 are complete: S-01 would still be a 12-person LEXICAL_TRAP DEVELOPMENT screen on pre-bucketed synthetic text. Do not buy stability insurance on an input format the next data step (M-01) intends to replace. If later authorized, dry-run the amended design; do not replay the P-01 cache as trial 0; do not contaminate S-01 with paraphrases (that is S-02).
 - **Success criterion:** Do not compress S-01 into one PASS/FAIL. Produce REPRESENTATION_STABILITY, RANKING_STABILITY, PROVENANCE_STABILITY, and ARCHITECTURE_DECISION_STABILITY, each SUPPORTED / CONCERN / INCONCLUSIVE. Sign counts may be descriptive only. Recommendation churn is 1 - |TopK_A ∩ TopK_B| / K with K=10. Non-inferiority remains unresolved unless a later, separately justified margin is preregistered.
 - **Cost if run:** 48 calls, ~$3.73
 - **Latency relevance:** Yields latency variance, currently unknown.
@@ -633,7 +655,7 @@ Can domain-conditioned semantic inference improve TaskDNA's understanding of spe
 
 **Semantic domain field vs routing metadata.** StructuredWork.domain is a semantic role field — the industry or setting of the work. R-01 found it contributed only −0.016 NDCG on LEXICAL_TRAP. Hidden industry / work-function / specialty labels are experimental routing metadata. They are not the same object and must not be conflated.
 
-**Immediate priority.** S-01 remains the next candidate paid experiment. Domain work is not executable because its stability and architecture dependencies are unsatisfied. Interesting is not authorization.
+**Immediate priority.** S-01 remains the next candidate paid experiment, but PTA-01/DATA-01 show it would still be a 12-person synthetic DEVELOPMENT screen. Paid execution is not authorized. Domain work is not executable because its stability and architecture dependencies are unsatisfied. Interesting is not authorization.
 
 Do not build yet:
 
@@ -738,8 +760,8 @@ Deliberately not binary pass/fail: most of these questions resolve into somethin
 
 ## At a glance
 
-- **40** tracked questions across **8** stages
-- Status spread: 17 BLOCKED, 5 DEFERRED, 1 INCONCLUSIVE, 1 PREREGISTERED, 3 SUPPORTED, 13 UNTESTED
+- **42** tracked questions across **8** stages
+- Status spread: 17 BLOCKED, 5 DEFERRED, 1 INCONCLUSIVE, 1 PREREGISTERED, 5 SUPPORTED, 13 UNTESTED
 - **Runnable now** (untested, no unmet dependency): `J-01`, `SEC-01`, `POW-01`, `TM-01`, `D-META-01`, `PRIV-01`
 - **Next paid experiment if authorized:** `S-01`
 - Total spend recorded so far: **$14.15** across **1053** calls
