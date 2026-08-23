@@ -74,6 +74,31 @@ third of the instrument's resolution at that sample size.
 The important correction is not "TaskDNA is better than reported". It is that **the benchmark
 at its declared target could not have answered the question either way.**
 
+### But the baseline it was compared against was the wrong one
+
+`resume-lexical` scores the whole narrative, mixing experience with preference, aspiration,
+title and skills text. On the experience channel that extra text is dilution. Restricting the
+query to the person's experience statements alone (`resume-lexical-experience`, now a
+first-class baseline in `src/bench/pipeline.ts`) produces the strongest simple reference — and
+it beats the full four-channel pipeline. Paired bootstrap, 192 persons / 16 independent seeds,
+hard, DEVELOPMENT:
+
+| TaskDNA vs | paired difference | CI95 | sign flips | verdict |
+| --- | --- | --- | --- | --- |
+| title-only | +0.3738 | [+0.3415, +0.4047] | no | TaskDNA wins |
+| resume-lexical | +0.0053 | [-0.0125, +0.0233] | **yes** | indistinguishable |
+| **resume-lexical-experience** | **-0.0635** | **[-0.0775, -0.0503]** | no | **baseline wins** |
+| occupation-stratum | +0.2758 | [+0.2614, +0.2890] | no | TaskDNA wins |
+
+So the honest headline is worse than the brief's, and for a different reason. Against the
+*correctly constructed* trivial baseline, TaskDNA loses experience ranking by **6.4 NDCG
+points, significantly and consistently**. The original claim was directionally right by
+accident: it used a weak baseline and a sample size that could not resolve the difference.
+
+This does not overturn section 3 below. TaskDNA still beats every baseline, including this one,
+on preference and direction by very large margins, because no whole-document lexical method can
+separate "I did X" from "I want X" from "I dislike X".
+
 ---
 
 ## 3. Where TaskDNA's advantage actually comes from: channel separation, not O*NET
@@ -214,8 +239,9 @@ is supposed to serve.**
    this document measured 480 persons per channel in about 12 minutes.
 2. **Report paired intervals, never bare aggregates.** `pnpm bench:power` does this. A KEEP or
    REVERT decision on a bare n=12 delta is not supported.
-3. **Add `lexical-experienceOnly` as a first-class baseline.** It is the strongest simple
-   reference and currently beats TaskDNA at `hard`.
+3. **`resume-lexical-experience` is now a first-class baseline** (done in this run). It is the
+   strongest simple reference and beats TaskDNA on experience at `hard` by -0.064
+   [-0.078, -0.050]. Experience ranking should be treated as a **known open loss**, not a win.
 4. **Fix the generator's vocabulary leak before trusting any matching result.** Person-side and
    job-side renderings of one atom must not share their distinctive nouns verbatim. This is a
    metric-contract change requiring the same review as changing a metric, and it will make the

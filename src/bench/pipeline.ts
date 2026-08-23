@@ -147,7 +147,7 @@ export function pipelineCacheStats() {
 // Conventional reference baselines
 // ---------------------------------------------------------------------------
 
-export const BASELINES = ["title-only", "resume-lexical", "occupation-stratum"] as const;
+export const BASELINES = ["title-only", "resume-lexical", "resume-lexical-experience", "occupation-stratum"] as const;
 export type BaselineId = (typeof BASELINES)[number];
 
 /**
@@ -162,6 +162,19 @@ export function rankByBaseline(baseline: BaselineId, planted: PlantedPerson, job
         return jaccard(contentTokens(planted.homeTitle), contentTokens(job.title));
       case "resume-lexical":
         return jaccard(contentTokens(planted.narrative), contentTokens(job.descriptionText));
+      case "resume-lexical-experience":
+        // The STRONGEST simple reference, and the one that must be beaten.
+        //
+        // `resume-lexical` scores the whole narrative, which mixes experience with preference,
+        // aspiration, title and skills text. On the experience channel that extra text is pure
+        // dilution: restricting the query to the person's experience statements alone raises
+        // experience NDCG@5 from 0.920 to 0.994 at `hard` (`pnpm diag:baseline-ablation`),
+        // beating the full four-channel pipeline. A baseline must never be left weak because
+        // the system under test loses to the strong version of it.
+        return jaccard(
+          contentTokens(planted.experienceEvidence.map((entry) => entry.rendered.text).join(" ")),
+          contentTokens(job.descriptionText),
+        );
       case "occupation-stratum":
         // Same-stratum title plus same industry: the crudest conventional filter.
         return (job.titleStratum === planted.homeStratum ? 1 : 0) + (job.industry === planted.homeIndustry ? 0.5 : 0);
