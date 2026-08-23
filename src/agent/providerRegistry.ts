@@ -87,9 +87,12 @@ export function armCachePath(args: {
   effort: string;
   family: string;
   kind: "person" | "job";
+  /** When set, isolated from the unversioned historical path so v2 cannot overwrite v1. */
+  promptVersion?: string;
 }): string {
   const model = args.model.replace(/[^a-z0-9.-]/gi, "_");
-  return `${providerCacheDir(args.provider)}/cache-${args.kind}-${args.family.toLowerCase()}-${model}-${args.effort}.json`;
+  const version = args.promptVersion ? `-${args.promptVersion}` : "";
+  return `${providerCacheDir(args.provider)}/cache-${args.kind}${version}-${args.family.toLowerCase()}-${model}-${args.effort}.json`;
 }
 
 /**

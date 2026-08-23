@@ -111,7 +111,7 @@ export const FAST_SUBSYSTEMS: Subsystem[] = [
     id: "agentic-research",
     description: "Semantic-contract freeze, research-program governance, and preregistration gate.",
     pathPatterns: [
-      /src\/agent\/(semanticContract|experimentRegistry|researchProgramView|agentArchitecture|splitAgents)\.ts/,
+      /src\/agent\/(semanticContract|experimentRegistry|researchProgramView|agentArchitecture|splitAgents|fieldAblation|secretScan)\.ts/,
       /config\/(agentic-research-program|experiment-registry|component-registry|prompt-render-freeze)\.json/,
       /scripts\/(research-program|preregister-experiment)\.ts/,
       /docs\/AGENTIC_(RESEARCH_PROGRAM|DEVELOPMENT_ROADMAP)\.md/,

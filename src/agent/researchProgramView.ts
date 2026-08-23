@@ -7,6 +7,9 @@ export interface ProgramItem {
   id: string; stage: string; question: string; status: string; dependencies: string[];
   evidenceSoFar: string; nextAction: string; successCriterion: string; split: string;
   estimatedCalls: number; estimatedCostUsd: number; latencyRelevance: string;
+  /** Required true when status is IN_PROGRESS. Partial cache alone is not authorization. */
+  continuationAuthorized?: boolean;
+  partialCache?: { personInterpretations: number; jobInterpretations: number; jobTotal: number; preserved: boolean };
 }
 export interface Program {
   version: string; purpose: string; notDuplicated: string;

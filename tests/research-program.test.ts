@@ -79,6 +79,21 @@ describe("the research program is internally consistent", () => {
     }
   });
 
+  it("does not treat a partial cache as authorization to keep spending", () => {
+    // IN_PROGRESS without an explicit continuation flag is how an interrupted arm gets
+    // "helpfully" finished six weeks later. Partial artifacts belong on DEFERRED items.
+    for (const item of program.items) {
+      if (item.status === "IN_PROGRESS") {
+        expect(item.continuationAuthorized, `${item.id} is IN_PROGRESS without continuationAuthorized`).toBe(true);
+      }
+    }
+    const natural = program.items.find((item) => item.id === "N-01");
+    expect(natural, "research program lost N-01").toBeDefined();
+    expect(natural!.status).toBe("DEFERRED");
+    expect(natural!.continuationAuthorized).toBe(false);
+    expect(natural!.partialCache?.preserved).toBe(true);
+  });
+
   it("keeps a BLOCKED item honestly blocked by an unresolved dependency", () => {
     // A BLOCKED item with no dependency is really DEFERRED, and the distinction matters: one is
     // waiting on us, the other is waiting on something else.

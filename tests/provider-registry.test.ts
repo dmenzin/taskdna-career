@@ -60,6 +60,13 @@ describe("cache namespacing is visible in the path, not only inside a hash", () 
     expect(armCachePath({ ...args, provider: "openai" })).not.toBe(armCachePath({ ...args, provider: "anthropic" }));
   });
 
+  it("isolates a versioned person cache so v2 cannot overwrite v1", () => {
+    const base = { provider: "openai" as const, model: "gpt-5.6-sol", effort: "low", family: "LEXICAL_TRAP", kind: "person" as const };
+    expect(armCachePath(base)).toBe("artifacts/agent_runtime/openai/cache-person-lexical_trap-gpt-5.6-sol-low.json");
+    expect(armCachePath({ ...base, promptVersion: "v2" })).toContain("cache-person-v2-");
+    expect(armCachePath({ ...base, promptVersion: "v2" })).not.toBe(armCachePath(base));
+  });
+
   it("separates person and job caches, so one schema cannot answer for the other", () => {
     const args = { provider: "openai", model: "m", effort: "low", family: "SEMANTIC_BRIDGE" } as const;
     expect(armCachePath({ ...args, kind: "person" })).not.toBe(armCachePath({ ...args, kind: "job" }));

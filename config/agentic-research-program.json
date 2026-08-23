@@ -28,14 +28,14 @@
       "id": "P-01",
       "stage": "S1",
       "question": "Can the strongest one-call baseline gain claim-level auditability without specialist inference?",
-      "status": "UNTESTED",
+      "status": "PREREGISTERED",
       "dependencies": [],
-      "evidenceSoFar": "Shared blueprint emits no supporting phrase, so its provenance is unmeasurable rather than absent. Isolated Experience achieves 0.000 evidence contamination with a quote; full-context achieves 0.424.",
-      "nextAction": "Preregister and run person-blueprint v2 with a per-item evidence field on LEXICAL_TRAP.",
+      "evidenceSoFar": "Shared blueprint emits no supporting phrase, so its provenance is unmeasurable rather than absent. Isolated Experience achieves 0.000 evidence contamination with a quote; full-context achieves 0.424. Preregistered as person-blueprint-v2:openai:LEXICAL_TRAP:low. Matcher frozen; R-01 is diagnostic only.",
+      "nextAction": "Dry run is green (12 fresh person@v2, 288/288 jobs reused). Paid run only after operator approval.",
       "successCriterion": "Retrieval holds (CI spans zero or better) AND provenance contamination <= 0.05.",
       "split": "DEVELOPMENT",
       "estimatedCalls": 12,
-      "estimatedCostUsd": 0.45,
+      "estimatedCostUsd": 0.93,
       "latencyRelevance": "Small expected increase in output tokens; measure per-call."
     },
     {
@@ -98,10 +98,10 @@
       "id": "R-01",
       "stage": "S1",
       "question": "Which of the five semantic role fields carry independent signal, and is the matcher robust to paraphrase?",
-      "status": "UNTESTED",
+      "status": "SUPPORTED",
       "dependencies": [],
-      "evidenceSoFar": "Field-aware matching beat token-bag by +0.148 CI [0.088, 0.211] on LEXICAL_TRAP over identical interpretations at zero model cost. The strongest measured result in the program, and it is deterministic.",
-      "nextAction": "Deterministic leave-one-field-out ablation over existing cached interpretations. Zero calls.",
+      "evidenceSoFar": "Leave-one-out on the frozen LEXICAL_TRAP OpenAI caches (n=12, 12/12 person and 288/288 job hits). Full field-match experience NDCG@10 0.745. Deltas: action -0.068, object -0.059, method -0.028, domain -0.016, purpose -0.000. Purpose is redundant on this family. Diagnostic only: agent-field-match stays on all five fields for P-01.",
+      "nextAction": "Do not retune the matcher. A later versioned matcher experiment may drop or reweight purpose; that is not P-01.",
       "successCriterion": "Per-field contribution quantified; any redundant field identified.",
       "split": "DEVELOPMENT",
       "estimatedCalls": 0,
@@ -322,15 +322,22 @@
       "id": "N-01",
       "stage": "S1",
       "question": "Should the interrupted NATURAL arm be completed?",
-      "status": "IN_PROGRESS",
+      "status": "DEFERRED",
+      "continuationAuthorized": false,
       "dependencies": [],
-      "evidenceSoFar": "Stopped at 12/12 person and 35/288 job interpretations, all committed. NATURAL is the family where lexical matching already performs well and headroom is smallest (+0.173 to the normaliser control).",
-      "nextAction": "Leave incomplete unless a regression check on ordinary cases becomes decision-relevant. Roughly 253 calls to finish.",
+      "evidenceSoFar": "Stopped at 12/12 person and 35/288 job interpretations, all committed. NATURAL is the family where lexical matching already performs well and headroom is smallest (+0.173 to the normaliser control). Partial cache existence is not authorization to finish the arm.",
+      "nextAction": "Do not resume. Revisit only if a regression check on ordinary cases becomes decision-relevant and is newly preregistered. The existing 47 cached calls stay on disk.",
       "successCriterion": "n/a - a completeness question, not a hypothesis.",
       "split": "DEVELOPMENT",
       "estimatedCalls": 253,
       "estimatedCostUsd": 3.0,
-      "latencyRelevance": "None."
+      "latencyRelevance": "None.",
+      "partialCache": {
+        "personInterpretations": 12,
+        "jobInterpretations": 35,
+        "jobTotal": 288,
+        "preserved": true
+      }
     }
   ]
 }

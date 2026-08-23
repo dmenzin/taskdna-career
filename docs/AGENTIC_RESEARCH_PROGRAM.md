@@ -18,11 +18,11 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 
 | id | status | question | depends on | next action | calls | cost |
 | --- | --- | --- | --- | --- | --- | --- |
-| `P-01` | **UNTESTED** | Can the strongest one-call baseline gain claim-level auditability without specialist inference? | — | Preregister and run person-blueprint v2 with a per-item evidence field on LEXICAL_TRAP. | 12 | $0.45 |
+| `P-01` | **PREREGISTERED** | Can the strongest one-call baseline gain claim-level auditability without specialist inference? | — | Dry run is green (12 fresh person@v2, 288/288 jobs reused). Paid run only after operator approval. | 12 | $0.93 |
 | `D-01` | **INCONCLUSIVE** | Does a correctly-scoped Direction Agent beat the shared blueprint on Direction, or only tie it? | P-01, S-01 | Resolve at n=24-36 only if P-01 fails and S-01 passes. Deliberately behind both. | 320 | $4.00 |
 | `CT-01` | **UNTESTED** | Do the five non-implications no v1 prompt states change interpretation quality when added? | P-01 | Define semantic-contract v2 with the full rule set plus contrastive examples, as a new prompt version. Never edit a v1 prompt. | 12 | $0.45 |
-| `R-01` | **UNTESTED** | Which of the five semantic role fields carry independent signal, and is the matcher robust to paraphrase? | — | Deterministic leave-one-field-out ablation over existing cached interpretations. Zero calls. | 0 | $0.00 |
-| `N-01` | **IN_PROGRESS** | Should the interrupted NATURAL arm be completed? | — | Leave incomplete unless a regression check on ordinary cases becomes decision-relevant. Roughly 253 calls to finish. | 253 | $3.00 |
+| `R-01` | **SUPPORTED** | Which of the five semantic role fields carry independent signal, and is the matcher robust to paraphrase? | — | Do not retune the matcher. A later versioned matcher experiment may drop or reweight purpose; that is not P-01. | 0 | $0.00 |
+| `N-01` | **DEFERRED** | Should the interrupted NATURAL arm be completed? | — | Do not resume. Revisit only if a regression check on ordinary cases becomes decision-relevant and is newly preregistered. The existing 47 cached calls stay on disk. | 253 | $3.00 |
 
 ### S2 — Inference stability
 
@@ -96,12 +96,12 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 
 ### `P-01` — Can the strongest one-call baseline gain claim-level auditability without specialist inference?
 
-- **Status:** UNTESTED · **Stage:** S1 · **Split:** DEVELOPMENT
+- **Status:** PREREGISTERED · **Stage:** S1 · **Split:** DEVELOPMENT
 - **Depends on:** nothing
-- **Evidence so far:** Shared blueprint emits no supporting phrase, so its provenance is unmeasurable rather than absent. Isolated Experience achieves 0.000 evidence contamination with a quote; full-context achieves 0.424.
-- **Next action:** Preregister and run person-blueprint v2 with a per-item evidence field on LEXICAL_TRAP.
+- **Evidence so far:** Shared blueprint emits no supporting phrase, so its provenance is unmeasurable rather than absent. Isolated Experience achieves 0.000 evidence contamination with a quote; full-context achieves 0.424. Preregistered as person-blueprint-v2:openai:LEXICAL_TRAP:low. Matcher frozen; R-01 is diagnostic only.
+- **Next action:** Dry run is green (12 fresh person@v2, 288/288 jobs reused). Paid run only after operator approval.
 - **Success criterion:** Retrieval holds (CI spans zero or better) AND provenance contamination <= 0.05.
-- **Cost if run:** 12 calls, ~$0.45
+- **Cost if run:** 12 calls, ~$0.93
 - **Latency relevance:** Small expected increase in output tokens; measure per-call.
 
 ### `T-01` — Are the provenance attribution thresholds (0.6 floor, 0.1 ambiguity margin) defensible?
@@ -146,10 +146,10 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 
 ### `R-01` — Which of the five semantic role fields carry independent signal, and is the matcher robust to paraphrase?
 
-- **Status:** UNTESTED · **Stage:** S1 · **Split:** DEVELOPMENT
+- **Status:** SUPPORTED · **Stage:** S1 · **Split:** DEVELOPMENT
 - **Depends on:** nothing
-- **Evidence so far:** Field-aware matching beat token-bag by +0.148 CI [0.088, 0.211] on LEXICAL_TRAP over identical interpretations at zero model cost. The strongest measured result in the program, and it is deterministic.
-- **Next action:** Deterministic leave-one-field-out ablation over existing cached interpretations. Zero calls.
+- **Evidence so far:** Leave-one-out on the frozen LEXICAL_TRAP OpenAI caches (n=12, 12/12 person and 288/288 job hits). Full field-match experience NDCG@10 0.745. Deltas: action -0.068, object -0.059, method -0.028, domain -0.016, purpose -0.000. Purpose is redundant on this family. Diagnostic only: agent-field-match stays on all five fields for P-01.
+- **Next action:** Do not retune the matcher. A later versioned matcher experiment may drop or reweight purpose; that is not P-01.
 - **Success criterion:** Per-field contribution quantified; any redundant field identified.
 - **Cost if run:** 0 calls, ~$0.00
 - **Latency relevance:** None; deterministic.
@@ -306,10 +306,10 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 
 ### `N-01` — Should the interrupted NATURAL arm be completed?
 
-- **Status:** IN_PROGRESS · **Stage:** S1 · **Split:** DEVELOPMENT
+- **Status:** DEFERRED · **Stage:** S1 · **Split:** DEVELOPMENT
 - **Depends on:** nothing
-- **Evidence so far:** Stopped at 12/12 person and 35/288 job interpretations, all committed. NATURAL is the family where lexical matching already performs well and headroom is smallest (+0.173 to the normaliser control).
-- **Next action:** Leave incomplete unless a regression check on ordinary cases becomes decision-relevant. Roughly 253 calls to finish.
+- **Evidence so far:** Stopped at 12/12 person and 35/288 job interpretations, all committed. NATURAL is the family where lexical matching already performs well and headroom is smallest (+0.173 to the normaliser control). Partial cache existence is not authorization to finish the arm.
+- **Next action:** Do not resume. Revisit only if a regression check on ordinary cases becomes decision-relevant and is newly preregistered. The existing 47 cached calls stay on disk.
 - **Success criterion:** n/a - a completeness question, not a hypothesis.
 - **Cost if run:** 253 calls, ~$3.00
 - **Latency relevance:** None.
@@ -328,10 +328,11 @@ Append-only record of every runtime experiment. A paid experiment must have a re
 | `openai-effort-calibration:SEMANTIC_BRIDGE` | **SUPPORTED** | SEMANTIC_BRIDGE | 6 | $0.19 | Person output 886 tokens at low, 2027 at medium, 1304 at high. The Anthropic arm's 1200 allowance would have truncated at medium and high. |
 | `agent-vs-lexical:openai:SEMANTIC_BRIDGE:low` | **SUPPORTED** | SEMANTIC_BRIDGE | 300 | $3.64 | experience +0.241 CI [0.123, 0.351], within 0.006 of the Claude arm. agent-field-match reaches 0.709 / 0.693 / 0.878. |
 | `agent-vs-lexical:openai:LEXICAL_TRAP:low` | **REJECTED** | LEXICAL_TRAP | 300 | $3.58 | The stated hypothesis FAILED: agent-blueprint 0.597 vs 0.622, delta -0.025 CI [-0.128, 0.067], and no channel beat lexical. The same run showed agent-field-match at 0.745, +0.148 CI [0.088, 0.211] over agent-blueprint - a matcher result, recorded separately as R-01. |
-| `agent-vs-lexical:openai:NATURAL:low` | **IN_PROGRESS** | NATURAL | 47 | $0.50 | Stopped at 12/12 person and 35/288 job interpretations by operator instruction. All committed; resumable for roughly 253 calls. |
+| `agent-vs-lexical:openai:NATURAL:low` | **DEFERRED** | NATURAL | 47 | $0.50 | Stopped at 12/12 person and 35/288 job interpretations by operator instruction. All committed. Continuation is NOT authorized; partial cache is not a reason to finish the arm. |
 | `split-agents:openai:LEXICAL_TRAP:low:direction-v1` | **REJECTED** _(superseded by `split-agents:openai:LEXICAL_TRAP:low:direction-v2`)_ | LEXICAL_TRAP | 64 | $2.28 | Direction collapsed 0.732 to 0.457 / 0.447, CIs excluding zero. INVALID AS A TEST OF SPECIALISATION: the v1 Direction prompt defined WANTED to include work the person enjoys, and the 'isolated' arm was still shown preference evidence. Two independent defects pointing the same way; provenance confirmed 81/129 and 83/132 desired claims sourced from LIKE evidence. |
 | `split-agents:openai:LEXICAL_TRAP:low:direction-v2` | **INCONCLUSIVE** | LEXICAL_TRAP | 24 | $0.36 | Channel integrity fully repaired: provenance contamination 0.629 to 0.000, desired volume 2.750 to 1.000. Retrieval unresolved: isolated direction 0.806 vs shared 0.732, paired +0.074 CI [-0.066, 0.198]. Experience bit-identical from cache, so the ablation is clean. |
 | `smoke-test` | **UNTESTED** | n/a | — | — | Operational probe. Not a quality experiment. |
+| `person-blueprint-v2:openai:LEXICAL_TRAP:low` | **PREREGISTERED** | LEXICAL_TRAP | — | — | Dry run complete: 12 fresh person@v2, 0 job misses (288/288 hits), 12/12 v1 baseline hits, worst-case $0.933. Paid run not executed. |
 
 ---
 
@@ -356,7 +357,7 @@ Deliberately not binary pass/fail: most of these questions resolve into somethin
 ## At a glance
 
 - **22** tracked questions across **8** stages
-- Status spread: 8 BLOCKED, 3 DEFERRED, 1 INCONCLUSIVE, 1 IN_PROGRESS, 9 UNTESTED
-- **Runnable now** (untested, no unmet dependency): `P-01`, `S-01`, `R-01`, `J-01`, `SEC-01`
+- Status spread: 8 BLOCKED, 4 DEFERRED, 1 INCONCLUSIVE, 1 PREREGISTERED, 1 SUPPORTED, 7 UNTESTED
+- **Runnable now** (untested, no unmet dependency): `S-01`, `J-01`, `SEC-01`
 - Total spend recorded so far: **$13.61** across **1041** calls
 

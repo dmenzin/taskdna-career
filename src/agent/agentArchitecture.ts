@@ -78,6 +78,65 @@ export const PERSON_BLUEPRINT_SCHEMA = {
   additionalProperties: false,
 } as const;
 
+/**
+ * P-01 schema. v1 plus one required supporting phrase per work item.
+ *
+ * The extra field is for provenance auditability. It must never reach the matcher — see
+ * `stripProvenance`. Changing v1 would orphan the paid caches; this is a new version.
+ */
+const WORK_SCHEMA_V2 = {
+  type: "object",
+  properties: {
+    ...WORK_SCHEMA.properties,
+    evidence: { type: "string", description: "the exact phrase in the text that supports this item" },
+  },
+  required: ["action", "object", "purpose", "method", "domain", "evidence"],
+  additionalProperties: false,
+} as const;
+
+export const PERSON_BLUEPRINT_SCHEMA_V2 = {
+  type: "object",
+  properties: {
+    experience: { type: "array", items: WORK_SCHEMA_V2 },
+    liked: { type: "array", items: WORK_SCHEMA_V2 },
+    disliked: { type: "array", items: WORK_SCHEMA_V2 },
+    desired: { type: "array", items: WORK_SCHEMA_V2 },
+  },
+  required: ["experience", "liked", "disliked", "desired"],
+  additionalProperties: false,
+} as const;
+
+export interface QuotedWork extends StructuredWork {
+  evidence: string;
+}
+
+export interface CareerBlueprintV2 {
+  personId: string;
+  experience: QuotedWork[];
+  liked: QuotedWork[];
+  disliked: QuotedWork[];
+  desired: QuotedWork[];
+}
+
+/** Drop supporting phrases before matching so P-01 tests auditability, not a matcher change. */
+export function stripProvenance(blueprint: CareerBlueprintV2): CareerBlueprint {
+  const strip = (works: QuotedWork[]): StructuredWork[] =>
+    works.map((work) => ({
+      action: work.action,
+      object: work.object,
+      purpose: work.purpose,
+      method: work.method,
+      domain: work.domain,
+    }));
+  return {
+    personId: blueprint.personId,
+    experience: strip(blueprint.experience),
+    liked: strip(blueprint.liked),
+    disliked: strip(blueprint.disliked),
+    desired: strip(blueprint.desired),
+  };
+}
+
 export const JOB_BLUEPRINT_SCHEMA = {
   type: "object",
   properties: { responsibilities: { type: "array", items: WORK_SCHEMA } },
@@ -113,6 +172,44 @@ export const PERSON_BLUEPRINT_PROMPT: PromptSpec = {
       NORMALISE,
       "",
       "Use only what the text supports. Do not invent work that is not described.",
+      "",
+      "--- EXPERIENCE (what they have done) ---",
+      String(input.experience ?? ""),
+      "",
+      "--- LIKES ---",
+      String(input.liked ?? ""),
+      "",
+      "--- DISLIKES ---",
+      String(input.disliked ?? ""),
+      "",
+      "--- WANTS NEXT ---",
+      String(input.desired ?? ""),
+    ].join("\n"),
+};
+
+/**
+ * P-01 person prompt. Byte-identical to v1 except for the evidence instruction.
+ *
+ * That is the whole experiment: can the current winning shared architecture become auditable
+ * by adding a supporting phrase, without changing normalisation, channel separation, matcher,
+ * jobs, provider, model, or effort.
+ */
+export const PERSON_BLUEPRINT_PROMPT_V2: PromptSpec = {
+  id: "person-blueprint",
+  version: "v2",
+  hypothesis:
+    "Adding a required supporting phrase per work item makes the shared CareerBlueprint auditable without changing retrieval under the frozen field-aware matcher.",
+  render: (input) =>
+    [
+      "You are reading one person's description of their own working life.",
+      "",
+      ...SHARED_CHANNEL_SEPARATION_V1,
+      "",
+      NORMALISE,
+      "",
+      "Use only what the text supports. Do not invent work that is not described.",
+      "For each work item, copy the supporting phrase from the text into `evidence`.",
+      "If no phrase supports the item, omit the item rather than inventing one.",
       "",
       "--- EXPERIENCE (what they have done) ---",
       String(input.experience ?? ""),

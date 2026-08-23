@@ -83,6 +83,8 @@ describe("secret hygiene", () => {
 
   it("keeps the credential out of the call record and the cache file", async () => {
     // A sentinel that would be unmistakable if it ever leaked into telemetry or an artifact.
+    // Looks like a live key on purpose so the hygiene assertion is meaningful.
+    // This file is allowlisted in src/agent/secretScan.ts; do not copy the sentinel elsewhere.
     const sentinel = "sk-test-SENTINEL-must-never-appear";
     const previous = process.env.OPENAI_API_KEY;
     process.env.OPENAI_API_KEY = sentinel;

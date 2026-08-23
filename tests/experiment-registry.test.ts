@@ -20,6 +20,7 @@ const PAID_SCRIPTS = [
   "scripts/experiment-agent-vs-lexical.ts",
   "scripts/openai-effort-calibration.ts",
   "scripts/agent-smoke-test.ts",
+  "scripts/experiment-p01.ts",
 ];
 
 describe("experiment id matching", () => {
@@ -40,13 +41,19 @@ describe("assertPreregistered", () => {
       "agent-vs-lexical:openai:NATURAL:low",
       "split-agents:openai:LEXICAL_TRAP:low",
       "smoke-test",
+      "person-blueprint-v2:openai:LEXICAL_TRAP:low",
     ]) {
       expect(assertPreregistered(id).length, id).toBeGreaterThan(0);
     }
   });
 
   it("refuses an id that was never preregistered", () => {
-    expect(() => assertPreregistered("person-blueprint-v2:openai:LEXICAL_TRAP:low")).toThrow(UnregisteredExperimentError);
+    expect(() => assertPreregistered("not-a-real-experiment:openai:LEXICAL_TRAP:low")).toThrow(UnregisteredExperimentError);
+  });
+
+  it("does not treat the interrupted NATURAL arm as authorized to continue", () => {
+    const natural = loadExperimentRegistry().records.find((r) => r.experimentId.endsWith(":NATURAL:low"));
+    expect(natural?.status).toBe("DEFERRED");
   });
 
   it("refuses the unspecified default so a forgotten experimentId cannot spend", () => {
@@ -73,7 +80,7 @@ describe("append-only writes", () => {
     writeFileSync(copy, readFileSync("config/experiment-registry.json", "utf8"));
     const record = appendPreregistration(
       {
-        experimentId: "person-blueprint-v2:openai:LEXICAL_TRAP:low",
+        experimentId: "diagnostic-only-fixture:openai:LEXICAL_TRAP:low",
         question: "Can the shared baseline gain provenance?",
         hypothesis: "A per-item evidence field preserves retrieval.",
         family: "LEXICAL_TRAP",
@@ -86,7 +93,7 @@ describe("append-only writes", () => {
     expect(record.actualCalls).toBeNull();
     expect(loadExperimentRegistry(copy).records.some((r) => r.experimentId === record.experimentId)).toBe(true);
     // The live file is untouched: a test that writes the authority would be the opposite of governance.
-    expect(findExperimentRecords("person-blueprint-v2:openai:LEXICAL_TRAP:low")).toEqual([]);
+    expect(findExperimentRecords("diagnostic-only-fixture:openai:LEXICAL_TRAP:low")).toEqual([]);
   });
 });
 
@@ -105,6 +112,7 @@ describe("every paid experiment script is forced through the gate", () => {
       "scripts/experiment-agent-vs-lexical.ts",
       "scripts/openai-effort-calibration.ts",
       "scripts/agent-smoke-test.ts",
+      "scripts/experiment-p01.ts",
     ];
     expect(PAID_SCRIPTS.sort()).toEqual(spending.sort());
   });
