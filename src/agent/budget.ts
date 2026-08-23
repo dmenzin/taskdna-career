@@ -182,6 +182,11 @@ export class RuntimeBudgetLedger {
     this.state = existsSync(path)
       ? (JSON.parse(readFileSync(path, "utf8")) as BudgetLedgerState)
       : { version: RUNTIME_BUDGET_VERSION, limits, calls: 0, spentUsd: 0, entries: [] };
+    // Spend and call counts carry forward; the LIMITS do not. A ledger written before an
+    // amendment records the superseded ceilings, and a reader inspecting the file would see the
+    // wrong contract even though enforcement uses the current one. Refreshing on load keeps the
+    // persisted record honest rather than leaving a stale field to be misread later.
+    this.state.limits = limits;
   }
 
   get calls(): number {

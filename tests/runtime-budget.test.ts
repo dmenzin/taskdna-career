@@ -131,6 +131,19 @@ describe("the cap survives a restart", () => {
     expect(() => reloaded.reserve(0.5)).toThrowError(RuntimeBudgetExceededError);
   });
 
+  it("refreshes the recorded limits, so a pre-amendment ledger cannot misstate the contract", () => {
+    // The ledger on disk after amendment B2 still carried the superseded `maxCalls` field, so a
+    // reader inspecting the file saw a ceiling that no longer applied. Spend and call counts must
+    // carry forward; the limits must not.
+    const first = new RuntimeBudgetLedger(ledgerPath, { maxSpendUsd: 5, callObservabilityThreshold: 50 });
+    first.record(entry(0.01));
+
+    const reloaded = new RuntimeBudgetLedger(ledgerPath, { maxSpendUsd: 25, callObservabilityThreshold: 1000 });
+    expect(reloaded.calls).toBe(1);
+    expect(reloaded.snapshot().limits).toEqual({ maxSpendUsd: 25, callObservabilityThreshold: 1000 });
+    expect(reloaded.remainingUsd()).toBeCloseTo(25 - 0.01, 6);
+  });
+
   it("creates the artifact directory it writes into", () => {
     expect(() => new RuntimeBudgetLedger(ledgerPath).record(entry(0.01))).not.toThrow();
   });

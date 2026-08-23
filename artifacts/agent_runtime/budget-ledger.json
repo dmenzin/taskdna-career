@@ -2,7 +2,7 @@
   "version": "runtime-budget.v1",
   "limits": {
     "maxSpendUsd": 25,
-    "maxCalls": 1000
+    "callObservabilityThreshold": 1000
   },
   "calls": 717,
   "spentUsd": 10.399797499999998,
