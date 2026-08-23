@@ -240,7 +240,7 @@
       "id": "integration_preference",
       "classification": "CONSTRUCT_VALID_BUT_INSUFFICIENT_TEST_COVERAGE",
       "maeEligible": false,
-      "reason": "conceptually ordered, non-overlapping bipolar construct, but generator coverage is only about 4%, below the declared 10% eligibility-floor POLICY parameter (see ELIGIBILITY_COVERAGE_FLOOR_POLICY)"
+      "reason": "conceptually ordered, non-overlapping bipolar construct. Its original exclusion (about 4% generator coverage, below the declared 10% floor) was an artifact of positional sampling bias; measured coverage under unbiased sampling is 0.2933. Promotion to the eligible set is a pending metric-contract review, deliberately not applied in the preflight."
     },
     {
       "id": "customer_interaction_preference",

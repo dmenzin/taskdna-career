@@ -2,10 +2,6 @@
   "version": "eligibility-sensitivity.v1",
   "seed": 20260823,
   "currentPolicyFloor": {
-    "value": 0.{
-  "version": "eligibility-sensitivity.v1",
-  "seed": 20260823,
-  "currentPolicyFloor": {
     "value": 0.1,
     "unit": "fraction of subjects with generator-exposed evidence for the dimension",
     "status": "POLICY_PARAMETER_NOT_SCIENTIFIC_FACT",

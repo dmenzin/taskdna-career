@@ -15,16 +15,24 @@ export const PREFERENCE_DIMENSION_DECISIONS:PreferenceDimensionDecision[]=[
  {id:"closure_preference",classification:"VALID_WITH_REDEFINITION",maeEligible:false,reason:"low pole is pejorative and not neutral exploration"},
  {id:"causal_reasoning",classification:"OVERLAPS_ANOTHER_DIMENSION",maeEligible:false,reason:"overlaps investigation and reasoning_style"},
  // NOTE: integration_preference is a bipolar-ordered, non-overlapping construct like
- // measurable_feedback/experimentation_preference. It is excluded from MAE eligibility
- // SOLELY because measured generator coverage (~4%, see
- // artifacts/iteration_readiness/generator_monotonicity.json) is below the
- // ELIGIBILITY_COVERAGE_FLOOR_POLICY floor declared below. That floor is a policy
- // parameter, not a scientific fact about the construct -- see
- // docs/ELIGIBILITY_COVERAGE_SENSITIVITY.md and `pnpm eval:eligibility-sensitivity` for
- // the sensitivity table showing which dimensions' eligibility would flip at other
- // plausible floors. Do not relabel this WRONG_PRODUCT_CONSTRUCT or
- // OVERLAPS_ANOTHER_DIMENSION; it is neither.
- {id:"integration_preference",classification:"CONSTRUCT_VALID_BUT_INSUFFICIENT_TEST_COVERAGE",maeEligible:false,reason:"conceptually ordered, non-overlapping bipolar construct, but generator coverage is only about 4%, below the declared 10% eligibility-floor POLICY parameter (see ELIGIBILITY_COVERAGE_FLOOR_POLICY)"},
+ // measurable_feedback/experimentation_preference. Do not relabel it
+ // WRONG_PRODUCT_CONSTRUCT or OVERLAPS_ANOTHER_DIMENSION; it is neither.
+ //
+ // ITS STATED EXCLUSION REASON NO LONGER HOLDS. It was excluded solely for ~4% generator
+ // coverage, below the ELIGIBILITY_COVERAGE_FLOOR_POLICY floor declared below. That 4%
+ // was an artifact of the positional sampling bias fixed in the final preflight: with
+ // `DIMENSION_IDS.filter(...).slice(0, 3)`, integration_preference sat at position 12 and
+ // was almost never reached. Under unbiased seeded sampling its measured coverage is
+ // 0.2933 (artifacts/iteration_readiness/eligibility_coverage_sensitivity.json), well
+ // above the 0.10 floor, and it passes every non-coverage monotonicity criterion.
+ //
+ // It is nonetheless left maeEligible:false here. Adding a dimension to
+ // AUTONOMOUS_PREFERENCE_DIMENSIONS_V1 changes the primary metric's scope, which is a
+ // metric-contract change requiring the same review as changing the metric itself
+ // (AGENTS.md) -- not something a preflight or a decoder experiment may do incidentally.
+ // Promoting it is recorded as the highest-value next experiment for workstream 1 in
+ // config/research-portfolio.json.
+ {id:"integration_preference",classification:"CONSTRUCT_VALID_BUT_INSUFFICIENT_TEST_COVERAGE",maeEligible:false,reason:"conceptually ordered, non-overlapping bipolar construct. Its original exclusion (about 4% generator coverage, below the declared 10% floor) was an artifact of positional sampling bias; measured coverage under unbiased sampling is 0.2933. Promotion to the eligible set is a pending metric-contract review, deliberately not applied in the preflight."},
  {id:"customer_interaction_preference",classification:"BETTER_AS_TWO_INDEPENDENT_PREFERENCES",maeEligible:false,reason:"customer contact and internal technical work may both be liked"},
  {id:"coordination_preference",classification:"BETTER_AS_TWO_INDEPENDENT_PREFERENCES",maeEligible:false,reason:"orchestration and solo investigation may both be liked"},
  {id:"theory_vs_application",classification:"VALID_WITH_REDEFINITION",maeEligible:false,reason:"theory and application are not exclusive and scale is ordinal"},
