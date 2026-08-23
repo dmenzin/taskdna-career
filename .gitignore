@@ -9,4 +9,9 @@ playwright-report/
 tsconfig.tsbuildinfo
 .env*
 !.env.example
-artifacts/agent_runtime/
+# artifacts/agent_runtime/ was ignored here until 2026-08-23. That rule destroyed an entire
+# experimental arm: the Anthropic caches and budget ledger were never committed, lived only on one
+# machine's ephemeral disk, and vanished with it (docs/PROVIDER_HANDOFF_STATE.md). Model
+# interpretations are PAID, SLOW, and irreproducible once a moving model alias moves. They are
+# primary evidence and belong in version control. They contain no credentials, and a test asserts
+# it. The whole tree is ~1 MB per arm.
