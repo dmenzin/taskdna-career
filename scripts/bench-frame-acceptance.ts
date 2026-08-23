@@ -17,6 +17,8 @@ import {
   SPLIT_VOCABULARY,
 } from "../src/bench/frameCorpus";
 import { labelFramePair } from "../src/bench/frameLabels";
+import { constantScoreArchitecture, randomArchitecture } from "../src/bench/architectures";
+import { evaluateArchitecture } from "../src/bench/frameEvaluation";
 import { measureFamilyLeak, FAMILY_LEAK_EXPECTATIONS } from "../src/bench/familyLeak";
 import {
   RENDER_FAMILIES,
@@ -118,6 +120,17 @@ for (const family of RENDER_FAMILIES) {
   const conceptOverlap = valConcepts.filter((concept) => concept.startsWith("act.") || concept.startsWith("obj.") ? devConcepts.has(concept) : false);
   add("VALIDATION vocabulary is withheld from DEVELOPMENT", conceptOverlap.length === 0,
     conceptOverlap.length ? `${conceptOverlap.length} shared concepts, e.g. ${conceptOverlap[0]}` : "no shared action/object concepts");
+}
+
+// --- Gate: pool position carries no relevance signal ----------------------------------
+{
+  const corpus = buildFrameCorpus({ people: ACCEPTANCE_PEOPLE });
+  const constant = evaluateArchitecture(constantScoreArchitecture as never, corpus, "experience", 10);
+  const random = evaluateArchitecture(randomArchitecture as never, corpus, "experience", 10);
+  const gap = (constant.meanNdcg10 ?? 0) - (random.meanNdcg10 ?? 0);
+  add("a constant-score ranker scores no better than random", Math.abs(gap) <= 0.05,
+    `constant=${(constant.meanNdcg10 ?? 0).toFixed(3)} random=${(random.meanNdcg10 ?? 0).toFixed(3)} gap=${gap.toFixed(3)}` +
+    (Math.abs(gap) > 0.05 ? " — job position predicts relevance; every tied or abstaining architecture is being rewarded for it" : ""));
 }
 
 // --- Gate 9: LOCKED remains unexecuted ------------------------------------------------

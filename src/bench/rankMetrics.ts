@@ -3,7 +3,7 @@
 // Every function takes a RANKED LIST OF JOB IDS produced by the system under test and a
 // LABEL LOOKUP produced by src/bench/labels.ts. The two never share a code path, so no metric
 // here can be satisfied by agreeing with the scorer.
-import type { Channel, Grade, PairLabel } from "@/bench/labels";
+import type { Channel, GradedPair, Grade } from "@/bench/labels";
 import { channelLabel, isRelevant } from "@/bench/labels";
 
 export const RANK_METRIC_VERSION = "bench-rank-metrics.v1";
@@ -14,7 +14,12 @@ export interface RankedList {
   jobIds: string[];
 }
 
-export type LabelLookup = (jobId: string) => PairLabel | undefined;
+/**
+ * Label lookup, typed to the shared `GradedPair` shape rather than to one corpus's label type,
+ * so the atom substrate and the frame substrate use the SAME metric implementations. Two
+ * copies of NDCG would eventually disagree, and the disagreement would look like a result.
+ */
+export type LabelLookup = (jobId: string) => GradedPair | undefined;
 
 const gain = (grade: Grade) => 2 ** grade - 1;
 const discount = (rank: number) => 1 / Math.log2(rank + 2);
@@ -73,7 +78,7 @@ export function pairwiseAccuracy(ranked: string[], labels: LabelLookup, channel:
 }
 
 /** Recall@K restricted to jobs satisfying a planted predicate (cross-title, transition, ...). */
-export function subsetRecallAtK(ranked: string[], labels: LabelLookup, predicate: (label: PairLabel) => boolean, k: number): number | null {
+export function subsetRecallAtK<T extends GradedPair>(ranked: string[], labels: (jobId: string) => T | undefined, predicate: (label: T) => boolean, k: number): number | null {
   const targets = ranked.filter((jobId) => { const label = labels(jobId); return label ? predicate(label) : false; });
   if (!targets.length) return null;
   const found = ranked.slice(0, k).filter((jobId) => { const label = labels(jobId); return label ? predicate(label) : false; });
@@ -81,14 +86,14 @@ export function subsetRecallAtK(ranked: string[], labels: LabelLookup, predicate
 }
 
 /** Precision@K restricted to a planted predicate. */
-export function subsetPrecisionAtK(ranked: string[], labels: LabelLookup, predicate: (label: PairLabel) => boolean, k: number): number | null {
+export function subsetPrecisionAtK<T extends GradedPair>(ranked: string[], labels: (jobId: string) => T | undefined, predicate: (label: T) => boolean, k: number): number | null {
   const head = ranked.slice(0, k);
   if (!head.length) return null;
   return head.filter((jobId) => { const label = labels(jobId); return label ? predicate(label) : false; }).length / head.length;
 }
 
 /** Mean rank position (1-based) of jobs satisfying a predicate. Lower is better. */
-export function meanRankOf(ranked: string[], labels: LabelLookup, predicate: (label: PairLabel) => boolean): number | null {
+export function meanRankOf<T extends GradedPair>(ranked: string[], labels: (jobId: string) => T | undefined, predicate: (label: T) => boolean): number | null {
   const positions = ranked.map((jobId, index) => ({ jobId, index })).filter(({ jobId }) => { const label = labels(jobId); return label ? predicate(label) : false; }).map(({ index }) => index + 1);
   return positions.length ? mean(positions) : null;
 }
@@ -139,7 +144,7 @@ function allGrades(ranked: string[], labels: LabelLookup, channel: Channel): Gra
   return ranked.map((jobId) => channelLabel(labels(jobId) ?? emptyLabel(jobId), channel).grade);
 }
 
-function emptyLabel(jobId: string): PairLabel {
+function emptyLabel(jobId: string): GradedPair {
   const zero = { raw: 0, grade: 0 as Grade, matchedAtomIds: [] };
-  return { personId: "", jobId, archetype: "IRRELEVANT", experience: zero, preference: zero, direction: zero, qualificationFeasibility: 0, hardGaps: [], crossTitle: false, crossIndustry: false };
+  return { jobId, experience: zero, preference: zero, direction: zero, crossTitle: false, crossIndustry: false };
 }

@@ -39,6 +39,8 @@
     "diag:generator-lexical-leak": "tsx scripts/diag-generator-lexical-leak.ts",
     "diag:frame-leak": "tsx scripts/diag-frame-leak.ts",
     "bench:frame-acceptance": "tsx scripts/bench-frame-acceptance.ts",
+    "bench:frame-competition": "tsx scripts/bench-frame-competition.ts",
+    "bench:frame-freeze": "tsx scripts/freeze-frame-corpus.ts",
     "audit:metric-contracts": "tsx scripts/audit-metric-contracts.ts",
     "eval:product-red-team": "tsx scripts/product-red-team.ts",
     "eval:generator-monotonicity": "tsx scripts/generator-monotonicity.ts",

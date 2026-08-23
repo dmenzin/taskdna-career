@@ -1,0 +1,41 @@
+{
+  "version": "frame-corpus-freeze.v1",
+  "frozenAt": "2026-08-23",
+  "corpusVersion": "frame-corpus.v1",
+  "frameVersion": "semantic-frame.v2",
+  "people": 48,
+  "note": "Observed inputs only (rendered text, titles, industries, job order). Planted identity is deliberately excluded. Changing any of these hashes invalidates every architecture result measured against the previous freeze; see docs/RESEARCH_CONTRACT_AMENDMENTS.md section C.",
+  "lockedConfirmationFrozen": false,
+  "entries": {
+    "DEVELOPMENT/NATURAL": {
+      "sha256": "6a40498d9177079eb36f2ddd0abe74e9d68cd3eb19ea59f47f810769a3f53e82",
+      "people": 48,
+      "jobs": 1152
+    },
+    "DEVELOPMENT/SEMANTIC_BRIDGE": {
+      "sha256": "eb6974b4a8ac1fd73946de930bfef40e9cd77fba79b3de95b6e4fecd00b86fba",
+      "people": 48,
+      "jobs": 1152
+    },
+    "DEVELOPMENT/LEXICAL_TRAP": {
+      "sha256": "18b326a9bbf12a3cb253a621339de1af5a679dfa91f568aa89bc97f384b38475",
+      "people": 48,
+      "jobs": 1152
+    },
+    "VALIDATION/NATURAL": {
+      "sha256": "672cd2bff48ef85584f68b21cc9b408c0640fbb9ee409a005425bac4bc4c3014",
+      "people": 48,
+      "jobs": 1104
+    },
+    "VALIDATION/SEMANTIC_BRIDGE": {
+      "sha256": "9d5e1ad412e99e976e6aec97b7483d7e86c96615a8fabf624ce42b03c64b0e54",
+      "people": 48,
+      "jobs": 1104
+    },
+    "VALIDATION/LEXICAL_TRAP": {
+      "sha256": "f5337e9c24032222538aba49c0fc428c1f4d1e6f5934ef0d4cd7f5f0e55a15cb",
+      "people": 48,
+      "jobs": 1104
+    }
+  }
+}

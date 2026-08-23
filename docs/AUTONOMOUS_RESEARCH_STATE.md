@@ -37,6 +37,62 @@ code rather than prose — see `docs/RESEARCH_CONTRACT_AMENDMENTS.md`.
 
 ---
 
+## Phase 1-2 (2026-08-23): the benchmark is rewired, frozen, and everything is re-baselined
+
+**Current benchmark**: `frame-corpus.v1` / `semantic-frame.v2`, frozen in
+`config/frame-corpus-freeze.json`. 18/18 acceptance gates pass (`pnpm bench:frame-acceptance`).
+Design preregistered in `docs/BENCHMARK_FAMILIES_PREREGISTRATION.md` before any architecture
+was scored.
+
+### Three benchmark defects found by measurement, all fixed pre-freeze
+
+| defect | evidence | status |
+| --- | --- | --- |
+| Held-out vocabulary family unusable — zero held-out instrument/output concepts, so `sampleFrame(rng,["held-out"])` **threw**; remaining roles had one concept each (2 identities total). The contract's generalization mechanism had never been runnable. | crash | fixed: 1,600 held-out identities vs 25,200 core |
+| Relevance effectively **binary** (grades 0 and 3 only) and the joint experience+preference relevant set **empty** — every joint metric would have reported on nothing. | histogram `192/0/0/72`, 0 joint pairs | fixed: `767/48/49/288`, 98 joint pairs |
+| **Titles were a relevance oracle.** Relevant archetypes got the person's own title, distractors a foreign one. Balancing only the distractors left an *inverted* oracle. | permutation z = 5.1 title / 18.4 industry; title-only AUC 0.449 | fixed: title-only AUC 0.511, industry 0.498 |
+
+### The defect that would have produced a false headline
+
+Job ids were assigned in construction order, and archetypes are added relevant-first. Any
+architecture returning **tied scores** was therefore sorted by the id tie-break straight into a
+near-perfect ranking. Measured before the fix: the O\*NET canonical path — which abstains on
+**100%** of bridge text and scored every job exactly `0.000` — posted **NDCG@10 0.933 on
+SEMANTIC_BRIDGE** and "beat" every baseline by +0.53. "O\*NET wins on semantic transfer" would
+have been the run's headline, from an architecture that recovered nothing at all.
+
+Jobs are now shuffled before ids are assigned, and a permanent gate requires a
+`constant-score` ranker to score no better than `random`.
+
+### Re-baseline: NDCG@10, DEVELOPMENT, 48 people, paired bootstrap
+
+| architecture | NATURAL | SEMANTIC_BRIDGE | LEXICAL_TRAP |
+| --- | --- | --- | --- |
+| random | 0.348 | 0.315 | 0.378 |
+| constant-score (degenerate control) | 0.385 | 0.354 | 0.336 |
+| title-only | 0.397 | 0.353 | 0.360 |
+| resume-lexical | 0.580 | 0.371 | 0.522 |
+| **experience-lexical** (strongest simple) | **0.665** | **0.397** | **0.603** |
+| onet-canonical (production path) | 0.412 | 0.354 | 0.365 |
+| *oracle-planted-truth* (ceiling, not a competitor) | *1.000* | *1.000* | *1.000* |
+
+### Standing conclusions from the re-baseline
+
+1. **The O\*NET canonical path contributes nothing on this corpus.** On SEMANTIC_BRIDGE it
+   scores 0.354 — *identical to the constant-score control* — because it abstains on 100% of
+   bridge text. On NATURAL it scores 0.412 against plain lexical matching's 0.665: passing text
+   through O\*NET canonicalization **destroys** signal that raw token overlap keeps.
+2. **No architecture in the repository has any semantic bridging ability.** On SEMANTIC_BRIDGE
+   nothing is significantly better than the constant-score control (all paired CIs span zero).
+3. **The task is solvable; the systems are not solving it.** The oracle reaches 1.000 on every
+   family, so the gap is real headroom rather than an unsolvable benchmark. This is the
+   distinction the previous corpus could not make.
+4. **The strong lexical baseline is still the one to beat** wherever wording carries signal, and
+   it collapses to near-chance the moment it does not — which is exactly the thesis TaskDNA
+   needs to demonstrate, now with a measurement instead of an assertion.
+
+---
+
 ## Headline finding: the product benchmark cannot resolve its own headline claim
 
 The brief's central premise is that *TaskDNA does not clearly beat a dumb resume-lexical

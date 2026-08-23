@@ -381,8 +381,23 @@ function buildJobsFor(
   const homeOrOther = (): string => (rng() < 0.5 ? person.homeTitleFamily : pick(rng, otherTitleFamilies));
   const anyIndustry = (): string => (rng() < 0.5 ? person.homeIndustry : pick(rng, INDUSTRY_POOL.filter((i) => i !== person.homeIndustry)));
 
-  const jobs: PlantedFrameJob[] = [];
-  let jobCounter = 0;
+  // Job SPECS are collected first and only turned into identified jobs after a shuffle.
+  //
+  // Assigning ids in construction order is a serious defect: archetypes are added
+  // relevant-first, so `job-001`..`job-006` were the relevant ones and the distractors came
+  // last. Any architecture that produces tied scores then gets sorted by the id tie-break and
+  // lands every relevant job at the top. Measured before this fix, the O*NET path — which
+  // abstains on 100% of bridge text and scored every job exactly 0.000 — posted NDCG@10 0.933
+  // on SEMANTIC_BRIDGE and "beat" every baseline by +0.53. The id order was doing all the work.
+  interface JobSpec {
+    archetype: FrameJobArchetype;
+    core: FrameWork[];
+    incidental: FrameWork[];
+    titleFamily: string;
+    industry: string;
+    requirementSource: "person" | "unrelated";
+  }
+  const specs: JobSpec[] = [];
   const add = (
     archetype: FrameJobArchetype,
     core: FrameWork[],
@@ -392,20 +407,7 @@ function buildJobsFor(
     requirementSource: "person" | "unrelated",
   ) => {
     if (!core.length && !incidental.length) return;
-    jobCounter += 1;
-    const jobId = `${person.personId}-job-${String(jobCounter).padStart(3, "0")}`;
-    const title = pick(rng, TITLE_FAMILIES[titleFamily]!);
-    const requirements = buildRequirements(person, rng, requirementSource, jobId);
-    const responsibilities = [
-      ...core.map((work, order) => ({ id: `${jobId}-r${order + 1}`, text: renderJobFrame(work.frame, rng, person.family), core: true })),
-      ...incidental.map((work, order) => ({ id: `${jobId}-i${order + 1}`, text: renderJobFrame(work.frame, rng, person.family), core: false })),
-    ];
-    jobs.push({
-      jobId, split: person.split, family: person.family, archetype, targetPersonId: person.personId,
-      title, industry, titleFamily,
-      coreWork: core, incidentalWork: incidental, requirements, responsibilities,
-      descriptionText: `${title} - ${industry}. ${responsibilities.map((entry) => entry.text).join(" ")}`,
-    });
+    specs.push({ archetype, core, incidental, titleFamily, industry, requirementSource });
   };
 
   const otherIndustry = () => pick(rng, INDUSTRY_POOL.filter((industry) => industry !== person.homeIndustry));
@@ -488,7 +490,23 @@ function buildJobsFor(
     const titleFamily = index === 0 ? pick(rng, otherTitleFamilies) : homeOrOther();
     add("IRRELEVANT", neutral(4), neutral(1), titleFamily, anyIndustry(), "unrelated");
   }
-  return jobs;
+
+  // Shuffle BEFORE identifying, so position in the pool carries no relevance signal.
+  return shuffle(rng, specs).map((spec, order) => {
+    const jobId = `${person.personId}-job-${String(order + 1).padStart(3, "0")}`;
+    const title = pick(rng, TITLE_FAMILIES[spec.titleFamily]!);
+    const requirements = buildRequirements(person, rng, spec.requirementSource, jobId);
+    const responsibilities = [
+      ...spec.core.map((work, index) => ({ id: `${jobId}-r${index + 1}`, text: renderJobFrame(work.frame, rng, person.family), core: true })),
+      ...spec.incidental.map((work, index) => ({ id: `${jobId}-i${index + 1}`, text: renderJobFrame(work.frame, rng, person.family), core: false })),
+    ];
+    return {
+      jobId, split: person.split, family: person.family, archetype: spec.archetype, targetPersonId: person.personId,
+      title, industry: spec.industry, titleFamily: spec.titleFamily,
+      coreWork: spec.core, incidentalWork: spec.incidental, requirements, responsibilities,
+      descriptionText: `${title} - ${spec.industry}. ${responsibilities.map((entry) => entry.text).join(" ")}`,
+    };
+  });
 }
 
 function buildRequirements(person: PlantedFramePerson, rng: Rng, source: "person" | "unrelated", jobId: string) {
