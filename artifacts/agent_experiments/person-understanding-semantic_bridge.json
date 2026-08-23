@@ -1,0 +1,487 @@
+{
+  "family": "SEMANTIC_BRIDGE",
+  "people": 12,
+  "missing": 0,
+  "analyses": [
+    {
+      "personId": "frame-development-p001",
+      "interpreted": true,
+      "counts": {
+        "experience": 6,
+        "liked": 7,
+        "disliked": 2,
+        "desired": 4
+      },
+      "planted": {
+        "experience": 6,
+        "liked": 7,
+        "disliked": 2,
+        "desired": 4
+      },
+      "roleRecovery": {
+        "action": {
+          "hit": 4,
+          "total": 6
+        },
+        "object": {
+          "hit": 6,
+          "total": 6
+        },
+        "purpose": {
+          "hit": 6,
+          "total": 6
+        },
+        "method": {
+          "hit": 6,
+          "total": 6
+        },
+        "domain": {
+          "hit": 6,
+          "total": 6
+        }
+      },
+      "unmatchedExperience": 0,
+      "channelLeak": 0
+    },
+    {
+      "personId": "frame-development-p002",
+      "interpreted": true,
+      "counts": {
+        "experience": 6,
+        "liked": 7,
+        "disliked": 2,
+        "desired": 4
+      },
+      "planted": {
+        "experience": 6,
+        "liked": 7,
+        "disliked": 2,
+        "desired": 4
+      },
+      "roleRecovery": {
+        "action": {
+          "hit": 5,
+          "total": 6
+        },
+        "object": {
+          "hit": 4,
+          "total": 6
+        },
+        "purpose": {
+          "hit": 4,
+          "total": 6
+        },
+        "method": {
+          "hit": 6,
+          "total": 6
+        },
+        "domain": {
+          "hit": 6,
+          "total": 6
+        }
+      },
+      "unmatchedExperience": 0,
+      "channelLeak": 0
+    },
+    {
+      "personId": "frame-development-p003",
+      "interpreted": true,
+      "counts": {
+        "experience": 6,
+        "liked": 7,
+        "disliked": 2,
+        "desired": 4
+      },
+      "planted": {
+        "experience": 6,
+        "liked": 7,
+        "disliked": 2,
+        "desired": 4
+      },
+      "roleRecovery": {
+        "action": {
+          "hit": 1,
+          "total": 6
+        },
+        "object": {
+          "hit": 6,
+          "total": 6
+        },
+        "purpose": {
+          "hit": 6,
+          "total": 6
+        },
+        "method": {
+          "hit": 6,
+          "total": 6
+        },
+        "domain": {
+          "hit": 6,
+          "total": 6
+        }
+      },
+      "unmatchedExperience": 0,
+      "channelLeak": 0
+    },
+    {
+      "personId": "frame-development-p004",
+      "interpreted": true,
+      "counts": {
+        "experience": 6,
+        "liked": 7,
+        "disliked": 2,
+        "desired": 4
+      },
+      "planted": {
+        "experience": 6,
+        "liked": 7,
+        "disliked": 2,
+        "desired": 4
+      },
+      "roleRecovery": {
+        "action": {
+          "hit": 5,
+          "total": 6
+        },
+        "object": {
+          "hit": 5,
+          "total": 6
+        },
+        "purpose": {
+          "hit": 5,
+          "total": 6
+        },
+        "method": {
+          "hit": 6,
+          "total": 6
+        },
+        "domain": {
+          "hit": 6,
+          "total": 6
+        }
+      },
+      "unmatchedExperience": 0,
+      "channelLeak": 0
+    },
+    {
+      "personId": "frame-development-p005",
+      "interpreted": true,
+      "counts": {
+        "experience": 6,
+        "liked": 7,
+        "disliked": 2,
+        "desired": 4
+      },
+      "planted": {
+        "experience": 6,
+        "liked": 7,
+        "disliked": 2,
+        "desired": 4
+      },
+      "roleRecovery": {
+        "action": {
+          "hit": 3,
+          "total": 6
+        },
+        "object": {
+          "hit": 5,
+          "total": 6
+        },
+        "purpose": {
+          "hit": 6,
+          "total": 6
+        },
+        "method": {
+          "hit": 5,
+          "total": 6
+        },
+        "domain": {
+          "hit": 5,
+          "total": 6
+        }
+      },
+      "unmatchedExperience": 0,
+      "channelLeak": 0
+    },
+    {
+      "personId": "frame-development-p006",
+      "interpreted": true,
+      "counts": {
+        "experience": 6,
+        "liked": 7,
+        "disliked": 2,
+        "desired": 4
+      },
+      "planted": {
+        "experience": 6,
+        "liked": 7,
+        "disliked": 2,
+        "desired": 4
+      },
+      "roleRecovery": {
+        "action": {
+          "hit": 1,
+          "total": 6
+        },
+        "object": {
+          "hit": 4,
+          "total": 6
+        },
+        "purpose": {
+          "hit": 6,
+          "total": 6
+        },
+        "method": {
+          "hit": 4,
+          "total": 6
+        },
+        "domain": {
+          "hit": 6,
+          "total": 6
+        }
+      },
+      "unmatchedExperience": 0,
+      "channelLeak": 0
+    },
+    {
+      "personId": "frame-development-p007",
+      "interpreted": true,
+      "counts": {
+        "experience": 6,
+        "liked": 7,
+        "disliked": 2,
+        "desired": 4
+      },
+      "planted": {
+        "experience": 6,
+        "liked": 7,
+        "disliked": 2,
+        "desired": 4
+      },
+      "roleRecovery": {
+        "action": {
+          "hit": 2,
+          "total": 6
+        },
+        "object": {
+          "hit": 6,
+          "total": 6
+        },
+        "purpose": {
+          "hit": 6,
+          "total": 6
+        },
+        "method": {
+          "hit": 5,
+          "total": 6
+        },
+        "domain": {
+          "hit": 6,
+          "total": 6
+        }
+      },
+      "unmatchedExperience": 0,
+      "channelLeak": 0
+    },
+    {
+      "personId": "frame-development-p008",
+      "interpreted": true,
+      "counts": {
+        "experience": 6,
+        "liked": 7,
+        "disliked": 2,
+        "desired": 4
+      },
+      "planted": {
+        "experience": 6,
+        "liked": 7,
+        "disliked": 2,
+        "desired": 4
+      },
+      "roleRecovery": {
+        "action": {
+          "hit": 2,
+          "total": 6
+        },
+        "object": {
+          "hit": 6,
+          "total": 6
+        },
+        "purpose": {
+          "hit": 6,
+          "total": 6
+        },
+        "method": {
+          "hit": 3,
+          "total": 6
+        },
+        "domain": {
+          "hit": 6,
+          "total": 6
+        }
+      },
+      "unmatchedExperience": 0,
+      "channelLeak": 0
+    },
+    {
+      "personId": "frame-development-p009",
+      "interpreted": true,
+      "counts": {
+        "experience": 6,
+        "liked": 7,
+        "disliked": 2,
+        "desired": 4
+      },
+      "planted": {
+        "experience": 6,
+        "liked": 7,
+        "disliked": 2,
+        "desired": 4
+      },
+      "roleRecovery": {
+        "action": {
+          "hit": 0,
+          "total": 6
+        },
+        "object": {
+          "hit": 6,
+          "total": 6
+        },
+        "purpose": {
+          "hit": 5,
+          "total": 6
+        },
+        "method": {
+          "hit": 4,
+          "total": 6
+        },
+        "domain": {
+          "hit": 6,
+          "total": 6
+        }
+      },
+      "unmatchedExperience": 0,
+      "channelLeak": 0
+    },
+    {
+      "personId": "frame-development-p010",
+      "interpreted": true,
+      "counts": {
+        "experience": 6,
+        "liked": 7,
+        "disliked": 2,
+        "desired": 4
+      },
+      "planted": {
+        "experience": 6,
+        "liked": 7,
+        "disliked": 2,
+        "desired": 4
+      },
+      "roleRecovery": {
+        "action": {
+          "hit": 3,
+          "total": 6
+        },
+        "object": {
+          "hit": 6,
+          "total": 6
+        },
+        "purpose": {
+          "hit": 6,
+          "total": 6
+        },
+        "method": {
+          "hit": 5,
+          "total": 6
+        },
+        "domain": {
+          "hit": 6,
+          "total": 6
+        }
+      },
+      "unmatchedExperience": 0,
+      "channelLeak": 0
+    },
+    {
+      "personId": "frame-development-p011",
+      "interpreted": true,
+      "counts": {
+        "experience": 6,
+        "liked": 7,
+        "disliked": 2,
+        "desired": 4
+      },
+      "planted": {
+        "experience": 6,
+        "liked": 7,
+        "disliked": 2,
+        "desired": 4
+      },
+      "roleRecovery": {
+        "action": {
+          "hit": 2,
+          "total": 6
+        },
+        "object": {
+          "hit": 6,
+          "total": 6
+        },
+        "purpose": {
+          "hit": 6,
+          "total": 6
+        },
+        "method": {
+          "hit": 5,
+          "total": 6
+        },
+        "domain": {
+          "hit": 5,
+          "total": 6
+        }
+      },
+      "unmatchedExperience": 0,
+      "channelLeak": 0
+    },
+    {
+      "personId": "frame-development-p012",
+      "interpreted": true,
+      "counts": {
+        "experience": 6,
+        "liked": 7,
+        "disliked": 2,
+        "desired": 4
+      },
+      "planted": {
+        "experience": 6,
+        "liked": 7,
+        "disliked": 2,
+        "desired": 4
+      },
+      "roleRecovery": {
+        "action": {
+          "hit": 2,
+          "total": 6
+        },
+        "object": {
+          "hit": 6,
+          "total": 6
+        },
+        "purpose": {
+          "hit": 6,
+          "total": 6
+        },
+        "method": {
+          "hit": 6,
+          "total": 6
+        },
+        "domain": {
+          "hit": 6,
+          "total": 6
+        }
+      },
+      "unmatchedExperience": 0,
+      "channelLeak": 0
+    }
+  ]
+}
