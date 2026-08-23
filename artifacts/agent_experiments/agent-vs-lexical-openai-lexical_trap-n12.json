@@ -1,0 +1,461 @@
+{
+  "experiment": "agent-vs-lexical",
+  "experimentId": "agent-vs-lexical:openai:LEXICAL_TRAP:low",
+  "family": "LEXICAL_TRAP",
+  "people": 12,
+  "provider": "openai",
+  "requestedModel": "gpt-5.6-sol",
+  "resolvedModels": [
+    "gpt-5.6-sol"
+  ],
+  "reasoning": "low",
+  "canonicalCrossProviderArm": true,
+  "promptVersions": {
+    "person": "v1",
+    "job": "v1"
+  },
+  "promptHashes": {
+    "person": "69452330f412013f5dc4ec675cb517e761ca8552dfe673aad1ed48cd76218a16",
+    "job": "459540474d69d51d2b3a4aa354e98972af879c1cde19cd44c3662bcec38a8125"
+  },
+  "schemaVersion": "agent-architecture.v1",
+  "schemaHashes": {
+    "person": "bf60932a3517a193e7b9827de92600e8ac0bf6136ee09083de80493c58676a91",
+    "job": "aef7784a2fcb4d51e68106bba3ab4f3523b45285884aee1df6eea0a75af34678"
+  },
+  "maxOutputTokens": {
+    "person": 1800,
+    "job": 700
+  },
+  "scores": [
+    {
+      "key": "random:experience",
+      "ndcg10": 0.3704933751408639,
+      "recall10": 0.4270833333333333,
+      "surprising": 0.42361111111111116,
+      "transition": 0.3333333333333333
+    },
+    {
+      "key": "random:preference",
+      "ndcg10": 0.37343303950331147,
+      "recall10": 0.43664021164021155,
+      "surprising": 0.42361111111111116,
+      "transition": 0.3333333333333333
+    },
+    {
+      "key": "random:direction",
+      "ndcg10": 0.19132947462822944,
+      "recall10": 0.2916666666666667,
+      "surprising": 0.42361111111111116,
+      "transition": 0.3333333333333333
+    },
+    {
+      "key": "constant-score:experience",
+      "ndcg10": 0.27425601772960434,
+      "recall10": 0.3854166666666667,
+      "surprising": 0.3805555555555556,
+      "transition": 0.4166666666666667
+    },
+    {
+      "key": "constant-score:preference",
+      "ndcg10": 0.2436160121105697,
+      "recall10": 0.4069444444444444,
+      "surprising": 0.3805555555555556,
+      "transition": 0.4166666666666667
+    },
+    {
+      "key": "constant-score:direction",
+      "ndcg10": 0.2645463372232553,
+      "recall10": 0.5,
+      "surprising": 0.3805555555555556,
+      "transition": 0.4166666666666667
+    },
+    {
+      "key": "title-only:experience",
+      "ndcg10": 0.34298305719741945,
+      "recall10": 0.4270833333333333,
+      "surprising": 0.24583333333333335,
+      "transition": 0.25
+    },
+    {
+      "key": "title-only:preference",
+      "ndcg10": 0.19278971428519429,
+      "recall10": 0.3889550264550264,
+      "surprising": 0.24583333333333335,
+      "transition": 0.25
+    },
+    {
+      "key": "title-only:direction",
+      "ndcg10": 0.25430744325570703,
+      "recall10": 0.5,
+      "surprising": 0.24583333333333335,
+      "transition": 0.25
+    },
+    {
+      "key": "char-ngram-lexical:experience",
+      "ndcg10": 0.6273808393988364,
+      "recall10": 0.6458333333333334,
+      "surprising": 0.7527777777777778,
+      "transition": 0.08333333333333333
+    },
+    {
+      "key": "char-ngram-lexical:preference",
+      "ndcg10": 0.4838116475950627,
+      "recall10": 0.503637566137566,
+      "surprising": 0.2888888888888889,
+      "transition": 0.75
+    },
+    {
+      "key": "char-ngram-lexical:direction",
+      "ndcg10": 0.49067655354803574,
+      "recall10": 0.625,
+      "surprising": 0.36388888888888893,
+      "transition": 0.75
+    },
+    {
+      "key": "resume-lexical:experience",
+      "ndcg10": 0.5392538173111757,
+      "recall10": 0.4791666666666667,
+      "surprising": 0.5291666666666667,
+      "transition": 0.5
+    },
+    {
+      "key": "resume-lexical:preference",
+      "ndcg10": 0.26305179082577546,
+      "recall10": 0.45853174603174596,
+      "surprising": 0.5291666666666667,
+      "transition": 0.5
+    },
+    {
+      "key": "resume-lexical:direction",
+      "ndcg10": 0.15024008415531268,
+      "recall10": 0.25,
+      "surprising": 0.5291666666666667,
+      "transition": 0.5
+    },
+    {
+      "key": "experience-lexical:experience",
+      "ndcg10": 0.621568784411846,
+      "recall10": 0.5729166666666666,
+      "surprising": 0.6708333333333334,
+      "transition": 0.3333333333333333
+    },
+    {
+      "key": "experience-lexical:preference",
+      "ndcg10": 0.44418789451466884,
+      "recall10": 0.4952050264550265,
+      "surprising": 0.3513888888888889,
+      "transition": 0.5833333333333334
+    },
+    {
+      "key": "experience-lexical:direction",
+      "ndcg10": 0.59378075183988,
+      "recall10": 0.7916666666666666,
+      "surprising": 0.3375000000000001,
+      "transition": 0.9166666666666666
+    },
+    {
+      "key": "onet-canonical:experience",
+      "ndcg10": 0.32193663885321855,
+      "recall10": 0.40625,
+      "surprising": 0.39444444444444454,
+      "transition": 0.4166666666666667
+    },
+    {
+      "key": "onet-canonical:preference",
+      "ndcg10": 0.22535430490315692,
+      "recall10": 0.37060185185185185,
+      "surprising": 0.36388888888888893,
+      "transition": 0.3333333333333333
+    },
+    {
+      "key": "onet-canonical:direction",
+      "ndcg10": 0.2645463372232553,
+      "recall10": 0.5,
+      "surprising": 0.3805555555555556,
+      "transition": 0.4166666666666667
+    },
+    {
+      "key": "agent-blueprint:experience",
+      "ndcg10": 0.5968269611140608,
+      "recall10": 0.6145833333333334,
+      "surprising": 0.6041666666666666,
+      "transition": 0.08333333333333333
+    },
+    {
+      "key": "agent-blueprint:preference",
+      "ndcg10": 0.5285138000653289,
+      "recall10": 0.5435846560846561,
+      "surprising": 0.3569444444444445,
+      "transition": 0.8333333333333334
+    },
+    {
+      "key": "agent-blueprint:direction",
+      "ndcg10": 0.5064606197516075,
+      "recall10": 0.6666666666666666,
+      "surprising": 0.37361111111111106,
+      "transition": 0.6666666666666666
+    },
+    {
+      "key": "agent-field-match:experience",
+      "ndcg10": 0.7452764509336977,
+      "recall10": 0.75,
+      "surprising": 0.7972222222222222,
+      "transition": 0.08333333333333333
+    },
+    {
+      "key": "agent-field-match:preference",
+      "ndcg10": 0.6317246518486225,
+      "recall10": 0.5984457671957671,
+      "surprising": 0.39166666666666666,
+      "transition": 0.5
+    },
+    {
+      "key": "agent-field-match:direction",
+      "ndcg10": 0.7316815094271113,
+      "recall10": 0.875,
+      "surprising": 0.29027777777777775,
+      "transition": 0.9166666666666666
+    },
+    {
+      "key": "oracle-normalizer:experience",
+      "ndcg10": 0.8222369188808684,
+      "recall10": 0.7604166666666666,
+      "surprising": 0.8416666666666667,
+      "transition": 0
+    },
+    {
+      "key": "oracle-normalizer:preference",
+      "ndcg10": 0.6540091362587376,
+      "recall10": 0.6043981481481481,
+      "surprising": 0.3208333333333333,
+      "transition": 0.75
+    },
+    {
+      "key": "oracle-normalizer:direction",
+      "ndcg10": 0.9508402747709747,
+      "recall10": 0.9583333333333334,
+      "surprising": 0.25555555555555554,
+      "transition": 1
+    },
+    {
+      "key": "oracle-planted-truth:experience",
+      "ndcg10": 1,
+      "recall10": 1,
+      "surprising": 1,
+      "transition": 0
+    },
+    {
+      "key": "oracle-planted-truth:preference",
+      "ndcg10": 0.9778268825125308,
+      "recall10": 0.8777116402116403,
+      "surprising": 0.476388888888889,
+      "transition": 1
+    },
+    {
+      "key": "oracle-planted-truth:direction",
+      "ndcg10": 1,
+      "recall10": 1,
+      "surprising": 0.3361111111111111,
+      "transition": 1
+    }
+  ],
+  "comparisons": [
+    {
+      "system": "agent-blueprint",
+      "reference": "experience-lexical",
+      "family": "LEXICAL_TRAP",
+      "channel": "experience",
+      "pairedN": 12,
+      "meanSystem": 0.5968269611140608,
+      "meanReference": 0.621568784411846,
+      "meanDifference": -0.024741823297785296,
+      "ci95": {
+        "low": -0.12753067584067504,
+        "high": 0.06668830016956949
+      },
+      "significant": false,
+      "resolvableDifference": 0.09710948800512226
+    },
+    {
+      "system": "agent-blueprint",
+      "reference": "experience-lexical",
+      "family": "LEXICAL_TRAP",
+      "channel": "preference",
+      "pairedN": 12,
+      "meanSystem": 0.5285138000653289,
+      "meanReference": 0.44418789451466884,
+      "meanDifference": 0.08432590555066004,
+      "ci95": {
+        "low": -0.023028799270446935,
+        "high": 0.1982446970590062
+      },
+      "significant": false,
+      "resolvableDifference": 0.11063674816472656
+    },
+    {
+      "system": "agent-blueprint",
+      "reference": "experience-lexical",
+      "family": "LEXICAL_TRAP",
+      "channel": "direction",
+      "pairedN": 12,
+      "meanSystem": 0.5064606197516075,
+      "meanReference": 0.59378075183988,
+      "meanDifference": -0.08732013208827256,
+      "ci95": {
+        "low": -0.2512046162792319,
+        "high": 0.09327975973292217
+      },
+      "significant": false,
+      "resolvableDifference": 0.17224218800607705
+    },
+    {
+      "system": "agent-field-match",
+      "reference": "experience-lexical",
+      "family": "LEXICAL_TRAP",
+      "channel": "experience",
+      "pairedN": 12,
+      "meanSystem": 0.7452764509336977,
+      "meanReference": 0.621568784411846,
+      "meanDifference": 0.12370766652185174,
+      "ci95": {
+        "low": 0.05605028143270547,
+        "high": 0.18795834461106464
+      },
+      "significant": true,
+      "resolvableDifference": 0.06595403158917959
+    },
+    {
+      "system": "agent-field-match",
+      "reference": "experience-lexical",
+      "family": "LEXICAL_TRAP",
+      "channel": "preference",
+      "pairedN": 12,
+      "meanSystem": 0.6317246518486225,
+      "meanReference": 0.44418789451466884,
+      "meanDifference": 0.18753675733395372,
+      "ci95": {
+        "low": 0.05670052172608394,
+        "high": 0.3170782302084632
+      },
+      "significant": true,
+      "resolvableDifference": 0.13018885424118964
+    },
+    {
+      "system": "agent-field-match",
+      "reference": "experience-lexical",
+      "family": "LEXICAL_TRAP",
+      "channel": "direction",
+      "pairedN": 12,
+      "meanSystem": 0.7316815094271113,
+      "meanReference": 0.59378075183988,
+      "meanDifference": 0.13790075758723122,
+      "ci95": {
+        "low": -0.037032045910261706,
+        "high": 0.3284094463940639
+      },
+      "significant": false,
+      "resolvableDifference": 0.1827207461521628
+    },
+    {
+      "system": "agent-field-match",
+      "reference": "agent-blueprint",
+      "family": "LEXICAL_TRAP",
+      "channel": "experience",
+      "pairedN": 12,
+      "meanSystem": 0.7452764509336977,
+      "meanReference": 0.5968269611140608,
+      "meanDifference": 0.14844948981963701,
+      "ci95": {
+        "low": 0.0884835417586526,
+        "high": 0.21141037677906724
+      },
+      "significant": true,
+      "resolvableDifference": 0.06146341751020732
+    },
+    {
+      "system": "agent-field-match",
+      "reference": "agent-blueprint",
+      "family": "LEXICAL_TRAP",
+      "channel": "preference",
+      "pairedN": 12,
+      "meanSystem": 0.6317246518486225,
+      "meanReference": 0.5285138000653289,
+      "meanDifference": 0.1032108517832937,
+      "ci95": {
+        "low": 0.0010461612219495597,
+        "high": 0.213733357578166
+      },
+      "significant": true,
+      "resolvableDifference": 0.10634359817810822
+    },
+    {
+      "system": "agent-field-match",
+      "reference": "agent-blueprint",
+      "family": "LEXICAL_TRAP",
+      "channel": "direction",
+      "pairedN": 12,
+      "meanSystem": 0.7316815094271113,
+      "meanReference": 0.5064606197516075,
+      "meanDifference": 0.22522088967550377,
+      "ci95": {
+        "low": 0.11945327352876543,
+        "high": 0.3288973063143951
+      },
+      "significant": true,
+      "resolvableDifference": 0.10472201639281484
+    }
+  ],
+  "telemetry": {
+    "person": {
+      "calls": 12,
+      "cacheHits": 0,
+      "cacheMisses": 12,
+      "errors": 0,
+      "inputTokens": 12698,
+      "outputTokens": 9556,
+      "reasoningTokens": 3437,
+      "cachedInputTokens": 0,
+      "costUsd": 0.35017000000000004,
+      "anyCostEstimated": true,
+      "truncated": 0,
+      "resolvedModels": [
+        "gpt-5.6-sol"
+      ],
+      "p50LatencyMs": 10774,
+      "p95LatencyMs": 12007
+    },
+    "job": {
+      "calls": 288,
+      "cacheHits": 0,
+      "cacheMisses": 288,
+      "errors": 0,
+      "inputTokens": 92891,
+      "outputTokens": 92278,
+      "reasoningTokens": 50808,
+      "cachedInputTokens": 0,
+      "costUsd": 3.2327950000000016,
+      "anyCostEstimated": true,
+      "truncated": 0,
+      "resolvedModels": [
+        "gpt-5.6-sol"
+      ],
+      "p50LatencyMs": 6183,
+      "p95LatencyMs": 9032
+    }
+  },
+  "totalCostUsd": 3.5829650000000015,
+  "elapsedMs": 1942192,
+  "budgetAfter": {
+    "spentUsd": 7.414564999999995,
+    "calls": 606,
+    "limits": {
+      "maxSpendUsd": 25,
+      "maxCalls": 1000
+    }
+  },
+  "refusals": {
+    "count": 0,
+    "samples": []
+  }
+}
