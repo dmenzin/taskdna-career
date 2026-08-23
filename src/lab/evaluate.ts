@@ -5,20 +5,29 @@ import type { UserProfile } from "@/domain/types";
 import { analogCoordinationJobs, analogInvestigationJobs } from "@/lab/analogJobs";
 import type { SubjectEvaluation, TwinPair, VirtualSubject } from "@/lab/types";
 
+/**
+ * Hand the four inference-visible observation sources to the engine as FOUR DISTINCT
+ * sources.
+ *
+ * The previous version concatenated `explicitPreferences`, `explicitDislikes`, and
+ * `contradictoryStatements` into `careerText` AND passed the first two separately, so one
+ * generated statement arrived twice through two plumbing paths and was counted twice in the
+ * dependence-aware effective-signal count. The generator now assigns each statement to
+ * exactly one source (src/lab/preferencePhrases.ts) and the extractor additionally
+ * suppresses exact-normalized cross-source repeats, so the two defences are independent.
+ *
+ * Keep INFERENCE_VISIBLE_PREFERENCE_FIELDS in src/lab/evidenceAvailability.ts in sync with
+ * the fields read here; tests/available-evidence.test.ts asserts the two agree.
+ */
 export function observationsToProfile(subject: VirtualSubject): UserProfile {
-  const text = [
-    subject.observations.resumeText,
-    ...subject.observations.explicitPreferences,
-    ...subject.observations.explicitDislikes,
-    ...subject.observations.contradictoryStatements,
-  ].join(" ");
   return buildProfileFromCareerInput({
     id: subject.observations.subjectId,
     name: subject.observations.subjectId,
     currentField: subject.observations.apparentField,
-    careerText: text,
+    careerText: subject.observations.resumeText,
     explicitPreferences: subject.observations.explicitPreferences,
     explicitDislikes: subject.observations.explicitDislikes,
+    contradictoryStatements: subject.observations.contradictoryStatements,
     skills: subject.observations.statedSkills,
   });
 }

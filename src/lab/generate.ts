@@ -2,6 +2,7 @@ import { DIMENSION_IDS, vector } from "@/config/model";
 import type { InteractionEvent, Person, Relationship } from "@/domain/networkTypes";
 import type { Vector } from "@/domain/types";
 import { occupationSkeletons } from "@/lab/occupations";
+import { genericPhrase, LEGACY_PREFERENCE_PHRASES, planPreferenceStatements, statementsForConstruction, statementsForSource } from "@/lab/preferencePhrases";
 import { between, chance, hashSeed, mulberry32, pick, pickN, type Rng } from "@/lab/rng";
 import type { SubjectCohort, TwinPair, VirtualSubject, VirtualSubjectObservations, VirtualSubjectTruth } from "@/lab/types";
 
@@ -99,21 +100,29 @@ function observe(truth: VirtualSubjectTruth, rng: Rng, index: number): VirtualSu
   const misleadingTitle = truth.cohort === "adversarial" || truth.careerHistoryTruth.accidentalCareer;
   const stale = chance(rng, 0.2);
   const title = misleadingTitle ? pick(rng, ["Coordinator", "Specialist", "Associate", "Analyst", "Program Lead"]) : truth.occupationalSkeleton.title.replace(/s$/, "");
-  const likedTasks = preferenceLanguage(truth.taskDnaTruth, true);
-  const dislikedTasks = preferenceLanguage(truth.taskDnaTruth, false);
   const occupationTasks = pickN(rng, truth.occupationalSkeleton.tasks, sparse ? 1 : 2);
-  const struggle = truth.careerHistoryTruth.burnedOut
-    ? `Burned out on ${pick(rng, truth.occupationalSkeleton.workContext)} and the parts of the job that felt like ${dislikedTasks[0]}.`
-    : `Struggled with ${pick(rng, dislikedTasks)} even when the team called it a success.`;
+  // Same semantic-polarity and single-source rules as the v2 O*NET lab: see
+  // src/lab/preferencePhrases.ts and src/lab/preferenceSemantics.ts.
+  const plan = planPreferenceStatements(truth.taskDnaTruth, rng, {
+    catalog: LEGACY_PREFERENCE_PHRASES,
+    sources: {
+      resumeNarrative: !sparse,
+      explicitPreferenceList: !sparse,
+      explicitDislikeList: !sparse,
+      contradictoryStatement: contradictory,
+    },
+    burnedOut: truth.careerHistoryTruth.burnedOut,
+    workContext: truth.occupationalSkeleton.workContext.length ? pick(rng, truth.occupationalSkeleton.workContext) : "the daily grind",
+  });
+  const struggleStatements = [...statementsForConstruction(plan, "STRUGGLE"), ...statementsForConstruction(plan, "BURNOUT")];
+  const struggle = struggleStatements[0]?.text ?? `Struggled with ${genericPhrase("DISLIKE")} even when the team called it a success.`;
   const achievement = `Improved a messy workflow around ${pick(rng, occupationTasks).toLowerCase()} using ${pick(rng, truth.capabilityTruth)}.`;
   const hobby = chance(rng, 0.35) ? " Outside work I tinker with side projects that are more interesting than my title suggests." : "";
-  const contradiction = contradictory
-    ? ` I say I dislike ${dislikedTasks[0]}, but I also spent a year doing it because it paid the bills.`
-    : "";
   const vague = sparse ? "I have done some projects and like solving problems but I am not sure what kind." : "";
+  const narrative = statementsForSource(plan, "RESUME_NARRATIVE").map((statement) => statement.text);
   const resumeText = sparse
     ? `${title}. ${vague} ${occupationTasks[0] ?? ""} ${hobby}`
-    : `${title} working in ${truth.occupationalSkeleton.industry}. ${occupationTasks.join(". ")}. ${achievement} I enjoy ${likedTasks.join(" and ")}. I avoid ${dislikedTasks.join(" and ")}. ${struggle}${contradiction}${hobby} ${stale ? "Most of this is from an older role." : ""}`;
+    : `${title} working in ${truth.occupationalSkeleton.industry}. ${occupationTasks.join(". ")}. ${achievement} ${narrative.join(" ")}${hobby} ${stale ? "Most of this is from an older role." : ""}`;
 
   return {
     subjectId: truth.subjectId,
@@ -124,13 +133,14 @@ function observe(truth: VirtualSubjectTruth, rng: Rng, index: number): VirtualSu
     achievements: sparse ? [] : [achievement],
     failuresOrStruggles: [struggle],
     scenarioResponses: [],
-    explicitPreferences: sparse ? [] : likedTasks.slice(0, 2),
-    explicitDislikes: sparse ? [] : dislikedTasks.slice(0, 2),
+    explicitPreferences: statementsForSource(plan, "EXPLICIT_PREFERENCE_LIST").map((statement) => statement.text),
+    explicitDislikes: statementsForSource(plan, "EXPLICIT_DISLIKE_LIST").map((statement) => statement.text),
     incompleteInformation: sparse ? ["career goals unspecified", "skills underspecified"] : [],
-    contradictoryStatements: contradictory ? [`Claims to dislike ${dislikedTasks[0]} while reporting paid success doing it.`] : [],
+    contradictoryStatements: statementsForSource(plan, "CONTRADICTORY_STATEMENT").map((statement) => statement.text),
     statedSkills: sparse ? truth.capabilityTruth.slice(0, 1) : truth.capabilityTruth,
     networkIntake: createSubjectNetwork(truth, rng, index),
     evidenceQualityMetadata: { sparse, contradictory, misleadingTitle, stale },
+    preferenceStatementPlan: plan,
   };
 }
 
@@ -283,20 +293,6 @@ function nudgeTowardOccupation(input: Vector, rng: Rng): Vector {
 
 function dimensionsFromVector(values: Vector, high: boolean) {
   return DIMENSION_IDS.filter((id) => (high ? values[id] >= 7.2 : values[id] <= 3.2)).slice(0, 4);
-}
-
-function preferenceLanguage(values: Vector, high: boolean) {
-  const phrases: Record<string, [string, string]> = {
-    investigation_orientation: ["root-cause investigation", "status coordination"],
-    evidence_density: ["logs and measurements", "administrative packets"],
-    coordination_preference: ["stakeholder orchestration", "solo deep work"],
-    customer_interaction_preference: ["customer-facing troubleshooting", "internal-only analysis"],
-    repetition_tolerance: ["repeatable protocols", "novel problem solving"],
-    software_as_tool: ["building tools", "hands-on field work"],
-    problem_structure: ["bounded diagnostic problems", "open-ended ambiguity"],
-    theory_vs_application: ["applied experiments", "abstract modeling"],
-  };
-  return DIMENSION_IDS.filter((id) => phrases[id]).filter((id) => (high ? values[id] >= 6.5 : values[id] <= 4)).map((id) => phrases[id]![high ? 0 : 1]).slice(0, 3);
 }
 
 function expectedProperties(values: Vector, capabilities: string[], occupationFits: boolean) {

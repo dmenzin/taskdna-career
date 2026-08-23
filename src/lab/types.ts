@@ -1,5 +1,6 @@
 import type { ScenarioAnswer, Vector } from "@/domain/types";
 import type { InteractionEvent, Person, Relationship } from "@/domain/networkTypes";
+import type { PreferenceStatementPlan } from "@/lab/preferencePhrases";
 
 export type SubjectCohort = "design" | "validation" | "holdout" | "adversarial";
 /** Pass-2 cohorts for the O*NET-backed lab. "development" replaces "design" naming. */
@@ -93,6 +94,17 @@ export interface VirtualSubjectObservations {
     misleadingTitle: boolean;
     stale: boolean;
   };
+  /**
+   * What the generator MEANT by each preference statement it emitted, and which single
+   * observable source it was assigned to.
+   *
+   * This is generator bookkeeping for provenance, bias diagnostics, and duplicate-path
+   * auditing. It is NOT inference-visible and it is NOT what availability is computed
+   * from: src/lab/evidenceAvailability.ts recovers meaning by reading the rendered text,
+   * so a generator that emits backwards language cannot assert its way to a correct
+   * label. Do not read this from any evaluator that grades the decoder.
+   */
+  preferenceStatementPlan?: PreferenceStatementPlan;
 }
 
 export interface VirtualSubject {

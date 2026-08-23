@@ -41,7 +41,7 @@ export function computeEligibilitySensitivity(
   return results.map((r) => {
     const decision = decisionById.get(r.id)!;
     const coverageGatable = COVERAGE_GATABLE_CLASSIFICATIONS.includes(decision.classification);
-    const nonCoverageCriteriaPass = r.highEvidenceAssociation > 0 && r.lowEvidenceAssociation < 0 && r.observableSignalAssociation > 0 && r.monotonicBins;
+    const nonCoverageCriteriaPass = r.highMeaningAssociation > 0 && r.lowMeaningAssociation < 0 && r.observableSignalAssociation > 0 && r.monotonicBins;
     const eligibleAtFloor: Record<string, boolean> = {};
     for (const floor of floors) {
       eligibleAtFloor[String(floor)] = coverageGatable && nonCoverageCriteriaPass && r.coverage >= floor;
