@@ -27,7 +27,7 @@ export type ParaphraseFamily = (typeof PARAPHRASE_FAMILIES)[number];
  * Deterministic synonym substitutions over common O*NET work vocabulary. Each entry maps a
  * source form to alternatives that preserve the work meaning. Applied whole-word only.
  */
-const SYNONYMS: Record<string, string[]> = {
+export const SYNONYMS: Record<string, string[]> = {
   analyze: ["examine", "work through", "break down"],
   analyzing: ["examining", "breaking down"],
   evaluate: ["assess", "weigh up", "judge"],

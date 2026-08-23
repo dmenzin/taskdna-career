@@ -1,0 +1,146 @@
+{
+  "version": "baseline-ablation.v1",
+  "seeds": 12,
+  "people": 12,
+  "k": 5,
+  "results": {
+    "standard": {
+      "persons": 144,
+      "comparisons": [
+        {
+          "variant": "full",
+          "system": "taskdna",
+          "reference": "lexical-full",
+          "pairedN": 144,
+          "meanSystem": 0.9990888536283866,
+          "meanReference": 0.9084680588516725,
+          "meanDifference": 0.09062079477671335,
+          "ci95": {
+            "low": 0.07083106596614158,
+            "high": 0.11213640862575645
+          },
+          "probabilitySystemBetter": 1,
+          "significant": true,
+          "discordantPairs": 68
+        },
+        {
+          "variant": "noTitle",
+          "system": "taskdna",
+          "reference": "lexical-noTitle",
+          "pairedN": 144,
+          "meanSystem": 0.9990888536283866,
+          "meanReference": 0.883164034832771,
+          "meanDifference": 0.11592481879561488,
+          "ci95": {
+            "low": 0.09351915318125523,
+            "high": 0.13956137661980003
+          },
+          "probabilitySystemBetter": 1,
+          "significant": true,
+          "discordantPairs": 82
+        },
+        {
+          "variant": "evidenceOnly",
+          "system": "taskdna",
+          "reference": "lexical-evidenceOnly",
+          "pairedN": 144,
+          "meanSystem": 0.9990888536283866,
+          "meanReference": 0.8812385249205829,
+          "meanDifference": 0.11785032870780271,
+          "ci95": {
+            "low": 0.09566890399026064,
+            "high": 0.14174237789691274
+          },
+          "probabilitySystemBetter": 1,
+          "significant": true,
+          "discordantPairs": 83
+        },
+        {
+          "variant": "experienceOnly",
+          "system": "taskdna",
+          "reference": "lexical-experienceOnly",
+          "pairedN": 144,
+          "meanSystem": 0.9990888536283866,
+          "meanReference": 1,
+          "meanDifference": -0.0009111463716134854,
+          "ci95": {
+            "low": -0.002733439114840456,
+            "high": 0
+          },
+          "probabilitySystemBetter": 0,
+          "significant": false,
+          "discordantPairs": 1
+        }
+      ]
+    },
+    "hard": {
+      "persons": 144,
+      "comparisons": [
+        {
+          "variant": "full",
+          "system": "taskdna",
+          "reference": "lexical-full",
+          "pairedN": 144,
+          "meanSystem": 0.9289076070394005,
+          "meanReference": 0.9243294404830742,
+          "meanDifference": 0.0045781665563264465,
+          "ci95": {
+            "low": -0.017166313148620382,
+            "high": 0.026244779220129702
+          },
+          "probabilitySystemBetter": 0.6538,
+          "significant": false,
+          "discordantPairs": 86
+        },
+        {
+          "variant": "noTitle",
+          "system": "taskdna",
+          "reference": "lexical-noTitle",
+          "pairedN": 144,
+          "meanSystem": 0.9289076070394005,
+          "meanReference": 0.8905018334547736,
+          "meanDifference": 0.03840577358462696,
+          "ci95": {
+            "low": 0.015446028494046816,
+            "high": 0.06262400545831145
+          },
+          "probabilitySystemBetter": 0.9998,
+          "significant": true,
+          "discordantPairs": 94
+        },
+        {
+          "variant": "evidenceOnly",
+          "system": "taskdna",
+          "reference": "lexical-evidenceOnly",
+          "pairedN": 144,
+          "meanSystem": 0.9289076070394005,
+          "meanReference": 0.8904417745626644,
+          "meanDifference": 0.038465832476736246,
+          "ci95": {
+            "low": 0.015220079657839978,
+            "high": 0.0627038835755138
+          },
+          "probabilitySystemBetter": 0.9996,
+          "significant": true,
+          "discordantPairs": 92
+        },
+        {
+          "variant": "experienceOnly",
+          "system": "taskdna",
+          "reference": "lexical-experienceOnly",
+          "pairedN": 144,
+          "meanSystem": 0.9289076070394005,
+          "meanReference": 0.9941634113713271,
+          "meanDifference": -0.06525580433192586,
+          "ci95": {
+            "low": -0.08158537985389173,
+            "high": -0.049562798696271684
+          },
+          "probabilitySystemBetter": 0,
+          "significant": true,
+          "discordantPairs": 59
+        }
+      ]
+    }
+  }
+}

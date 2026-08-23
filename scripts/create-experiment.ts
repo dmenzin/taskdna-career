@@ -2,7 +2,7 @@ import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 const id = process.argv[2];
 if (!id || !/^[a-z0-9][a-z0-9-]+$/.test(id)) throw new Error("Usage: pnpm experiment:new <lowercase-id>");
-const dir = `experiments/records/${id}`; mkdirSync(dir, {recursive:false});
+const dir = `experiments/records/${id}`; mkdirSync(dir, {recursive:true});
 const template = readFileSync("experiments/templates/EXPERIMENT.md", "utf8")
  .replace("{{EXPERIMENT_ID}}", id)
  .replace("- Timestamp:", `- Timestamp: ${new Date().toISOString()}`)

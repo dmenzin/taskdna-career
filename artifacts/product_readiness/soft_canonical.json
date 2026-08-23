@@ -1,0 +1,144 @@
+{
+  "version": "soft-canonical.v1",
+  "seeds": 6,
+  "people": 12,
+  "k": 5,
+  "results": {
+    "standard": {
+      "canonical-work": {
+        "candidateRecallAtK": 0.3959920338161438,
+        "crossTitleRecallAtK": 0.16022206959706958,
+        "crossIndustryRecallAtK": 0.08516003672253673,
+        "surprisingTransferRecallAtK": 0.29837962962962955,
+        "preferenceRecallAtK": 0.289416098607275,
+        "directionRecallAtK": 0.22343474426807758,
+        "noveltyConditionedRelevance": 0.15277777777777776,
+        "titleConcentration": 0.3388888888888886,
+        "stratumConcentration": 0.5250000000000002
+      },
+      "lexical-overlap": {
+        "candidateRecallAtK": 0.5247121100481522,
+        "crossTitleRecallAtK": 0.42355896418396405,
+        "crossIndustryRecallAtK": 0.29016494693578015,
+        "surprisingTransferRecallAtK": 0.7993055555555554,
+        "preferenceRecallAtK": 0.308279339805075,
+        "directionRecallAtK": 0.12868165784832453,
+        "noveltyConditionedRelevance": 0.38611111111111057,
+        "titleConcentration": 0.3388888888888886,
+        "stratumConcentration": 0.5027777777777779
+      },
+      "title-only": {
+        "candidateRecallAtK": 0.1513628182294332,
+        "crossTitleRecallAtK": 0,
+        "crossIndustryRecallAtK": 0.018872466268299602,
+        "surprisingTransferRecallAtK": 0.009259259259259259,
+        "preferenceRecallAtK": 0.06399054830427381,
+        "directionRecallAtK": 0.006604030501089324,
+        "noveltyConditionedRelevance": 0.008333333333333335,
+        "titleConcentration": 0.8944444444444444,
+        "stratumConcentration": 1
+      },
+      "canonical-soft": {
+        "candidateRecallAtK": 0.43623858004501703,
+        "crossTitleRecallAtK": 0.2808239214489214,
+        "crossIndustryRecallAtK": 0.1938295693504027,
+        "surprisingTransferRecallAtK": 0.537962962962963,
+        "preferenceRecallAtK": 0.3155617893362991,
+        "directionRecallAtK": 0.17412918871252203,
+        "noveltyConditionedRelevance": 0.25555555555555537,
+        "titleConcentration": 0.3222222222222219,
+        "stratumConcentration": 0.4805555555555558
+      },
+      "canonical-soft-weighted": {
+        "candidateRecallAtK": 0.43281342941591894,
+        "crossTitleRecallAtK": 0.25515237077737074,
+        "crossIndustryRecallAtK": 0.170179877992378,
+        "surprisingTransferRecallAtK": 0.49745370370370384,
+        "preferenceRecallAtK": 0.31739194220811867,
+        "directionRecallAtK": 0.15051807760141095,
+        "noveltyConditionedRelevance": 0.24444444444444433,
+        "titleConcentration": 0.3305555555555552,
+        "stratumConcentration": 0.49444444444444446
+      },
+      "canonical-soft-dwa": {
+        "candidateRecallAtK": 0.4251787551758526,
+        "crossTitleRecallAtK": 0.2797822547822547,
+        "crossIndustryRecallAtK": 0.2070818841652175,
+        "surprisingTransferRecallAtK": 0.5252314814814816,
+        "preferenceRecallAtK": 0.3197205934951031,
+        "directionRecallAtK": 0.18361992945326275,
+        "noveltyConditionedRelevance": 0.24999999999999986,
+        "titleConcentration": 0.3111111111111108,
+        "stratumConcentration": 0.46388888888888885
+      }
+    },
+    "hard": {
+      "canonical-work": {
+        "candidateRecallAtK": 0.3803349486818268,
+        "crossTitleRecallAtK": 0.284118080993081,
+        "crossIndustryRecallAtK": 0.19875040083373416,
+        "surprisingTransferRecallAtK": 0.475462962962963,
+        "preferenceRecallAtK": 0.268494190767475,
+        "directionRecallAtK": 0.15201427793339561,
+        "noveltyConditionedRelevance": 0.23333333333333325,
+        "titleConcentration": 0.3055555555555552,
+        "stratumConcentration": 0.4472222222222217
+      },
+      "lexical-overlap": {
+        "candidateRecallAtK": 0.5387261231511102,
+        "crossTitleRecallAtK": 0.42242826617826595,
+        "crossIndustryRecallAtK": 0.29451123721957045,
+        "surprisingTransferRecallAtK": 0.7888888888888886,
+        "preferenceRecallAtK": 0.3046845164185849,
+        "directionRecallAtK": 0.09565696649029981,
+        "noveltyConditionedRelevance": 0.3861111111111107,
+        "titleConcentration": 0.3611111111111109,
+        "stratumConcentration": 0.5305555555555558
+      },
+      "title-only": {
+        "candidateRecallAtK": 0.1513628182294332,
+        "crossTitleRecallAtK": 0,
+        "crossIndustryRecallAtK": 0.018872466268299602,
+        "surprisingTransferRecallAtK": 0.009259259259259259,
+        "preferenceRecallAtK": 0.06399054830427381,
+        "directionRecallAtK": 0.006604030501089324,
+        "noveltyConditionedRelevance": 0.008333333333333335,
+        "titleConcentration": 0.8944444444444444,
+        "stratumConcentration": 1
+      },
+      "canonical-soft": {
+        "candidateRecallAtK": 0.3677550375273543,
+        "crossTitleRecallAtK": 0.26970009157509156,
+        "crossIndustryRecallAtK": 0.20601090653173984,
+        "surprisingTransferRecallAtK": 0.5025462962962964,
+        "preferenceRecallAtK": 0.28941991423609065,
+        "directionRecallAtK": 0.17591749662828093,
+        "noveltyConditionedRelevance": 0.25833333333333325,
+        "titleConcentration": 0.2916666666666664,
+        "stratumConcentration": 0.4166666666666663
+      },
+      "canonical-soft-weighted": {
+        "candidateRecallAtK": 0.4329630162769997,
+        "crossTitleRecallAtK": 0.3393989112739112,
+        "crossIndustryRecallAtK": 0.26692135025468355,
+        "surprisingTransferRecallAtK": 0.6340277777777779,
+        "preferenceRecallAtK": 0.30408591952709585,
+        "directionRecallAtK": 0.15220037088909638,
+        "noveltyConditionedRelevance": 0.3138888888888886,
+        "titleConcentration": 0.31388888888888866,
+        "stratumConcentration": 0.4388888888888886
+      },
+      "canonical-soft-dwa": {
+        "candidateRecallAtK": 0.3378804246483555,
+        "crossTitleRecallAtK": 0.2490715303215302,
+        "crossIndustryRecallAtK": 0.20773649575732905,
+        "surprisingTransferRecallAtK": 0.4662037037037037,
+        "preferenceRecallAtK": 0.25750391357008995,
+        "directionRecallAtK": 0.13131873119618218,
+        "noveltyConditionedRelevance": 0.23611111111111102,
+        "titleConcentration": 0.2944444444444442,
+        "stratumConcentration": 0.41111111111111076
+      }
+    }
+  }
+}
