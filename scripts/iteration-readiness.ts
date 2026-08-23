@@ -5,7 +5,15 @@ import { AUTONOMOUS_PREFERENCE_DIMENSIONS_V1, ELIGIBILITY_COVERAGE_FLOOR_POLICY,
 import { V3_COEFFICIENT_GOVERNANCE } from "../src/v3/coefficientGovernance";
 
 type Check={name:string;pass:boolean;detail:string};const checks:Check[]=[];
-const run=(command:string,args:string[])=>spawnSync(command,args,{encoding:"utf8",env:{...process.env,NO_COLOR:"1"}});
+// On win32 pnpm/npx resolve to .cmd shims, which spawnSync cannot execute without a shell;
+// without this every delegated check returned undefined stdout and the gate crashed rather
+// than reporting a result. The shell is used ONLY for those shims: routing `git grep` through
+// cmd would let it reinterpret the regex arguments.
+const NEEDS_SHELL=new Set(["pnpm","npx","npm"]);
+const run=(command:string,args:string[])=>{
+ const result=spawnSync(command,args,{encoding:"utf8",env:{...process.env,NO_COLOR:"1"},shell:process.platform==="win32"&&NEEDS_SHELL.has(command)});
+ return {status:result.status,stdout:result.stdout??"",stderr:result.stderr??""};
+};
 const add=(name:string,pass:boolean,detail:string)=>checks.push({name,pass,detail});
 const sha=(path:string)=>createHash("sha256").update(readFileSync(path)).digest("hex");
 const manifest=JSON.parse(readFileSync("config/baseline-manifest.json","utf8"));const frozen=manifest.records.find((r:{classification:string})=>r.classification==="VERIFIED_FROZEN_BASELINE");

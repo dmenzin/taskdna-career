@@ -1,0 +1,11 @@
+# Integrity gates hash artifact and config bytes FROM DISK
+# (config/baseline-manifest.json -> VERIFIED_FROZEN_BASELINE). With core.autocrlf=true a
+# Windows checkout rewrites LF to CRLF, so the on-disk bytes stop matching the recorded
+# sha256 and the frozen-baseline gate fails even though the committed content is identical.
+# Pinning these paths to LF keeps a recorded hash meaningful on every platform.
+*.json text eol=lf
+*.md text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+artifacts/** text eol=lf
+config/** text eol=lf
