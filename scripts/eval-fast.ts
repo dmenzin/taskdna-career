@@ -57,6 +57,57 @@ export const FAST_SUBSYSTEMS: Subsystem[] = [
     ],
   },
   {
+    id: "ranking",
+    description: "Job ranking: experience/preference/direction, joint discovery, transfer, policy modes.",
+    pathPatterns: [/src\/bench\/(labels|rankMetrics|policy|pipeline|run)\.ts/, /src\/v3\/fit\.ts/],
+    steps: [
+      { label: "ranking known answers", command: "pnpm", args: ["exec", "vitest", "run", "tests/bench-ranking.test.ts"] },
+      { label: "planted-truth validity", command: "pnpm", args: ["exec", "vitest", "run", "tests/bench-planted-truth.test.ts"] },
+    ],
+  },
+  {
+    id: "retrieval",
+    description: "Candidate job retrieval recall, cross-title and cross-industry coverage.",
+    pathPatterns: [/src\/bench\/candidates\.ts/],
+    steps: [
+      { label: "candidate retrieval benchmark", command: "pnpm", args: ["exec", "tsx", "scripts/bench-product.ts", "--people=8", "--difficulty=hard", "--no-write"] },
+    ],
+  },
+  {
+    id: "corpus",
+    description: "Planted-truth benchmark corpus: atoms, renderers, archetypes.",
+    pathPatterns: [/src\/bench\/(workAtoms|render|corpus)\.ts/],
+    steps: [
+      { label: "planted-truth validity", command: "pnpm", args: ["exec", "vitest", "run", "tests/bench-planted-truth.test.ts"] },
+      { label: "ranking known answers", command: "pnpm", args: ["exec", "vitest", "run", "tests/bench-ranking.test.ts"] },
+    ],
+  },
+  {
+    id: "extraction",
+    description: "Evidence-class extraction and person/job Task-DWA mapping accuracy.",
+    pathPatterns: [/src\/bench\/(extraction|mapping)\.ts/, /src\/domain\/evidence\.ts/],
+    steps: [
+      { label: "negation and polarity regressions", command: "pnpm", args: ["exec", "vitest", "run", "tests/evidence-negation.test.ts"] },
+      { label: "extraction and mapping benchmark", command: "pnpm", args: ["exec", "tsx", "scripts/bench-subsystems.ts", "--difficulty=hard", "--no-write"] },
+    ],
+  },
+  {
+    id: "trace",
+    description: "End-to-end recommendation traceability.",
+    pathPatterns: [/src\/bench\/trace\.ts/],
+    steps: [
+      { label: "traceability", command: "pnpm", args: ["exec", "vitest", "run", "tests/bench-traceability.test.ts"] },
+    ],
+  },
+  {
+    id: "contracts",
+    description: "Metric contracts: every optimizable subsystem has a runnable evaluator.",
+    pathPatterns: [/config\/metric-contracts\.json/, /scripts\/audit-metric-contracts\.ts/],
+    steps: [
+      { label: "metric contract audit", command: "pnpm", args: ["exec", "vitest", "run", "tests/metric-contracts.test.ts"] },
+    ],
+  },
+  {
     id: "network",
     description: "Relationship graph, next-best-action, opportunity graph.",
     pathPatterns: [/src\/domain\/(networkEngine|networkTypes)\.ts/, /src\/config\/network\.ts/],

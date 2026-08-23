@@ -1,0 +1,112 @@
+{
+  "version": "product-red-team.v1",
+  "difficulty": "hard",
+  "people": 8,
+  "attacks": [
+    {
+      "attack": "circular ranking gold (labels derived from the scorer)",
+      "verdict": "PASS",
+      "evidence": "labels.ts imports from the pipeline: none"
+    },
+    {
+      "attack": "self-labelled mapping gold",
+      "verdict": "PASS",
+      "evidence": "mapping targets come from the planted atom's taskId, not from mapper output"
+    },
+    {
+      "attack": "same-title/different-task false positives",
+      "verdict": "PASS",
+      "evidence": "precision@5 on the title-collision trap = 0.0250"
+    },
+    {
+      "attack": "different-title/same-task misses",
+      "verdict": "PASS",
+      "evidence": "cross-title mean rank 4.00 vs same-title-trap 7.00"
+    },
+    {
+      "attack": "incidental-task over-reward",
+      "verdict": "PASS",
+      "evidence": "core mean rank 2.88 vs incidental-only 7.25"
+    },
+    {
+      "attack": "candidate-pool misses go undetected",
+      "verdict": "PASS",
+      "evidence": "relevantJobMissRate is reported = 0.3949 (canonical-work); this is a MEASURED WEAKNESS, not a hidden one"
+    },
+    {
+      "attack": "novelty rewarded without relevance",
+      "verdict": "PASS",
+      "evidence": "noveltyWithoutRelevanceRateAtK reported separately = 0.0000; isSurprisingTransfer requires experience grade >= 2 by definition"
+    },
+    {
+      "attack": "opaque Overall score",
+      "verdict": "PASS",
+      "evidence": "no combined score key in any mode result; every job carries rank, Pareto front and tie-break"
+    },
+    {
+      "attack": "Pareto ordering internally inconsistent",
+      "verdict": "PASS",
+      "evidence": "score-space dominance violations across 8 people = 0"
+    },
+    {
+      "attack": "experience leaking into direction truth",
+      "verdict": "PASS",
+      "evidence": "every planted desired atom is work the person never performed, by construction"
+    },
+    {
+      "attack": "aspiration becoming experience",
+      "verdict": "PASS",
+      "evidence": "buildV3Person routes aspiration evidence only to person.aspirations; tests/four-channel-parallel.test.ts asserts experience.score is null when only aspirations exist"
+    },
+    {
+      "attack": "qualification mutating other channels",
+      "verdict": "PASS",
+      "evidence": "Mode D returns the same candidate set as Mode B with identical channel scores; it only partitions"
+    },
+    {
+      "attack": "duplicated recommendations",
+      "verdict": "PASS",
+      "evidence": "nearDuplicateRate=0.6000 exactDuplicateRate=0.0000 relevantShare=1.0000"
+    },
+    {
+      "attack": "dev-only improvement invisible",
+      "verdict": "PASS",
+      "evidence": "DEV-VAL extraction macro F1 gap = 0.2198 on WITHHELD paraphrase families; a real overfitting signal is surfaced, not hidden"
+    },
+    {
+      "attack": "untraceable recommendation",
+      "verdict": "PASS",
+      "evidence": "12 stage verdicts; weakest stage = person_canonical_mapping"
+    },
+    {
+      "attack": "unsupported explanation",
+      "verdict": "PASS",
+      "evidence": "1 sentences, 3 cited evidence ids, 0 unsupported"
+    },
+    {
+      "attack": "hidden-truth / generator-metadata leakage",
+      "verdict": "PASS",
+      "evidence": "leaked tokens: none"
+    },
+    {
+      "attack": "saturated benchmark presented as solved",
+      "verdict": "PASS",
+      "evidence": "standard tier flags saturated channels: [experience, direction]"
+    },
+    {
+      "attack": "baseline weakened instead of TaskDNA improved",
+      "verdict": "PASS",
+      "evidence": "resume-lexical is a STRONG baseline at 1.0000 experience NDCG vs title-only 0.4694; lift over it is small and honestly reported"
+    },
+    {
+      "attack": "metric registered without an evaluator",
+      "verdict": "PASS",
+      "evidence": "26/31 runnable; 0 non-runnable rows lacking an explicit exclusion"
+    }
+  ],
+  "summary": {
+    "pass": 20,
+    "limitation": 0,
+    "fail": 0
+  }
+}

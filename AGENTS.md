@@ -13,10 +13,46 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 # TaskDNA persistent experiment rules
 
 These rules persist across all future Cursor agent sessions on this repository,
-including any autonomous iteration loop. Read `docs/AUTONOMOUS_ITERATION_PROTOCOL.md`,
+including any autonomous iteration loop. Read `docs/PRODUCT_NORTH_STAR.md`,
+`docs/METRIC_COVERAGE_MATRIX.md`, `docs/AUTONOMOUS_ITERATION_PROTOCOL.md`,
 `docs/RESEARCH_PORTFOLIO.md`, `docs/EXPERIMENT_TIERS.md`,
 `docs/EXPERIMENT_PERMISSIONS.md`, `docs/V3_COMPUTATIONAL_CONTRACT.md`, and
 `docs/BASELINE_MANIFEST.md` before making product-scoring changes.
+
+- **TaskDNA is a task-based career discovery and job-ranking system.** It matches on the
+  UNDERLYING WORK, not titles, occupations, industries, or resume keywords
+  (`docs/PRODUCT_NORTH_STAR.md`). There is **no single TaskDNA accuracy number and no single
+  MAE that represents product quality**. Preference MAE measures preference interpretation
+  only — never Experience accuracy, mapper accuracy, job-ranking quality, recommendation
+  quality, or human validity.
+- **No optimization without a metric contract.** A product-critical subsystem may be
+  optimized only if it has a complete contract in `config/metric-contracts.json` AND a
+  runnable evaluator. `pnpm audit:metric-contracts` fails if a row claims a runnable
+  benchmark but names a command that does not resolve. Rows 4, 8, 19, 27 and 31 are
+  explicitly excluded from the loop; do not claim progress on them.
+- **Benchmark labels must never come from the algorithm.** Relevance is computed from planted
+  canonical work identity (`src/bench/labels.ts`), which imports nothing from the scoring or
+  mapping pipeline. Never run the scorer, call its output gold, and evaluate the scorer
+  against it (`docs/BENCHMARK_DESIGN.md`).
+- **Optimize only at the declared target.** `pnpm bench:product --difficulty=hard
+  --people=12`. The `standard` tier saturates experience and direction NDCG at 1.000 and
+  cannot detect improvement or regression; every report flags saturation explicitly.
+- **Report relevance and surprise separately.** Surprise without relevance is failure. A
+  cross-boundary job counts as a surprising transfer only when it is independently
+  experience-relevant.
+- **Never introduce a blended Overall score.** Recommendation modes use weight-free selection
+  rules (Pareto fronts with a maximin tie-break). Qualification annotates and partitions; it
+  never rewrites a work-content channel score (`docs/RECOMMENDATION_POLICY.md`).
+- **A recommendation must stay traceable end to end.** All twelve stages, per-stage verdicts,
+  retained candidate sets and selection reasons, channel scores decomposed to the evidence and
+  responsibility that caused them, and explanations citing only evidence the scoring actually
+  used (`docs/TRACEABILITY.md`).
+- **Check the generalization gap, not just DEVELOPMENT.** VALIDATION uses paraphrase families
+  DEVELOPMENT never sees. Repeated DEVELOPMENT gains with VALIDATION degradation are never
+  KEEP. Extraction macro F1 currently drops 0.831 to 0.611 across that boundary.
+- **Legacy subsystems are not readiness blockers for the core matching loop.** Networking,
+  Next Best Action, and outreach logic are preserved but out of scope. Legacy Hireability does
+  NOT substitute for V3 Qualification Fit.
 
 - **Channel independence.** Preference, Experience, Qualification, and Direction Fit
   (`src/v3/fit.ts`) are four independent computational outputs. No channel reads another

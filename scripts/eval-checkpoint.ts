@@ -72,6 +72,27 @@ step("mapper/scorer regression", "pnpm", ["exec", "vitest", "run", "tests/v3/bri
 // Metric red team.
 step("preference metric red team", "pnpm", ["exec", "tsx", "scripts/preference-metric-red-team.ts"]);
 
+// Product-level contracts and benchmarks.
+step("metric contract audit", "pnpm", ["exec", "tsx", "scripts/audit-metric-contracts.ts"], (stdout) => {
+  const report = safeParse(stdout);
+  return `${report?.contracts} contracts, ${report?.runnable} runnable, ${report?.notRunnable} explicitly excluded`;
+});
+step("product ranking benchmark (hard tier)", "pnpm", ["exec", "tsx", "scripts/bench-product.ts", "--difficulty=hard", "--people=12", "--no-write"], (stdout) => {
+  const report = safeParse(stdout) as { channelRanking?: { channel: string; ndcgAtK: number | null }[] } | null;
+  return (report?.channelRanking ?? []).map((row) => `${row.channel}=${row.ndcgAtK?.toFixed(4)}`).join(" ");
+});
+step("subsystem benchmarks and trace fixture", "pnpm", ["exec", "tsx", "scripts/bench-subsystems.ts", "--difficulty=hard", "--no-write"], (stdout) => {
+  const report = safeParse(stdout) as { extraction?: { macroF1: number | null }; trace?: { stageVerdicts?: { verdict: string }[] } } | null;
+  const failed = (report?.trace?.stageVerdicts ?? []).filter((verdict) => verdict.verdict === "FAILED").length;
+  return `extraction macroF1=${report?.extraction?.macroF1?.toFixed(4)}, trace failed stages=${failed}`;
+});
+
+// Product-level red team.
+step("product red team", "pnpm", ["exec", "tsx", "scripts/product-red-team.ts", "--no-write"], (stdout) => {
+  const report = safeParse(stdout) as { summary?: { pass: number; limitation: number; fail: number } } | null;
+  return `${report?.summary?.pass} pass, ${report?.summary?.limitation} limitation, ${report?.summary?.fail} fail`;
+});
+
 // LOCKED_CONFIRMATION must stay guarded.
 {
   const label = "LOCKED_CONFIRMATION stays guarded";

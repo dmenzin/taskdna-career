@@ -1,0 +1,311 @@
+{
+  "version": "bench-run.v1",
+  "split": "DEVELOPMENT",
+  "seed": 20260823,
+  "k": 5,
+  "difficulty": "hard",
+  "headroom": [
+    {
+      "channel": "experience",
+      "ndcgAtK": 0.937194179407145,
+      "saturated": false,
+      "note": "has headroom"
+    },
+    {
+      "channel": "preference",
+      "ndcgAtK": 0.617702460266539,
+      "saturated": false,
+      "note": "has headroom"
+    },
+    {
+      "channel": "direction",
+      "ndcgAtK": 0.7688578654609097,
+      "saturated": false,
+      "note": "has headroom"
+    }
+  ],
+  "corpus": {
+    "people": 12,
+    "jobsPerPerson": 20,
+    "atomPoolSize": 1077,
+    "paraphraseFamilies": [
+      "plain",
+      "clausal"
+    ]
+  },
+  "paraphraseGap": {
+    "meanPersonJobTokenOverlap": 0.1925994754692186,
+    "identicalRenderings": 0
+  },
+  "channelRanking": [
+    {
+      "channel": "experience",
+      "k": 5,
+      "ndcgAtK": 0.937194179407145,
+      "recallAtK": 0.9166666666666669,
+      "precisionAtK": 0.9166666666666669,
+      "mrr": 1,
+      "pairwiseAccuracy": 0.9866666666666667,
+      "worstPersonNdcg": 0.7860137352654724,
+      "catastrophicPeople": 0,
+      "peopleEvaluated": 12
+    },
+    {
+      "channel": "preference",
+      "k": 5,
+      "ndcgAtK": 0.617702460266539,
+      "recallAtK": 0.6930555555555555,
+      "precisionAtK": 0.6666666666666666,
+      "mrr": 0.9583333333333334,
+      "pairwiseAccuracy": 0.8751800691263468,
+      "worstPersonNdcg": 0.17520076786990463,
+      "catastrophicPeople": 1,
+      "peopleEvaluated": 12
+    },
+    {
+      "channel": "direction",
+      "k": 5,
+      "ndcgAtK": 0.7688578654609097,
+      "recallAtK": 0.75,
+      "precisionAtK": 0.3,
+      "mrr": 0.8571428571428571,
+      "pairwiseAccuracy": 0.9053819444444445,
+      "worstPersonNdcg": 0,
+      "catastrophicPeople": 2,
+      "peopleEvaluated": 12
+    }
+  ],
+  "crossTitleTransferRecallAtK": 0.9583333333333334,
+  "crossIndustryTransferRecallAtK": 0.9166666666666666,
+  "sameTitleDifferentWorkFalsePositiveRateAtK": 0.016666666666666666,
+  "sameTitleDifferentWorkMeanRank": 7.166666666666667,
+  "crossTitleTransferMeanRank": 3.5833333333333335,
+  "hardNearMissFalsePositiveRateAtK": 0.06666666666666667,
+  "hardNearMissMeanRank": 11.583333333333336,
+  "jointRelevantRecallAtK": 0.7,
+  "jointRelevantPrecisionAtK": 0.08333333333333333,
+  "paretoFrontierRecallAtK": 0.6388888888888888,
+  "dominanceViolationRate": 0.07060300256947774,
+  "scoreSpaceDominanceViolations": 0,
+  "transitionRecallAtK": 0.75,
+  "transitionPrecisionAtK": 0.15,
+  "transitionMeanRank": 3.75,
+  "surprisingTransferRecallAtK": 0.9583333333333334,
+  "surprisingTransferPrecisionAtK": 0.3833333333333333,
+  "noveltyWithoutRelevanceRateAtK": 0,
+  "dislikedIntrusionRateAtK": 0.2235294117647059,
+  "strongDislikeViolationRateAtK": 0.03333333333333333,
+  "likedTaskCoverageAtK": 0.7261904761904762,
+  "incidentalOnlyMeanRank": 7.833333333333333,
+  "coreMatchMeanRank": 3.4583333333333335,
+  "incidentalOverRewardRate": 0,
+  "qualification": {
+    "hardGapPrecision": 1,
+    "hardGapRecall": 1,
+    "feasibilityRankCorrelation": 0.9999999999999999,
+    "stretchRolesRetainedAtK": 1
+  },
+  "modes": [
+    {
+      "mode": "A_TRANSFERABLE_BACKGROUND",
+      "productQuestion": "Which jobs contain work this person has actually performed, regardless of title?",
+      "selectionRule": "Order by Experience Fit descending. Preference, Direction, and Qualification are returned unchanged and never affect the order.",
+      "ndcgByGradedChannel": {
+        "experience": 0.937194179407145
+      },
+      "dominanceViolationRate": null,
+      "diversity": {
+        "k": 5,
+        "exactDuplicateRate": 0,
+        "nearDuplicateRate": 0.6,
+        "titleDiversity": 0.8,
+        "industryDiversity": 0.4,
+        "canonicalWorkDiversity": 1,
+        "relevantShare": 1
+      }
+    },
+    {
+      "mode": "B_BACKGROUND_AND_INTEREST",
+      "productQuestion": "Which jobs are strong on BOTH transferable background and independent work interest?",
+      "selectionRule": "Pareto rank on (Experience, Preference): all non-dominated candidates first, then the next front, and so on. Within a front, order by the MINIMUM of the two channel scores (maximin). Maximin is a weight-free ordering: it prefers the candidate whose weaker channel is strongest, and it cannot trade one channel away for the other the way a weighted sum can.",
+      "ndcgByGradedChannel": {
+        "experience": 0.8303688311049493,
+        "preference": 0.348772214739776
+      },
+      "dominanceViolationRate": 0.07060300256947774,
+      "diversity": {
+        "k": 5,
+        "exactDuplicateRate": 0,
+        "nearDuplicateRate": 0.6,
+        "titleDiversity": 0.8,
+        "industryDiversity": 0.4,
+        "canonicalWorkDiversity": 1,
+        "relevantShare": 1
+      }
+    },
+    {
+      "mode": "C_CAREER_TRANSITION",
+      "productQuestion": "Which jobs move this person toward work they want to do next and would enjoy, even without prior experience?",
+      "selectionRule": "Pareto rank on (Direction, Preference), maximin within a front. Experience is returned unchanged and never demotes a candidate: lacking experience is the point of a transition.",
+      "ndcgByGradedChannel": {
+        "direction": 0.5397715928983698,
+        "preference": 0.6630968198185602
+      },
+      "dominanceViolationRate": null,
+      "diversity": {
+        "k": 5,
+        "exactDuplicateRate": 0,
+        "nearDuplicateRate": 0.5,
+        "titleDiversity": 0.8,
+        "industryDiversity": 0.6,
+        "canonicalWorkDiversity": 1,
+        "relevantShare": 0
+      }
+    },
+    {
+      "mode": "D_QUALIFICATION_AWARE",
+      "productQuestion": "Of the jobs that fit the work, which can this person plausibly be hired into today?",
+      "selectionRule": "Take Mode B's order, then partition: candidates with no hard requirement gap first, stretch candidates (one or more hard gaps) after, each partition keeping Mode B's internal order. Qualification ANNOTATES and PARTITIONS; it never rewrites an Experience, Preference, or Direction score.",
+      "ndcgByGradedChannel": {
+        "experience": 0.9380315848376192,
+        "preference": 0.1988579808158335
+      },
+      "dominanceViolationRate": 0.15066523586844258,
+      "diversity": {
+        "k": 5,
+        "exactDuplicateRate": 0,
+        "nearDuplicateRate": 0.6,
+        "titleDiversity": 0.8,
+        "industryDiversity": 0.4,
+        "canonicalWorkDiversity": 1,
+        "relevantShare": 1
+      }
+    }
+  ],
+  "baselines": [
+    {
+      "baseline": "title-only",
+      "experienceNdcgAtK": 0.4585590975780975,
+      "crossTitleRecallAtK": 0.375,
+      "crossIndustryRecallAtK": 0.4166666666666667,
+      "surprisingTransferRecallAtK": 0.375,
+      "sameTitleDifferentWorkFalsePositiveRateAtK": 0.15
+    },
+    {
+      "baseline": "resume-lexical",
+      "experienceNdcgAtK": 0.9627622058340121,
+      "crossTitleRecallAtK": 0.9166666666666666,
+      "crossIndustryRecallAtK": 0.8333333333333334,
+      "surprisingTransferRecallAtK": 0.9166666666666666,
+      "sameTitleDifferentWorkFalsePositiveRateAtK": 0.016666666666666666
+    },
+    {
+      "baseline": "occupation-stratum",
+      "experienceNdcgAtK": 0.6548086577531305,
+      "crossTitleRecallAtK": 0,
+      "crossIndustryRecallAtK": 0,
+      "surprisingTransferRecallAtK": 0,
+      "sameTitleDifferentWorkFalsePositiveRateAtK": 0.19999999999999998
+    }
+  ],
+  "lift": [
+    {
+      "metric": "EXPERIENCE_NDCG@K",
+      "taskdna": 0.937194179407145,
+      "bestBaseline": 0.9627622058340121,
+      "baselineId": "resume-lexical",
+      "absoluteLift": -0.025568026426867063
+    },
+    {
+      "metric": "CROSS_TITLE_TRANSFER_RECALL@K",
+      "taskdna": 0.9583333333333334,
+      "bestBaseline": 0.9166666666666666,
+      "baselineId": "resume-lexical",
+      "absoluteLift": 0.04166666666666674
+    },
+    {
+      "metric": "CROSS_INDUSTRY_TRANSFER_RECALL@K",
+      "taskdna": 0.9166666666666666,
+      "bestBaseline": 0.8333333333333334,
+      "baselineId": "resume-lexical",
+      "absoluteLift": 0.08333333333333326
+    },
+    {
+      "metric": "SURPRISING_TRANSFER_RECALL@K",
+      "taskdna": 0.9583333333333334,
+      "bestBaseline": 0.9166666666666666,
+      "baselineId": "resume-lexical",
+      "absoluteLift": 0.04166666666666674
+    }
+  ],
+  "candidateRetrieval": [
+    {
+      "strategy": "canonical-work",
+      "version": "candidate-retrieval.canonical.v1",
+      "k": 20,
+      "candidateRecallAtK": 0.5403409090909091,
+      "relevantJobMissRate": 0.4596590909090909,
+      "crossTitleRecallAtK": 0.47807539682539674,
+      "crossIndustryRecallAtK": 0.3652777777777778,
+      "surprisingTransferRecallAtK": 0.6583333333333334,
+      "preferenceRecallAtK": 0.4036565286565286,
+      "directionRecallAtK": 0.2922979797979798,
+      "titleDiversity": 0.7541666666666665,
+      "stratumDiversity": 0.625,
+      "industryDiversity": 0.3833333333333333,
+      "titleConcentration": 0.20833333333333337,
+      "stratumConcentration": 0.2916666666666666,
+      "industryConcentration": 0.35833333333333334,
+      "noveltyConditionedRelevance": 0.08333333333333333
+    },
+    {
+      "strategy": "lexical-overlap",
+      "version": "candidate-retrieval.lexical.v1",
+      "k": 20,
+      "candidateRecallAtK": 0.867884199134199,
+      "relevantJobMissRate": 0.13211580086580085,
+      "crossTitleRecallAtK": 0.769047619047619,
+      "crossIndustryRecallAtK": 0.7374999999999999,
+      "surprisingTransferRecallAtK": 0.8999999999999999,
+      "preferenceRecallAtK": 0.7228521478521478,
+      "directionRecallAtK": 0.46746933621933623,
+      "titleDiversity": 0.8000000000000002,
+      "stratumDiversity": 0.6083333333333334,
+      "industryDiversity": 0.3833333333333333,
+      "titleConcentration": 0.15416666666666667,
+      "stratumConcentration": 0.26666666666666666,
+      "industryConcentration": 0.39999999999999997,
+      "noveltyConditionedRelevance": 0.1125
+    },
+    {
+      "strategy": "title-only",
+      "version": "candidate-retrieval.title.v1",
+      "k": 20,
+      "candidateRecallAtK": 0.44385822510822504,
+      "relevantJobMissRate": 0.5561417748917749,
+      "crossTitleRecallAtK": 0.020833333333333332,
+      "crossIndustryRecallAtK": 0.12777777777777777,
+      "surprisingTransferRecallAtK": 0,
+      "preferenceRecallAtK": 0.2588943463943464,
+      "directionRecallAtK": 0.03472222222222222,
+      "titleDiversity": 0.34166666666666673,
+      "stratumDiversity": 0.23749999999999996,
+      "industryDiversity": 0.38749999999999996,
+      "titleConcentration": 0.3458333333333334,
+      "stratumConcentration": 0.6541666666666667,
+      "industryConcentration": 0.37916666666666665,
+      "noveltyConditionedRelevance": 0
+    }
+  ],
+  "runtimeMs": {
+    "corpusBuild": 160,
+    "pipeline": 8010,
+    "metrics": 4987,
+    "total": 13157
+  },
+  "cache": {
+    "hits": 11253,
+    "misses": 2203,
+    "evictions": 0
+  }
+}

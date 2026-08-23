@@ -38,7 +38,20 @@ const coverage=run("pnpm",["exec","vitest","run","tests/subsystem-coverage.test.
 
 // [ ] the research portfolio and the anti-micro-tuning guard are in place
 const guard=run("pnpm",["exec","tsx","scripts/experiment-guard.ts"]);
-try{const guardReport=JSON.parse(guard.stdout);const portfolio=JSON.parse(readFileSync("config/research-portfolio.json","utf8"));add("research portfolio and micro-tuning guard",guard.status===0&&guardReport.passed===true&&portfolio.workstreams.length===8,`${portfolio.workstreams.length} workstreams, ${guardReport.recordsAudited} experiment records audited, max ${guardReport.maxConsecutiveExperimentsPerMechanism} consecutive experiments per mechanism`);}catch(e){add("research portfolio and micro-tuning guard",false,String(e));}
+try{
+  const guardReport=JSON.parse(guard.stdout);
+  const portfolio=JSON.parse(readFileSync("config/research-portfolio.json","utf8"));
+  // The product contract requires twelve workstreams spanning measurement through model
+  // capacity, plus explicit exclusions for every subsystem with no runnable evaluator.
+  const requiredAreas=["measurement","preference","experience","task/dwa","job responsibility","direction","qualification","candidate retrieval","robustness","architecture"];
+  const names=portfolio.workstreams.map((w:{name:string})=>w.name.toLowerCase()).join(" | ");
+  const missingAreas=requiredAreas.filter(area=>!names.includes(area));
+  const excluded=(portfolio.excludedFromLoop??[]).map((e:{row:number})=>e.row);
+  const missingExclusions=[4,8,19,31].filter(row=>!excluded.includes(row));
+  add("research portfolio and micro-tuning guard",
+    guard.status===0&&guardReport.passed===true&&portfolio.workstreams.length>=12&&missingAreas.length===0&&missingExclusions.length===0,
+    `${portfolio.workstreams.length} workstreams, ${guardReport.recordsAudited} experiment records audited, max ${guardReport.maxConsecutiveExperimentsPerMechanism} consecutive experiments per mechanism, ${excluded.length} subsystems excluded from the loop${missingAreas.length?`; MISSING AREAS: ${missingAreas.join(", ")}`:""}${missingExclusions.length?`; MISSING EXCLUSIONS: rows ${missingExclusions.join(", ")}`:""}`);
+}catch(e){add("research portfolio and micro-tuning guard",false,String(e));}
 const guardTests=run("pnpm",["exec","vitest","run","tests/experiment-guard.test.ts"]);add("micro-tuning guard rejects hill climbing",guardTests.status===0,guardTests.status===0?"tests/experiment-guard.test.ts pass: unpreregistered threshold/coefficient/regex/prompt nudging and a third consecutive same-mechanism experiment are both rejected":(guardTests.stdout+guardTests.stderr).slice(-800));
 
 // --- Available-vs-recognized evidence hardening checks (readiness-hardening audit) ---
@@ -78,6 +91,32 @@ add("AGENTS.md contains persistent TaskDNA experiment rules",agentsMd.includes("
 const allowedGovernanceStatuses=new Set(["STRUCTURAL","PROVISIONAL_BASELINE","EMPIRICALLY_JUSTIFIED","UNJUSTIFIED","EXPERIMENTAL_DISABLED"]);
 add("active V3 coefficients have explicit governance status",V3_COEFFICIENT_GOVERNANCE.length>0&&V3_COEFFICIENT_GOVERNANCE.every(r=>allowedGovernanceStatuses.has(r.status)&&r.rationale.length>0),`${V3_COEFFICIENT_GOVERNANCE.length} coefficients: ${V3_COEFFICIENT_GOVERNANCE.map(r=>`${r.id}=${r.status}`).join(", ")}`);
 
+// --- product-level metric readiness checks ---
+
+// [ ] every optimizable product-critical subsystem has a complete contract AND a runnable evaluator
+const contracts=run("pnpm",["exec","tsx","scripts/audit-metric-contracts.ts"]);
+try{const c=JSON.parse(contracts.stdout);add("metric contracts have runnable evaluators",contracts.status===0&&c.passed===true&&c.contracts===31&&c.blockingGaps.length===0,`${c.contracts} contracts, ${c.runnable} runnable, ${c.notRunnable} explicitly excluded (${c.excluded.map((e:{row:number})=>`row ${e.row}`).join(", ")}), ${c.blockingGaps.length} blocking gaps`);}catch(e){add("metric contracts have runnable evaluators",false,`${String(e)} ${(contracts.stderr||contracts.stdout||"").slice(-300)}`);}
+
+// [ ] planted-truth benchmark is non-circular, leak-free and deterministic
+const planted=run("pnpm",["exec","vitest","run","tests/bench-planted-truth.test.ts","tests/metric-contracts.test.ts"]);add("planted-truth benchmark validity",planted.status===0,planted.status===0?"labels are computed from planted atom identity with no scoring/mapping import; no atom id, planted label or corpus metadata reaches pipeline input; corpus is byte-identical across runs":(planted.stdout+planted.stderr).slice(-800));
+
+// [ ] job ranking has runnable known-answer evaluators on all three channels
+const ranking=run("pnpm",["exec","vitest","run","tests/bench-ranking.test.ts"]);add("job ranking known answers",ranking.status===0,ranking.status===0?"cross-title transfer outranks same-title/different-work; hard near-misses are demoted; burned-out-expert keeps high experience with low preference; transitions stay reachable; surprise requires relevance; no Overall score in any policy mode":(ranking.stdout+ranking.stderr).slice(-800));
+
+// [ ] a bad recommendation can be localized to a subsystem without guessing
+const traceability=run("pnpm",["exec","vitest","run","tests/bench-traceability.test.ts"]);add("end-to-end recommendation traceability",traceability.status===0,traceability.status===0?"all 12 stages traced with per-stage verdicts, candidate sets, selection reasons, mapper/corpus/cache identity, channel decomposition, and explanations citing only used evidence":(traceability.stdout+traceability.stderr).slice(-800));
+
+// [ ] the extractor-side polarity defect the product benchmark found stays fixed
+const negation=run("pnpm",["exec","vitest","run","tests/evidence-negation.test.ts"]);add("extractor negation polarity",negation.status===0,negation.status===0?"negated preference verbs classify as DISLIKE and move the predicted dimension to the LOW pole; zero preference polarity inversions on the planted corpus":(negation.stdout+negation.stderr).slice(-800));
+
+// [ ] the ranking benchmark has headroom at its declared optimization target
+const bench=run("pnpm",["exec","tsx","scripts/bench-product.ts","--difficulty=hard","--people=12","--no-write"]);
+try{const b=JSON.parse(bench.stdout);const saturated=b.headroom.filter((h:{saturated:boolean})=>h.saturated);add("ranking benchmark has headroom at the optimization target",bench.status===0&&saturated.length===0&&b.scoreSpaceDominanceViolations===0,`${b.channelRanking.map((r:{channel:string;ndcgAtK:number})=>`${r.channel} NDCG=${r.ndcgAtK?.toFixed(4)}`).join(", ")}; saturated=[${saturated.map((h:{channel:string})=>h.channel).join(", ")}]; score-space dominance violations=${b.scoreSpaceDominanceViolations}`);}catch(e){add("ranking benchmark has headroom at the optimization target",false,`${String(e)} ${(bench.stderr||bench.stdout||"").slice(-300)}`);}
+
+// [ ] the product-level red team finds no failure
+const productRedTeam=run("pnpm",["exec","tsx","scripts/product-red-team.ts","--no-write"]);
+try{const rt=JSON.parse(productRedTeam.stdout);add("product red team",productRedTeam.status===0&&rt.summary.fail===0,`${rt.summary.pass} pass, ${rt.summary.limitation} limitation, ${rt.summary.fail} fail across ${rt.attacks.length} attacks (circular gold, self-labelled mapping gold, title-collision false positives, cross-title misses, incidental over-reward, candidate-pool misses, novelty without relevance, Overall score, Pareto inconsistency, channel leakage, qualification mutation, duplicate recommendations, dev-only improvement, untraceability, unsupported explanation, metadata leakage, saturated benchmark, weakened baseline, metric without evaluator)`);}catch(e){add("product red team",false,`${String(e)} ${(productRedTeam.stderr||productRedTeam.stdout||"").slice(-300)}`);}
+
 // --- end hardening checks ---
 
 const locked=run("pnpm",["exec","tsx","scripts/iteration-diagnostics.ts","--mode=LOCKED_CONFIRMATION"]);add("locked confirmation guarded",locked.status!==0&&!locked.stdout,"not executed by readiness");
@@ -85,4 +124,4 @@ const v3=run("pnpm",["exec","vitest","run","tests/v3/bridge.test.ts","tests/v3/c
 for(const [name,args] of [["unit tests",["test"]],["typecheck",["typecheck"]],["lint",["lint"]],["build",["build"]]] as [string,string[]][]){const result=run("pnpm",args);add(name,result.status===0,result.status===0?"pass":(result.stdout+result.stderr).slice(-800));}
 const secretPattern=["(AK","IA[0-9A-Z]{16}|-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----|s","k-[A-Za-z0-9_-]{20,})"].join("");
 const secrets=run("git",["grep","-IlE",secretPattern,"--",":!pnpm-lock.yaml"]);add("tracked secret-pattern scan",secrets.status===1,"filename-only scan; no candidates");
-console.log(JSON.stringify({readinessVersion:"iteration-readiness.v4",lockedConfirmationExecuted:false,checks,passed:checks.every(c=>c.pass)},null,2));process.exit(checks.every(c=>c.pass)?0:1);
+console.log(JSON.stringify({readinessVersion:"iteration-readiness.v5-product",lockedConfirmationExecuted:false,checks,passed:checks.every(c=>c.pass)},null,2));process.exit(checks.every(c=>c.pass)?0:1);
