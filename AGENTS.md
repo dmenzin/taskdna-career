@@ -16,8 +16,9 @@ These rules persist across all future Cursor agent sessions on this repository,
 including any autonomous iteration loop. Read `docs/PRODUCT_NORTH_STAR.md`,
 `docs/METRIC_COVERAGE_MATRIX.md`, `docs/AUTONOMOUS_ITERATION_PROTOCOL.md`,
 `docs/RESEARCH_PORTFOLIO.md`, `docs/EXPERIMENT_TIERS.md`,
-`docs/EXPERIMENT_PERMISSIONS.md`, `docs/V3_COMPUTATIONAL_CONTRACT.md`, and
-`docs/BASELINE_MANIFEST.md` before making product-scoring changes.
+`docs/EXPERIMENT_PERMISSIONS.md`, `docs/V3_COMPUTATIONAL_CONTRACT.md`,
+`docs/BASELINE_MANIFEST.md`, and `docs/RESEARCH_CONTRACT_AMENDMENTS.md` before making
+product-scoring changes.
 
 - **TaskDNA is a task-based career discovery and job-ranking system.** It matches on the
   UNDERLYING WORK, not titles, occupations, industries, or resume keywords

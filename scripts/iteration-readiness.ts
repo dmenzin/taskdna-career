@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 import { AUTONOMOUS_PREFERENCE_DIMENSIONS_V1, ELIGIBILITY_COVERAGE_FLOOR_POLICY, PREFERENCE_DIMENSION_DECISIONS, PRIMARY_PREFERENCE_DECODER_METRIC } from "../src/lab/preferenceTarget";
 import { V3_COEFFICIENT_GOVERNANCE } from "../src/v3/coefficientGovernance";
+import { assertLockedGuardRefusal } from "../src/lab/lockedGuard";
 
 type Check={name:string;pass:boolean;detail:string};const checks:Check[]=[];
 // On win32 pnpm/npx resolve to .cmd shims, which spawnSync cannot execute without a shell;
@@ -12,7 +13,9 @@ type Check={name:string;pass:boolean;detail:string};const checks:Check[]=[];
 const NEEDS_SHELL=new Set(["pnpm","npx","npm"]);
 const run=(command:string,args:string[])=>{
  const result=spawnSync(command,args,{encoding:"utf8",env:{...process.env,NO_COLOR:"1"},shell:process.platform==="win32"&&NEEDS_SHELL.has(command)});
- return {status:result.status,stdout:result.stdout??"",stderr:result.stderr??""};
+ // `error` is surfaced so guard assertions can tell "the process refused" from "the process
+ // never started". Dropping it is what let the LOCKED gate pass on a missing executable.
+ return {status:result.status,stdout:result.stdout??"",stderr:result.stderr??"",error:result.error??null};
 };
 const add=(name:string,pass:boolean,detail:string)=>checks.push({name,pass,detail});
 const sha=(path:string)=>createHash("sha256").update(readFileSync(path)).digest("hex");
@@ -127,7 +130,10 @@ try{const rt=JSON.parse(productRedTeam.stdout);add("product red team",productRed
 
 // --- end hardening checks ---
 
-const locked=run("pnpm",["exec","tsx","scripts/iteration-diagnostics.ts","--mode=LOCKED_CONFIRMATION"]);add("locked confirmation guarded",locked.status!==0&&!locked.stdout,"not executed by readiness");
+// The gate must require the SPECIFIC guard refusal. `status!==0&&!stdout` also accepted a
+// missing pnpm, a spawn error and a syntax error as proof the holdout was protected.
+const locked=run("pnpm",["exec","tsx","scripts/iteration-diagnostics.ts","--mode=LOCKED_CONFIRMATION"]);
+const lockedVerdict=assertLockedGuardRefusal(locked);add("locked confirmation guarded",lockedVerdict.pass,`${lockedVerdict.reason}: ${lockedVerdict.detail}`);
 const v3=run("pnpm",["exec","vitest","run","tests/v3/bridge.test.ts","tests/v3/coefficientGovernance.test.ts"]);add("V3 canonical/mapper/four-channel invariants",v3.status===0,v3.status===0?"known answers and separation pass":(v3.stdout+v3.stderr).slice(-800));
 for(const [name,args] of [["unit tests",["test"]],["typecheck",["typecheck"]],["lint",["lint"]],["build",["build"]]] as [string,string[]][]){const result=run("pnpm",args);add(name,result.status===0,result.status===0?"pass":(result.stdout+result.stderr).slice(-800));}
 const secretPattern=["(AK","IA[0-9A-Z]{16}|-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----|s","k-[A-Za-z0-9_-]{20,})"].join("");

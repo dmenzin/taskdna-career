@@ -12,26 +12,28 @@ holds the research plan. Update this file as findings land.
 
 ---
 
-## BLOCKER: no runtime model execution is available
+## RESOLVED (2026-08-23): runtime model execution is now available
 
-This is a genuine, unresolved blocker. It is recorded here because Claude Code's own reasoning
-is **not** a valid runtime agent benchmark.
+The blocker recorded during the previous run — no provider credential reachable from
+application code — **no longer applies**. This session was launched from a parent shell that
+carries `ANTHROPIC_API_KEY`.
 
-| probe | result |
-| --- | --- |
-| `ANTHROPIC_API_KEY` or any provider key in env | not set |
-| `.env*` files in repo | none |
-| provider config in `src/` | interfaces only (`src/domain/providers.ts` declares `LLMProvider` and `EmbeddingProvider`; no implementation) |
-| nested `claude -p --output-format json` | `Failed to authenticate: OAuth session expired and could not be refreshed` |
+| probe | previous run | this run |
+| --- | --- | --- |
+| `ANTHROPIC_API_KEY` present in `process.env` | not set | **present** (boolean presence only) |
+| `.env*` files in repo | none | none (unchanged; the key is NOT persisted to disk) |
+| provider implementation | interfaces only | see `src/agent/runtime.ts` and Phase 3 below |
 
-The Claude Code host holds the OAuth refresh token; a spawned child process cannot reuse it.
-No new account may be created and credentials must not be extracted, so **no agent experiment
-in this run executed against a real model**.
+Only boolean presence was established. The value is never printed, logged, written to an
+artifact, committed, or included in a cache key or telemetry record.
 
-Consequence, stated plainly: this run produces **no measured agent quality, no agent rescue
-rate, no hallucination rate, and no prompt optimization**. Any architecture built for the
-agent-first hypothesis is unexecuted scaffolding and is labelled as such. Supplying an
-`ANTHROPIC_API_KEY` is the single unblock.
+What this unblocks: measured agent quality, agent rescue rate, agent-only false discovery
+rate, hallucination rate, and prompt experiments. What it does NOT change: Claude Code's own
+reasoning still is **not** a runtime agent benchmark. A result counts only when it executed
+through application code and produced a `ModelCallRecord`.
+
+Runtime spend for this run is capped by contract at **$25 USD / 1,000 calls**, enforced in
+code rather than prose — see `docs/RESEARCH_CONTRACT_AMENDMENTS.md`.
 
 ---
 

@@ -10,13 +10,14 @@ import {
   withinFieldDuplicateUnits,
 } from "@/lab/evidenceAvailability";
 import { AUTONOMOUS_PREFERENCE_DIMENSIONS_V1, PRIMARY_PREFERENCE_DECODER_METRIC, SUPERSEDED_PRIMARY_PREFERENCE_DECODER_METRIC } from "@/lab/preferenceTarget";
+import { LOCKED_CONFIRMATION_GUARD_MESSAGE } from "@/lab/lockedGuard";
 
 export const ITERATION_EVALUATOR_VERSION = "iteration-readiness.v3-stance-aware";
 export type EvaluationMode = "DEVELOPMENT" | "VALIDATION" | "LOCKED_CONFIRMATION";
 
 export function selectEvaluationSplit(subjects: VirtualSubject[], mode: EvaluationMode, unlock = false) {
   if (mode === "LOCKED_CONFIRMATION" && !unlock) {
-    throw new Error("LOCKED_CONFIRMATION is guarded. Re-run with --confirm-locked; never use it during ordinary iteration.");
+    throw new Error(LOCKED_CONFIRMATION_GUARD_MESSAGE);
   }
   const cohort = mode === "DEVELOPMENT" ? "design" : mode === "VALIDATION" ? "validation" : "holdout";
   return subjects.filter((subject) => subject.truth.cohort === cohort);

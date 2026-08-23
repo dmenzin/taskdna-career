@@ -7,8 +7,20 @@
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { mkdirSync, writeFileSync } from "node:fs";
+import { assertLockedGuardRefusal } from "../src/lab/lockedGuard";
 
-const run = (command: string, args: string[]) => spawnSync(command, args, { encoding: "utf8", env: { ...process.env, NO_COLOR: "1" } });
+// On win32 pnpm/npx/npm resolve to .cmd shims, which spawnSync cannot execute without a
+// shell: every delegated step returned ENOENT with a null status. `scripts/iteration-readiness.ts`
+// already carried this fix; this file did not, so the entire CHECKPOINT tier was failing to
+// execute on Windows while its LOCKED gate still reported PASS. The shell is used ONLY for
+// those shims.
+const NEEDS_SHELL = new Set(["pnpm", "npx", "npm"]);
+const run = (command: string, args: string[]) =>
+  spawnSync(command, args, {
+    encoding: "utf8",
+    env: { ...process.env, NO_COLOR: "1" },
+    shell: process.platform === "win32" && NEEDS_SHELL.has(command),
+  });
 
 interface Step { label: string; pass: boolean; ms: number; detail: string }
 const steps: Step[] = [];
@@ -98,9 +110,17 @@ step("product red team", "pnpm", ["exec", "tsx", "scripts/product-red-team.ts", 
   const label = "LOCKED_CONFIRMATION stays guarded";
   const startedAt = Date.now();
   const locked = run("pnpm", ["exec", "tsx", "scripts/iteration-diagnostics.ts", "--mode=LOCKED_CONFIRMATION"]);
-  const guarded = locked.status !== 0 && !locked.stdout;
-  steps.push({ label, pass: guarded, ms: Date.now() - startedAt, detail: guarded ? "not executed" : "LOCKED_CONFIRMATION produced output without --confirm-locked" });
-  console.log(`${guarded ? "PASS" : "FAIL"}  ${label}  ${Date.now() - startedAt} ms`);
+  // Require the specific refusal. The previous `status !== 0 && !stdout` predicate was
+  // satisfied by a missing executable, a spawn error or a crash, none of which show the
+  // holdout is protected.
+  const verdict = assertLockedGuardRefusal({
+    status: locked.status,
+    stdout: locked.stdout ?? "",
+    stderr: locked.stderr ?? "",
+    error: locked.error ?? null,
+  });
+  steps.push({ label, pass: verdict.pass, ms: Date.now() - startedAt, detail: `${verdict.reason}: ${verdict.detail}` });
+  console.log(`${verdict.pass ? "PASS" : "FAIL"}  ${label}  ${Date.now() - startedAt} ms`);
 }
 
 const totalMs = Date.now() - started;
