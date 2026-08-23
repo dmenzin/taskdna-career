@@ -1,0 +1,144 @@
+{
+  "version": "bench-all.v1",
+  "people": 12,
+  "optimizationTarget": {
+    "difficulty": "hard",
+    "minimumPeople": 12,
+    "k": 5,
+    "rationale": "standard difficulty saturates experience and direction NDCG at 1.000; hard has headroom and is stable from 12 people"
+  },
+  "lockedConfirmationExecuted": false,
+  "difficultyLadder": [
+    {
+      "difficulty": "verbatim",
+      "paraphraseOverlap": 1,
+      "channelNdcg": {
+        "experience": 1,
+        "preference": 0.8491713784215764,
+        "direction": 1
+      },
+      "saturatedChannels": [
+        "experience",
+        "direction"
+      ],
+      "crossTitleRecall": 1,
+      "candidateRecall": {
+        "canonical-work": 0.9777777777777779,
+        "lexical-overlap": 0.9401785714285715,
+        "title-only": 0.4218704906204906
+      }
+    },
+    {
+      "difficulty": "standard",
+      "paraphraseOverlap": 0.4056480230932608,
+      "channelNdcg": {
+        "experience": 1,
+        "preference": 0.8608093273228771,
+        "direction": 1
+      },
+      "saturatedChannels": [
+        "experience",
+        "direction"
+      ],
+      "crossTitleRecall": 1,
+      "candidateRecall": {
+        "canonical-work": 0.9519480519480519,
+        "lexical-overlap": 0.9068722943722944,
+        "title-only": 0.44385822510822504
+      }
+    },
+    {
+      "difficulty": "hard",
+      "paraphraseOverlap": 0.1925994754692186,
+      "channelNdcg": {
+        "experience": 0.937194179407145,
+        "preference": 0.617702460266539,
+        "direction": 0.7688578654609097
+      },
+      "saturatedChannels": [],
+      "crossTitleRecall": 0.9583333333333334,
+      "candidateRecall": {
+        "canonical-work": 0.5403409090909091,
+        "lexical-overlap": 0.867884199134199,
+        "title-only": 0.44385822510822504
+      }
+    }
+  ],
+  "bySplit": [
+    {
+      "split": "DEVELOPMENT",
+      "paraphraseFamilies": [
+        "plain",
+        "clausal"
+      ],
+      "channelNdcg": {
+        "experience": 0.937194179407145,
+        "preference": 0.617702460266539,
+        "direction": 0.7688578654609097
+      },
+      "crossTitleTransferRecallAtK": 0.9583333333333334,
+      "jointRelevantRecallAtK": 0.7,
+      "transitionRecallAtK": 0.75,
+      "surprisingTransferRecallAtK": 0.9583333333333334,
+      "extraction": {
+        "overallAccuracy": 0.7587719298245614,
+        "macroF1": 0.8305782776641673,
+        "contamination": {
+          "dislikeReadAsExperience": 0,
+          "aspirationReadAsExperience": 0,
+          "experienceReadAsPreference": 0,
+          "preferencePolarityInversion": 0
+        }
+      },
+      "mapping": {
+        "person_experience": 0.18055555555555555,
+        "person_preference": 0.1574074074074074,
+        "person_direction": 0.10416666666666667,
+        "job_responsibility": 0.85
+      }
+    },
+    {
+      "split": "VALIDATION",
+      "paraphraseFamilies": [
+        "nominalized",
+        "colloquial"
+      ],
+      "channelNdcg": {
+        "experience": 0.9878276375131078,
+        "preference": 0.5808328303731112,
+        "direction": 0.9032867981913646
+      },
+      "crossTitleTransferRecallAtK": 1,
+      "jointRelevantRecallAtK": 0.6,
+      "transitionRecallAtK": 0.8333333333333334,
+      "surprisingTransferRecallAtK": 1,
+      "extraction": {
+        "overallAccuracy": 0.4649122807017544,
+        "macroF1": 0.6108155285574641,
+        "contamination": {
+          "dislikeReadAsExperience": 0,
+          "aspirationReadAsExperience": 0,
+          "experienceReadAsPreference": 0,
+          "preferencePolarityInversion": 0
+        }
+      },
+      "mapping": {
+        "person_experience": 0.1388888888888889,
+        "person_preference": 0.14814814814814814,
+        "person_direction": 0.0625,
+        "job_responsibility": 0.7876923076923077
+      }
+    }
+  ],
+  "generalizationGap": {
+    "note": "DEVELOPMENT uses the plain and clausal paraphrase families; VALIDATION uses nominalized and colloquial, which DEVELOPMENT never sees. A positive gap means development-only gains.",
+    "experienceNdcg": -0.05063345810596276,
+    "preferenceNdcg": 0.03686962989342779,
+    "directionNdcg": -0.13442893273045486,
+    "crossTitleTransferRecall": -0.04166666666666663,
+    "jointRelevantRecall": 0.09999999999999998,
+    "extractionMacroF1": 0.21976274910670313,
+    "personExperienceMappingTop1": 0.04166666666666666
+  },
+  "totalRuntimeMs": 35513
+}
