@@ -5,6 +5,20 @@ new metrics or change hidden truth.
 
 Companion: `docs/ALGORITHM_SPEC.md`, `docs/COEFFICIENT_REGISTRY.md`.
 
+**Provenance (do not mix these three rows):**
+
+| Layer | File / method | MAE | Holdout MAE | Work-Fit mean | meanFitSpread | tech-demo share |
+|---|---|---|---|---|---|---|
+| Frozen baseline | `onet_external_shock_baseline.json` (2026-08-22, `80312e2`) | 1.845228 | ~1.820 | 9.532 | 0.293 | 0.320 |
+| Frozen candidate artifact | `onet_shock_latest.json` (2026-08-22, `c10b914`) | **1.875021** | **1.816938** | 7.408 | 1.986 | 0.358 |
+| **Live HEAD** | `evaluateOnetSubject` on this checkout (2026-08-23) | **1.730477** | **1.705023** | 7.411 | 1.949 | 0.331 |
+
+Live HEAD uses the same seed `20260823` and O*NET 30.3 corpus. It does **not**
+match 1.875 because the generator is now `subject-lab.v2-onet-semantic-polarity`
+and `extractEvidence` uses a 200-sentence / 40k-char budget. The cited 1.875 is
+a `VERIFIED_TRANSIENT_RUN`, not live HEAD. Do not run `pnpm eval:onet-shock`
+to “refresh” it — that overwrites `onet_shock_latest.json`.
+
 ---
 
 ## 1. What is being predicted vs what is being scored
@@ -120,7 +134,7 @@ Per subject:
 
 where \(\hat{u} =\) `profileVector(profile)` and \(u^{\star} =\) `taskDnaTruth`.
 
-Overall (candidate 1.875):
+Overall (live HEAD 1.730; frozen artifact 1.875):
 
 \[
 \mathrm{meanMae} = \frac{1}{450}\sum_{s=1}^{450} \mathrm{mae}_s
@@ -153,21 +167,32 @@ Equivalent expanded form:
 
 because every subject has exactly 17 dims. **Explicit.**
 
-### 3.2 Reported numbers (candidate, seed 20260823)
+### 3.2 Reported numbers (seed 20260823)
 
-Verified by recomputing `evaluateOnetSubject` over `generateOnetSubjects(20260823)`:
+**Live HEAD** (this audit, `generateOnetSubjects(20260823)` + current engine):
 
 | Split | n | meanMae |
 |---|---|---|
-| design (development) | 150 | 1.900921405143544 |
+| design (development) | 150 | 1.7356990323559016 |
+| validation | 100 | 1.7024183446496204 |
+| holdout | 100 | 1.7050226637495052 |
+| adversarial | 100 | 1.7761579059023023 |
+| **all** | **450** | **1.7304772139633957** |
+
+Check: \((150\cdot 1.735699 + 100\cdot 1.702418 + 100\cdot 1.705023 + 100\cdot 1.776158)/450 = 1.730477\).
+
+**Frozen candidate artifact** (`onet_shock_latest.json`, 2026-08-22) — the
+cited **1.875**:
+
+| Split | n | meanMae |
+|---|---|---|
+| design | 150 | 1.900921405143544 |
 | validation | 100 | 1.8619872971926392 |
 | holdout | 100 | 1.8169384777024278 |
 | adversarial | 100 | 1.9072870934676516 |
 | **all** | **450** | **1.875021105795119** |
 
-Headline “1.875” is this overall mean, rounded.
-
-Frozen baseline overall: **1.8452277688400356** (`artifacts/logic_audit/onet_external_shock_baseline.json`).
+Frozen baseline overall: **1.8452277688400356**.
 
 ### 3.3 Neutral-prior floor (why ~1.83 is unsurprising)
 
@@ -177,91 +202,72 @@ Frozen baseline overall: **1.8452277688400356** (`artifacts/logic_audit/onet_ext
 \mathbb{E}|X-5| = \frac{(5-1.5)^2 + (8.8-5)^2}{2\cdot(8.8-1.5)} \approx 1.83
 \]
 
-Baseline 1.845 and candidate 1.875 both sit next to that floor. **Inferred
-analytic check; not in the evaluator.** It explains how MAE can stay flat
-while job-side behavior changes.
+Baseline 1.845 and the 1.875 artifact both sit next to that floor. Live HEAD
+1.730 is **below** the constant-5 expectation because the polarity planner
+plus 200-sentence budget recover more non-neutral dims (still with large
+missing-evidence rates). **Inferred analytic check; not in the evaluator.**
+It explains how MAE can stay flat (baseline → 1.875 artifact) while job-side
+behavior changes, and why live HEAD can move MAE without anyone “tuning”
+coefficients.
 
-### 3.4 Three concrete subjects
-
-Errors from the live candidate engine.
+### 3.4 Three concrete subjects (live HEAD)
 
 #### Example A — `v2-subject-001` (design)
 
+Full calculator walk: `docs/ALGORITHM_SPEC.md` §10.
+
 - Occupation: Validation Engineers `17-2112.02` (exposure only)
-- `occupationFitsPreference=false`, burnedOut, misleading title “Analyst”
-- Visible prefs: “work where I can see the numbers move”, “a well-fenced area of responsibility”
-- Those PREFERENCE rows have **empty** `preferenceSignals` (lexicon miss)
-- Visible dislikes move coordination down and, via invert, raise
-  `investigation_orientation` / `creation_style`
-
-| dim | truth | inferred | \|err\| |
-|---|---|---|---|
-| problem_structure | 5.217 | 6.116 | 0.899 |
-| measurable_feedback | 8.636 | 5.000 | 3.636 |
-| investigation_orientation | 1.805 | 5.744 | 3.939 |
-| evidence_density | 6.398 | 5.000 | 1.398 |
-| experimentation_preference | 5.678 | 5.000 | 0.678 |
-| scope_preference | 8.661 | 5.000 | 3.661 |
-| software_as_tool | 7.349 | 5.000 | 2.349 |
-| reasoning_style | 4.749 | 5.000 | 0.251 |
-| creation_style | 2.608 | 6.116 | 3.508 |
-| real_system_grounding | 1.530 | 5.000 | 3.470 |
-| closure_preference | 7.931 | 5.000 | 2.931 |
-| causal_reasoning | 5.302 | 5.000 | 0.302 |
-| integration_preference | 6.177 | 5.000 | 1.177 |
-| customer_interaction_preference | 7.618 | 5.000 | 2.618 |
-| coordination_preference | 5.180 | 2.768 | 2.412 |
-| theory_vs_application | 5.384 | 5.000 | 0.384 |
-| repetition_tolerance | 7.100 | 5.000 | 2.100 |
-| **mae_s** | | | **2.1007806055846023** |
-
-Sum of abs errors = 35.713; 35.713 / 17 = 2.1008.
-Contribution to overall: \(2.10078/450 = 0.004668\).
-
-The largest errors are dims the person *stated* (measurable, scope) that the
-extractor did not hear, plus invert damage on investigation/creation.
+- Prefs: “building small tools to remove drudgery”
+- Dislikes: “root-cause investigation”
+- Empty-lexicon PREFERENCE/ASPIRATION: “well-fenced area…”, “fast observable feedback”
+- Subject MAE **1.8447216317457538**
+- Contribution: \(1.84472/450 = 0.004099\)
+- Predicted top function: `modeling-simulation` (overall 5.42)
+- Derived hidden-best: `operations-coordination` (truth-fit 8.336)
 
 #### Example B — `v2-subject-150` (design)
 
 - Occupation: Arbitrators, Mediators, and Conciliators `23-1022.00`
-- Prefs: “well-scoped problems I can finish”, “running targeted experiments”
-- Dislikes: “long-horizon work without clear metrics”, “sprawling many-team problems”
-- Subject MAE **1.7578150848981244**
-- Contribution: \(1.75782/450 = 0.003906\)
-- Predicted top function: `operations-coordination` (fit 9.24)
-- Derived hidden-best: `financial-analysis-audit` (truth-fit 8.03)
-
-“Long-horizon…” dislike still often empty; “well-scoped…finish” leaks into
-`measurable_feedback` (same collision as subject 003).
+- Prefs: “solo deep work”; “I enjoy wide-open greenfield creation”
+- Dislikes: “work that never repeats”; “I avoid real equipment and real users”
+- Subject MAE **1.7456320109727042**
+- Contribution: \(1.74563/450 = 0.003879\)
+- Predicted top function: `research-inquiry`
+- Derived hidden-best: `financial-analysis-audit` (truth-fit 8.030)
 
 #### Example C — `v2-subject-003` (design)
 
-Full walk in `docs/ALGORITHM_SPEC.md` §10.
-MAE **1.8347581779845115**. Contribution **0.004077**.
+- Occupation: Web Developers `15-1254.00`
+- Prefs: “building small tools to remove drudgery”; “I enjoy working directly from raw data”
+- Dislikes: “physical systems I can observe”
+- Subject MAE **2.1325972115274197**
+- Contribution: \(2.13260/450 = 0.004739\)
+- Predicted top function: `research-inquiry`
+- Derived hidden-best: `investigative-analysis` (truth-fit 8.010)
 
-### 3.5 How three errors sit inside 1.875
+### 3.5 How three errors sit inside the headline
 
-These three do **not** average to 1.875. Official MAE is the mean of **all 450**
+These three do **not** average to 1.730. Official MAE is the mean of **all 450**
 subject MAEs. The three contribute
 
 \[
-\frac{2.10078 + 1.75782 + 1.83476}{450} \approx 0.01265
+\frac{1.84472 + 1.74563 + 2.13260}{450} \approx 0.01272
 \]
 
-of the 1.875 total. The remaining 447 subjects contribute the rest. Because
-weighting is uniform, a subject with MAE 2.80 (`v2-subject-016`) moves the
-headline by \(2.80/450 \approx 0.0062\); a subject with MAE 1.12
-(`v2-subject-216`) by \(0.0025\).
+of the 1.730 total. The remaining 447 subjects contribute the rest. Because
+weighting is uniform, live worst subject `v2-subject-107` (MAE 2.541) moves
+the headline by \(2.541/450 \approx 0.00565\); live best `v2-subject-122`
+(MAE 0.871) by \(0.00194\).
 
-Check on the four cohort means:
+**Explicit aggregation order:** subject-level mean over 17 dims, then
+unweighted mean over subjects, optionally sliced by `cohort`.
+
+The frozen 1.875 check (artifact only):
 
 \[
 \frac{150\cdot 1.900921 + 100\cdot 1.861987 + 100\cdot 1.816938 + 100\cdot 1.907287}{450}
 = 1.875021
 \]
-
-**Explicit aggregation order:** subject-level mean over 17 dims, then
-unweighted mean over subjects, optionally sliced by `cohort`.
 
 ---
 
@@ -311,8 +317,9 @@ Hireability constants in this pass (paired holdout ΔMAE ≈ 0; see §7).
 |---|---|---|
 | Equation | identical `mae_s` | identical `mae_s` |
 | Population | all 450 | `cohort === "holdout"` (100) |
-| Candidate | 1.875021 | 1.816938 |
-| Baseline | 1.845228 | 1.820 (report rounded; same formula) |
+| Live HEAD | 1.730477 | 1.705023 |
+| Frozen candidate artifact | 1.875021 | 1.816938 |
+| Frozen baseline | 1.845228 | ~1.820 (same formula) |
 
 **Conceptual difference:** holdout is a **locked slice of the same synthetic
 lab**, not a different target and not real-world outcomes.
@@ -376,25 +383,19 @@ second lock.
 
 ### 6.2 Apples-to-apples check
 
-Paired recompute: Phase A engine at `80312e2` vs current candidate, **same
-450 subject IDs**, same seed, same truths.
+**Apples-to-apples at the artifact layer:** same 450 subject IDs, same seed,
+same 22 shared jobs. Baseline file and `onet_shock_latest.json` both list
+identical `sharedEvalJobs` and `cohortSizes`. MAE is the same equation.
 
-| | |
-|---|---|
-| `sameIds` | true |
-| baseline mean MAE | 1.8452277688400356 |
-| candidate mean MAE | 1.875021105795119 |
-| mean Δ (cand − base) | +0.029793 |
-| median Δ | +0.016976 |
-| improved (Δ < −0.05) | 29.3% |
-| worsened (Δ > 0.05) | 42.4% |
-| unchanged (\|Δ\| ≤ 0.05) | 28.2% |
-| holdout mean Δ | −0.003009 |
-| mean fitSpread | 0.293 → 1.986 |
+**Paired per-subject Δ (candidate − baseline) is not stored.** Neither JSON
+contains a 450-row error vector. A prior forensic note (same files) claimed
+29.3% improved / 42.4% worsened / 28.2% unchanged for the **1.875 artifact**
+versus baseline. This audit **did not** check out `80312e2` to recompute that,
+and **must not** overwrite the baseline to obtain it.
 
-Same subjects and truths. Job vectors and evidence weighting differ. MAE is
-comparable; Work-Fit means are comparable **as product scores** but baseline
-Work Fit was saturated by the all-5s artifact.
+**Live HEAD vs baseline paired Δ is therefore unknown.** Live MAE 1.730 is a
+different generator+extractor snapshot than both frozen files. Do not treat
+the old 29%/42% split as a live-HEAD result.
 
 ---
 
@@ -402,10 +403,14 @@ Work Fit was saturated by the all-5s artifact.
 
 Evidence, not a single letter:
 
-**A — MAE measures the right construct for preference recovery, and that
-construct did not improve.** Mean Δ +0.030; 42% of subjects worsened on
-vector recovery. Coordination MAE +0.220 because exposure no longer moves
-preference (intended). Candidate is not a better 17-d decoder.
+**A — MAE measures the right construct for preference recovery, and the
+1.875 artifact did not improve it.** Artifact mean Δ vs baseline +0.030.
+Coordination MAE rose after exposure was zeroed (intended). The 1.875
+candidate is not a better 17-d decoder than the 1.845 baseline.
+
+Live HEAD MAE **did** fall (1.730) after polarity-planner + evidence-budget
+changes. That is a **generator/extractor** change, not coefficient tuning,
+and it is a different snapshot than the cited 1.875.
 
 **B — Hidden truth is weakly observed.** Many PREFERENCE phrases do not match
 the extractor (`v2-subject-001` measurable truth 8.64 → inferred 5). The
@@ -434,15 +439,15 @@ regression is compatible with a more honest job model.
 
 From `aggregate` / shock script:
 
-| Statistic | Equation | Candidate |
-|---|---|---|
-| meanFitSpread | mean of per-subject **range** of predictedFit on 22 jobs | 1.986 |
-| meanHireabilitySpread | same for hireability | (in latest.json) |
-| technicalDemoTopFunctionShare | fraction of subjects whose top function is `function.v1` | 0.3578 |
-| propertyPassRate | mean of boolean property tests | ~high 90s |
-| stuffingBuysHireability | stuffed mean H > unstuffed-adv H + 0.5 | false |
-| twin pass | `evaluateTwins` same-pref/diff-exp etc. | 85% overall |
-| rankStability Spearman | job-rank stability under ±0.05 TaskDNA noise — **not** vs truth | ~0.999 |
+| Statistic | Equation | Live HEAD | 1.875 artifact | Baseline |
+|---|---|---|---|---|
+| meanFitSpread | mean of per-subject **range** of predictedFit on 22 jobs | 1.949 | 1.986 | 0.293 |
+| meanHireabilitySpread | same for hireability | 4.873 | 4.857 | 3.460 |
+| technicalDemoTopFunctionShare | # subjects whose top function is `function.v1` / 450 | 0.331 | 0.358 | 0.320 |
+| Work-Fit pair mean / SD | over 9,900 pairs | 7.411 / — | 7.408 / 0.625 | 9.532 / 0.403 |
+| propertyPassRate | mean of boolean property tests | 0.995 | 0.999 | 0.959 |
+| stuffingBuysHireability | stuffed mean H > unstuffed-adv H + 0.5 | not re-run (would write latest.json) | false (2.06 vs 2.51) | false (3.53 vs 3.34) |
+| rankStability Spearman | job-rank stability under ±0.05 TaskDNA noise — **not** vs truth | not re-run | 0.999 | 1.000 |
 
 ### 8.1 Ranking metrics we can compute but do **not** officially report
 
@@ -451,82 +456,106 @@ Derived in the forensic audit from already-available
 
 Hidden-best \(f^\star_s = \arg\max_f \mathrm{vectorFit}(u^\star_s, v_f)\).
 
-| Metric | Value (n=450) |
-|---|---|
-| top-1 accuracy vs \(f^\star\) | 11.3% |
-| top-3 recall | 27.8% |
-| mean Spearman (pred fit vs truth fit over 23 functions) | 0.523 |
-| mean regret \(\mathrm{fit}(u^\star,\hat f)-\mathrm{fit}(u^\star,f^\star)\) wait: engine uses user vector for \(\hat f\); regret was `truthFit(best) - truthFit(predictedTop)` | 0.269 |
-| mean rank of hidden-best | 7.76 |
+Live HEAD (n=450, derived 2026-08-23; **not** an official gate):
 
-Chance top-1 among 23 functions ≈ 4.3%. 11.3% is above chance and far from
+| Metric | Value |
+|---|---|
+| top-1 accuracy vs \(f^\star\) | **10.67%** (48/450) |
+| top-3 recall | **30.22%** |
+| mean Spearman (pred function order vs truth-fit order over 23 functions) | **0.506** |
+| mean regret `predFit(top) − predFit(hiddenBest)` on the **inferred** user vector | 0.134 |
+
+Chance top-1 among 23 functions ≈ 4.3%. 10.7% is above chance and far from
 useful. Official evaluator does **not** compute NDCG, pairwise accuracy, or
-per-subject rank correlation vs hidden-best.
+per-subject rank correlation vs hidden-best. This audit computed the table
+above from already-available `(taskDnaTruth, scoreFunctions)` without changing
+the harness.
 
 **MAE is not sufficient for the product objective** (recommend jobs/functions).
 We already have the data to add ranking metrics; they are not in the harness.
 
 ---
 
-## 9. Error decomposition (candidate MAE 1.875)
+## 9. Error decomposition (live HEAD MAE 1.730)
 
-### 9.1 By dimension (equal subject weight)
+Equal subject weight. Source: 2026-08-23 recompute.
 
-| Worst | MAE | bias (inferred − truth) |
+### 9.1 By dimension
+
+| Worst | MAE | bias (inferred − truth) | missing-evidence rate |
+|---|---|---|---|
+| measurable_feedback | 1.931 | −0.097 | 0.567 |
+| creation_style | 1.862 | −0.226 | 0.629 |
+| scope_preference | 1.857 | −0.203 | 0.404 |
+| software_as_tool | 1.811 | −0.520 | 0.856 |
+| investigation_orientation | 1.793 | −0.475 | 0.544 |
+
+| Best | MAE | missing-evidence rate |
 |---|---|---|
-| coordination_preference | 2.118 | −1.231 |
-| measurable_feedback | 2.035 | (see forensic) |
-| creation_style | 2.023 | |
-| scope_preference | 2.003 | |
-| reasoning_style | 1.950 | |
+| repetition_tolerance | 1.507 | 0.622 |
+| coordination_preference | 1.570 | 0.460 |
+| integration_preference | 1.624 | 0.771 |
+| customer_interaction_preference | 1.649 | 0.796 |
 
-| Best | MAE |
-|---|---|
-| software_as_tool | 1.652 |
-| evidence_density | 1.722 |
-| real_system_grounding | 1.759 |
-| investigation_orientation | 1.785 |
-
-Coordination got **worse** vs baseline (+0.220) after exposure was zeroed.
+Every dimension’s bias is **negative** (inferred pulled toward/below 5).
+Missing-evidence rates of 0.40–0.86 mean the prior-5 floor still dominates.
 
 ### 9.2 By occupational stratum (subject `family`)
 
-Worst: business_development 1.975 (n=13), cybersecurity 1.957 (n=14),
-operations 1.954. Best: product 1.755 (n=13), sales 1.765, insurance_risk 1.772.
-Spread across strata is **narrow** (~0.22). Error is not a single-domain bug.
+Worst: supply_chain 1.859 (n=13), compliance 1.834 (n=13), software 1.818 (n=14).
+Best: policy 1.621 (n=13), product 1.626, project_program 1.652.
+Spread across strata is **narrow** (~0.24). Error is not a single-domain bug.
 
-### 9.3 By observation regime
+### 9.3 By observation regime / flags
 
-| Slice | MAE |
-|---|---|
-| occupationFitsPreference | 1.858 |
-| not | 1.883 |
-| sparse | 1.869 |
-| rich | 1.876 |
+| Slice | n | MAE |
+|---|---|---|
+| occupationFitsPreference | 140 | 1.724 |
+| not | 310 | 1.733 |
+| sparse | 72 | **1.855** |
+| not sparse | 378 | 1.707 |
+| contradictory | 109 | 1.761 |
+| keywordStuffed | 25 | 1.705 |
+| misleadingTitle | 208 | 1.761 |
+| burnedOut | 79 | 1.725 |
+| accidentalCareer | 146 | 1.756 |
 
-Almost no difference. Sparse subjects sit at prior 5; rich subjects often
-state phrases the lexicon misses — both land near the 1.83 floor.
+Sparse is the only large regime gap (~+0.15). Occupation-fit vs not is
+essentially flat — consistent with “occupation is not preference.”
 
-### 9.4 By confidence
+### 9.4 By predicted top function
 
-Pearson(confidence, MAE) = +0.063. High-confidence predictions do **not** have
-lower error. Calibration: fail.
+Largest groups: research-inquiry 136 subjects (MAE 1.711), people-operations
+95 (1.717), modeling-simulation 88 (1.744). Smallest-n worst: verification-
+validation n=2 MAE 2.094. operations-coordination n=4 MAE 1.439 (best group,
+too small to over-interpret).
 
-### 9.5 Outliers
+### 9.5 By confidence
 
-Worst subjects: `v2-subject-016` 2.797, `v2-subject-120` 2.728,
-`v2-subject-374` 2.718. Best: `v2-subject-216` 1.117, `v2-subject-264` 1.122.
+| Bucket | n | meanMae |
+|---|---|---|
+| <0.35 | **391** | 1.738 |
+| 0.35–0.5 | 59 | 1.683 |
+| ≥0.5 | **0** | — |
 
-### 9.6 Paired subject deltas (candidate − baseline)
+391/450 subjects sit in the lowest bucket. The 59 “higher” subjects are only
+0.055 better. **No subject reaches 0.5.** High-confidence predictions do not
+exist on this lab, so calibration versus error cannot be shown beyond “almost
+everyone is low-confidence and ~1.73 MAE.” Artifact-era Pearson(+0.063) is
+not re-estimated here; the live distribution is even more collapsed.
 
-Largest improvements: `v2-subject-264` −0.821, `v2-subject-311` −0.630.
-Largest regressions: `v2-subject-066` +0.667, `v2-subject-071` +0.578.
+### 9.6 Outliers (live)
 
-The candidate does **not** mainly trade a few catastrophes for many moderate
-wins on MAE: more subjects **worsened** (42%) than improved (29%) on vector
-error. The “sensible behavior” win is on **job-side discrimination**, which
-MAE does not score. On MAE, the candidate is a small, broad regression plus
-a few large wins.
+Worst: `v2-subject-107` 2.541, `v2-subject-135` 2.442, `v2-subject-120` 2.393.
+Best: `v2-subject-122` 0.871, `v2-subject-364` 0.967, `v2-subject-234` 1.025.
+Distribution: min 0.871, p10 1.371, median 1.729, p90 2.094, max 2.541.
+
+### 9.7 Paired subject deltas
+
+**Unknown for live HEAD vs baseline.** Artifacts store aggregates only.
+See §6.2. The 1.875 artifact vs baseline “more worsened than improved” claim
+from a prior pass is about **vector recovery on that snapshot**, not live HEAD
+and not Work-Fit discrimination (which did change: spread 0.29 → ~1.95).
 
 ---
 
@@ -580,7 +609,11 @@ See also final report §H. Short list:
 
 1. Headline MAE is the wrong product objective (ranking / Work Fit unused).
 2. Observation phrases often do not identify the dimensions they were written for.
-3. Holdout is a locked RNG slice, not an external population.
-4. Hidden-best function is not a stored label; ranking metrics are unofficial.
-5. Baseline overwrite lock is “file exists,” not a hash pin.
-6. 74-count inventory undercounts free numbers actually affecting scores.
+3. The cited 1.875 is a stale transient artifact; live HEAD is already 1.730.
+4. Holdout is a locked RNG slice, not an external population.
+5. Hidden-best function is not a stored label; ranking metrics are unofficial.
+6. Baseline overwrite lock is “file exists,” not a hash pin in the writer
+   (SHA is recorded in `config/baseline-manifest.json` after the fact).
+7. 74-count inventory undercounts free numbers actually affecting scores.
+8. Per-subject baseline predictions were never frozen, so paired Δ cannot
+   be audited without checking out the Phase A engine.

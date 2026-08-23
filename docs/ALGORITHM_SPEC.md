@@ -4,9 +4,23 @@ This document describes the **current implementation**, not the intended future 
 Every equation and constant below is taken from code. Where behavior is inferred rather
 than explicit, that is labeled.
 
-**Source of truth:** branch `cursor/onet-generalization-pass-2-5159` at the commit that
-added these specs. Do not treat older docs (`docs/TASK_DNA.md`, `docs/SCORING.md`) as
-authoritative if they conflict with this file.
+**Source of truth:** this repository checkout. Product engine files under
+`src/domain`, `src/lab`, `src/config/model.ts`, `src/fixtures/jobs.ts`, and
+`src/onet` match `cursor/taskdna-agent-first-runtime-research`. Do not treat
+older docs (`docs/TASK_DNA.md`, `docs/SCORING.md`) as authoritative if they
+conflict with this file.
+
+**Two number sets must not be mixed:**
+
+| Layer | When | Hidden-truth MAE | Work-Fit mean / spread | Notes |
+|---|---|---|---|---|
+| Frozen baseline | 2026-08-22, commit `80312e2` | 1.845228 | 9.532 / 0.293 | `artifacts/logic_audit/onet_external_shock_baseline.json` |
+| Frozen candidate artifact | 2026-08-22, commit `c10b914` | **1.875021** | 7.408 / 1.986 | `onet_shock_latest.json` — the cited 1.875 |
+| **Live HEAD** (this audit) | 2026-08-23 recompute | **1.730477** | 7.411 / 1.949 | same seed/corpus; extractor budget 200 + polarity planner |
+
+The product UI / `scoreJobs` still uses the **legacy 17-dim L1 Work Fit** in
+`src/domain/engine.ts`. V3 four-channel fit (`src/v3/fit.ts`) and the agent
+research harness are **not** this pipeline.
 
 **What the product score is not:** Hidden-truth MAE does **not** measure Work Fit.
 MAE measures 17-dimensional preference-vector recovery. Work Fit is a separate
@@ -35,7 +49,7 @@ Lab subjects always take the generic path with `neutralPrior: true`.
 
 ```
 raw text / CareerInput
-  -> extractEvidence (first 10 sentences + up to 4 prefs + up to 4 dislikes)
+  -> extractEvidence (first 200 unique sentences / 40k chars + up to 4 prefs + up to 4 dislikes)
       -> classifyEvidenceSentence + sentenceWorkSignals
   -> inferTaskDna (17 dimensions, 0–10)
   -> inferCapabilities (skill lexicon ∩ text, dumps stripped)
@@ -77,15 +91,18 @@ From `CareerInput` / lab `VirtualSubjectObservations`:
 | Network intake | referrals / NBA only | Does not change Work Fit |
 | O*NET importance/level ratings | ingested into corpus | **Not used** in `inferJobVector` |
 
-Sentences after the first 10 unique sentences in `careerText` are dropped
-(`extractEvidence` slice). Explicit lists are still appended. **Explicit.**
-Potential bug: a late preference sentence can be discarded.
+Sentences after the first **200** unique sentences, or past **40,000**
+characters, are dropped (`EVIDENCE_EXTRACTION_LIMITS` in `extractEvidence`).
+Explicit lists are still appended (deduped by `normalizeStatement`). **Explicit.**
+Older specs that said “first 10 sentences” described a previous hard `slice(0, 10)`.
+That cap is gone. A late preference sentence on a realistic resume is no longer
+discarded; adversarial / machine-generated dumps are still bounded.
 
 ### 1.4 Pseudocode
 
 ```
 function runPipeline(input):
-  sentences = unique(split(input.careerText))[0:10]
+  sentences = unique(split(input.careerText[0:40000]))[0:200]
   evidence = []
   for i, s in enumerate(sentences):
     cls = classifyEvidenceSentence(s)          # dislike > aspiration > pref > success > exposure > unknown
@@ -329,7 +346,7 @@ Official inventory (`inventoryParameters`): 7 numeric inference keys + 1 version
 0.06 agreement bonus, 0.14 contradiction penalty, 0.06 aspirational-only, 1.6
 confidence multiplier, 0.3 intercept, 0.5 sparse cap, 0.2/0.94 clamps, lexicon
 target values (~70 regex entries), `PREFERENCE_SIGNAL_WEIGHT`, invert `10-x`,
-first-10 sentence cap, explicit-list caps of 4, reliability 0.78.
+200-sentence / 40k-char cap, explicit-list caps of 4, reliability 0.78.
 
 ---
 
@@ -545,7 +562,10 @@ This is a **range**, not a standard deviation. **Explicit.**
 \]
 
 Numerator: subjects whose #1 function (by **overallPriority**, not Work Fit) is
-one of the 13 v1 demo functions. Denominator: 450. Candidate value **0.3578**.
+one of the 13 v1 demo functions. Denominator: 450.
+Live HEAD **0.331**; frozen 1.875 artifact **0.358**; baseline **0.320**.
+Occupation-mapping share (591/1016 ≈ 0.58 in `function_coverage.json`) is a
+**different** number — do not confuse it with this subject-level share.
 
 ### 5.7 Function collapse
 
@@ -660,18 +680,19 @@ vector / job classification. **Not** P(correct) and **not** 1/error.
 **Profile:** mean of 17 dim confidences (formula in §3.6).
 **Job score confidence:** mean(profile, classificationConfidence).
 
-Empirical (450 lab subjects, forensic recompute):
+Empirical (live HEAD, 450 lab subjects, 2026-08-23):
 
-| | |
-|---|---|
-| mean | 0.343 |
-| min | 0.240 |
-| max | 0.505 |
-| Pearson(confidence, subject MAE) | **+0.063** |
+| Bucket | n | meanMae |
+|---|---|---|
+| <0.35 | 391 | 1.738 |
+| 0.35–0.5 | 59 | 1.683 |
+| ≥0.5 | 0 | — |
 
-Almost nobody exceeds 0.5 because of the sparse cap and the 0.24 unknown floor
-dominating empty dims. Higher confidence is **slightly associated with higher
-error**. Uninformative as a ranking of reliability. **Do not fix in this pass.**
+Profile confidence for `v2-subject-001` is **0.314**. **No subject reaches 0.5.**
+The 0.24 unknown floor on empty dims plus the sparse cap keep the whole
+distribution uninformative. A prior artifact-era Pearson(confidence, MAE) of
+**+0.063** already showed higher confidence is not lower error. **Do not fix
+in this pass.**
 
 ---
 
@@ -752,99 +773,141 @@ Weak-job advocacy (`overall < 6.8`) is filtered at portfolio construction for
 
 ---
 
-## 10. Worked example: `v2-subject-003`
+## 10. Worked example: `v2-subject-001` (live HEAD, 2026-08-23)
 
-Recomputed from the live engine (same seed `20260823`). Numbers are actual.
+Recomputed with `evaluateOnetSubject` + `observationsToProfile` on
+`generateOnetSubjects(20260823)`. Numbers are actual. This is **not** the
+stale 1.875-era walk for `v2-subject-003`.
 
-### Subject evidence (algorithm-visible)
+### 10.1 Algorithm-visible evidence
 
-- Occupation (hidden from preference): Web Developers `15-1254.00`, software
-- `occupationFitsPreference = false`, burned out, career changer
-- Title may be misleading; exposure sentences are O*NET web-dev tasks
-- Stated prefs: “well-scoped problems I can finish”, “root-cause investigation”
-- Stated dislikes: “long-horizon work without clear metrics”, “very broad ambiguous scope”
+- Occupation (exposure only): Validation Engineers `17-2112.02`
+- Cohort: design. `occupationFitsPreference = false`, burnedOut, accidentalCareer
+- Misleading title: “Analyst”. `apparentField = unknown`
+- Stated skills (Hireability only): active listening, critical thinking,
+  english language, production and processing
+- Explicit pref: “building small tools to remove drudgery”
+- Explicit dislike: “root-cause investigation”
 
-Preference-class rows that actually carry dims (others are EXPOSURE/SUCCESS/UNKNOWN or empty-lexicon):
+Resume (engine input):
 
-| id | class | w | r | dims |
+> Analyst working in engineering. In this role I would analyze validation
+> test data … identify root causes … design validation study features …
+> maintain validation test equipment. Delivered results when I had to
+> analyze validation test data … I enjoy a well-fenced area of
+> responsibility. I avoid real equipment and real users. Longer term I
+> want more of fast observable feedback … Burned out on e-mail and the
+> parts of the job that felt like work that never repeats.
+
+| id | class | w | r | preferenceSignals |
 |---|---|---|---|---|
-| ev-…-6 | PREFERENCE | 1 | 0.70 | problem 7.8, measurable 6.6, investigation 8.8, evidence 7.2, scope 7.2, closure 8, causal 8.6 |
-| ev-…-7 | DISLIKE | 1 | 0.74 | problem 7.2, scope 6.8, coordination 3.2 |
-| ev-…-9 | ASPIRATIONAL | 0.7 | 0.82 | problem 7.8, measurable 6.6, scope 7.2, closure 8 |
-| pref-1 | PREFERENCE | 1 | 0.78 | problem 7.8, measurable 6.6, scope 7.2, closure 8 |
-| pref-2 | PREFERENCE | 1 | 0.78 | investigation 8.8, evidence 7.2, causal 8.6 |
-| dislike-2 | DISLIKE | 1 | 0.78 | problem 7.2, scope 6.8, coordination 3.2 |
+| ev-1 | UNKNOWN | 0 | 0.560 | empty (“Analyst working in engineering”) |
+| ev-2..4 | EXPOSURE | 0 | 0.67–0.83 | empty (tasks have workSignals; weight 0) |
+| ev-5 | SUCCESS | 0 | 0.860 | empty |
+| ev-6 | PREFERENCE | 1 | 0.655 | **empty** — “well-fenced area of responsibility” misses lexicon |
+| ev-7 | DISLIKE | 1 | 0.665 | real_system 1.4, theory 2.2 (invert of equipment/users) |
+| ev-8 | ASPIRATIONAL | 0.7 | 0.795 | **empty** — “fast observable feedback” misses lexicon |
+| ev-9 | DISLIKE | 1 | 0.820 | repetition_tolerance **7.8** (invert of “work that never repeats”) |
+| pref-1 | PREFERENCE | 1 | 0.780 | creation_style 7.6 |
+| dislike-1 | DISLIKE | 1 | 0.780 | investigation 1.2, evidence 2.8, causal 1.4 |
 
-Burnout sentence and explicit “long-horizon…” dislike: **empty dims**.
+Exposure sentences **do** match investigation/evidence lexicon, but
+`signalWeight = 0`, so they never enter `inferTaskDna`. **Explicit.**
 
-### Calculator check (`problem_structure`)
+### 10.2 Calculator: one moved dimension
 
-Signals: 7.8 (r=0.70), 7.2 (0.74), 7.8 (0.82·0.7=0.574), 7.8 (0.78), 7.2 (0.78)
-evidenceValue ≈ 7.57
-Groups: work_history, explicit_dislike:career text, explicit_preference, explicit_dislike:stated
-effective ≥ 2 → α = 0.62
-value = 5·0.38 + 7.57·0.62 ≈ **6.58** (engine: **6.578**)
-truth **6.580**, abs error **0.002**
+`investigation_orientation` has one signal: dislike “root-cause investigation”
+→ invert `10 - 8.8 = 1.2`, r=0.78, one source group → effective=1 → α=0.42
 
-### `scope_preference` (failure mode)
+\[
+\hat u = 5\cdot(1-0.42) + 1.2\cdot 0.42 = 2.9 + 0.504 = 3.404
+\]
 
-Truth **1.965** (wants low/broad? wait: truth 1.965 = low-scope-preference =
-aversion to bounded scope / lean toward massive scope — actually low means
-“massive ambiguous systems” pole). The person *dislikes* “very broad ambiguous
-scope”, which the lexicon maps to high `scope_preference` after invert
-(`10-3.2` style hits become 6.8–7.2). Inferred **6.259**, error **4.294**.
+Engine stored **3.404**. Truth **1.805**. \|err\| = **1.599**.
 
-### Full 17-d recovery
+`creation_style`: pref “building small tools…” → 7.6, α=0.42 →
+`5*0.58 + 7.6*0.42 = 6.092`. Truth **2.608**. \|err\| = **3.484**
+(the person stated a tool-building like; hidden truth is low on that dim).
 
-| dim | truth | inferred | \|err\| | conf |
+`measurable_feedback` truth **8.636**, inferred **5.000**: the aspiration
+“fast observable feedback” classified correctly but produced **no lexicon
+hit**. Error 3.636 is a generator/extractor mismatch, not a blend bug.
+
+### 10.3 Full 17-d recovery
+
+| dim | truth | inferred | \|err\| | support |
 |---|---|---|---|---|
-| problem_structure | 6.580 | 6.578 | 0.002 | 0.66 |
-| measurable_feedback | 2.892 | 5.992 | 3.100 | 0.72 |
-| investigation_orientation | (see dump) | ~7.2 | ~1.1 | 0.60 |
-| evidence_density | — | ~6.3 | — | 0.60 |
-| experimentation_preference | — | 5 | — | 0.24 |
-| scope_preference | 1.965 | 6.259 | 4.294 | 0.66 |
-| software_as_tool | 6.670 | 5 | 1.670 | 0.24 |
-| reasoning_style | 8.717 | 5 | 3.717 | 0.24 |
-| creation_style | 8.102 | 5 | 3.102 | 0.24 |
-| real_system_grounding | 3.258 | 5 | 1.742 | 0.24 |
-| closure_preference | 7.672 | 6.860 | 0.812 | 0.66 |
-| causal_reasoning | 7.928 | 7.232 | 0.696 | 0.60 |
-| integration_preference | 6.194 | 5 | 1.194 | 0.24 |
-| customer_interaction_preference | 6.464 | 5 | 1.464 | 0.24 |
-| coordination_preference | 2.684 | 3.884 | 1.200 | 0.60 |
-| theory_vs_application | 8.396 | 5 | 3.396 | 0.24 |
-| repetition_tolerance | 2.395 | 5 | 2.605 | 0.24 |
+| problem_structure | 5.217 | 5.000 | 0.217 | 0 |
+| measurable_feedback | 8.636 | 5.000 | 3.636 | 0 |
+| investigation_orientation | 1.805 | 3.404 | 1.599 | 1 |
+| evidence_density | 6.398 | 4.076 | 2.322 | 1 |
+| experimentation_preference | 5.678 | 5.000 | 0.678 | 0 |
+| scope_preference | 8.661 | 5.000 | 3.661 | 0 |
+| software_as_tool | 7.349 | 5.000 | 2.349 | 0 |
+| reasoning_style | 4.749 | 5.000 | 0.251 | 0 |
+| creation_style | 2.608 | 6.092 | 3.484 | 1 |
+| real_system_grounding | 1.530 | 3.488 | 1.958 | 1 |
+| closure_preference | 7.931 | 5.000 | 2.931 | 0 |
+| causal_reasoning | 5.302 | 3.488 | 1.814 | 1 |
+| integration_preference | 6.177 | 5.000 | 1.177 | 0 |
+| customer_interaction_preference | 7.618 | 5.000 | 2.618 | 0 |
+| coordination_preference | 5.180 | 5.000 | 0.180 | 0 |
+| theory_vs_application | 5.384 | 3.824 | 1.560 | 1 |
+| repetition_tolerance | 7.100 | 6.176 | 0.924 | 1 |
+| **mae_s** | | | **1.8447216317457538** | |
 
-Subject MAE **1.8347581779845115**
-Contribution to overall MAE: \(1.834758/450 = 0.004077\)
-Profile confidence **0.445**
+Sum of abs errors = 31.360; 31.360 / 17 = 1.8447.
+Contribution to live overall MAE: \(1.84472 / 450 = 0.004099\).
+Profile confidence **0.314** (10 dims at unknown 0.24, 7 at 0.42).
 
-Eight dimensions never leave 5. That is missing-lexicon evidence, not a 5-as-belief.
-
-### Functions (sorted by overallPriority, not fit)
+### 10.4 Functions (sorted by `overallPriority`, not Work Fit)
 
 | rank | id | predictedFit | hireability | overall |
 |---|---|---|---|---|
-| 1 | research-inquiry | 8.732 | 4.594 | 6.485 |
-| 2 | failure-analysis | 8.645 | 3.849 | 6.152 |
-| 3 | investigative-analysis | **9.245** | 1.611 | 5.500 |
-| derived hidden-best | investigative-analysis | truth-fit 8.010 | — | — |
+| 1 | modeling-simulation | 9.235 | 1.629 | 5.424 |
+| 2 | research-inquiry | 9.221 | 1.629 | 5.418 |
+| 3 | people-operations | 9.045 | 1.629 | 5.347 |
+| derived hidden-best | operations-coordination | truth-fit **8.336** | — | — |
 
 Hidden-best is **not stored**. It is `argmax_f vectorFit(taskDnaTruth, f.vector)`.
-The product ranks research-inquiry first because Hireability dominates.
+The product ranks a near-neutral function first because inferred TaskDNA is
+mostly 5s and function Hireability is ~1.63 (generic O*NET skill names).
 
-### Shared-job Work Fit (top 3 by overall)
+### 10.5 Shared-job Work Fit (top by overall)
 
-| Job | job primaryFunction | predictedFit | H | CAF | overall |
-|---|---|---|---|---|---|
-| Financial and Investment Analysts | instructional-delivery | 8.087 | 5.968 | 7.096 | 6.627 |
-| Project Management Specialists | product-discovery | 7.953 | 5.968 | 7.051 | 6.601 |
-| Data Scientists | field-applications | 7.477 | 5.968 | 6.618 | 6.482 |
+Financial and Investment Analysts (`onet-13-2051.00`):
 
-`professionalShare = 0` on these rows: stated skills are generic O*NET names
-that do not match job requirements after dump filters.
-`fitSpread` for this subject on 22 jobs: **1.629**.
+- Job vector (emphasized work-structure): measurable 8.74, evidence 9.76,
+  creation 9.42, customer 9.76, coordination 7.38, theory 9.42, else 5
+- Primary function label: `instructional-delivery` (nearest-vector after
+  title is forbidden to mint)
+- Requirements parsed: **empty** (generic O*NET skills stripped) →
+  coverage default 0.55, `professionalShare = 0`, matrix H = **5.988**
+
+L1 vs user (hand-checked):
+
+\[
+\frac{1}{17}\sum |u_d-j_d| = 1.840235 \Rightarrow \mathrm{rawFit}=8.159765
+\]
+
+negativeFitRisk = 0 (lab generic `repellents` are raw dislike phrases; no
+overlap with job friction). displayed Work Fit = **8.160**.
+job confidence = (0.314 + 0.565) / 2 = 0.439
+CAF = 8.160 − 2(1−0.439) = **7.039**
+overall = 0.40·5.988 + 0.30·7.039 + 0.15·D + 0.10·G + 0.05·U = **6.624**
+
+Same subject, same 22-job set: `fitSpread` = **1.864**.
+
+### 10.6 Also recomputed (live)
+
+| Subject | Occupation | mae_s | contribution |
+|---|---|---|---|
+| `v2-subject-001` | Validation Engineers | 1.844722 | 0.004099 |
+| `v2-subject-003` | Web Developers | 2.132597 | 0.004739 |
+| `v2-subject-150` | Arbitrators | 1.745632 | 0.003879 |
+
+These three do **not** average to the headline. Live headline is the mean of
+all 450 subject MAEs = **1.730477**.
 
 ---
 
@@ -864,12 +927,16 @@ network ──► referral/NBA only
 
 ## 12. Known as-is ambiguities (not fixed here)
 
-1. Lab preference lexicon ≠ work-structure lexicon → empty PREFERENCE rows.
-2. DISLIKE invert can raise the dimension the person wanted low (`v2-subject-003` scope).
-3. First-10-sentence cap.
+1. Lab preference lexicon ≠ work-structure lexicon → empty PREFERENCE rows
+   (subject 001: “well-fenced…”, “fast observable feedback”).
+2. DISLIKE invert can move the person away from a dim they actually like
+   (subject 001 creation_style 2.61 truth vs 6.09 inferred from “small tools”).
+3. Evidence budget is now 200 sentences / 40k chars (not 10). Still a hard cap.
 4. `"field interest only"` vs `"field only"` vs lab `"Knows field only"`.
-5. Function rank ≠ Work-Fit rank (Hireability 0.40).
+5. Function rank ≠ Work-Fit rank (Hireability 0.40). Subject 001 hidden-best
+   is operations-coordination; product top is modeling-simulation.
 6. `inventoryParameters` counts a version string as 1 of “74 coefficients” and
    omits Hireability / lexicon / emphasize / CAF / many hardcoded numbers.
 7. Official evaluator does not compute ranking-vs-hidden-best.
 8. GWA numeric ratings unused.
+9. Frozen 1.875 MAE is a **2026-08-22 artifact**, not live HEAD (1.730).
