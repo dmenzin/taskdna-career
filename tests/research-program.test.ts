@@ -7,6 +7,7 @@ import { describe, expect, it } from "vitest";
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { renderProgram, type Program, type ProgramItem, type Registry } from "@/agent/researchProgramView";
+import { renderLedger, type EvidenceLedger } from "@/agent/researchLedger";
 
 const program = JSON.parse(readFileSync("config/agentic-research-program.json", "utf8")) as Program;
 const registry = JSON.parse(readFileSync("config/experiment-registry.json", "utf8")) as Registry;
@@ -139,11 +140,76 @@ describe("the questions the audit found must not disappear", () => {
     ["L-01", "real concurrent latency is unmeasured"],
     ["SEC-01", "prompt injection is unaddressed"],
     ["T-01", "provenance thresholds are hand-set"],
+    ["S-02", "prompt robustness is distinct from stochasticity"],
+    ["S-03", "model/temporal drift is untracked"],
+    ["POW-01", "sample-size/power is untracked"],
+    ["QC-01", "Qualification contract is unwritten"],
+    ["D-CTX-01", "oracle domain context is untested"],
+    ["PRIV-01", "privacy before real-user research"],
   ];
   it.each(mustTrack)("still tracks %s (%s)", (id) => {
     const item = program.items.find((i: ProgramItem) => i.id === id);
     expect(item, `research program lost item ${id}`).toBeDefined();
     expect(item!.status).not.toBe("SUPPORTED");
+  });
+});
+
+describe("the master directive cannot be forgotten into chat", () => {
+  it("keeps S-02 as a different question from S-01", () => {
+    const s01 = program.items.find((item) => item.id === "S-01")!;
+    const s02 = program.items.find((item) => item.id === "S-02")!;
+    expect(s02.question).not.toBe(s01.question);
+    expect(s01.question.toLowerCase()).toMatch(/identical prompt bytes|regenerat/);
+    expect(s02.question.toLowerCase()).toMatch(/phras|wording|perturb/);
+    expect(s02.dependencies).toContain("S-01");
+  });
+
+  it("requires a wrong-domain control before any domain router", () => {
+    const oracle = program.items.find((item) => item.id === "D-CTX-01")!;
+    const router = program.items.find((item) => item.id === "D-CTX-03")!;
+    expect(oracle.question.toLowerCase()).toMatch(/wrong-domain|wrong domain/);
+    expect(oracle.nextAction.toLowerCase()).toContain("wrong");
+    expect(router.dependencies).toContain("D-CTX-01");
+    expect(router.status).toBe("BLOCKED");
+  });
+
+  it("keeps Qualification contract design separate from Qualification evaluation", () => {
+    const contract = program.items.find((item) => item.id === "QC-01")!;
+    const evalQ = program.items.find((item) => item.id === "Q-01")!;
+    expect(contract.estimatedCalls).toBe(0);
+    expect(contract.nextAction.toLowerCase()).toMatch(/no prompt/);
+    expect(evalQ.dependencies).toContain("M-01");
+    expect(evalQ.status).toBe("BLOCKED");
+  });
+
+  it("maps directive stages A–K onto the existing eight stages instead of adding a ninth program", () => {
+    expect(program.stages.map((s) => s.id)).toEqual(["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"]);
+    const map = program.directiveStageMap!;
+    for (const letter of ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"]) {
+      expect(program.stages.some((s) => s.id === map[letter]), `${letter} maps to unknown ${map[letter]}`).toBe(true);
+    }
+  });
+
+  it("covers every empirical question the product must eventually answer", () => {
+    const known = new Set<string>([
+      ...program.items.map((item) => item.id),
+      ...registry.records.map((record) => record.experimentId),
+    ]);
+    expect(program.empiricalQuestions, "empiricalQuestions missing from the program").toBeDefined();
+    expect(program.empiricalQuestions!.map((q) => q.id)).toEqual(
+      Array.from({ length: 32 }, (_, i) => `EQ-${String(i + 1).padStart(2, "0")}`),
+    );
+    for (const question of program.empiricalQuestions!) {
+      expect(question.coveredBy.length, `${question.id} has no coverage`).toBeGreaterThan(0);
+      for (const id of question.coveredBy) {
+        expect(known.has(id), `${question.id} is covered by unknown "${id}"`).toBe(true);
+      }
+    }
+  });
+
+  it("records conflicts instead of silently preferring the chat directive", () => {
+    expect(program.conflictsResolved?.length).toBeGreaterThanOrEqual(3);
+    expect(program.conflictsResolved?.some((c) => /Qualification/i.test(c.topic))).toBe(true);
   });
 });
 
@@ -269,6 +335,41 @@ describe("the reconciled roadmap does not compete with the program", () => {
     for (const id of ["P-01", "S-01", "D-01", "M-01", "Q-01"]) {
       expect(roadmap, `roadmap lost the mapping to ${id}`).toContain(id);
     }
+  });
+
+  it("does not invent a competing A–K stage system", () => {
+    expect(roadmap).not.toMatch(/^### STAGE [A-K] /m);
+    expect(roadmap).toContain("directive stages A–K");
+  });
+});
+
+describe("the architecture evidence ledger is not a second backlog", () => {
+  const ledger = JSON.parse(readFileSync("config/architecture-evidence-ledger.json", "utf8")) as EvidenceLedger;
+
+  it("is a generated view of the JSON, not a hand-edited document", () => {
+    const expected = renderLedger(ledger);
+    const actual = readFileSync("docs/ARCHITECTURE_EVIDENCE_LEDGER.md", "utf8");
+    expect(actual, "docs/ARCHITECTURE_EVIDENCE_LEDGER.md is stale; run `pnpm research:ledger`").toBe(expected);
+  });
+
+  it("cites only real program items or registry experiments in its findings", () => {
+    const known = new Set<string>([
+      ...program.items.map((item) => item.id),
+      ...registry.records.map((record) => record.experimentId),
+    ]);
+    for (const finding of ledger.findings) {
+      const cited = finding.evidence.join("\n").match(/\b(?:[A-Z]+-\d+|agent-vs-lexical:[^\s]+|split-agents:[^\s]+)/g) ?? [];
+      for (const id of cited) {
+        const trimmed = id.replace(/[.,;:]+$/, "");
+        const ok = known.has(trimmed) || [...known].some((k) => trimmed.startsWith(k) || k.startsWith(trimmed));
+        expect(ok, `${finding.id} cites unknown ${trimmed}`).toBe(true);
+      }
+    }
+  });
+
+  it("does not replace the research program as the live question list", () => {
+    expect(ledger.purpose.toLowerCase()).toMatch(/not a second backlog/);
+    expect(readFileSync("docs/ARCHITECTURE_EVIDENCE_LEDGER.md", "utf8")).toContain("GENERATED FILE");
   });
 });
 

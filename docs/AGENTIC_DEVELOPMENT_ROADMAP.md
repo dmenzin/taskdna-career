@@ -9,6 +9,10 @@ experiments are ranked the way they are, and what a stage is allowed to conclude
 projection of that file. If this rationale and the JSON ever disagree, the JSON wins; edit this
 file to restore the rationale, do not invent a third map.
 
+The 2026-08-23 master directive used conceptual **directive stages A–K**. Those letters are an
+ordering mnemonic, not a second backlog. `directiveStageMap` in the JSON is the only permitted
+translation onto the live S1–S8 program. Do not create Stage A as a live stage id.
+
 ---
 
 ## The governing principle, after audit
@@ -190,16 +194,19 @@ claim-level auditability, with no clearly superior unresolved architecture immed
 
 Establish that conclusions survive generation variance and that KEEP/REJECT thresholds have a
 documented sensitivity range.
-**Contains:** `S-01` (E2) and `T-01`.
-**EXIT WHEN:** the architectural decision and the principal quality conclusions are stable across
-repeated independent generations, and every KEEP/REJECT threshold has a documented sensitivity
-range.
+**Contains:** `S-01` (E2; exact-repeat stochasticity), `S-02` (prompt-perturbation robustness),
+`S-03` (model/alias drift), `T-01`, and `POW-01` (sample-size/power).
+**EXIT WHEN:** the architectural decision and the principal quality conclusions survive exact-repeat
+fresh generations AND semantically equivalent prompt variation, and every KEEP/REJECT threshold
+has a documented sensitivity range.
 
 ### S3 — Semantic construct coverage
 
 Close the gap between a four-channel contract and a three-channel implementation, and define
 uncertainty and contradiction handling before they are shown to a user.
-**Contains:** `Q-01` (E5), `U-01`, `C-01`, `X-01`.
+**Contains:** `QC-01` (Qualification contract, before any prompt), `Q-01` (E5; evaluation blocked
+on M-01), `U-01`, `C-01`, `X-01`, and later `D-CTX-04` (domain-conditioned Q, only after oracle
+domain context helps).
 **EXIT WHEN:** every product-required construct (E/P/Q/D, uncertainty, contradictions) has defined
 truth, a defined metric, and a measured implementation.
 
@@ -212,14 +219,18 @@ VALIDATION. **Runs once per frozen architecture.** LOCKED stays untouched.
 
 ### S5 — Product-realistic evidence
 
-**Contains:** `M-01` (E4), `M-02`, `J-01`, plus an evidence-routing decision — deterministic
-router, model router, or structured onboarding that makes routing unnecessary.
+**Contains:** `M-01` (E4 / MIXED_EVIDENCE), `M-02` (population diversity), `M-03` (NATURAL_USER),
+`M-04` (MULTI_SOURCE), `J-01`, `TM-01` (transfer metrics), and the domain-context ladder
+`D-CTX-01` → `D-CTX-02` → `D-CTX-03`. Oracle domain context plus a wrong-domain control come
+before any cheap router. Domain context may help understand evidence; it must not limit which
+jobs a person may match.
 **EXIT WHEN:** the architecture works without synthetic pre-routing of evidence and survives
 realistic ambiguity and contradiction.
 
 ### S6 — Human validity
 
-**Contains:** `H-01`. Corrections are held out under a custodian, never folded into tuning.
+**Contains:** `H-01` and `H-02` (corrections as held-out evaluation data). `PRIV-01` is a
+prerequisite, not a substitute. Corrections are held out under a custodian, never folded into tuning.
 **EXIT WHEN:** real users show acceptable claim correctness, omission and error rates, correction
 burden, provenance fidelity and recommendation usefulness. **No production claim before this
 stage completes.**
@@ -228,7 +239,7 @@ stage completes.**
 
 User-facing latency, cost, privacy, security, and the actual replacement of the deterministic
 product path.
-**Contains:** `L-01`, `SEC-01`, `I-01`.
+**Contains:** `PRIV-01`, `L-01`, `SEC-01`, `I-01`.
 **EXIT WHEN:** a validated semantic architecture runs in the product path with defined
 persistence, migration, fallback, latency UX, cost, privacy and security.
 
@@ -259,6 +270,14 @@ deterministic or single-call alternative.
   `config/agentic-research-program.json`; this file is rationale. Consolidate rather than add.
 - **Do not run a paid experiment that is not in `config/experiment-registry.json`.** The scripts
   refuse. Add the record with `pnpm experiment:preregister` and commit it first.
+- **Do not finish NATURAL because of sunk cost.** `N-01` is DEFERRED; partial cache is not
+  authorization.
+- **Do not treat S-01 and S-02 as the same experiment.** Exact-repeat stochasticity is not
+  prompt-perturbation robustness.
+- **Do not build a domain router, or a per-domain model, before `D-CTX-01`.** Oracle context plus
+  a wrong-domain control come first. Domain context must never become a career gate.
+- **Do not silently enlarge a frozen split to buy power.** That is `POW-01` plus a new versioned
+  generation, not an edit to `frame-corpus.v1`.
 
 ## Autonomy boundary for this repository
 

@@ -11,11 +11,25 @@ export interface ProgramItem {
   continuationAuthorized?: boolean;
   partialCache?: { personInterpretations: number; jobInterpretations: number; jobTotal: number; preserved: boolean };
 }
+export interface EmpiricalQuestion {
+  id: string;
+  question: string;
+  coveredBy: string[];
+}
+export interface ConflictResolved {
+  topic: string;
+  directiveSaid: string;
+  repositoryEvidence: string;
+  resolution: string;
+}
 export interface Program {
   version: string; purpose: string; notDuplicated: string;
   statuses: Record<string, string>;
   stages: { id: string; name: string; exitCriterion: string }[];
   items: ProgramItem[];
+  directiveStageMap?: { note?: string; [key: string]: string | undefined };
+  conflictsResolved?: ConflictResolved[];
+  empiricalQuestions?: EmpiricalQuestion[];
 }
 export interface ExperimentRecord {
   experimentId: string;
@@ -99,6 +113,54 @@ export function renderProgram(program: Program, registry: Registry): string {
     w();
   }
 
+  if (program.empiricalQuestions?.length) {
+    w("---");
+    w();
+    w("## Empirical questions that must remain answerable");
+    w();
+    w("These are the questions the program is not allowed to 'finish' without answering. Each is covered by a live item or a historical experiment. Chat is not the memory.");
+    w();
+    w("| id | question | covered by |");
+    w("| --- | --- | --- |");
+    for (const eq of program.empiricalQuestions) {
+      w(`| \`${eq.id}\` | ${eq.question} | ${eq.coveredBy.map((id) => `\`${id}\``).join(", ")} |`);
+    }
+    w();
+  }
+
+  if (program.conflictsResolved?.length) {
+    w("---");
+    w();
+    w("## Conflicts with the 2026-08-23 master directive");
+    w();
+    w("Where the pasted directive disagreed with disk evidence, the repository won. The disagreement is recorded here so it is not silently smoothed away.");
+    w();
+    for (const conflict of program.conflictsResolved) {
+      w(`### ${conflict.topic}`);
+      w();
+      w(`- **Directive said:** ${conflict.directiveSaid}`);
+      w(`- **Repository evidence:** ${conflict.repositoryEvidence}`);
+      w(`- **Resolution:** ${conflict.resolution}`);
+      w();
+    }
+  }
+
+  if (program.directiveStageMap) {
+    w("---");
+    w();
+    w("## Directive stage map (A–K → S1–S8)");
+    w();
+    if (program.directiveStageMap.note) w(program.directiveStageMap.note);
+    w();
+    const letters = Object.entries(program.directiveStageMap).filter(([key]) => key !== "note") as [string, string][];
+    if (letters.length) {
+      w("| directive stage | live program stage |");
+      w("| --- | --- |");
+      for (const [letter, stage] of letters) w(`| ${letter} | \`${stage}\` |`);
+      w();
+    }
+  }
+
   w("---");
   w();
   w("## Experiment ledger");
@@ -136,7 +198,9 @@ export function renderProgram(program: Program, registry: Registry): string {
   w(`- **${program.items.length}** tracked questions across **${program.stages.length}** stages`);
   w(`- Status spread: ${Object.entries(byStatus).sort().map(([s, n]) => `${n} ${s}`).join(", ")}`);
   const ready = program.items.filter((item) => item.status === "UNTESTED" && item.dependencies.length === 0);
+  const preregistered = program.items.filter((item) => item.status === "PREREGISTERED");
   w(`- **Runnable now** (untested, no unmet dependency): ${ready.length ? ready.map((item) => `\`${item.id}\``).join(", ") : "none"}`);
+  w(`- **Next paid experiment if authorized:** ${preregistered.length ? preregistered.map((item) => `\`${item.id}\``).join(", ") : "none"}`);
   w(`- Total spend recorded so far: **$${registry.records.reduce((total, record) => total + (record.actualCostUsd ?? 0), 0).toFixed(2)}** across **${registry.records.reduce((total, record) => total + (record.actualCalls ?? 0), 0)}** calls`);
   w();
 

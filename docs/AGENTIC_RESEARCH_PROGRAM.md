@@ -26,12 +26,15 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 
 ### S2 — Inference stability
 
-**Exit criterion.** The architectural decision and the principal quality conclusions are stable across repeated independent generations, and every KEEP/REJECT threshold has a documented sensitivity range.
+**Exit criterion.** The architectural decision and the principal quality conclusions survive exact-repeat fresh generations AND semantically equivalent prompt variation, and every KEEP/REJECT threshold has a documented sensitivity range.
 
 | id | status | question | depends on | next action | calls | cost |
 | --- | --- | --- | --- | --- | --- | --- |
 | `T-01` | **UNTESTED** | Are the provenance attribution thresholds (0.6 floor, 0.1 ambiguity margin) defensible? | P-01 | Sweep both thresholds over cached outputs and report verdict stability. Deterministic, zero calls. | 0 | $0.00 |
-| `S-01` | **UNTESTED** | Would we reach the same architectural decision if the model regenerated the same person's blueprint? | — | Preregister a repeated-generation study: 12 people x 3 fresh trials, trial index in the cache key. | 36 | $1.30 |
+| `S-01` | **UNTESTED** | Would we reach the same architectural decision if the model regenerated the same person's blueprint from identical prompt bytes? | P-01 | After P-01, design and preregister a repeated-generation study with an explicit sample-size justification. Do not execute until authorized. trialId belongs in experiment identity, not in semantic input. No cache reuse across trials. | 48 | $3.73 |
+| `S-02` | **UNTESTED** | Does semantically equivalent evidence phrasing cause materially different TaskDNA understanding? | S-01 | After S-01, preregister controlled perturbations that preserve hidden truth: bullet vs prose, reorder, paraphrase, mild typos, first- vs third-person, inserted neutral sentences. No perturbation may change planted truth. | 48 | $3.70 |
+| `S-03` | **UNTESTED** | Do later provider/model/alias moves change TaskDNA understanding on a fixed regression panel? | S-01 | Define a tiny fixed panel and rerun it when the resolved model id changes. Do not interpret future behaviour changes as architecture changes when the model may have moved. | 12 | $0.90 |
+| `POW-01` | **UNTESTED** | For each planned architecture comparison, what sample size would materially answer the question? | — | Estimate paired effect size and variance from DEVELOPMENT before declaring future effects inconclusive forever. Do not silently enlarge a frozen split; unused frozen subjects must keep their designated split, otherwise create a new versioned generation. | 0 | $0.00 |
 
 ### S3 — Semantic construct coverage
 
@@ -39,10 +42,12 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 
 | id | status | question | depends on | next action | calls | cost |
 | --- | --- | --- | --- | --- | --- | --- |
-| `Q-01` | **BLOCKED** | Can an agent extract held qualifications well enough to reproduce the planted meets-requirements/stretch partition? | M-01 | Wait for M-01, which makes qualifications visible as a byproduct of messy narrative rendering. | 12 | $0.45 |
+| `Q-01` | **BLOCKED** | Can an agent extract held qualifications well enough to reproduce the planted meets-requirements/stretch partition? | M-01 | Wait for QC-01 (contract) and M-01 (visible evidence). Do not copy the Experience representation and call it Qualification. | 12 | $0.45 |
 | `U-01` | **UNTESTED** | Can the representation say 'I do not have enough evidence' instead of inventing a conclusion, and is that signal calibrated? | P-01 | Define the construct before implementing. Candidates: explicit INSUFFICIENT_EVIDENCE, claim-level evidence strength, repeated-generation agreement as an external proxy. | 12 | $0.45 |
 | `C-01` | **DEFERRED** | How should conflicting evidence and user corrections be reconciled? | P-01, U-01 | Define source precedence and versioning. Prefer deterministic reconciliation; reserve model adjudication for genuinely ambiguous semantics. | 0 | $0.00 |
 | `X-01` | **BLOCKED** | Are explanations faithful to the evidence and match factors that actually produced the ranking? | P-01 | Wait for P-01. Then build deterministic explanation validation, not a model critic. | 0 | $0.00 |
+| `QC-01` | **UNTESTED** | What does Qualification mean, as a product contract, before any Qualification prompt is written? | P-01 | Write QUALIFICATION_CONTRACT distinguishing capabilities, credentials, experience-depth, education, hard vs preferred requirements, transferable evidence, unknown/missing evidence, and gaps. Design PersonQualification and JobRequirement together. No prompt yet. | 0 | $0.00 |
+| `D-CTX-04` | **BLOCKED** | Does Qualification benefit from domain context more than Experience does? | QC-01, D-CTX-01 | Evaluate domain conditioning independently for work interpretation, Qualification interpretation, and job hard-requirement interpretation. Do not domain-specialize the whole CareerBlueprint by default. | 24 | $1.80 |
 
 ### S4 — Generalisation
 
@@ -61,6 +66,12 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 | `M-01` | **BLOCKED** | Can TaskDNA untangle a messy person, rather than interpret evidence that was already routed for it? | P-01 | Requires explicit approval: a new benchmark family is a contract change under amendment C. Same hidden truth, new independent messy-narrative renderer, no channel labels. | 300 | $4.00 |
 | `M-02` | **BLOCKED** | Does the architecture hold for career states the current corpus does not contain? | M-01 | New versioned corpus with its own preregistration. Do not mutate the frozen corpus. | 300 | $4.00 |
 | `J-01` | **UNTESTED** | Does JobBlueprint interpretation survive real, noisy job descriptions? | — | Assemble a noisy job-description set. Keep interpretation per job and globally cached; never per user-job pair. | 100 | $1.50 |
+| `M-03` | **BLOCKED** | Does the architecture hold on conversational NATURAL_USER renderings of the same latent truth? | M-01 | New independently versioned family after M-01. Do not promote MIXED_EVIDENCE results into claims about conversational input. | 300 | $4.00 |
+| `M-04` | **BLOCKED** | Can TaskDNA reconcile multi-source user evidence that contains planted contradictions? | M-03, C-01 | New versioned family combining resume bullets, narrative, explicit preferences, goals, and correction messages. Potential contradictions planted on purpose. | 300 | $4.00 |
+| `TM-01` | **UNTESTED** | Can product-specific transfer quality be measured separately from paraphrase recovery? | — | Define the transfer-metric contract before the next realistic benchmark freeze. Do not invent a blended TaskDNA Quality number. | 0 | $0.00 |
+| `D-CTX-01` | **BLOCKED** | Does correct oracle domain context improve semantic interpretation, and does wrong-domain context harm it? | P-01, S-01, M-01 | After the person-inference architecture is stable and MIXED_EVIDENCE exists, run four arms with model/schema/matcher/truth/scoring frozen: no context, correct oracle pack, plausible wrong pack, multi-domain pack. If perfect domain knowledge does not help, do not build a router. | 48 | $3.70 |
+| `D-CTX-02` | **BLOCKED** | Is industry, work-function, or a multi-dimensional pack the right domain-context unit? | D-CTX-01 | Only if D-CTX-01 shows oracle benefit. Compare industry vs function vs industry+function+specialty packs on the same people. | 36 | $2.80 |
+| `D-CTX-03` | **BLOCKED** | Can a cheap multi-label domain router preserve oracle-domain benefits without destroying career-transition cases? | D-CTX-01, D-CTX-02 | Only if D-CTX-01 oracle arm helps. Evaluate router precision/recall AND end-to-end semantic and ranking effect. A 95% accurate router can still be harmful if its 5% errors destroy transitions. | 24 | $1.80 |
 
 ### S6 — Human validity
 
@@ -68,7 +79,8 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 
 | id | status | question | depends on | next action | calls | cost |
 | --- | --- | --- | --- | --- | --- | --- |
-| `H-01` | **BLOCKED** | Do real people agree with TaskDNA's representation of their own work? | V-01, M-01 | Design the review program and the privacy prerequisites. Corrections held out under a custodian, never folded into a tuning set. | 0 | $0.00 |
+| `H-01` | **BLOCKED** | Do real people agree with TaskDNA's representation of their own work? | V-01, M-01, PRIV-01 | Design the review program after PRIV-01. Corrections held out under a custodian, never folded into a tuning set. Do not use model-generated labels as human truth. | 0 | $0.00 |
+| `H-02` | **BLOCKED** | Can human correction events become future held-out evaluation data without leaking into the tuning set? | H-01 | Define the correction event schema and the held-out rule before the first human study writes a correction. Do not train on every correction and then evaluate on the same distribution. | 0 | $0.00 |
 
 ### S7 — Research-to-product integration
 
@@ -79,6 +91,7 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 | `L-01` | **BLOCKED** | What is the real user wait when independent calls are actually issued concurrently under provider contention? | D-01 | Only meaningful if a multi-call architecture wins. Needs genuine concurrency, >=100 subjects, repeated across times of day. | 200 | $6.00 |
 | `SEC-01` | **UNTESTED** | Does the architecture separate system instructions from untrusted external data? | — | Required before ingesting any real content. Explicit data/instruction separation; treat all extracted text as data; never let ingested text reach a tool-calling path. | 24 | $0.90 |
 | `I-01` | **BLOCKED** | How does a validated semantic architecture replace the deterministic product path? | V-01, H-01 | Do not merge research code into the product because DEVELOPMENT metrics look good. Requires persistence, migration, fallback, latency UX, cost, privacy and shadow testing. | 0 | $0.00 |
+| `PRIV-01` | **UNTESTED** | Are consent, retention, deletion, cache, logging, and provider-exposure rules defined before any real career history is persisted? | — | Write the privacy/security foundation: consent, retention, deletion, data minimization, access boundaries, cache policy, logging policy, model-provider exposure, secrets, user export/correction. Required before H-01. | 0 | $0.00 |
 
 ### S8 — Agentic expansion
 
@@ -114,14 +127,14 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 - **Cost if run:** 0 calls, ~$0.00
 - **Latency relevance:** None.
 
-### `S-01` — Would we reach the same architectural decision if the model regenerated the same person's blueprint?
+### `S-01` — Would we reach the same architectural decision if the model regenerated the same person's blueprint from identical prompt bytes?
 
 - **Status:** UNTESTED · **Stage:** S2 · **Split:** DEVELOPMENT
-- **Depends on:** nothing
-- **Evidence so far:** Nothing known. Every result is one generation per input. Reasoning tokens varied 261-982 at fixed effort, so generation is demonstrably unstable; the score effect is unmeasured.
-- **Next action:** Preregister a repeated-generation study: 12 people x 3 fresh trials, trial index in the cache key.
-- **Success criterion:** The sign of the agent-field-match vs agent-blueprint delta is stable across trials and ranking rank-correlation is high.
-- **Cost if run:** 36 calls, ~$1.30
+- **Depends on:** `P-01`
+- **Evidence so far:** Nothing known. Every result is one generation per input. Reasoning tokens varied 261-982 at fixed effort, so generation is demonstrably unstable; the score effect is unmeasured. Distinct from S-02, which varies phrasing rather than asking the same bytes twice.
+- **Next action:** After P-01, design and preregister a repeated-generation study with an explicit sample-size justification. Do not execute until authorized. trialId belongs in experiment identity, not in semantic input. No cache reuse across trials.
+- **Success criterion:** The sign of each important architectural delta (field-match vs token-bag; shared-provenance vs incumbent) is stable across trials and ranking rank-correlation is high.
+- **Cost if run:** 48 calls, ~$3.73
 - **Latency relevance:** Yields latency variance, currently unknown.
 
 ### `D-01` — Does a correctly-scoped Direction Agent beat the shared blueprint on Direction, or only tie it?
@@ -158,8 +171,8 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 
 - **Status:** BLOCKED · **Stage:** S3 · **Split:** DEVELOPMENT
 - **Depends on:** `M-01`
-- **Evidence so far:** Truth side already exists: frameLabels computes qualificationFeasibility and hardGaps. Blocked because the five planted qualifications per person appear only in the narrative field, which no architecture reads. Per RECOMMENDATION_POLICY this is a partition, never a fourth similarity channel.
-- **Next action:** Wait for M-01, which makes qualifications visible as a byproduct of messy narrative rendering.
+- **Evidence so far:** Truth side already exists: frameLabels computes qualificationFeasibility and hardGaps. Blocked because the five planted qualifications per person appear only in the narrative field, which no architecture reads. Per RECOMMENDATION_POLICY this is a partition, never a fourth similarity channel. Contract design is QC-01 and can start before M-01; evaluation cannot.
+- **Next action:** Wait for QC-01 (contract) and M-01 (visible evidence). Do not copy the Experience representation and call it Qualification.
 - **Success criterion:** Partition agreement against planted truth, with E/P/D scores byte-identical.
 - **Cost if run:** 12 calls, ~$0.45
 - **Latency relevance:** One extra field on an existing call, or one extra call. Measure.
@@ -257,9 +270,9 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 ### `H-01` — Do real people agree with TaskDNA's representation of their own work?
 
 - **Status:** BLOCKED · **Stage:** S6 · **Split:** real users
-- **Depends on:** `V-01`, `M-01`
+- **Depends on:** `V-01`, `M-01`, `PRIV-01`
 - **Evidence so far:** Zero human validity. Everything is planted-truth recovery on synthetic people.
-- **Next action:** Design the review program and the privacy prerequisites. Corrections held out under a custodian, never folded into a tuning set.
+- **Next action:** Design the review program after PRIV-01. Corrections held out under a custodian, never folded into a tuning set. Do not use model-generated labels as human truth.
 - **Success criterion:** Claim correctness, omission and error rates, and correction burden meet preregistered thresholds.
 - **Cost if run:** 0 calls, ~$0.00
 - **Latency relevance:** Perceived latency becomes measurable here.
@@ -314,6 +327,227 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 - **Cost if run:** 253 calls, ~$3.00
 - **Latency relevance:** None.
 
+### `S-02` — Does semantically equivalent evidence phrasing cause materially different TaskDNA understanding?
+
+- **Status:** UNTESTED · **Stage:** S2 · **Split:** DEVELOPMENT
+- **Depends on:** `S-01`
+- **Evidence so far:** Unmeasured. S-01 keeps prompt/input bytes identical; this item is the distinct robustness question. Real users will not phrase work like the benchmark renderer.
+- **Next action:** After S-01, preregister controlled perturbations that preserve hidden truth: bullet vs prose, reorder, paraphrase, mild typos, first- vs third-person, inserted neutral sentences. No perturbation may change planted truth.
+- **Success criterion:** Representation invariance and ranking stability hold under truth-preserving perturbations; channel assignment does not flip.
+- **Cost if run:** 48 calls, ~$3.70
+- **Latency relevance:** None directly; informs whether onboarding copy sensitivity is a product risk.
+
+### `S-03` — Do later provider/model/alias moves change TaskDNA understanding on a fixed regression panel?
+
+- **Status:** UNTESTED · **Stage:** S2 · **Split:** DEVELOPMENT
+- **Depends on:** `S-01`
+- **Evidence so far:** gpt-5.6-sol is a moving alias with no dated snapshot. Requested and resolved model ids are already recorded per call. No periodic regression panel exists.
+- **Next action:** Define a tiny fixed panel and rerun it when the resolved model id changes. Do not interpret future behaviour changes as architecture changes when the model may have moved.
+- **Success criterion:** A documented panel, recorded requested/resolved model, and a rule that alias drift is a threat-to-validity, not an architecture result.
+- **Cost if run:** 12 calls, ~$0.90
+- **Latency relevance:** None.
+
+### `POW-01` — For each planned architecture comparison, what sample size would materially answer the question?
+
+- **Status:** UNTESTED · **Stage:** S2 · **Split:** DEVELOPMENT
+- **Depends on:** nothing
+- **Evidence so far:** The program has repeatedly met wide intervals at n=12 (Direction v2 +0.074 CI [-0.066, 0.198]). Inconclusive has been treated as a stopping rule rather than as a power problem.
+- **Next action:** Estimate paired effect size and variance from DEVELOPMENT before declaring future effects inconclusive forever. Do not silently enlarge a frozen split; unused frozen subjects must keep their designated split, otherwise create a new versioned generation.
+- **Success criterion:** Each planned comparison has an expected interval width or power calculation written down before spend.
+- **Cost if run:** 0 calls, ~$0.00
+- **Latency relevance:** None.
+
+### `QC-01` — What does Qualification mean, as a product contract, before any Qualification prompt is written?
+
+- **Status:** UNTESTED · **Stage:** S3 · **Split:** n/a
+- **Depends on:** `P-01`
+- **Evidence so far:** No QUALIFICATION_CONTRACT exists. Q-01 cannot be evaluated until evidence is visible (M-01), but the ontology must be designed first so person-Q and job-Q are compatible. Qualification is not Experience with another name.
+- **Next action:** Write QUALIFICATION_CONTRACT distinguishing capabilities, credentials, experience-depth, education, hard vs preferred requirements, transferable evidence, unknown/missing evidence, and gaps. Design PersonQualification and JobRequirement together. No prompt yet.
+- **Success criterion:** A committed contract that the deterministic compatibility layer can use to tell nice-to-have from legally/operationally mandatory, without treating absence of evidence as absence of qualification unless the contract says so.
+- **Cost if run:** 0 calls, ~$0.00
+- **Latency relevance:** None; design work.
+
+### `M-03` — Does the architecture hold on conversational NATURAL_USER renderings of the same latent truth?
+
+- **Status:** BLOCKED · **Stage:** S5 · **Split:** new NATURAL_USER family
+- **Depends on:** `M-01`
+- **Evidence so far:** Level 2 of the prompt-realism ladder. M-01 is Level 1 (unlabelled combined narrative). Conversational hedging, corrections, and mixed chronology are untested.
+- **Next action:** New independently versioned family after M-01. Do not promote MIXED_EVIDENCE results into claims about conversational input.
+- **Success criterion:** Channel assignment and retrieval hold on conversational renderings of the same hidden truth.
+- **Cost if run:** 300 calls, ~$4.00
+- **Latency relevance:** May require more tokens; measure.
+
+### `M-04` — Can TaskDNA reconcile multi-source user evidence that contains planted contradictions?
+
+- **Status:** BLOCKED · **Stage:** S5 · **Split:** new MULTI_SOURCE family
+- **Depends on:** `M-03`, `C-01`
+- **Evidence so far:** Level 3 of the prompt-realism ladder. No multi-source renderer exists. C-01 is the reconciliation contract this family would exercise.
+- **Next action:** New versioned family combining resume bullets, narrative, explicit preferences, goals, and correction messages. Potential contradictions planted on purpose.
+- **Success criterion:** Explicit recent corrections outrank stale inference; planted contradictions are detected rather than silently averaged.
+- **Cost if run:** 300 calls, ~$4.00
+- **Latency relevance:** Refresh-path relevant.
+
+### `TM-01` — Can product-specific transfer quality be measured separately from paraphrase recovery?
+
+- **Status:** UNTESTED · **Stage:** S5 · **Split:** DEVELOPMENT
+- **Depends on:** nothing
+- **Evidence so far:** Current metrics include surprising-fit and transition recall, but not an explicit suite for cross-title true-fit, cross-industry true-fit, same-title false-fit, performed-but-unwanted intrusion, or desired-but-unqualified recommendations.
+- **Next action:** Define the transfer-metric contract before the next realistic benchmark freeze. Do not invent a blended TaskDNA Quality number.
+- **Success criterion:** Each transfer failure mode has a named metric and a runnable evaluator or an explicit EXPLORATORY mark.
+- **Cost if run:** 0 calls, ~$0.00
+- **Latency relevance:** None.
+
+### `D-CTX-01` — Does correct oracle domain context improve semantic interpretation, and does wrong-domain context harm it?
+
+- **Status:** BLOCKED · **Stage:** S5 · **Split:** DEVELOPMENT
+- **Depends on:** `P-01`, `S-01`, `M-01`
+- **Evidence so far:** Unmeasured. Domain knowledge is a major product hypothesis. A cheap router is not the first test — oracle benefit plus a wrong-domain negative control must come first. Domain context must never become a career gate.
+- **Next action:** After the person-inference architecture is stable and MIXED_EVIDENCE exists, run four arms with model/schema/matcher/truth/scoring frozen: no context, correct oracle pack, plausible wrong pack, multi-domain pack. If perfect domain knowledge does not help, do not build a router.
+- **Success criterion:** Oracle arm improves semantic recovery or Qualification without reducing legitimate cross-domain discovery; wrong-domain arm is reported as a negative control, not ignored.
+- **Cost if run:** 48 calls, ~$3.70
+- **Latency relevance:** Context packs add input tokens; measure.
+
+### `D-CTX-02` — Is industry, work-function, or a multi-dimensional pack the right domain-context unit?
+
+- **Status:** BLOCKED · **Stage:** S5 · **Split:** DEVELOPMENT
+- **Depends on:** `D-CTX-01`
+- **Evidence so far:** Unmeasured. Cross-industry transfer is part of the product value, so work-function context may matter more than employer industry. Do not assume 'industry' is the unit.
+- **Next action:** Only if D-CTX-01 shows oracle benefit. Compare industry vs function vs industry+function+specialty packs on the same people.
+- **Success criterion:** The winning unit is the one that helps interpretation without gating recommendations to the labelled domain.
+- **Cost if run:** 36 calls, ~$2.80
+- **Latency relevance:** Minor input-token differences.
+
+### `D-CTX-03` — Can a cheap multi-label domain router preserve oracle-domain benefits without destroying career-transition cases?
+
+- **Status:** BLOCKED · **Stage:** S5 · **Split:** DEVELOPMENT
+- **Depends on:** `D-CTX-01`, `D-CTX-02`
+- **Evidence so far:** No router exists. Building one before oracle benefit is shown is the failure this item exists to prevent. Prefer soft scores and abstention over a hard single-domain classifier.
+- **Next action:** Only if D-CTX-01 oracle arm helps. Evaluate router precision/recall AND end-to-end semantic and ranking effect. A 95% accurate router can still be harmful if its 5% errors destroy transitions.
+- **Success criterion:** End-to-end performance stays close to the oracle arm; low-confidence cases fall back to universal inference.
+- **Cost if run:** 24 calls, ~$1.80
+- **Latency relevance:** Router is an extra call unless it is a cheap classifier; measure the critical path.
+
+### `D-CTX-04` — Does Qualification benefit from domain context more than Experience does?
+
+- **Status:** BLOCKED · **Stage:** S3 · **Split:** DEVELOPMENT
+- **Depends on:** `QC-01`, `D-CTX-01`
+- **Evidence so far:** Unmeasured. Credentials (CPA, RN, bar, Series licenses, clearance, PE) are where domain expertise is most plausible. Universal E/P/D plus domain-conditioned Q remains an open hypothesis.
+- **Next action:** Evaluate domain conditioning independently for work interpretation, Qualification interpretation, and job hard-requirement interpretation. Do not domain-specialize the whole CareerBlueprint by default.
+- **Success criterion:** Domain-conditioned Q improves hard-requirement precision/recall without raising false hard-gates or blocking transferable candidates.
+- **Cost if run:** 24 calls, ~$1.80
+- **Latency relevance:** Possibly one extra Q call or a longer shared call.
+
+### `H-02` — Can human correction events become future held-out evaluation data without leaking into the tuning set?
+
+- **Status:** BLOCKED · **Stage:** S6 · **Split:** real users
+- **Depends on:** `H-01`
+- **Evidence so far:** No correction capture exists. Corrections are valuable only if original inference, evidence, model/version, timestamp, and resulting update are retained under a split.
+- **Next action:** Define the correction event schema and the held-out rule before the first human study writes a correction. Do not train on every correction and then evaluate on the same distribution.
+- **Success criterion:** A versioned correction log with an explicit evaluation split; no correction used both to tune and to score.
+- **Cost if run:** 0 calls, ~$0.00
+- **Latency relevance:** Refresh path.
+
+### `PRIV-01` — Are consent, retention, deletion, cache, logging, and provider-exposure rules defined before any real career history is persisted?
+
+- **Status:** UNTESTED · **Stage:** S7 · **Split:** n/a
+- **Depends on:** nothing
+- **Evidence so far:** Synthetic benchmark cache policy (amendment B4) does not automatically apply to humans. Real-user interpretations must never casually enter Git. No product privacy contract exists for the research path.
+- **Next action:** Write the privacy/security foundation: consent, retention, deletion, data minimization, access boundaries, cache policy, logging policy, model-provider exposure, secrets, user export/correction. Required before H-01.
+- **Success criterion:** A committed policy that forbids committing real-user caches and defines provider exposure before the first consented study.
+- **Cost if run:** 0 calls, ~$0.00
+- **Latency relevance:** None.
+
+---
+
+## Empirical questions that must remain answerable
+
+These are the questions the program is not allowed to 'finish' without answering. Each is covered by a live item or a historical experiment. Chat is not the memory.
+
+| id | question | covered by |
+| --- | --- | --- |
+| `EQ-01` | Does semantic model inference beat lexical matching? | `agent-vs-lexical:openai:SEMANTIC_BRIDGE:low`, `agent-vs-lexical:openai:LEXICAL_TRAP:low` |
+| `EQ-02` | Does structured field comparison beat token-bag comparison? | `R-01` |
+| `EQ-03` | Is the shared person interpreter clean when claim provenance is visible? | `P-01` |
+| `EQ-04` | Do specialist agents improve anything enough to justify extra inference? | `D-01`, `A-03` |
+| `EQ-05` | Does the same input produce stable understanding across fresh runs? | `S-01` |
+| `EQ-06` | Is understanding robust to harmless wording/format changes? | `S-02` |
+| `EQ-07` | Can TaskDNA correctly distinguish Experience from Preference? | `CT-01`, `M-01` |
+| `EQ-08` | Can it distinguish Preference from Direction? | `D-01`, `CT-01` |
+| `EQ-09` | Can it distinguish Qualification from Experience/Direction? | `Q-01`, `QC-01` |
+| `EQ-10` | Can it abstain rather than invent? | `U-01` |
+| `EQ-11` | Can it reconcile explicit corrections? | `C-01` |
+| `EQ-12` | Can it understand an unlabeled messy career narrative? | `M-01` |
+| `EQ-13` | Can it handle true career transitions? | `M-02` |
+| `EQ-14` | Can it distinguish attractive lexical similarity from actual work similarity? | `R-01`, `agent-vs-lexical:openai:LEXICAL_TRAP:low` |
+| `EQ-15` | Can it discover true fits across titles? | `TM-01` |
+| `EQ-16` | Can it discover true fits across industries? | `TM-01` |
+| `EQ-17` | Can it avoid recommending performed work that the person wants to leave? | `M-01`, `TM-01` |
+| `EQ-18` | Can it avoid recommending work the person likes but does not want professionally? | `M-01`, `TM-01` |
+| `EQ-19` | Can it identify qualification gaps without over-gating transferable candidates? | `Q-01` |
+| `EQ-20` | Does domain context improve understanding? | `D-CTX-01` |
+| `EQ-21` | Does wrong-domain context cause dangerous bias? | `D-CTX-01` |
+| `EQ-22` | Does a cheap router preserve oracle-domain benefits? | `D-CTX-03` |
+| `EQ-23` | Does domain conditioning damage cross-domain transfer? | `D-CTX-01` |
+| `EQ-24` | Are JobBlueprints accurate on messy job descriptions? | `J-01` |
+| `EQ-25` | Are explanations faithful to the actual match computation? | `X-01` |
+| `EQ-26` | Do synthetic gains generalize? | `V-01` |
+| `EQ-27` | Do real humans agree with the resulting CareerBlueprint? | `H-01` |
+| `EQ-28` | Is performance stable across model updates? | `S-03` |
+| `EQ-29` | Is actual product latency acceptable? | `L-01` |
+| `EQ-30` | Is actual product cost acceptable? | `I-01` |
+| `EQ-31` | Can the architecture safely ingest untrusted external content? | `SEC-01` |
+| `EQ-32` | Does any future autonomous agent outperform a simpler workflow enough to justify itself? | `A-01`, `A-02` |
+
+---
+
+## Conflicts with the 2026-08-23 master directive
+
+Where the pasted directive disagreed with disk evidence, the repository won. The disagreement is recorded here so it is not silently smoothed away.
+
+### Qualification sequencing
+
+- **Directive said:** Implement Qualification after P-01 and S-01 as Stage D.
+- **Repository evidence:** Planted qualifications appear only in the narrative field, which no current architecture reads. Q-01 evaluation is therefore blocked on M-01, not merely on architecture settlement.
+- **Resolution:** Split the work: QC-01 designs the contract after P-01 with zero spend; Q-01 evaluation stays blocked on M-01. Both remain in S3. Do not invent a qualification-evidence renderer that M-01 would immediately replace.
+
+### S-01 dependencies
+
+- **Directive said:** Run S-01 after P-01 so stability is measured on the architecture we actually have.
+- **Repository evidence:** S-01 can technically run against person-blueprint@v1. The highest-value stability question after this directive is shared+provenance, not v1.
+- **Resolution:** S-01 now depends on P-01. Exact-repeat stochasticity stays S-01; prompt-perturbation robustness is the new S-02.
+
+### NATURAL sunk cost
+
+- **Directive said:** Do not finish NATURAL because of sunk cost.
+- **Repository evidence:** N-01 is already DEFERRED with continuationAuthorized: false and 47 cached calls preserved.
+- **Resolution:** No change. Partial cache is not authorization. Unique information vs MIXED_EVIDENCE remains unanswered and is not a reason to resume.
+
+### Q-01 blocked on specialists vs mixed evidence
+
+- **Directive said:** Qualification is the next major missing semantic construct after architecture+stability.
+- **Repository evidence:** Roadmap E5 already corrected two scoping errors: Q is a partition not a fourth similarity channel, and truth already exists.
+- **Resolution:** Keep those corrections. QC-01 writes the contract; Q-01 measures partition agreement; D-CTX-04 tests domain-conditioned Q separately.
+
+---
+
+## Directive stage map (A–K → S1–S8)
+
+The 2026-08-23 master directive used stages A–K. Those letters are a conceptual order, not a second program. This map is the only permitted translation. Do not create Stage A as a live stage id.
+
+| directive stage | live program stage |
+| --- | --- |
+| A | `S1` |
+| B | `S2` |
+| C | `S1` |
+| D | `S3` |
+| E | `S4` |
+| F | `S5` |
+| G | `S5` |
+| H | `S5` |
+| I | `S6` |
+| J | `S7` |
+| K | `S8` |
+
 ---
 
 ## Experiment ledger
@@ -356,8 +590,9 @@ Deliberately not binary pass/fail: most of these questions resolve into somethin
 
 ## At a glance
 
-- **22** tracked questions across **8** stages
-- Status spread: 8 BLOCKED, 4 DEFERRED, 1 INCONCLUSIVE, 1 PREREGISTERED, 1 SUPPORTED, 7 UNTESTED
-- **Runnable now** (untested, no unmet dependency): `S-01`, `J-01`, `SEC-01`
+- **35** tracked questions across **8** stages
+- Status spread: 15 BLOCKED, 4 DEFERRED, 1 INCONCLUSIVE, 1 PREREGISTERED, 1 SUPPORTED, 13 UNTESTED
+- **Runnable now** (untested, no unmet dependency): `J-01`, `SEC-01`, `POW-01`, `TM-01`, `PRIV-01`
+- **Next paid experiment if authorized:** `P-01`
 - Total spend recorded so far: **$13.61** across **1041** calls
 

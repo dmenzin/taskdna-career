@@ -13,7 +13,7 @@ import { describe, expect, it } from "vitest";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { buildFrameCorpus, allFrameJobs } from "@/bench/frameCorpus";
-import { PERSON_BLUEPRINT_PROMPT, JOB_BLUEPRINT_PROMPT } from "@/agent/agentArchitecture";
+import { PERSON_BLUEPRINT_PROMPT, PERSON_BLUEPRINT_PROMPT_V2, JOB_BLUEPRINT_PROMPT } from "@/agent/agentArchitecture";
 import {
   EXPERIENCE_AGENT_PROMPT,
   DIRECTION_AGENT_PROMPT,
@@ -40,13 +40,17 @@ function renderAll(): Record<string, string> {
   for (const family of ["NATURAL", "SEMANTIC_BRIDGE", "LEXICAL_TRAP"] as const) {
     const corpus = buildFrameCorpus({ people: 12, split: "DEVELOPMENT", family });
     const person = corpus.people[0]!;
+    const personInput = {
+      experience: person.experienceEvidence.map((e) => e.text).join("\n"),
+      liked: person.preferenceEvidence.filter((e) => e.stance === "LIKE").map((e) => e.text).join("\n"),
+      disliked: person.preferenceEvidence.filter((e) => e.stance === "DISLIKE").map((e) => e.text).join("\n"),
+      desired: person.aspirationEvidence.map((e) => e.text).join("\n"),
+    };
     out[`${family}/person-blueprint@${PERSON_BLUEPRINT_PROMPT.version}`] = sha(
-      PERSON_BLUEPRINT_PROMPT.render({
-        experience: person.experienceEvidence.map((e) => e.text).join("\n"),
-        liked: person.preferenceEvidence.filter((e) => e.stance === "LIKE").map((e) => e.text).join("\n"),
-        disliked: person.preferenceEvidence.filter((e) => e.stance === "DISLIKE").map((e) => e.text).join("\n"),
-        desired: person.aspirationEvidence.map((e) => e.text).join("\n"),
-      }),
+      PERSON_BLUEPRINT_PROMPT.render(personInput),
+    );
+    out[`${family}/person-blueprint@${PERSON_BLUEPRINT_PROMPT_V2.version}`] = sha(
+      PERSON_BLUEPRINT_PROMPT_V2.render(personInput),
     );
     const job = allFrameJobs(corpus)[0]!;
     out[`${family}/job-blueprint@${JOB_BLUEPRINT_PROMPT.version}`] = sha(
@@ -76,7 +80,7 @@ describe("rendered prompts are byte-identical to the pre-refactor freeze", () =>
 
   it("has something to check", () => {
     // Guards the failure where the fixture is empty and every assertion vacuously passes.
-    expect(Object.keys(freeze.hashes).length).toBeGreaterThanOrEqual(24);
+    expect(Object.keys(freeze.hashes).length).toBeGreaterThanOrEqual(27);
   });
 });
 
