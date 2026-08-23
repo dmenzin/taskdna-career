@@ -1,8 +1,9 @@
 # PTA-01 — Prompt / benchmark lineage audit
 
 Written 2026-08-23 from git, the experiment registry, the prompt-render freeze, and the
-executed prompt sources. **Zero paid model calls.** VALIDATION person texts, hidden frames,
-and job lists were not inspected.
+executed prompt sources. **Amended the same day** after a second forensic pass.
+**Zero paid model calls.** No additional VALIDATION or LOCKED instances were generated
+or inspected in either pass.
 
 This is a lineage reconstruction, not a new experiment and not a fourth research roadmap.
 The live program remains `config/agentic-research-program.json`.
@@ -12,23 +13,42 @@ The live program remains `config/agentic-research-program.json`.
 There is no TaskDNA weight-training dataset. The effective loop is **prompt tuning** on a
 hand-designed synthetic frame corpus.
 
-Every scored agent arm used **DEVELOPMENT**, almost always **12 people / 288 jobs**, not the
-frozen 48. Those 12 people are code-generated with a **fixed 6 / 7 / 2 / 4** channel profile.
+Every scored agent arm used **DEVELOPMENT**, almost always **12 people**, each ranked
+against a **person-specific** pool of about **24 generated jobs**. “288 jobs” is
+12 × 24 tailored pools, **not** a shared 288-job market. NDCG@10 is top-10 from
+those ~24 candidates. Shared-universe retrieval and global JobBlueprint amortization
+are **not** demonstrated (`MKT-01`).
+
+Those 12 people are code-generated with a **fixed 6 / 7 / 2 / 4** channel profile.
 The executed prompts receive **pre-bucketed** EXPERIENCE / LIKES / DISLIKES / WANTS NEXT
 text. Qualification is planted in `narrative` and is **not read**.
 
-The benchmark was frozen **before** the first agent score. There is no evidence of
-“run agent → rewrite answers.” There **is** generator / designer / evaluator affinity:
+The **observed-input** freeze was committed **before** the first agent score. There is
+no evidence of “run agent → rewrite answers.” Hidden planted truth is **not** in that
+freeze (`TRUTH-01`). There **is** generator / designer / evaluator affinity:
 Claude Opus 5 co-authored the frame lexicon, the freeze, and the first CareerBlueprint
 prompts. OpenAI later reproduced the Semantic Bridge effect on the same frozen objects.
 
 Direction v2 and person-blueprint v2 were written after inspecting those same 12
-LEXICAL_TRAP DEVELOPMENT people. Their NDCGs are **development-benchmark performance**, not
-independent generalization.
+LEXICAL_TRAP DEVELOPMENT people. Their NDCGs are **development-benchmark performance**,
+not independent generalization.
 
-S-01 ($3.73, 12 × 4 fresh v2 trials on the same people) remains preregistered and
-**unauthorized**. It would measure stochasticity of the current incumbent. It would not
-enlarge the claim from this distribution.
+`agent-field-match` was written after inspecting DEVELOPMENT HARD_NEAR_MISS failures
+(`6fa64a2`). The LEXICAL_TRAP +0.148 vs token-bag was a **secondary** observation on
+the same run that **rejected** the preregistered agent-blueprint hypothesis. Treat
+field-match as **adaptive DEVELOPMENT evidence** until independent confirmation.
+Do not retune it now.
+
+P-01 splits: **provenance/auditability = SUPPORTED**; **retrieval preservation /
+non-inferiority = INCONCLUSIVE**. A CI that spans zero is not equivalence.
+
+S-01 remains preregistered in the experiment registry and is **DEFERRED** on
+information value in the live program. Paid execution is not authorized. It is not
+the next experiment.
+
+Current VALIDATION is a **procedural generator holdout**, not a blinded external
+holdout. LOCKED is deterministically buildable from repo code and the known seed;
+it is not a custodied blind artifact (`LOCK-01`).
 
 ---
 
@@ -122,15 +142,15 @@ a random subset of real careers. They are the prefix of a deterministic generato
 
 | Experiment | People | Family | Prompts | What was inspected | What changed |
 | --- | --- | --- | --- | --- | --- |
-| Claude SEMANTIC_BRIDGE | 12 | SEMANTIC_BRIDGE | person/job v1 | Rankings, channel volumes, person-1 hidden disliked frames, surface lexicon hits | Field-aware matcher (`6fa64a2`). Prompts unchanged |
+| Claude SEMANTIC_BRIDGE | 12 | SEMANTIC_BRIDGE | person/job v1 | Rankings, channel volumes, person-1 hidden disliked frames, surface lexicon hits | Field-aware matcher (`6fa64a2`) after HARD_NEAR_MISS inspection. Adaptive DEVELOPMENT evidence. Prompts unchanged |
 | OpenAI effort calibration | 1 person, 1 job | SEMANTIC_BRIDGE | v1 | Truncation / token counts | Output allowance. Not a quality claim |
 | OpenAI SEMANTIC_BRIDGE | 12 | SEMANTIC_BRIDGE | person/job v1 | Replication of the Claude delta | Nothing. Same prompts |
-| OpenAI LEXICAL_TRAP | 12 | LEXICAL_TRAP | person/job v1 | Token-bag lost; field-match won (R-01 secondary) | Matcher interpretation. Prompts unchanged |
+| OpenAI LEXICAL_TRAP | 12 | LEXICAL_TRAP | person/job v1 | Preregistered agent-blueprint hypothesis **REJECTED**. Field-match +0.148 was secondary (R-01) | Matcher adopted as working DEV tool. Not independent confirmation |
 | OpenAI NATURAL | 12 people / 35 jobs | NATURAL | person/job v1 | Stopped by operator. **Continuation not authorized** | Nothing |
 | split direction-v1 | 12 | LEXICAL_TRAP | experience@v1, direction@v1 | 11 wanted/person; provenance 81/129 and 83/132 desired claims from LIKE | **direction-agent@v2** + isolated routing |
 | split direction-v2 | 12 | LEXICAL_TRAP | experience@v1, direction@v2 | Contamination 0.629 → 0; isolated dir 0.806 | No further prompt edit. INCONCLUSIVE on retrieval |
-| P-01 | 12 | LEXICAL_TRAP | person@v2, job@v1 | Same 12 people; provenance 0.000 | Provisional incumbent. Not shipped |
-| S-01 amended | 12 × 4 trials | LEXICAL_TRAP | person@v2 | Not executed | — |
+| P-01 | 12 | LEXICAL_TRAP | person@v2, job@v1 | Same 12 people; provenance 0.000 | Provenance SUPPORTED. Retrieval preservation INCONCLUSIVE. Not shipped |
+| S-01 amended | 12 × 4 trials | LEXICAL_TRAP | person@v2 | Not executed. Program status **DEFERRED** | Preregistration preserved. Do not run |
 
 Those 12 LEXICAL_TRAP DEVELOPMENT people are now **prompt-training examples** for
 Direction v2 and provenance v2. The `.806` isolated Direction number and the P-01
@@ -193,24 +213,57 @@ are independent of that design process.
 
 ---
 
-## 8. VALIDATION and LOCKED
+## 8. VALIDATION and LOCKED — do not call them blind without qualification
 
-| Check | Result |
-| --- | --- |
-| Any registry experiment `split === "VALIDATION"` | **None.** All scored arms are DEVELOPMENT (or n/a) |
-| VALIDATION freeze entries | Present (48 people / 1,104 jobs × 3 families). Hashes only were read for this audit |
-| VALIDATION person text / hidden frames / jobs inspected for PTA-01 | **No** |
-| Prompt tuned on VALIDATION instances | **No evidence** |
-| `LOCKED_CONFIRMATION` frozen | `lockedConfirmationFrozen: false` |
-| LOCKED executed | Guarded; not executed |
+### VALIDATION is a procedural generator holdout, not a blinded external holdout
 
-Unit tests construct small VALIDATION corpora to assert vocabulary/identity disjointness
-(`tests/frame-corpus.test.ts`, `scripts/bench-frame-acceptance.ts`). That is a generator
-invariant, not an agent screen, and it is not prompt tuning.
+True, and still true:
 
-Some older product-lab scripts still have a VALIDATION mode on the **legacy** atom /
-iteration-metrics path. That is a different stack. It is not the current CareerBlueprint
-screen.
+- No agent experiment in `config/experiment-registry.json` used `split === "VALIDATION"`.
+- This audit did not open VALIDATION person texts, hidden frames, or job lists.
+- There is no evidence a prompt was tuned on VALIDATION *instances*.
+
+Also true, and previously under-said:
+
+- **Held-out vocabulary and source definitions are visible in the repository.**
+  `semanticFrame.ts` lists every `held-out` concept id and its surface forms in
+  plaintext. Anyone who writes a prompt can read them. That is not a blind lexicon.
+- **Existing tests instantiate VALIDATION corpora and inspect planted identity.**
+  `tests/frame-corpus.test.ts` builds 16 VALIDATION people and asserts work
+  identities are disjoint from DEVELOPMENT. `scripts/bench-frame-acceptance.ts`
+  does the same class of check. Those runs see planted identities. They are
+  generator-invariant tests, not agent screens, but they mean VALIDATION is not
+  an untouched sealed box.
+- Freeze hashes for VALIDATION observed inputs exist in
+  `config/frame-corpus-freeze.json`. Hash presence is not instance inspection;
+  it is also not secrecy of the generating process.
+
+So: no agent experiment and no manual case review for prompt tuning has used
+VALIDATION **instances**. VALIDATION is still a **procedural holdout of this
+generator** (held-out family + different person indices + a promise not to score
+agents on it yet). It is **not** a blinded external holdout, not a custodied
+dataset, and not “untouched” in the strong sense.
+
+`V-01` is therefore **frame-corpus.v1 mechanism validation only**. It is not
+eventual architecture confirmation. If `M-01` / `M-02` can change the selected
+architecture, final confirmation is `V-02` after that architecture is frozen.
+Do not consume VALIDATION now.
+
+### LOCKED is buildable, not custodied
+
+`LOCKED_CONFIRMATION` is `lockedConfirmationFrozen: false` and has not been
+executed. The evaluation entry points refuse it.
+
+It is nonetheless **deterministically buildable** from this repository:
+`buildFrameCorpus({ split: "LOCKED_CONFIRMATION" })` plus `FRAME_BENCH_SEED =
+20260823` and the in-repo lexicon. Anyone with the repo can materialize it.
+That is not a blind confirmation artifact.
+
+Do **not** build or inspect it now.
+
+`LOCK-01` tracks a future requirement: a genuinely blind, custodied final
+confirmation artifact or seed **outside prompt-author access**. Until that
+exists, do not describe LOCKED as sealed.
 
 ---
 
@@ -220,8 +273,9 @@ screen.
 | --- | --- |
 | Semantic normalisation can bridge deliberately separated vocabulary | Strong mechanistic DEVELOPMENT evidence |
 | Same effect on Claude and OpenAI | Strong evidence it is not one-provider-specific |
-| Field-aware matcher beats token-bag on Lexical Trap | Strong mechanistic DEVELOPMENT evidence |
-| Provenance can be added cleanly | Good DEVELOPMENT evidence (same 12 people) |
+| Field-aware matcher beats token-bag on Lexical Trap | Adaptive DEVELOPMENT evidence; secondary to a rejected preregistered hypothesis; not independent |
+| Provenance / auditability (P-01) | SUPPORTED on the same 12 people |
+| Retrieval preservation / non-inferiority (P-01) | INCONCLUSIVE. CI spanning zero is not equivalence |
 | Isolated Direction may outperform shared | Interesting DEVELOPMENT evidence, not independent |
 | Absolute NDCG = product performance | No |
 | Current prompt works on arbitrary real career input | Unknown |
@@ -232,14 +286,57 @@ screen.
 
 ---
 
-## 10. What this audit does not authorize
+## 10. Evaluation scope (person-specific pools, not a market)
 
-- Paid S-01
-- Inspecting VALIDATION instances
-- Touching LOCKED
+Paid n=12 screens call `buildFrameCorpus({ people: 12, … })`. Each person gets
+their own job list from `buildJobsFor` (~24 jobs: forced archetypes + 6
+distractors; empty specs are dropped). Ranking is **within that person’s
+pool**. Summing 12 × 24 = 288 counts interpretations, not a shared market.
+
+NDCG@10 therefore means: of those ~24 person-specific candidates, how good is
+the top 10. It does **not** mean retrieval from a shared job universe, and it
+does not demonstrate that JobBlueprints were computed once globally and reused
+as a product corpus (`MKT-01`). Job-interpretation *caching* inside an
+experiment is not market-scale amortization.
+
+## 11. Branch authority
+
+PR #8 (`cursor/taskdna-product-forensic-audit-b7d8`) and PR #9 (this branch,
+`cursor/taskdna-prompt-benchmark-lineage-b7d8`) are **sibling audit branches**.
+They do not share one HEAD.
+
+| PR | Branch | Base (as opened) | Subject |
+| --- | --- | --- | --- |
+| #8 | `cursor/taskdna-product-forensic-audit-b7d8` | `cursor/taskdna-agent-first-runtime-research` | Product-engine forensic specs (17-d Work Fit / MAE). No algorithm change |
+| #9 | `cursor/taskdna-prompt-benchmark-lineage-b7d8` | `cursor/taskdna-openai-provider-migration-b7d8` | Agent prompt/benchmark lineage. No prompt or truth mutation |
+
+Do not silently treat both as current authority. Product numbers from #8 and
+agent NDCGs from #9 are different stacks.
+
+**Proposed future reconciliation (do not merge or rebase unless authorized):**
+
+1. Keep #8 as the as-is product-engine spec on the product path.
+2. Keep #9 (this amendment included) as the as-is agent-research lineage spec.
+3. Reconcile into the live research-program / AGENTS.md only after an explicit
+   operator decision, in that order: product facts first if they conflict with
+   older product docs; agent-research facts first if they conflict with older
+   agent summaries.
+4. Do not fast-forward either branch over the other as if they were one line
+   of work.
+
+`BR-01` tracks that decision.
+
+## 12. What this audit does not authorize
+
+- Paid S-01 (program status DEFERRED; registry preregistration preserved)
+- Implementing or rendering M-01
+- Inspecting or generating additional VALIDATION or LOCKED instances
+- Building LOCKED “to see”
 - Editing any executed prompt
-- Treating MIXED_EVIDENCE, independent renderers, or human ontology review as already done
-- Collecting a “training set” to fine-tune weights (no weight-training loop exists)
+- Retuning `agent-field-match`
+- Mutating hidden truth or the observed-input freeze
+- Treating MIXED_EVIDENCE, independent renderers, or `ONT-01` as already done
+- Collecting a weight-training set
 
-Next-action recommendation lives in `docs/DATA01_BENCHMARK_PROVENANCE.md` § 12 and in
-program items `PTA-01` / `DATA-01` / `S-01`.
+Next work is zero-call: `ONT-01`, `TRUTH-01`, `LOCK-01` design, and the M-01
+independence protocol — not S-01.

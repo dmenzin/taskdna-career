@@ -35,13 +35,22 @@ describe("PTA-01 registry and freeze hygiene", () => {
     expect(Object.keys(freeze.entries).some((key) => key.startsWith("LOCKED"))).toBe(false);
   });
 
-  it("keeps S-01 unpaid", () => {
+  it("keeps S-01 unpaid in the registry and DEFERRED in the program", () => {
     const s01 = registry.records.find((record) => record.experimentId === "stochastic-stability:openai:LEXICAL_TRAP:low:amended");
     expect(s01?.status).toBe("PREREGISTERED");
     expect(s01?.actualCalls).toBeNull();
     expect(s01?.actualCostUsd).toBeNull();
     expect(s01?.estimatedCostUsd).toBe(3.73);
     expect(s01?.result).toMatch(/not authorized/i);
+  });
+
+  it("ranks each DEVELOPMENT person against a person-specific pool of about 24 jobs", () => {
+    const corpus = buildFrameCorpus({ people: 12, split: "DEVELOPMENT", family: "LEXICAL_TRAP" });
+    const sizes = corpus.people.map((person) => corpus.jobsByPerson.get(person.personId)!.length);
+    expect(new Set(sizes).size).toBe(1);
+    expect(sizes[0]).toBeGreaterThanOrEqual(20);
+    expect(sizes[0]).toBeLessThanOrEqual(28);
+    expect(sizes.reduce((a, b) => a + b, 0)).toBe(12 * sizes[0]!);
   });
 });
 
@@ -150,5 +159,47 @@ describe("PTA-01 executed prompt lineage", () => {
     expect(v1).toMatch(/work they enjoy and want more of/);
     expect(v2).toMatch(/ENJOYING work is NOT the same as WANTING it next/);
     expect(v2).not.toMatch(/work they enjoy and want more of/);
+  });
+});
+
+describe("second-pass audit language", () => {
+  const pta = readFileSync("docs/PTA01_PROMPT_BENCHMARK_LINEAGE.md", "utf8");
+  const data = readFileSync("docs/DATA01_BENCHMARK_PROVENANCE.md", "utf8");
+  const truth = readFileSync("docs/TRUTH01_EVALUATION_MANIFEST.md", "utf8");
+  const ont = readFileSync("docs/ONT01_ONTOLOGY_REVIEW.md", "utf8");
+  const m01 = readFileSync("docs/M01_INDEPENDENCE_PROTOCOL.md", "utf8");
+
+  it("does not call VALIDATION blindly untouched, and names the procedural holdout", () => {
+    expect(pta).toMatch(/procedural generator holdout/);
+    expect(pta).toMatch(/held-out vocabulary and source definitions are visible/i);
+    expect(pta).toMatch(/instantiate VALIDATION corpora and inspect planted identity/);
+    expect(data).toMatch(/procedural generator holdout/);
+  });
+
+  it("records person-specific ~24-job pools and NDCG@10 as top 10 of that pool", () => {
+    expect(pta).toMatch(/person-specific/);
+    expect(pta).toMatch(/NDCG@10/);
+    expect(pta).toMatch(/~24/);
+    expect(data).toMatch(/shared market/);
+    expect(truth).toContain("GRADE_THRESHOLDS");
+    expect(truth).toContain("INCIDENTAL_LABEL_WEIGHT");
+  });
+
+  it("keeps ONT-01 and M-01 as protocols, not implementations", () => {
+    expect(ont).toMatch(/not.*H-01/s);
+    expect(ont).toMatch(/Adjudication/);
+    expect(m01).toMatch(/Do not render/);
+    expect(m01).toMatch(/Renderer author/);
+  });
+
+  it("splits P-01, defers S-01, and records sibling-branch authority", () => {
+    expect(pta).toMatch(/provenance\/auditability = SUPPORTED/i);
+    expect(pta).toMatch(/INCONCLUSIVE/);
+    expect(pta).toMatch(/DEFERRED/);
+    expect(pta).toContain("PR #8");
+    expect(pta).toContain("PR #9");
+    expect(pta).toMatch(/do not merge or rebase unless authorized/i);
+    expect(data).toMatch(/LOCK-01/);
+    expect(truth).toMatch(/Do not.*mutate current truth|does not\s+mutate current truth/i);
   });
 });

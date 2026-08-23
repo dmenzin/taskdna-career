@@ -1,9 +1,12 @@
 # DATA-01 — Benchmark provenance audit
 
 Written 2026-08-23 from `src/bench/semanticFrame.ts`, `src/bench/frameCorpus.ts`, the
-preregistration, and the freeze metadata. **Zero paid model calls.** VALIDATION instances
-were not opened. Held-out **concept ids** are inventoried from generator source only —
-that is how the vocabulary was authored, not a look at VALIDATION people.
+preregistration, and the freeze metadata. **Amended the same day** after a second
+forensic pass. **Zero paid model calls.** No additional VALIDATION or LOCKED instances
+were generated or inspected. Held-out **concept ids** are inventoried from generator
+source only — that is how the vocabulary was authored, not a look at VALIDATION people.
+Those source definitions are themselves visible in-repo, which is why VALIDATION is a
+procedural generator holdout rather than a blinded external holdout.
 
 This is a provenance inventory, not a new corpus and not a fourth research roadmap.
 
@@ -249,8 +252,14 @@ ids made a constant-0 scorer post NDCG@10 0.933 on SEMANTIC_BRIDGE via tie-break
 That defect was repaired before any agent score.
 
 Default freeze size: 48 people. DEVELOPMENT 1,152 jobs / family. VALIDATION 1,104
-jobs / family (HARD_NEAR_MISS / trap construction can drop empty specs). Paid agent
-screens typically use 12 people × 24 jobs = 288.
+jobs / family (HARD_NEAR_MISS / trap construction can drop empty specs).
+
+**Evaluation-scope correction.** Paid agent screens typically use 12 people, each
+with a **person-specific** pool of about 24 jobs (`buildJobsFor` + 6 distractors).
+“288 jobs” is 12 separate tailored pools, not one shared market of 288. NDCG@10
+is the top 10 of those ~24 candidates. This benchmark does **not** demonstrate
+candidate retrieval from a shared market-scale job universe or global
+JobBlueprint amortization (`MKT-01`).
 
 ---
 
@@ -264,7 +273,7 @@ screens typically use 12 people × 24 jobs = 288.
 | RNG | mulberry32 + `hashSeed` |
 | DEVELOPMENT vocab | `core` only |
 | VALIDATION vocab | `held-out` only |
-| LOCKED vocab | `core` + `held-out` (buildable, not frozen, not run) |
+| LOCKED vocab | `core` + `held-out` (deterministically buildable from this repo + seed; not frozen; not run; not a custodied blind artifact — `LOCK-01`) |
 
 Renderer family changes **surface forms only**. Hidden frames are constructed the same
 way in NATURAL, SEMANTIC_BRIDGE, and LEXICAL_TRAP. A score difference between families
@@ -315,9 +324,18 @@ Model assistance during benchmark authoring is real enough to list as a threat
 (see `docs/PTA01_PROMPT_BENCHMARK_LINEAGE.md` § 7). The scientific contract still
 holds on the narrower claim: answers were not rewritten after the agent scored.
 
-VALIDATION, when eventually run once, will answer: does this frozen architecture
+`V-01`, if ever run, answers only: does a **frozen frame-corpus.v1** architecture
 generalize to unseen vocabulary and unseen draws **from this same generator**?
-It will not answer: does TaskDNA work on real people’s messy career histories?
+That is mechanism validation. It is not eventual architecture confirmation
+(`V-02`) and it is not “does TaskDNA work on real people’s messy career
+histories?” Do not consume VALIDATION now. If `M-01` / `M-02` can change the
+selected architecture, keep final confirmation for after that architecture is
+frozen.
+
+VALIDATION is a **procedural generator holdout**: no agent experiment or manual
+prompt-tuning review has used its instances, but held-out concept source is
+visible in this file’s § 2 and tests already instantiate small VALIDATION
+corpora to inspect planted identity. It is not a blinded external holdout.
 
 ---
 
@@ -326,39 +344,33 @@ It will not answer: does TaskDNA work on real people’s messy career histories?
 Do **not** start a fine-tune. There is no weight-training loop, and more of the
 current planter would only teach the current planter.
 
-Do **not** spend $3.73 on S-01 as the next information-value action. S-01 is a
-valid stability question about `person-blueprint@v2` on these same 12 LEXICAL_TRAP
-DEVELOPMENT people. It cannot fix upstream data. If the next scientific move is
-to change the evidence format (unlabelled messy narrative, independent renderer,
-different channel profiles), S-01’s shelf life is short: it would buy stability
-insurance on an input format we already know is doing the routing for the model.
+S-01 is **DEFERRED** on information value. It is a valid later stability
+question about `person-blueprint@v2` on these same 12 people. It is not the next
+action and it is not ahead of M-01. Do not spend $3.73 on it now.
 
-Do **not** peek at VALIDATION to “get a better number.” That burns the only
-untouched generator hold-out.
+Do **not** peek at VALIDATION instances to “get a better number.” That spends a
+procedural generator holdout. It was never a blinded external holdout.
 
 The data work that would actually change what a prompt can be trained on, in
 order, all as **new versioned families / protocols**, never by mutating the freeze:
 
-1. **Keep the current freeze sacred.** It remains a clean mechanism bench
-   (vocabulary bridging, lexical traps, field-aware matching).
-2. **Human ontology check (zero model calls).** Can competent reviewers agree
-   that the five identity roles, and a sample of trap distinctions, change the
-   work? Until that exists, “the model recovered the ontology” and “the ontology
-   is right” stay different sentences. This is a precursor to `H-01`, not `H-01`.
-3. **MIXED_EVIDENCE / M-01 design.** Same hidden frames, a renderer that does
-   **not** pre-bucket EXPERIENCE / LIKES / DISLIKES / WANTS NEXT and does not
-   use giveaway carriers. This is the first test of routing. It is a contract
-   change (amendment C). Prefer an independently authored renderer so Claude
-   is not evaluating Claude-written mess either.
-4. **Career-state diversity / M-02.** A new corpus version whose planter is
-   allowed to vary. The current 6/7/2/4 skeleton (every dislike is also
-   performed work; desired and performed never share a planted frame) cannot
-   represent career-changers, returners, or “I have not done the thing I want.”
-5. **Qualification-visible evidence / QC-01 then Q-01.** Do not build a bespoke
+1. **Keep the current observed-input freeze sacred.** Add `TRUTH-01` (separate
+   truth/evaluation manifest) without mutating current truth.
+2. **`ONT-01`.** Human ontology review. Protocol: `docs/ONT01_ONTOLOGY_REVIEW.md`.
+   Must precede M-01 design decisions that assume the five-field ontology.
+3. **`LOCK-01` design.** A custodied blind confirmation seed/artifact outside
+   prompt-author access. Do not build today’s LOCKED split as a substitute.
+4. **MIXED_EVIDENCE / M-01 design, under `docs/M01_INDEPENDENCE_PROTOCOL.md`.**
+   Do not render yet. Same hidden frames, no pre-bucketing, no giveaway
+   carriers. Renderer author does not get current prompt outputs unless a
+   documented exception applies. Contract change (amendment C).
+5. **Career-state diversity / M-02.** After M-01. New corpus version. Do not
+   mutate the frozen corpus.
+6. **`MKT-01`.** A future shared-universe retrieval / ranking bench. Not this
+   corpus.
+7. **Qualification-visible evidence / QC-01 then Q-01.** Do not build a bespoke
    qualification renderer that MIXED_EVIDENCE would immediately replace.
-6. **Small real-user sample only after PRIV-01.** Corrections held out. No folding
-   into a prompt-tuning set. No model-generated labels as human truth.
+8. **Small real-user sample only after PRIV-01.** That is `H-01`, not `ONT-01`.
 
-S-01 can still be run later if we decide the current pre-bucketed incumbent is
-worth architecture-decision stability **on this bench**. That is a different
-question from “we need better training data.”
+S-01 may be revived only when a post-M-01 architecture question makes
+repeated-generation stability useful again. Its preregistration stays on disk.

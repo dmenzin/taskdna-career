@@ -135,8 +135,16 @@ describe("the questions the audit found must not disappear", () => {
     ["M-01", "the benchmark pre-routes evidence"],
     ["PTA-01", "prompt/benchmark lineage is unreconstructed"],
     ["DATA-01", "benchmark provenance is uninventoried"],
+    ["ONT-01", "ontology is unreviewed"],
+    ["TRUTH-01", "truth/evaluation manifest is unspecced"],
+    ["LOCK-01", "LOCKED is not a custodied blind artifact"],
     ["P-01", "the shared baseline has no provenance"],
-    ["V-01", "VALIDATION is unused"],
+    ["P-01-RET", "retrieval non-inferiority is unresolved"],
+    ["V-01", "VALIDATION mechanism holdout"],
+    ["V-02", "architecture confirmation is unscheduled"],
+    ["MKT-01", "shared-universe retrieval is untested"],
+    ["BR-01", "sibling audit branches are unreconciled"],
+    ["ARCH-01", "architecture confirmation freeze is unnamed"],
     ["H-01", "there is no human validity"],
     ["I-01", "the product does not run the research architecture"],
     ["L-01", "real concurrent latency is unmeasured"],
@@ -191,14 +199,46 @@ describe("the master directive cannot be forgotten into chat", () => {
     expect(program.domainProgram!.conditioningVsGating.toLowerCase()).toMatch(/interpretation context/);
     expect(program.domainProgram!.conditioningVsGating.toLowerCase()).toMatch(/not recommendation eligibility/);
     expect(program.domainProgram!.semanticDomainFieldVsRoutingMetadata).toMatch(/StructuredWork\.domain/);
-    expect(program.domainProgram!.immediatePriority).toMatch(/S-01/);
+    expect(program.domainProgram!.immediatePriority).toMatch(/ONT-01/);
+    expect(program.domainProgram!.immediatePriority).toMatch(/DEFERRED/);
+    expect(program.domainProgram!.immediatePriority.toLowerCase()).not.toMatch(/next candidate paid/);
     expect(program.domainProgram!.doNotBuildYet.some((item) => /router/i.test(item))).toBe(true);
     const qDomain = program.domainProgram!.idMap.find((row) => row.addendumId === "DCTX-Q-01");
     const routerError = program.domainProgram!.idMap.find((row) => row.addendumId === "DCTX-04");
     expect(qDomain?.liveId).toBe("D-CTX-04");
     expect(routerError?.liveId).toBe("D-CTX-05");
     const nextPaid = program.items.filter((item) => item.status === "PREREGISTERED").map((item) => item.id);
-    expect(nextPaid).toEqual(["S-01"]);
+    expect(nextPaid).toEqual([]);
+    expect(program.items.find((item) => item.id === "S-01")!.status).toBe("DEFERRED");
+  });
+
+  it("does not put M-01 behind S-01 or treat CI-spans-zero as P-01 retrieval success", () => {
+    const joined = JSON.stringify(program.items);
+    expect(joined.toLowerCase()).not.toMatch(/behind s-01 on information value/);
+    const p01 = program.items.find((item) => item.id === "P-01")!;
+    const p01ret = program.items.find((item) => item.id === "P-01-RET")!;
+    const m01 = program.items.find((item) => item.id === "M-01")!;
+    expect(p01.status).toBe("SUPPORTED");
+    expect(p01.successCriterion.toLowerCase()).not.toMatch(/ci spans zero or better/);
+    expect(p01.question.toLowerCase()).toMatch(/auditability|provenance|claim-level/);
+    expect(p01ret.status).toBe("INCONCLUSIVE");
+    expect(p01ret.question.toLowerCase()).toMatch(/retriev|non-inferior/);
+    expect(m01.dependencies).toContain("ONT-01");
+    expect(m01.dependencies).not.toContain("S-01");
+    expect(m01.status).toBe("BLOCKED");
+    expect(m01.nextAction.toLowerCase()).toMatch(/do not implement|do not render/);
+  });
+
+  it("treats VALIDATION as a procedural generator holdout and V-01 as mechanism-only", () => {
+    const v01 = program.items.find((item) => item.id === "V-01")!;
+    const v02 = program.items.find((item) => item.id === "V-02")!;
+    expect(v01.status).toBe("DEFERRED");
+    expect(v01.question.toLowerCase()).toMatch(/generator|held-out vocabulary|frame-corpus/);
+    expect(v01.evidenceSoFar.toLowerCase()).toMatch(/procedural generator holdout/);
+    expect(v01.evidenceSoFar.toLowerCase()).toMatch(/not a blinded external holdout/);
+    expect(v01.nextAction.toLowerCase()).toMatch(/do not run/);
+    expect(v02.status).toBe("BLOCKED");
+    expect(v02.dependencies).toEqual(expect.arrayContaining(["ARCH-01", "M-01"]));
   });
 
   it("names DOMAIN_ANCHORING as a transfer failure mode before any domain experiment runs", () => {
@@ -377,6 +417,15 @@ describe("the reconciled roadmap does not compete with the program", () => {
   it("does not invent a competing A–K stage system", () => {
     expect(roadmap).not.toMatch(/^### STAGE [A-K] /m);
     expect(roadmap).toContain("directive stages A–K");
+  });
+
+  it("keeps S-01 off the paid ranking and splits V-01 from V-02", () => {
+    expect(roadmap.toLowerCase()).not.toMatch(/m-01 is behind s-01 on information value/);
+    expect(roadmap).toMatch(/not the current paid-priority order|DEFERRED on information value/);
+    expect(roadmap).not.toMatch(/LOCKED stays untouched/);
+    expect(roadmap).toMatch(/mechanism/);
+    expect(roadmap).toContain("V-02");
+    expect(roadmap).toMatch(/blocked on ONT-01, not on S-01/);
   });
 });
 
