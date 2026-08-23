@@ -132,16 +132,43 @@ Two structural differences, neither of them "canonical matching is bad", plausib
 
 | id | hypothesis | verdict | evidence |
 | --- | --- | --- | --- |
-| E1 | The product benchmark at n=12 cannot resolve the TaskDNA-vs-lexical gap it reports. | see `docs/BENCHMARK_POWER.md` | `pnpm bench:power` |
-| E2 | The person/job mapping asymmetry is caused by asymmetric rendering, not by the mapper. | **CONFIRMED** | `pnpm diag:mapping-asymmetry` |
-| E3 | The lexical baseline's `hard` advantage comes from aggregation and from title/skills fields the canonical path refuses. | see `docs/BENCHMARK_POWER.md` | `pnpm diag:baseline-ablation` |
+| E1 | The product benchmark at n=12 cannot resolve the TaskDNA-vs-lexical gap it reports. | **CONFIRMED** | `pnpm bench:power` — half-width at n=12 is +-0.080 on experience, about 5x the true effect; 192 people needed for +-0.02 |
+| E2 | The person/job mapping asymmetry is caused by asymmetric rendering, not by the mapper. | **CONFIRMED** | `pnpm diag:mapping-asymmetry` — at `standard` the person side (0.917) beats the job side (0.850) |
+| E3 | The lexical baseline's advantage comes from aggregation and from fields the canonical path refuses. | **CONFIRMED, and it revealed a stronger baseline** | `pnpm diag:baseline-ablation` — experience-only Jaccard scores 0.9942 at `hard`, beating TaskDNA |
+| E4 | Canonical identity is better represented as the retained candidate set than as one selected id. | **KEEP** `canonical-soft-weighted` | `pnpm diag:soft-canonical` — recall +0.053, cross-title +0.055, surprising transfer +0.159 at `hard`, all CIs excluding zero |
+| E5 | The corpus makes token overlap a near-perfect atom detector, so it cannot test the product thesis. | **CONFIRMED** | `pnpm diag:generator-lexical-leak` — ROC AUC 0.981 even at `hard` |
+
+## Standing conclusions
+
+1. **TaskDNA's measured value is four-channel separation, not O\*NET canonicalization.**
+   Preference +0.352 and direction +0.647 against resume-lexical; experience -0.064 against the
+   strongest simple baseline. No whole-document lexical method can separate what a person has
+   done from what they want or dislike, and that is the entire margin.
+2. **In the retrieval path O\*NET hurts** (canonical 0.380 vs lexical 0.539 at `hard`). The
+   mapper is lexical overlap against O\*NET statements, so canonicalization discretizes a
+   lexical signal rather than adding semantic abstraction.
+3. **Experience ranking is a known open loss** against `resume-lexical-experience`.
+4. **The corpus cannot test the product thesis** and must be fixed before any matching result
+   is trusted. This is a metric-contract change and was deliberately NOT made in this run.
+5. **The next thing to try is an embedding retriever, not an agent.** The measured gap is
+   semantic bridging; embeddings address it at a fraction of the cost.
+
+## Engineering state at the end of this run
+
+- 326/326 tests pass (315 inherited plus 11 new agent-scaffolding invariant tests)
+- typecheck clean, lint clean
+- **37/37 readiness gates pass**, and the gate now runs on Windows at all: `spawnSync` cannot
+  execute pnpm's `.cmd` shim without a shell, which previously crashed it outright
+- `.gitattributes` pins artifact and config bytes to LF so a recorded sha256 stays meaningful
+  on every platform; the frozen baseline previously false-failed on any Windows checkout
 
 ## Open questions, highest information value first
 
-1. What sample size does each product claim actually require? (E1)
-2. How much of the lexical baseline's `hard` advantage is aggregation vs forbidden fields? (E3)
-3. Does pooling person evidence before canonical mapping recover retrieval recall at `hard`
-   without weakening the leakage guard?
-4. Is `hard` (clause deletion plus 35% word deletion, person side only) the right optimization
-   target at all, or does it conflate paraphrase robustness with lexical-deletion robustness?
-5. Everything agent-first is **blocked** on runtime model access.
+1. Does an ontology bridge genuinely disjoint vocabulary? Untestable on this corpus; needs the
+   generator fix plus a thesaurus or embeddings.
+2. Does an embedding retriever beat both canonical and lexical retrieval?
+3. What is the agent rescue rate and agent-only false discovery rate? **Blocked** on runtime
+   model access.
+4. Is `hard` the right optimization target, or does it conflate paraphrase robustness with
+   lexical-deletion robustness?
+5. Everything human-validity related. No synthetic result here speaks to it.
