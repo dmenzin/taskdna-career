@@ -251,7 +251,7 @@ describe("NDCG behaves correctly", () => {
   });
 });
 
+/** Drop the non-deterministic timing and cache-counter fields before comparing runs. */
 function strip(report: ReturnType<typeof runBenchmark>) {
-  const { runtimeMs, cache, ...rest } = report;
-  return rest;
+  return Object.fromEntries(Object.entries(report).filter(([key]) => key !== "runtimeMs" && key !== "cache"));
 }

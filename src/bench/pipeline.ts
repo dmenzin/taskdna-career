@@ -13,7 +13,7 @@
 // paraphrased language plus channel scoring plus ranking. Evidence-class extraction from raw
 // narrative is a different subsystem with its own evaluator
 // (docs/METRIC_COVERAGE_MATRIX.md rows 1-4).
-import { mapWork, mapperCacheStats } from "@/v3/mapper";
+import { mapperCacheStats } from "@/v3/mapper";
 import { buildV3Job } from "@/v3/job";
 import { buildV3Person, type RawV3Evidence } from "@/v3/person";
 import { scoreV3 } from "@/v3/fit";

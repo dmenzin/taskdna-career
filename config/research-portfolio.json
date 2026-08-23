@@ -1,9 +1,20 @@
 {
-  "version": "research-portfolio.v1",
-  "purpose": "Structure the autonomous run as a portfolio of workstreams rather than a stream of small tweaks. Every experiment declares a workstream, expected information value, scope, and the mechanism it tests. Reviewed globally every 60-90 minutes.",
-  "reviewCadenceMinutes": { "min": 60, "max": 90 },
-  "informationValues": ["HIGH", "MEDIUM", "LOW"],
-  "scopes": ["LOCAL", "SUBSYSTEM", "ARCHITECTURAL"],
+  "version": "research-portfolio.v2-product",
+  "purpose": "Structure the autonomous run as a portfolio of PRODUCT workstreams rather than a stream of small tweaks. Every experiment declares a workstream, expected information value, scope, and the mechanism it tests. Reviewed globally every 60-90 minutes. Product north star: docs/PRODUCT_NORTH_STAR.md. What is measurable and by what command: docs/METRIC_COVERAGE_MATRIX.md.",
+  "reviewCadenceMinutes": {
+    "min": 60,
+    "max": 90
+  },
+  "informationValues": [
+    "HIGH",
+    "MEDIUM",
+    "LOW"
+  ],
+  "scopes": [
+    "LOCAL",
+    "SUBSYSTEM",
+    "ARCHITECTURAL"
+  ],
   "antiRepetitionRule": {
     "maxConsecutiveExperimentsPerMechanism": 2,
     "thirdRequires": "writtenJustification",
@@ -27,7 +38,10 @@
       "highestValueNextExperiment": "Preregistered metric-contract review of integration_preference. Its exclusion from AUTONOMOUS_PREFERENCE_DIMENSIONS_V1 was justified solely by ~4% generator coverage, but that 4% was an artifact of the positional sampling bias fixed in the preflight: at position 12 in DIMENSION_IDS it was almost never reached by filter-then-slice. Measured coverage under unbiased sampling is 0.2933, well above the 0.10 floor, and it passes every non-coverage monotonicity criterion. Promoting it would take the eligible set from 2 dimensions to 3, materially widening the only construct-valid measurement surface the project has. Deliberately NOT applied in the preflight because changing the eligible set is a metric-contract change, not a decoder experiment.",
       "secondNextExperiment": "Establish whether directional accuracy among LEANING predictions (now reported separately from raw directionalAccuracy) is a better primary construct than continuous MAE, given that MAE is dominated by how often the decoder sits on the neutral prior.",
       "diminishingReturnsEvidence": "None yet: this workstream was just substantially repaired. Re-assess after the first two experiments.",
-      "openBlockers": ["No independent human preference truth. Absolute validity claims are out of scope for autonomous work."]
+      "openBlockers": [
+        "No independent human preference truth. Absolute validity claims are out of scope for autonomous work."
+      ],
+      "primaryEvaluator": "pnpm eval:preference, pnpm bench:all"
     },
     {
       "id": 2,
@@ -38,10 +52,25 @@
       "strongestFailedAlternative": "Not yet attempted at a family level. The lexicon has only been extended, never replaced.",
       "highestValueNextExperiment": "Replace lexical phrase matching with embedding retrieval at the preference_evidence_extraction boundary and measure AVAILABLE_TO_RECOGNIZED_RECALL. This is an ARCHITECTURAL-scope test of a different family, not a lexicon extension.",
       "diminishingReturnsEvidence": "Adding lexicon entries has repeatedly moved recall a few points without changing the variance-collapse picture. Further additive lexicon work is explicitly deprioritized.",
-      "openBlockers": []
+      "openBlockers": [],
+      "primaryEvaluator": "pnpm eval:preference, pnpm bench:subsystems"
     },
     {
       "id": 3,
+      "name": "experience representation / extraction",
+      "largestUncertainty": "Whether performed work can be recovered from compressed first-person resume language at all. Person-side Task mapping is 0.194 exact Top-1 at the hard tier against 0.870 on the job side.",
+      "currentHypothesis": "The asymmetry is caused by surface form, not by the canonical model: resume bullets compress and reframe, job postings do not. Short text (<=12 words) drops to 0.322 Top-1 with 31% abstention while long text reaches 0.920.",
+      "currentBestStrategy": "Evidence-class regexes plus the shared lexical mapper (src/domain/evidence.ts, src/v3/mapper.ts).",
+      "strongestFailedAlternative": "None at a family level. The extractor lexicon has only been extended, never replaced.",
+      "highestValueNextExperiment": "Close the person/job mapping asymmetry. Test whether a query-expansion or embedding step on the PERSON side alone raises person_experience exactTop1Accuracy without touching the job side. This is the single largest measured gap in the pipeline.",
+      "diminishingReturnsEvidence": "Extraction macro F1 falls from 0.831 on DEVELOPMENT paraphrase families to 0.611 on withheld VALIDATION families: additive regex work is already overfitting to phrasing.",
+      "openBlockers": [
+        "No human-annotated experience spans."
+      ],
+      "primaryEvaluator": "pnpm bench:subsystems (mapping.streams.person_experience, extraction.classes.EXPERIENCE)"
+    },
+    {
+      "id": 4,
       "name": "Task/DWA mapping",
       "largestUncertainty": "Whether token-overlap retrieval over 12,579 O*NET task statements can distinguish genuinely different work, or whether it mostly matches shared generic vocabulary.",
       "currentHypothesis": "Lexical retrieval gives adequate recall for candidate generation but poor precision on broad DWAs; a reranking stage is where precision must come from.",
@@ -49,62 +78,149 @@
       "strongestFailedAlternative": "None recorded. The CandidateReranker seam exists but no reranker has been wired.",
       "highestValueNextExperiment": "Wire a cross-encoder or selective LLM reranker at the contextual_reranking boundary and measure precision on the ambiguity/broad-collision fixtures, with abstention rate as a guardrail.",
       "diminishingReturnsEvidence": "None yet.",
-      "openBlockers": ["No human-labelled mapping truth. Mapping ACCURACY cannot be established autonomously; only relative behaviour on known-answer fixtures."]
-    },
-    {
-      "id": 4,
-      "name": "Preference Fit",
-      "largestUncertainty": "Whether coverage-weighted mean stance contribution is the right aggregation, and how absence of evidence should differ from neutral evidence.",
-      "currentHypothesis": "Treating absence of LIKE as distinct from DISLIKE is correct and load-bearing; the open question is how to weight partial DWA-level matches.",
-      "currentBestStrategy": "preferenceFit in src/v3/fit.ts: UNKNOWN excluded, NEUTRAL contributes zero, DWA matches at DWA_PARTIAL_CREDIT=0.6.",
-      "strongestFailedAlternative": "None recorded.",
-      "highestValueNextExperiment": "Test whether DWA_PARTIAL_CREDIT has any defensible basis at all, or whether DWA-level matches should abstain rather than contribute partial credit. This is a MECHANISM question, not a coefficient sweep.",
-      "diminishingReturnsEvidence": "None yet.",
-      "openBlockers": ["Real Preference Fit validity requires human judgement of whether a job contains liked work."]
+      "openBlockers": [
+        "No human-labelled mapping truth. Mapping ACCURACY cannot be established autonomously; only relative behaviour on known-answer fixtures."
+      ],
+      "primaryEvaluator": "pnpm bench:subsystems (mapping.streams), tests/v3/bridge.test.ts"
     },
     {
       "id": 5,
-      "name": "Experience Fit",
-      "largestUncertainty": "Whether self-reported strength and ownership carry usable signal, given the documented led>performed>unknown>assisted ordering anomaly in EXPERIENCE_OWNERSHIP_WEIGHTS.",
-      "currentHypothesis": "Source-group deduplication matters more than the ordinal weights: many bullets from one role are one observation stream, not independent samples.",
-      "currentBestStrategy": "experienceFit with source-group dedup and PROVISIONAL_BASELINE strength/ownership weights.",
+      "name": "job responsibility extraction and mapping",
+      "largestUncertainty": "Job-side Task mapping is strong (0.870 Top-1) but never abstains, and when it falls back to DWA it picks the right DWA only 12% of the time. And free-text responsibility segmentation does not exist at all.",
+      "currentHypothesis": "The DWA fallback is close to worthless as implemented: it takes the top candidate's FIRST DWA rather than selecting among DWAs. Fixing selection may be worth more than improving Task-level retrieval.",
+      "currentBestStrategy": "Structured responsibility list plus the shared lexical mapper.",
       "strongestFailedAlternative": "None recorded.",
-      "highestValueNextExperiment": "Ablate the ownership weights entirely (all 1.0) and check whether any evaluable behaviour changes. If nothing moves, the weights are decoration and should be removed rather than tuned.",
+      "highestValueNextExperiment": "Test whether DWA fallback should SELECT among the candidate's DWAs rather than taking the first, measured by dwaHierarchicalAccuracy on job_responsibility. Cheap, mechanism-level, and currently at 0.120.",
       "diminishingReturnsEvidence": "None yet.",
-      "openBlockers": []
+      "openBlockers": [
+        "Free-text JD segmentation is not implemented and is excluded from the loop (contract row 8)."
+      ],
+      "primaryEvaluator": "pnpm bench:subsystems (mapping.streams.job_responsibility)"
     },
     {
       "id": 6,
-      "name": "Qualification Fit",
-      "largestUncertainty": "Ambiguous equivalence. Whether 'BSc Computer Science' satisfies 'Bachelor's in a technical field' is an interpretation problem that a fixed alias table cannot solve.",
-      "currentHypothesis": "Exact-plus-alias matching is adequate for skills and inadequate for education and credentials.",
-      "currentBestStrategy": "qualificationFit with DEFAULT_ALIASES and PREFERRED_REQUIREMENT_WEIGHT=0.25.",
+      "name": "Experience Fit and transferable-job discovery",
+      "largestUncertainty": "Whether the 0.937 hard-tier experience NDCG is limited by ranking arithmetic or by upstream mapping recall.",
+      "currentHypothesis": "Upstream. Person mapping recovers only 0.194 of planted Tasks, so ranking is working with a fraction of the available signal; the ranking arithmetic is probably not the constraint.",
+      "currentBestStrategy": "Exact-Task and DWA identity matching with strength and ownership weights (src/v3/fit.ts experienceFit).",
       "strongestFailedAlternative": "None recorded.",
-      "highestValueNextExperiment": "Introduce a cached, versioned equivalence-judgement component behind the AliasProvider seam (a LANGUAGE_INTERPRETATION boundary) and measure hard-gap precision. The requirement arithmetic stays deterministic.",
-      "diminishingReturnsEvidence": "None yet.",
-      "openBlockers": ["Credential equivalence often has a legal/regulatory answer that no model should be trusted to invent."]
+      "highestValueNextExperiment": "Ablate the strength and ownership weights to all 1.0 and check whether experience NDCG, cross-title recall, or hard-near-miss demotion move at all. If nothing moves, the weights are decoration and should be removed rather than tuned.",
+      "diminishingReturnsEvidence": "None yet: this evaluator is new.",
+      "openBlockers": [
+        "Human relevance judgement of person-job pairs is required for a product claim."
+      ],
+      "primaryEvaluator": "pnpm bench:product (channelRanking.experience, crossTitleTransferRecallAtK, hardNearMissFalsePositiveRateAtK)"
     },
     {
       "id": 7,
-      "name": "Direction Fit",
-      "largestUncertainty": "Aspiration language is rare and weak in the current corpus, so Direction Fit is the least-evidenced channel.",
-      "currentHypothesis": "Direction requires its own elicitation, not extraction from resumes. Resumes describe the past; direction is about the future.",
-      "currentBestStrategy": "directionFit over mapped aspiration evidence, structurally identical to experience matching but semantically distinct and never inferred from experience.",
+      "name": "Preference Fit and joint Experience/Preference discovery",
+      "largestUncertainty": "Preference is the weakest ranking channel at 0.618 hard-tier NDCG, and a job with equal liked and disliked work scores exactly the neutral 0.5 -- indistinguishable from a job with no preference evidence.",
+      "currentHypothesis": "The mean-based aggregation in preferenceFit is the problem: it lets liked and disliked work cancel. A separate liked-coverage and disliked-intrusion pair may carry more product meaning than one signed mean.",
+      "currentBestStrategy": "Signed mean of stance contributions centred at 0.5 (src/v3/fit.ts preferenceFit).",
       "strongestFailedAlternative": "None recorded.",
-      "highestValueNextExperiment": "Measure how often the generator exposes aspiration language at all, then test whether desired-future-work retrieval finds materially different jobs than experience retrieval on the same subject. Direction and experience must be run as PARALLEL workstreams, not one derived from the other.",
-      "diminishingReturnsEvidence": "None yet.",
-      "openBlockers": []
+      "highestValueNextExperiment": "Test whether reporting liked coverage and disliked intrusion as two numbers, instead of one cancelling mean, raises preference NDCG and removes the MIXED_PREFERENCE ambiguity. This is a REPRESENTATION change, not a coefficient change.",
+      "diminishingReturnsEvidence": "None yet: this evaluator is new.",
+      "openBlockers": [
+        "Whether a preference score predicts real satisfaction needs longitudinal human outcomes."
+      ],
+      "primaryEvaluator": "pnpm bench:product (channelRanking.preference, jointRelevantRecallAtK, dislikedIntrusionRateAtK, dominanceViolationRate)"
     },
     {
       "id": 8,
-      "name": "robustness / leakage / architecture",
-      "largestUncertainty": "Whether title/occupation leakage is fully closed, and whether the evaluation harness itself is fast and modular enough to sustain many meaningful experiments.",
-      "currentHypothesis": "The harness was the binding constraint: mapWork cost 214 ms per call before this preflight, which made any mapping experiment at evaluation scale infeasible.",
-      "currentBestStrategy": "Title-stripping twins, occupation_context creating no person signal, three evaluation tiers (FAST/CHECKPOINT/FULL), declared strategy boundaries, and cacheKey-invalidated memoization.",
+      "name": "Direction Fit and career transitions",
+      "largestUncertainty": "Direction is the least-evidenced channel: 0.769 hard-tier NDCG with 3 of 12 people below the catastrophe threshold, driven by 0.542 mapping abstention on aspiration language.",
+      "currentHypothesis": "Aspiration framings put the most surface distance between the statement and the canonical task, so the mapper abstains. Direction quality is currently a mapping problem, not a scoring problem.",
+      "currentBestStrategy": "Aspiration mapping plus mapped-alignment scoring (src/v3/fit.ts directionFit).",
       "strongestFailedAlternative": "None recorded.",
-      "highestValueNextExperiment": "Adversarial-cohort leakage sweep: confirm no channel score can be predicted from title alone once titles are stripped.",
+      "highestValueNextExperiment": "Measure whether stripping the aspirational frame before mapping (mapping the work phrase rather than the whole sentence) raises person_direction exactTop1Accuracy. Mechanism: frame removal, not threshold tuning.",
+      "diminishingReturnsEvidence": "None yet: this evaluator is new.",
+      "openBlockers": [
+        "Stated direction may differ from revealed direction."
+      ],
+      "primaryEvaluator": "pnpm bench:product (channelRanking.direction, transitionRecallAtK)"
+    },
+    {
+      "id": 9,
+      "name": "Qualification Fit",
+      "largestUncertainty": "Ambiguous education and credential equivalence cannot be solved by a fixed alias table. Hard-gap precision and recall are currently 1.0 only because requirements are structured and exact.",
+      "currentHypothesis": "The measured 1.0 is plumbing correctness, not equivalence capability. Any realistic requirement set would break it immediately.",
+      "currentBestStrategy": "Exact-plus-alias matching with a preferred-requirement weight (src/v3/fit.ts qualificationFit).",
+      "strongestFailedAlternative": "None recorded.",
+      "highestValueNextExperiment": "Introduce paraphrased and abbreviated requirement values into the planted corpus (BSc vs bachelor degree, JS vs JavaScript) and measure how far hard-gap precision falls. That establishes the real baseline before any equivalence component is built.",
       "diminishingReturnsEvidence": "None yet.",
-      "openBlockers": []
+      "openBlockers": [
+        "Regulated credential equivalence has a legal answer no model should invent.",
+        "Free-text qualification extraction is excluded from the loop (contract row 4)."
+      ],
+      "primaryEvaluator": "pnpm bench:product (qualification block)"
+    },
+    {
+      "id": 10,
+      "name": "candidate retrieval",
+      "largestUncertainty": "Canonical-work retrieval recall COLLAPSES to 0.540 at the hard tier while plain lexical overlap holds 0.868. The canonical path is less robust to compressed language than the naive one it was meant to beat.",
+      "currentHypothesis": "Retrieval recall is an upper bound on every downstream ranking metric, so this is currently the most damaging single number in the pipeline. A hybrid (lexical union canonical) should dominate either alone.",
+      "currentBestStrategy": "Canonical shared-identity retrieval (src/bench/candidates.ts canonicalWorkRetrieval).",
+      "strongestFailedAlternative": "Title-only retrieval, decisively: 0.444 recall and 0.0 cross-title recall.",
+      "highestValueNextExperiment": "Test a hybrid retriever that unions lexical and canonical candidates, measured by candidateRecallAtK at the hard tier with title/stratum/industry concentration as guardrails. Highest information value in the whole portfolio right now.",
+      "diminishingReturnsEvidence": "None yet: this evaluator is new.",
+      "openBlockers": [
+        "Live posting ingestion, freshness and closed-job detection are out of scope for this loop."
+      ],
+      "primaryEvaluator": "pnpm bench:product (candidateRetrieval)"
+    },
+    {
+      "id": 11,
+      "name": "robustness / leakage / generalization",
+      "largestUncertainty": "Extraction macro F1 drops 0.831 -> 0.611 between DEVELOPMENT and withheld VALIDATION paraphrase families. Gains may be phrasing-specific.",
+      "currentHypothesis": "The regex evidence lexicon is tuned to the framings DEVELOPMENT contains. Ranking is less affected because it leans on job-side mapping, which is robust.",
+      "currentBestStrategy": "Withheld paraphrase families per split, the verbatim/standard/hard difficulty ladder, and explicit leakage tests.",
+      "strongestFailedAlternative": "None recorded.",
+      "highestValueNextExperiment": "Withhold whole OCCUPATIONS and occupation FAMILIES from DEVELOPMENT, not just paraphrase families, and re-measure the gap. Paraphrase-family withholding is a coarse generalization test.",
+      "diminishingReturnsEvidence": "None yet.",
+      "openBlockers": [],
+      "primaryEvaluator": "pnpm bench:all (generalizationGap), tests/bench-planted-truth.test.ts"
+    },
+    {
+      "id": 12,
+      "name": "architecture / model capacity / contextual reasoning",
+      "largestUncertainty": "Whether the person-side mapping ceiling is a lexical-representation limit rather than a tuning limit.",
+      "currentHypothesis": "It is a representation limit. Lexical overlap cannot bridge a 0.19 token-overlap paraphrase, and the person/job asymmetry (0.194 vs 0.870) tracks surface distance almost exactly. This is the strongest available evidence for trying a different family.",
+      "currentBestStrategy": "Token-overlap lexical retrieval with no reranker wired.",
+      "strongestFailedAlternative": "None: no alternative family has been implemented yet.",
+      "highestValueNextExperiment": "Implement ONE alternative at the contextual_reranking boundary (cross-encoder or selective LLM) and measure RERANK_TOP1_DELTA_OVER_DETERMINISTIC on person_experience, under the declared invocation-rate and cost caps. Contract row 27 permits building then measuring; it forbids claiming a result before implementing one.",
+      "diminishingReturnsEvidence": "Additive lexicon and regex work has produced a measurable generalization gap without closing the person/job asymmetry: that is the diminishing-returns signal for the current family.",
+      "openBlockers": [
+        "Any learned component must expose the full LearnedComponent contract including a deterministic fallback."
+      ],
+      "primaryEvaluator": "pnpm bench:subsystems (mapping.streams), src/v3/learnedComponent.ts"
+    }
+  ],
+  "optimizationTarget": {
+    "benchmarkDifficulty": "hard",
+    "minimumPeople": 12,
+    "rationale": "The standard difficulty tier saturates experience and direction NDCG at 1.000. Only the hard tier has headroom.",
+    "command": "pnpm bench:product --difficulty=hard --people=12"
+  },
+  "excludedFromLoop": [
+    {
+      "row": 4,
+      "subsystem": "qualification extraction",
+      "reason": "no free-text extractor exists"
+    },
+    {
+      "row": 8,
+      "subsystem": "job responsibility segmentation",
+      "reason": "no JD segmenter exists; largest job-side coverage gap"
+    },
+    {
+      "row": 19,
+      "subsystem": "user constraint enforcement",
+      "reason": "no constraint fields exist in the data model; vacuous rather than passing"
+    },
+    {
+      "row": 31,
+      "subsystem": "human recommendation validity",
+      "reason": "permanently excluded; no human annotation exists"
     }
   ]
 }

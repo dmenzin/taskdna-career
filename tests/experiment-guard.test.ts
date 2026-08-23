@@ -23,15 +23,31 @@ function record(overrides: Partial<RecordFields> & { id: string }): RecordFields
 }
 
 describe("research portfolio structure", () => {
-  it("declares all eight workstreams with every required field", () => {
-    expect(portfolio.workstreams).toHaveLength(8);
-    expect(portfolio.workstreams.map((entry: { id: number }) => entry.id)).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
+  it("declares all twelve product workstreams with every required field", () => {
+    expect(portfolio.workstreams).toHaveLength(12);
+    expect(portfolio.workstreams.map((entry: { id: number }) => entry.id)).toEqual(Array.from({ length: 12 }, (_, index) => index + 1));
     for (const workstream of portfolio.workstreams) {
-      for (const key of ["largestUncertainty", "currentHypothesis", "currentBestStrategy", "strongestFailedAlternative", "highestValueNextExperiment", "diminishingReturnsEvidence"]) {
+      for (const key of ["largestUncertainty", "currentHypothesis", "currentBestStrategy", "strongestFailedAlternative", "highestValueNextExperiment", "diminishingReturnsEvidence", "primaryEvaluator"]) {
         expect(typeof workstream[key], `${workstream.name}.${key}`).toBe("string");
         expect(workstream[key].length, `${workstream.name}.${key}`).toBeGreaterThan(0);
       }
+      expect(Array.isArray(workstream.openBlockers), `${workstream.name}.openBlockers`).toBe(true);
     }
+  });
+
+  it("covers every product area the north star names", () => {
+    const names = portfolio.workstreams.map((entry: { name: string }) => entry.name.toLowerCase()).join(" | ");
+    for (const area of ["measurement", "preference", "experience", "task/dwa", "job responsibility", "direction", "qualification", "candidate retrieval", "robustness", "architecture"]) {
+      expect(names, `no workstream covers ${area}`).toContain(area);
+    }
+  });
+
+  it("declares the benchmark optimization target and the subsystems excluded from the loop", () => {
+    expect(portfolio.optimizationTarget.benchmarkDifficulty).toBe("hard");
+    expect(portfolio.optimizationTarget.minimumPeople).toBeGreaterThanOrEqual(12);
+    // Every subsystem with no runnable evaluator must be named here as well as in the contracts.
+    const excluded = portfolio.excludedFromLoop.map((entry: { row: number }) => entry.row);
+    for (const row of [4, 8, 19, 31]) expect(excluded).toContain(row);
   });
 
   it("requires a global portfolio review every 60 to 90 minutes", () => {

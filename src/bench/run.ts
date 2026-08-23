@@ -247,7 +247,7 @@ export function runBenchmark(options: RunOptions = {}): BenchReport {
   }));
 
   // ---- qualification ----
-  const qualification = evaluateQualification(runs, k);
+  const qualification = evaluateQualification(runs);
 
   // ---- policy modes ----
   const modes = RECOMMENDATION_MODES.map((mode) => {
@@ -352,7 +352,7 @@ function hardGapMap(labels: Map<string, PairLabel>): Map<string, string[]> {
   return new Map([...labels.entries()].map(([jobId, label]) => [jobId, label.hardGaps]));
 }
 
-function evaluateQualification(runs: { planted: PlantedPerson; jobs: PlantedJob[]; run: PersonRun; labels: Map<string, PairLabel> }[], k: number) {
+function evaluateQualification(runs: { planted: PlantedPerson; jobs: PlantedJob[]; run: PersonRun; labels: Map<string, PairLabel> }[]) {
   // Predicted hard gap: the qualification channel reports it in its diagnostics.
   let truePositives = 0;
   let falsePositives = 0;
