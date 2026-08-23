@@ -79,10 +79,10 @@ Measured:
 | `pnpm typecheck` | 1.4 s |
 | `pnpm lint` | 3.4 s |
 | `pnpm build` | 6.6 s |
-| `pnpm eval:iteration-readiness` | 63 s (runs the four above plus every readiness gate) |
+| `pnpm eval:iteration-readiness` | 24 s (runs the four above plus all 30 readiness gates) |
 
-Readiness re-runs test/typecheck/lint/build internally, so the FULL tier is about **80 s** in
-total, dominated by that script.
+Readiness re-runs test/typecheck/lint/build internally and adds all 30 gates, so the FULL tier
+is about **24 s** in total — that one command covers everything. It passes 30/30.
 
 `pnpm eval:iteration-readiness` never runs `LOCKED_CONFIRMATION`; it asserts the guard holds.
 

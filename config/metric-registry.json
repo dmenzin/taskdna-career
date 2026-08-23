@@ -1,12 +1,44 @@
 {
   "schemaVersion": 2,
+  "contractChanges": [
+    {
+      "id": "availability-v2-stance-aware",
+      "date": "2026-08-23",
+      "affects": ["AVAILABLE_EVIDENCE_PREFERENCE_MACRO_MAE_V1", "AVAILABLE_EVIDENCE_PREFERENCE_MICRO_MAE", "AVAILABLE_TO_RECOGNIZED_RECALL", "ZERO_AVAILABLE_EVIDENCE_MAE"],
+      "change": "The availability definition (src/lab/evidenceAvailability.ts) moved from evidence-availability.v1 to evidence-availability.v2-stance-aware. Two changes: (1) FIELD SCOPE widened from explicitPreferences/explicitDislikes to all four inference-visible fields (resumeText, explicitPreferences, explicitDislikes, contradictoryStatements), matching what src/lab/evaluate.ts actually passes to the engine; (2) STANCE AWARENESS added, so a placement's direction is intendedDirection(behaviour side, LIKE/DISLIKE stance) rather than the phrase's pole alone.",
+      "reasonNotAMetricImprovement": "This is a CORRECTNESS repair, not a tuning change. The v1 definition labelled 'a low-side phrase appears in explicitDislikes' as low-side evidence, but a dislike of low-side behaviour means HIGH. It therefore admitted semantically backwards evidence into the denominator, and it excluded genuine evidence the inference system receives through resumeText and contradictoryStatements. Neither change was selected to move a number.",
+      "measuredEffect": "DEVELOPMENT availableEligibleCoverage 0.4767 -> 0.3300. AVAILABLE_EVIDENCE_PREFERENCE_MACRO_MAE_V1 2.5325 -> 2.4152, which for the first time beats the constant-5 companion (2.4961); under v1 the decoder was WORSE than constant-5 (2.5325 vs 2.4855) because it was being graded against backwards evidence.",
+      "reviewRequirement": "Availability is a POLICY/CONTRACT surface. Any further change to INFERENCE_VISIBLE_PREFERENCE_FIELDS, the stance lexicon, or the phrase catalog is a metric-contract change requiring the same review as changing the metric itself, and must be recorded here. It is never a decoder experiment.",
+      "governanceReferences": ["docs/AVAILABLE_EVIDENCE_DEFINITION.md", "docs/PREFERENCE_GENERATOR_SEMANTICS.md", "tests/available-evidence.test.ts", "tests/evidence-observability.test.ts"]
+    },
+    {
+      "id": "generator-semantic-polarity-v1",
+      "date": "2026-08-23",
+      "affects": ["AVAILABLE_EVIDENCE_PREFERENCE_MACRO_MAE_V1", "RECOGNIZED_EVIDENCE_PREFERENCE_MACRO_MAE", "LEGACY_ALL_DIMENSION_MAE"],
+      "change": "The observation generator no longer emits semantically backwards preference language. Preference direction is now f(behaviour side, LIKE/DISLIKE stance) (src/lab/preferenceSemantics.ts), and dimension selection shuffles before truncating instead of DIMENSION_IDS.filter(...).slice(0, N).",
+      "reasonNotAMetricImprovement": "The pre-fix generator paired a LOW hidden truth with a dislike of LOW-side behaviour ('I avoid solo deep work'), which means HIGH. Over 261 such DEVELOPMENT placements, mean truth was 2.68 against mean prediction 5.64, and directional accuracy was 0.147 -- worse than chance. Every preference number computed before this fix graded the decoder against contradictory evidence.",
+      "measuredEffect": "RECOGNIZED_EVIDENCE_PREFERENCE_MACRO_MAE 2.5724 -> 1.7189. LEGACY_ALL_DIMENSION_MAE 1.9009 -> 1.7357. Best shrinkage lambda moved from below 1 to exactly 1, so shrinking toward the neutral prior no longer pays.",
+      "reviewRequirement": "Generator semantics are gated by pnpm eval:generator-monotonicity, which reads meaning from the RENDERED TEXT and exits nonzero on any backwards statement. Changing the phrase catalog or the expressibility thresholds is a metric-contract change.",
+      "governanceReferences": ["docs/PREFERENCE_GENERATOR_SEMANTICS.md", "docs/GENERATOR_SELECTION_BIAS.md", "tests/generator-semantics.test.ts"]
+    },
+    {
+      "id": "duplicate-evidence-path-removal-v1",
+      "date": "2026-08-23",
+      "affects": ["AVAILABLE_EVIDENCE_PREFERENCE_MACRO_MAE_V1", "LEGACY_ALL_DIMENSION_MAE"],
+      "change": "The four observable sources (career narrative, explicit preference list, explicit dislike list, contradictory statements) are now distinct. src/lab/evaluate.ts no longer concatenates the lists into careerText while also passing them separately, the generator assigns each statement to exactly one source, and extractEvidence suppresses exact-normalized cross-source repeats.",
+      "reasonNotAMetricImprovement": "One generated statement previously produced two evidence items, inflating the dependence-aware effective-signal count that drives both evidence weight and confidence. Removing double counting removes signal the decoder had been getting for free; it made prediction variance FALL, which is the opposite of what a tuning change would do.",
+      "measuredEffect": "0 of 150 DEVELOPMENT subjects now show a within-field or cross-source duplicate. Prediction variance ratio fell 0.1333 -> 0.0964, so VARIANCE_COLLAPSE now fires. This is reported, not tuned away.",
+      "reviewRequirement": "Exact-normalized only. Paraphrase and common-source duplication remain unresolved and are tracked as an open research question, not a solved problem.",
+      "governanceReferences": ["docs/DUPLICATE_EVIDENCE.md", "tests/evidence-observability.test.ts"]
+    }
+  ],
   "metrics": [
     {
       "name": "AVAILABLE_EVIDENCE_PREFERENCE_MACRO_MAE_V1",
       "subsystem": "preference decoder",
       "construct": "continuous interpretation of GENERATOR-EXPOSED evidence for explicitly eligible preference dimensions, independent of extractor recognition",
       "prediction": "inferred value for measurable_feedback or experimentation_preference",
-      "groundTruth": "synthetic hidden preference for the same eligible dimension, included whenever the observation generator placed valid preference/dislike phrase evidence for it in explicitPreferences/explicitDislikes (src/lab/evidenceAvailability.ts), whether or not the extractor recognized it",
+      "groundTruth": "synthetic hidden preference for the same eligible dimension, included whenever the observation generator exposed preference language for it in an inference-visible field (resumeText, explicitPreferences, explicitDislikes, contradictoryStatements) whose MEANING is directional once behaviour side and LIKE/DISLIKE stance are combined (src/lab/evidenceAvailability.ts, evidence-availability.v2-stance-aware), whether or not the extractor recognized it",
       "observationUnit": "eligible subject with at least one available-evidence eligible dimension",
       "aggregation": "available-evidence eligible dimension MAE within subject, then equal subject mean",
       "scale": "0-10 absolute-error points",
@@ -15,7 +47,8 @@
       "knownFailureModes": [
         "generator-exposure drift",
         "shrinkage",
-        "constant-5 gaming"
+        "constant-5 gaming",
+        "stance-lexicon drift: widening the evaluation stance markers would admit more placements and is a contract change, not a decoder experiment"
       ],
       "allowedUse": "PRIMARY autonomous synthetic preference-decoder metric",
       "forbiddenInterpretation": "full 17D profile, job fit, mapper accuracy, extractor recall, or human validity",
@@ -27,7 +60,7 @@
         "ZERO_AVAILABLE_EVIDENCE_MAE",
         "LEGACY_ALL_DIMENSION_MAE"
       ],
-      "governanceNote": "Supersedes AUTONOMOUS_OBSERVED_PREFERENCE_MACRO_MAE_V1 (see that record's status below) because a recognized-evidence-gated denominator lets the algorithm under test shrink its own denominator by recognizing fewer cases -- a selection-bias/Goodhart path. The extractor recognizing fewer cases MUST NOT remove a subject/dimension from this metric's denominator; see tests/available-evidence.test.ts."
+      "governanceNote": "Supersedes AUTONOMOUS_OBSERVED_PREFERENCE_MACRO_MAE_V1 (see that record's status below) because a recognized-evidence-gated denominator lets the algorithm under test shrink its own denominator by recognizing fewer cases -- a selection-bias/Goodhart path. The extractor recognizing fewer cases MUST NOT remove a subject/dimension from this metric's denominator; see tests/available-evidence.test.ts. The availability definition itself moved to v2 stance-aware on 2026-08-23; see contractChanges.availability-v2-stance-aware."
     },
     {
       "name": "AVAILABLE_EVIDENCE_PREFERENCE_MICRO_MAE",
