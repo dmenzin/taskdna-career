@@ -136,6 +136,38 @@ export function channelIntegrityFor(person: PlantedFramePerson, blueprint: Caree
   };
 }
 
+/**
+ * Channel volume against planted volume.
+ *
+ * ADDED AFTER the first split-agent screen, which exposed a blind spot in the strict detector
+ * above. `split-full-context` emitted 10.4 experience entries against 6 planted — a 73% inflation
+ * built from work the person liked or wanted rather than performed — and the 5-of-5 contamination
+ * rate registered 0.008, essentially nothing. Identity-collision and volume-inflation are
+ * different failures, and a detector that only sees the first will clear an architecture that is
+ * badly wrong in the second.
+ *
+ * No verdict in that screen rests on this measure: the KEEP/REVERT decision came from the
+ * preregistered paired bootstrap on NDCG. It is here so the NEXT screen cannot miss the same way.
+ */
+export interface ChannelVolume {
+  interpreted: number;
+  planted: number;
+  /** interpreted / planted. 1.0 is exact; above 1 is inflation, below 1 is omission. */
+  ratio: number;
+}
+
+export function channelVolumes(person: PlantedFramePerson, blueprint: CareerBlueprint): Record<string, ChannelVolume> {
+  const pair = (interpreted: number, planted: number): ChannelVolume => ({
+    interpreted, planted, ratio: planted > 0 ? interpreted / planted : 0,
+  });
+  return {
+    experience: pair((blueprint.experience ?? []).length, person.performed.length),
+    liked: pair((blueprint.liked ?? []).length, person.liked.length),
+    disliked: pair((blueprint.disliked ?? []).length, person.disliked.length),
+    desired: pair((blueprint.desired ?? []).length, person.desired.length),
+  };
+}
+
 export interface IntegritySummary {
   people: number;
   /** Contaminated entries as a share of entries in the RECEIVING channel. */

@@ -70,6 +70,25 @@ const dryRun = process.argv.includes("--dry-run");
 // at the calibrated value rather than reduced on a guess.
 const personMaxOutput = Number(arg("person-max-output", "1800"));
 const jobMaxOutput = Number(arg("job-max-output", "700"));
+/**
+ * The split agents get their OWN allowance, and a larger one. Measured, not guessed.
+ *
+ * A first attempt at 1800 — the shared blueprint's allowance — truncated on person 9 with 982
+ * reasoning tokens spent. Across the 16 calls that did complete, the Experience Agent's output
+ * ran 829/1361/1619 (min/median/max) against the shared blueprint's 886 total, because it emits
+ * ownership, depth and evidence per work item on top of the five role fields. Reasoning alone
+ * varied 261 to 982, nearly fourfold.
+ *
+ * So 2x the observed maximum, matching the rule `pnpm openai:calibrate` uses.
+ *
+ * This is a CEILING, not a budget the model tries to fill: a call that needs 1400 tokens costs
+ * the same under either number, and only the worst-case RESERVATION rises. Raising it is not
+ * prompt retuning and cannot flatter the split arms on quality — it is what makes them
+ * measurable at all. The comparable condition across arms is "neither arm truncates", not
+ * "both arms were handed the same integer". The shared baseline keeps 1800 deliberately, because
+ * its allowance participates in the cache key and changing it would discard 12 paid calls.
+ */
+const splitMaxOutput = Number(arg("split-max-output", "3600"));
 
 const corpus = buildFrameCorpus({ people, split: "DEVELOPMENT", family });
 const jobs = allFrameJobs(corpus);
@@ -86,11 +105,11 @@ const sharedProvider = buildProvider({
   outputSchema: PERSON_BLUEPRINT_SCHEMA as unknown as Record<string, unknown>, schemaName: "career_blueprint",
 });
 const experienceProvider = buildProvider({
-  provider, model, effort: effort as never, maxOutputTokens: personMaxOutput,
+  provider, model, effort: effort as never, maxOutputTokens: splitMaxOutput,
   outputSchema: EXPERIENCE_AGENT_SCHEMA as unknown as Record<string, unknown>, schemaName: "experience_blueprint",
 });
 const directionProvider = buildProvider({
-  provider, model, effort: effort as never, maxOutputTokens: personMaxOutput,
+  provider, model, effort: effort as never, maxOutputTokens: splitMaxOutput,
   outputSchema: DIRECTION_AGENT_SCHEMA as unknown as Record<string, unknown>, schemaName: "direction_blueprint",
 });
 
@@ -119,7 +138,7 @@ const splitRequest = (personId: string, scope: EvidenceScope, which: "experience
   return {
     prompt: which === "experience" ? EXPERIENCE_AGENT_PROMPT : DIRECTION_AGENT_PROMPT,
     input: { evidence: which === "experience" ? evidence.experience : evidence.direction },
-    decoding: { temperature: 0, maxOutputTokens: personMaxOutput },
+    decoding: { temperature: 0, maxOutputTokens: splitMaxOutput },
   };
 };
 
@@ -141,7 +160,7 @@ const jobHits = jobs.filter((job) => jobCache[cacheKeyFor(jobProvider, jobReques
 const sharedHits = corpus.people.filter((p) => sharedCache[cacheKeyFor(sharedProvider, sharedRequest(p.personId))]).length;
 
 const splitCachePath = (variant: string, which: "experience" | "direction") =>
-  `artifacts/agent_runtime/${provider}/cache-${variant}-${which}-${family.toLowerCase()}-${model.replace(/[^a-z0-9.-]/gi, "_")}-${effort}.json`;
+  `artifacts/agent_runtime/${provider}/cache-${variant}-${which}-${family.toLowerCase()}-${model.replace(/[^a-z0-9.-]/gi, "_")}-${effort}-${splitMaxOutput}.json`;
 
 let splitMisses = 0;
 for (const variant of VARIANTS) {
@@ -156,7 +175,7 @@ for (const variant of VARIANTS) {
 
 const ledger = new RuntimeBudgetLedger("artifacts/agent_runtime/budget-ledger.json");
 const perPersonWorstCase = corpus.people.map((p) =>
-  worstCaseCostUsd(model, EXPERIENCE_AGENT_PROMPT.render({ evidence: agentEvidence(p, "full-context").experience }), personMaxOutput),
+  worstCaseCostUsd(model, EXPERIENCE_AGENT_PROMPT.render({ evidence: agentEvidence(p, "full-context").experience }), splitMaxOutput),
 );
 const projectedCost = (perPersonWorstCase.reduce((a, b) => a + b, 0) / Math.max(1, corpus.people.length)) * splitMisses;
 
@@ -178,7 +197,9 @@ process.stdout.write(`  calls made        : ${ledger.calls} (threshold ${RUNTIME
 process.stdout.write(`\nCONFIGURATION under test:\n`);
 process.stdout.write(`  prompts           : shared=${PERSON_BLUEPRINT_PROMPT.version} job=${JOB_BLUEPRINT_PROMPT.version} experience-agent=${EXPERIENCE_AGENT_PROMPT.version} direction-agent=${DIRECTION_AGENT_PROMPT.version}\n`);
 process.stdout.write(`  schema version    : ${SPLIT_AGENT_VERSION} (matcher reads the same five role fields from every arm)\n`);
-process.stdout.write(`  output allowance  : person ${personMaxOutput}, job ${jobMaxOutput} (calibrated, includes reasoning tokens)\n`);
+process.stdout.write(`  output allowance  : shared ${personMaxOutput}, split agents ${splitMaxOutput}, job ${jobMaxOutput}
+                      (ceilings, include reasoning tokens; split needs more because it emits
+                       ownership/depth/evidence per work item -- see the note in the script)\n`);
 process.stdout.write(`\nUSER-FACING LATENCY (${LATENCY_VERSION}):\n`);
 process.stdout.write(`  AFFECTED. The split arms make 2 person calls where shared makes 1, so the\n`);
 process.stdout.write(`  critical path changes. Job interpretation is precomputed and is NOT user wait.\n`);
@@ -224,7 +245,7 @@ if (!readiness.ready) {
 // ---- interpret ---------------------------------------------------------------------------
 const experimentId = `split-agents:${provider}:${family}:${effort}`;
 const projectedFor = (r: { prompt: { render: (i: Record<string, unknown>) => string }; input: Record<string, unknown> }) =>
-  worstCaseCostUsd(model, r.prompt.render(r.input), personMaxOutput);
+  worstCaseCostUsd(model, r.prompt.render(r.input), splitMaxOutput);
 
 const jobRunner = new InstrumentedRunner(jobProvider, { experimentId, cachePath: jobCachePath, budget: ledger, projectedCostUsd: projectedFor });
 const jobWork = new Map<string, StructuredWork[]>();

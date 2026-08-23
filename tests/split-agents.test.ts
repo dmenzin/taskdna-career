@@ -13,7 +13,7 @@ import {
   type ExperienceAgentOutput,
 } from "@/agent/splitAgents";
 import { PERSON_BLUEPRINT_PROMPT, PERSON_BLUEPRINT_SCHEMA, createAgentFieldMatchArchitecture } from "@/agent/agentArchitecture";
-import { channelIntegrityFor, divergenceContrast, personDivergence, summarizeIntegrity } from "@/agent/channelIntegrity";
+import { channelIntegrityFor, channelVolumes, divergenceContrast, personDivergence, summarizeIntegrity } from "@/agent/channelIntegrity";
 import { buildFrameCorpus } from "@/bench/frameCorpus";
 import { IDENTITY_ROLES } from "@/bench/semanticFrame";
 
@@ -169,6 +169,35 @@ describe("contamination is detected, and cannot be faked by staying silent", () 
     expect(summary.emptyExperienceChannels).toBe(1);
     expect(summary.emptyDesiredChannels).toBe(1);
     expect(summary.performedRecall).toBe(0);
+  });
+});
+
+describe("volume inflation is caught, which the identity detector alone does not", () => {
+  it("flags a channel that emits far more than was planted", () => {
+    // The failure the first split-agent screen actually had: 10.4 experience entries against 6
+    // planted, built from work the person liked or wanted rather than performed, while the strict
+    // 5-of-5 contamination rate read 0.008 and cleared it.
+    const inflated = channelVolumes(person, {
+      personId: person.personId,
+      experience: Array.from({ length: person.performed.length * 2 }, () => work()),
+      liked: [], disliked: [], desired: [],
+    });
+    expect(inflated.experience.ratio).toBeCloseTo(2, 6);
+    expect(inflated.experience.planted).toBe(person.performed.length);
+  });
+
+  it("reports an exact channel as a ratio of one", () => {
+    const exact = channelVolumes(person, {
+      personId: person.personId,
+      experience: person.performed.map(() => work()),
+      liked: [], disliked: [], desired: [],
+    });
+    expect(exact.experience.ratio).toBe(1);
+  });
+
+  it("distinguishes omission from inflation rather than reporting absolute error", () => {
+    const sparse = channelVolumes(person, { personId: person.personId, experience: [work()], liked: [], disliked: [], desired: [] });
+    expect(sparse.experience.ratio).toBeLessThan(1);
   });
 });
 
