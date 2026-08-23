@@ -37,7 +37,30 @@ import type { PromptSpec } from "@/agent/runtime";
 import type { CareerBlueprint, StructuredWork } from "@/agent/agentArchitecture";
 import type { PlantedFramePerson } from "@/bench/frameCorpus";
 
-export const SPLIT_AGENT_VERSION = "split-agents.v1";
+export const SPLIT_AGENT_VERSION = "split-agents.v2";
+
+/**
+ * WHAT v2 CORRECTS
+ * ----------------
+ * v1's Direction Agent defined WANTED as "stated goals, aspirations, work they enjoy and want more
+ * of" — and "work they enjoy" IS the Preference channel. It emitted exactly 11.0 items per person
+ * against 4 planted desired, which is 7 planted liked plus 4 planted desired, and the provenance
+ * audit confirmed the mechanism directly: 81 of 129 desired claims were sourced from LIKE evidence.
+ * Direction retrieval collapsed 0.732 to 0.457. That was a malformed channel definition, not
+ * evidence about whether a dedicated Direction Agent works.
+ *
+ * v1's "isolation" was also only half-built. The isolated Direction Agent was shown LIKES,
+ * DISLIKES *and* WANTS NEXT together, so it was never isolated from Preference at all — which is
+ * why its contamination rate (0.629) is indistinguishable from the full-context arm's (0.628).
+ *
+ * v2 fixes both. The Direction Agent emits ONLY desired future work, and in the isolated variant it
+ * sees ONLY aspiration evidence. Liking work and wanting it next are distinct facts, and an agent
+ * responsible for both rebuilds channel contamination one level up.
+ *
+ * Preference is deliberately NOT produced by this architecture. It is a separate architectural
+ * question deserving its own preregistered screen, so the preference channel must be reported as
+ * NOT PRODUCED rather than as a regression to zero.
+ */
 
 /** Which evidence an agent is shown. The axis that separates the two split variants. */
 export type EvidenceScope = "full-context" | "isolated";
@@ -59,10 +82,15 @@ export interface ExperienceWork extends StructuredWork {
   evidence: string;
 }
 
-/** Work the person wants, or explicitly does not want, next. */
+/**
+ * Work the person wants to do next.
+ *
+ * There is no `unwanted` counterpart, and that is a deliberate match to the benchmark rather than
+ * an omission: the frozen corpus plants `desired` (4 per person) as its only Direction construct.
+ * `disliked` is a PREFERENCE construct, not an undesired-future one. Inventing an unwanted-future
+ * output with no planted truth behind it would produce a channel nothing could score.
+ */
 export interface DirectionWork extends StructuredWork {
-  /** `WANTED` or `UNWANTED`. The sign of the direction, kept explicit rather than positional. */
-  stance: string;
   evidence: string;
 }
 
@@ -71,8 +99,7 @@ export interface ExperienceAgentOutput {
 }
 
 export interface DirectionAgentOutput {
-  wanted: DirectionWork[];
-  unwanted: DirectionWork[];
+  desired: DirectionWork[];
 }
 
 const WORK_ROLE_FIELDS = {
@@ -105,24 +132,23 @@ export const EXPERIENCE_AGENT_SCHEMA = {
   additionalProperties: false,
 } as const;
 
-const DIRECTION_ITEMS = {
-  type: "array",
-  items: {
-    type: "object",
-    properties: {
-      ...WORK_ROLE_FIELDS,
-      stance: { type: "string", description: "WANTED or UNWANTED" },
-      evidence: { type: "string", description: "the phrase from the evidence that supports this entry" },
-    },
-    required: ["action", "object", "purpose", "method", "domain", "stance", "evidence"],
-    additionalProperties: false,
-  },
-} as const;
-
 export const DIRECTION_AGENT_SCHEMA = {
   type: "object",
-  properties: { wanted: DIRECTION_ITEMS, unwanted: DIRECTION_ITEMS },
-  required: ["wanted", "unwanted"],
+  properties: {
+    desired: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          ...WORK_ROLE_FIELDS,
+          evidence: { type: "string", description: "the phrase from the evidence that supports this entry" },
+        },
+        required: ["action", "object", "purpose", "method", "domain", "evidence"],
+        additionalProperties: false,
+      },
+    },
+  },
+  required: ["desired"],
   additionalProperties: false,
 } as const;
 
@@ -180,28 +206,31 @@ export const EXPERIENCE_AGENT_PROMPT: PromptSpec = {
 
 export const DIRECTION_AGENT_PROMPT: PromptSpec = {
   id: "direction-agent",
-  version: "v1",
+  version: "v2",
   hypothesis:
-    "A prompt dedicated solely to desired and undesired future work recovers direction more completely than a shared prompt, and does not import the person's history as though it were their ambition.",
+    "A prompt scoped strictly to FUTURE work — excluding both history and mere enjoyment — recovers direction more completely than a shared prompt, and does not absorb Preference items into Direction.",
   render: (input) =>
     [
       "You are reading one person's description of their own working life.",
-      "Extract ONLY the work this person WANTS to do next, and the work they do NOT want to do.",
+      "Extract ONLY the work this person WANTS TO DO NEXT.",
       "",
       NON_IMPLICATION,
       "A long history in some work is NOT evidence that they want more of it. Many people are",
       "trying to leave the work they are best at.",
       "",
-      "WANTED covers stated goals, aspirations, work they enjoy and want more of, and transitions",
-      "they are moving toward. UNWANTED covers work they dislike, are moving away from, or have",
-      "ruled out.",
+      // v1 lost the whole channel here by defining WANTED to include "work they enjoy". Liking
+      // work and wanting it in the future are different facts about a person, and merging them
+      // rebuilds the contamination the four-channel architecture exists to prevent.
+      "ENJOYING work is NOT the same as WANTING it next. Do not include work merely because the",
+      "person says they liked it. Include work only where the text says they want to move into it,",
+      "are aiming for it, or state it as a goal for the future.",
       "",
       NORMALISE,
       "",
       "Record the phrase in the text that supports each entry.",
       "",
-      "Use only what the text supports. Do not invent direction. If the text states no direction,",
-      "return empty lists rather than guessing from their history.",
+      "Use only what the text supports. Do not invent direction. If the text states no future",
+      "intent, return an empty list rather than guessing from their history or their preferences.",
       "",
       "--- EVIDENCE ---",
       String(input.evidence ?? ""),
@@ -230,11 +259,11 @@ export function agentEvidence(
   if (scope === "isolated") {
     return {
       experience: ["--- EXPERIENCE (what they have done) ---", experienceText].join("\n"),
-      direction: [
-        "--- LIKES ---", liked,
-        "", "--- DISLIKES ---", disliked,
-        "", "--- WANTS NEXT ---", desired,
-      ].join("\n"),
+      // v2 CORRECTION. v1 handed the "isolated" Direction Agent LIKES, DISLIKES *and* WANTS NEXT
+      // together, so it was never isolated from Preference — and its measured contamination rate
+      // (0.629) was indistinguishable from the full-context arm's (0.628). Isolating Direction
+      // means showing it aspiration evidence and nothing else.
+      direction: ["--- WANTS NEXT ---", desired].join("\n"),
     };
   }
 
@@ -253,10 +282,14 @@ export function agentEvidence(
  * Doing the fold here rather than in the matcher is what keeps this an ablation: downstream code
  * cannot tell which architecture produced a blueprint, so it cannot treat them differently.
  *
- * `liked` is populated from WANTED and `disliked` from UNWANTED, mirroring how the shared
- * blueprint's preference channel is scored (liked minus disliked). `desired` also receives
- * WANTED, because the shared architecture's direction channel reads `desired` — both arms must
- * therefore express direction through the same field or the channel comparison is meaningless.
+ * `liked` and `disliked` are left EMPTY, and that is the correction v2 exists for. v1 populated
+ * them from the Direction Agent's output, which made a single agent responsible for two channels
+ * and destroyed both. This architecture covers Experience and Direction only; Preference is a
+ * separate architectural question with its own screen.
+ *
+ * The consequence must be reported honestly: the preference channel score for this architecture is
+ * NOT PRODUCED, not a regression to zero. Reading it as a loss would penalise the architecture for
+ * a capability it never claimed.
  */
 export function foldSplitOutputs(
   personId: string,
@@ -266,12 +299,93 @@ export function foldSplitOutputs(
   const strip = (work: StructuredWork): StructuredWork => ({
     action: work.action, object: work.object, purpose: work.purpose, method: work.method, domain: work.domain,
   });
-  const wanted = (direction?.wanted ?? []).map(strip);
   return {
     personId,
     experience: (experience?.performed ?? []).map(strip),
-    liked: wanted,
-    disliked: (direction?.unwanted ?? []).map(strip),
-    desired: wanted,
+    liked: [],
+    disliked: [],
+    desired: (direction?.desired ?? []).map(strip),
+  };
+}
+
+/** Channels this architecture produces. Anything absent must be reported as NOT PRODUCED. */
+export const SPLIT_PRODUCED_CHANNELS = ["experience", "direction"] as const;
+
+// ---------------------------------------------------------------------------
+// Retained v1 definitions — AUDIT ONLY, never for a new run
+// ---------------------------------------------------------------------------
+//
+// The v1 Direction Agent is the defect that motivated v2, and the provenance audit that diagnosed
+// it is the evidence the redesign rests on. Prompt version participates in the cache key, so
+// deleting v1 would make its 24 paid interpretations unreadable and the motivating measurement
+// unreproducible. That is the exact failure mode that lost the Anthropic arm, so the old
+// definitions stay, frozen, reachable only by the audit path.
+
+/** v1 output shape: `wanted`/`unwanted`, with Preference merged into Direction. */
+export interface DirectionAgentOutputV1 {
+  wanted: (StructuredWork & { stance: string; evidence: string })[];
+  unwanted: (StructuredWork & { stance: string; evidence: string })[];
+}
+
+const DIRECTION_ITEMS_V1 = {
+  type: "array",
+  items: {
+    type: "object",
+    properties: {
+      ...WORK_ROLE_FIELDS,
+      stance: { type: "string", description: "WANTED or UNWANTED" },
+      evidence: { type: "string", description: "the phrase from the evidence that supports this entry" },
+    },
+    required: ["action", "object", "purpose", "method", "domain", "stance", "evidence"],
+    additionalProperties: false,
+  },
+} as const;
+
+export const DIRECTION_AGENT_SCHEMA_V1 = {
+  type: "object",
+  properties: { wanted: DIRECTION_ITEMS_V1, unwanted: DIRECTION_ITEMS_V1 },
+  required: ["wanted", "unwanted"],
+  additionalProperties: false,
+} as const;
+
+export const DIRECTION_AGENT_PROMPT_V1: PromptSpec = {
+  id: "direction-agent",
+  version: "v1",
+  hypothesis:
+    "SUPERSEDED. Defined WANTED to include work the person merely enjoys, which merged Preference into Direction and collapsed the channel. Retained so the v1 cache stays readable.",
+  render: (input) =>
+    [
+      "You are reading one person's description of their own working life.",
+      "Extract ONLY the work this person WANTS to do next, and the work they do NOT want to do.",
+      "",
+      NON_IMPLICATION,
+      "A long history in some work is NOT evidence that they want more of it. Many people are",
+      "trying to leave the work they are best at.",
+      "",
+      "WANTED covers stated goals, aspirations, work they enjoy and want more of, and transitions",
+      "they are moving toward. UNWANTED covers work they dislike, are moving away from, or have",
+      "ruled out.",
+      "",
+      NORMALISE,
+      "",
+      "Record the phrase in the text that supports each entry.",
+      "",
+      "Use only what the text supports. Do not invent direction. If the text states no direction,",
+      "return empty lists rather than guessing from their history.",
+      "",
+      "--- EVIDENCE ---",
+      String(input.evidence ?? ""),
+    ].join("\n"),
+};
+
+/** v1 evidence routing: the "isolated" Direction Agent also saw LIKES and DISLIKES. */
+export function agentEvidenceV1(person: PlantedFramePerson, scope: EvidenceScope): { experience: string; direction: string } {
+  if (scope !== "isolated") return agentEvidence(person, scope);
+  const liked = person.preferenceEvidence.filter((e) => e.stance === "LIKE").map((e) => e.text).join("\n");
+  const disliked = person.preferenceEvidence.filter((e) => e.stance === "DISLIKE").map((e) => e.text).join("\n");
+  const desired = person.aspirationEvidence.map((e) => e.text).join("\n");
+  return {
+    experience: agentEvidence(person, "isolated").experience,
+    direction: ["--- LIKES ---", liked, "", "--- DISLIKES ---", disliked, "", "--- WANTS NEXT ---", desired].join("\n"),
   };
 }

@@ -62,6 +62,7 @@
     "audit:parameters": "tsx scripts/audit-parameters.ts",
     "audit:generalization": "tsx scripts/audit-generalization.ts",
     "audit:zero-origin": "tsx scripts/audit-zero-origin.ts",
+    "audit:provenance": "tsx scripts/audit-provenance.ts",
     "audit:domain-holdout": "tsx scripts/audit-domain-holdout.ts",
     "subjects:generate": "tsx scripts/subjects-generate.ts",
     "subjects:inspect": "tsx scripts/subjects-inspect.ts",

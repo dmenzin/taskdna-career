@@ -11,6 +11,7 @@ import {
   foldSplitOutputs,
   type DirectionAgentOutput,
   type ExperienceAgentOutput,
+  SPLIT_PRODUCED_CHANNELS,
 } from "@/agent/splitAgents";
 import { PERSON_BLUEPRINT_PROMPT, PERSON_BLUEPRINT_SCHEMA, createAgentFieldMatchArchitecture } from "@/agent/agentArchitecture";
 import { channelIntegrityFor, channelVolumes, divergenceContrast, personDivergence, summarizeIntegrity } from "@/agent/channelIntegrity";
@@ -75,8 +76,7 @@ describe("the fold keeps the matcher blind to which architecture produced a blue
       performed: [{ ...work(), ownership: "led others", depth: "formative", evidence: "ran the close" }],
     };
     const direction: DirectionAgentOutput = {
-      wanted: [{ ...work({ action: "analyze" }), stance: "WANTED", evidence: "want to move into analysis" }],
-      unwanted: [{ ...work({ action: "file" }), stance: "UNWANTED", evidence: "done with filing" }],
+      desired: [{ ...work({ action: "analyze" }), evidence: "want to move into analysis" }],
     };
     const folded = foldSplitOutputs("p1", experience, direction);
     // Extra fields must not reach the matcher, or "dedicated prompts help" is confounded with
@@ -85,16 +85,21 @@ describe("the fold keeps the matcher blind to which architecture produced a blue
     expect(Object.keys(folded.desired[0]!).sort()).toEqual([...IDENTITY_ROLES].sort());
   });
 
-  it("routes wanted work to both the preference and direction channels, as the shared arm does", () => {
-    // The shared architecture scores direction from `desired` and preference from liked/disliked.
-    // Both arms must express direction through the same field or the channel is not comparable.
-    const folded = foldSplitOutputs("p1", { performed: [] }, {
-      wanted: [{ ...work(), stance: "WANTED", evidence: "e" }],
-      unwanted: [{ ...work({ action: "file" }), stance: "UNWANTED", evidence: "e" }],
-    });
+  it("leaves the preference channel EMPTY rather than filling it from direction", () => {
+    // The v1 defect, pinned so it cannot return: one agent responsible for both Preference and
+    // Direction destroyed both. Liking work and wanting it next are distinct facts. The empty
+    // preference channel must be reported as NOT PRODUCED, never as a regression to zero.
+    const folded = foldSplitOutputs("p1", { performed: [] }, { desired: [{ ...work(), evidence: "e" }] });
     expect(folded.desired).toHaveLength(1);
-    expect(folded.liked).toHaveLength(1);
-    expect(folded.disliked).toHaveLength(1);
+    expect(folded.liked).toEqual([]);
+    expect(folded.disliked).toEqual([]);
+    expect(SPLIT_PRODUCED_CHANNELS).toEqual(["experience", "direction"]);
+  });
+
+  it("has no undesired-future output, because the benchmark plants no such construct", () => {
+    // The corpus plants `desired` as its only Direction construct; `disliked` is Preference.
+    // Emitting an unwanted-future channel would create output nothing could score against.
+    expect(Object.keys(DIRECTION_AGENT_SCHEMA.properties)).toEqual(["desired"]);
   });
 
   it("survives an agent returning nothing, without inventing entries", () => {
@@ -103,7 +108,7 @@ describe("the fold keeps the matcher blind to which architecture produced a blue
   });
 
   it("produces a blueprint the existing matcher accepts unchanged", () => {
-    const folded = foldSplitOutputs(person.personId, { performed: [{ ...work(), ownership: "o", depth: "d", evidence: "e" }] }, { wanted: [], unwanted: [] });
+    const folded = foldSplitOutputs(person.personId, { performed: [{ ...work(), ownership: "o", depth: "d", evidence: "e" }] }, { desired: [] });
     const architecture = createAgentFieldMatchArchitecture(new Map([[person.personId, folded]]), new Map(), "split-test");
     expect(architecture.id).toBe("split-test");
     expect(typeof architecture.score(architecture.prepare(person), corpus.jobsByPerson.get(person.personId)![0]!, "experience")).toBe("number");

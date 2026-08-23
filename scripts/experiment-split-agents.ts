@@ -31,7 +31,7 @@
 //   extra fields the Experience Agent records.
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { InstrumentedRunner, cacheKeyFor, type ModelRequest } from "../src/agent/runtime";
-import { checkArmReadiness, buildProvider, armCachePath, CANONICAL_EFFORT, defaultModelFor, type ProviderName } from "../src/agent/providerRegistry";
+import { checkArmReadiness, buildProvider, armCachePath, splitAgentCachePath, CANONICAL_EFFORT, defaultModelFor, type ProviderName } from "../src/agent/providerRegistry";
 import { RuntimeBudgetLedger, RUNTIME_BUDGET_LIMITS, worstCaseCostUsd } from "../src/agent/budget";
 import {
   createAgentFieldMatchArchitecture,
@@ -45,7 +45,7 @@ import {
 import {
   DIRECTION_AGENT_PROMPT, DIRECTION_AGENT_SCHEMA,
   EXPERIENCE_AGENT_PROMPT, EXPERIENCE_AGENT_SCHEMA,
-  SPLIT_AGENT_VERSION, agentEvidence, foldSplitOutputs,
+  SPLIT_AGENT_VERSION, SPLIT_PRODUCED_CHANNELS, agentEvidence, foldSplitOutputs,
   type DirectionAgentOutput, type EvidenceScope, type ExperienceAgentOutput,
 } from "../src/agent/splitAgents";
 import { channelIntegrityFor, divergenceContrast, summarizeIntegrity, type ChannelIntegrity } from "../src/agent/channelIntegrity";
@@ -159,17 +159,30 @@ const sharedCache = loadCache(sharedCachePath);
 const jobHits = jobs.filter((job) => jobCache[cacheKeyFor(jobProvider, jobRequest(job))]).length;
 const sharedHits = corpus.people.filter((p) => sharedCache[cacheKeyFor(sharedProvider, sharedRequest(p.personId))]).length;
 
-const splitCachePath = (variant: string, which: "experience" | "direction") =>
-  `artifacts/agent_runtime/${provider}/cache-${variant}-${which}-${family.toLowerCase()}-${model.replace(/[^a-z0-9.-]/gi, "_")}-${effort}-${splitMaxOutput}.json`;
+const splitCachePath = (variant: string, agent: "experience" | "direction") =>
+  splitAgentCachePath({
+    provider, model, effort, family, variant, agent,
+    promptVersion: agent === "experience" ? EXPERIENCE_AGENT_PROMPT.version : DIRECTION_AGENT_PROMPT.version,
+    maxOutputTokens: splitMaxOutput,
+  });
 
+// Broken out per agent, because the whole cost argument for this screen is that the Experience
+// interpretations are UNCHANGED and must therefore be hits. Asserting that is not enough; a
+// configuration drift would silently re-bill 24 calls, so the dry run checks it.
+const splitCensus: { agent: string; variant: string; hits: number; misses: number }[] = [];
 let splitMisses = 0;
 for (const variant of VARIANTS) {
   for (const which of ["experience", "direction"] as const) {
     const cache = loadCache(splitCachePath(variant.id, which));
     const runnerProvider = which === "experience" ? experienceProvider : directionProvider;
+    let hits = 0;
+    let misses = 0;
     for (const person of corpus.people) {
-      if (!cache[cacheKeyFor(runnerProvider, splitRequest(person.personId, variant.scope, which))]) splitMisses += 1;
+      if (cache[cacheKeyFor(runnerProvider, splitRequest(person.personId, variant.scope, which))]) hits += 1;
+      else misses += 1;
     }
+    splitCensus.push({ agent: which, variant: variant.id, hits, misses });
+    splitMisses += misses;
   }
 }
 
@@ -185,8 +198,22 @@ process.stdout.write(`family=${family}  people=${people}  jobs=${jobs.length}  m
 process.stdout.write(`ALREADY PAID FOR (cache hits, cost $0):\n`);
 process.stdout.write(`  job blueprints    : ${jobHits}/${jobs.length}${jobHits === jobs.length ? "  (all reusable)" : "  <-- MISSES WOULD COST MONEY"}\n`);
 process.stdout.write(`  shared baseline   : ${sharedHits}/${corpus.people.length}${sharedHits === corpus.people.length ? "  (all reusable)" : "  <-- MISSES WOULD COST MONEY"}\n`);
+for (const row of splitCensus) {
+  process.stdout.write(
+    `  ${(row.variant + " / " + row.agent).padEnd(38)}: ${row.hits}/${corpus.people.length}` +
+    `${row.hits === corpus.people.length ? "  (all reusable)" : row.hits === 0 ? "  (none cached)" : "  <-- PARTIAL: investigate drift"}\n`,
+  );
+}
 process.stdout.write(`\nNEW CALLS REQUIRED:\n`);
-process.stdout.write(`  split agents      : ${splitMisses}  (${corpus.people.length} people x 2 agents x ${VARIANTS.length} variants)\n`);
+process.stdout.write(`  split agents      : ${splitMisses}\n`);
+const experienceMisses = splitCensus.filter((r) => r.agent === "experience").reduce((t, r) => t + r.misses, 0);
+if (experienceMisses > 0) {
+  process.stdout.write(
+    `\n  STOP CONDITION: ${experienceMisses} Experience calls are cache MISSES. The Experience Agent\n` +
+    `  prompt, schema, evidence and model configuration are unchanged in this revision, so every\n` +
+    `  one should be a hit. A miss means configuration drift -- diagnose before paying again.\n`,
+  );
+}
 process.stdout.write(`  projected WORST-CASE spend: $${projectedCost.toFixed(3)}\n`);
 process.stdout.write(`\nBUDGET (dollar ceiling is the HARD control; calls are observability only):\n`);
 process.stdout.write(`  cumulative spend  : $${ledger.spentUsd.toFixed(4)}\n`);
@@ -328,6 +355,8 @@ function measureDeterministicMsPerPerson(architecture: RankingArchitecture<never
 }
 
 process.stdout.write(`\n================ ${family} (n=${people}), matcher held at agent-field-match ================\n`);
+process.stdout.write(`NOTE: the split arms produce ${SPLIT_PRODUCED_CHANNELS.join(" and ")} only. Their PREFERENCE column is\n`);
+process.stdout.write(`      NOT PRODUCED, not a regression -- Preference is a separate architectural question.\n`);
 process.stdout.write(`${"architecture".padEnd(22)}${CHANNELS.map((c) => c.padStart(14)).join("")}\n`);
 const results = new Map<string, ReturnType<typeof evaluateArchitecture>>();
 for (const architecture of [experienceLexicalArchitecture as unknown as RankingArchitecture<never>, ...architectures, normalizerControl]) {

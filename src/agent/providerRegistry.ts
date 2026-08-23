@@ -92,6 +92,30 @@ export function armCachePath(args: {
   return `${providerCacheDir(args.provider)}/cache-${args.kind}-${args.family.toLowerCase()}-${model}-${args.effort}.json`;
 }
 
+/**
+ * Cache path for one split-agent arm. ONE implementation, used by both the experiment and the
+ * audit, because two copies of a path builder is how an audit quietly stops reading the file the
+ * experiment writes — which is exactly what happened when they diverged.
+ *
+ * The AGENT PROMPT VERSION is in the path. The cache key already separates generations, so this is
+ * not what prevents a wrong hit; it is what stops a v2 run from overwriting the v1 interpretations
+ * that diagnosed the v1 defect, and what makes the separation visible in a directory listing.
+ */
+export function splitAgentCachePath(args: {
+  provider: ProviderName;
+  model: string;
+  effort: string;
+  family: string;
+  variant: string;
+  agent: "experience" | "direction";
+  promptVersion: string;
+  maxOutputTokens: number;
+}): string {
+  const model = args.model.replace(/[^a-z0-9.-]/gi, "_");
+  return `${providerCacheDir(args.provider)}/cache-${args.variant}-${args.agent}-${args.promptVersion}-` +
+    `${args.family.toLowerCase()}-${model}-${args.effort}-${args.maxOutputTokens}.json`;
+}
+
 export type ArmReadiness =
   | { ready: true; detail: string }
   | { ready: false; reason: string; detail: string };
