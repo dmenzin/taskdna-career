@@ -203,3 +203,31 @@ describe("second-pass audit language", () => {
     expect(truth).toMatch(/Do not.*mutate current truth|does not\s+mutate current truth/i);
   });
 });
+
+describe("RESET STATE is the freeze snapshot", () => {
+  const reset = readFileSync("docs/RESET_STATE.md", "utf8");
+
+  it("contains only the five required sections and the freeze ban", () => {
+    expect(reset).toMatch(/^# RESET STATE/m);
+    expect(reset).toMatch(/No paid model calls/);
+    expect(reset).toMatch(/No prompt edits/);
+    expect(reset).toMatch(/No new datasets/);
+    expect(reset).toMatch(/No VALIDATION or LOCKED/);
+    for (const heading of [
+      "## What exists",
+      "## What evidence is trustworthy",
+      "## What is untrustworthy",
+      "## What is unknown",
+      "## Which experiments / data tuned each prompt",
+    ]) {
+      expect(reset).toContain(heading);
+    }
+  });
+
+  it("names the working-set people for the prompts that were rewritten after inspection", () => {
+    expect(reset).toMatch(/direction-agent@v2/);
+    expect(reset).toMatch(/person-blueprint@v2/);
+    expect(reset).toMatch(/12 LEXICAL_TRAP DEVELOPMENT/);
+    expect(reset).toMatch(/never revised/i);
+  });
+});
