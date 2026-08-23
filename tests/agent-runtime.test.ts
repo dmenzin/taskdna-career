@@ -94,7 +94,7 @@ describe("caching", () => {
 describe("budget enforcement at the boundary", () => {
   it("refuses the call that would breach the cap, before contacting the provider", async () => {
     const { provider, calls } = countingProvider();
-    const ledger = new RuntimeBudgetLedger(join(dir, "ledger.json"), { maxSpendUsd: 0.001, maxCalls: 10 });
+    const ledger = new RuntimeBudgetLedger(join(dir, "ledger.json"), { maxSpendUsd: 0.001, callObservabilityThreshold: 10 });
     const runner = new InstrumentedRunner(provider, { budget: ledger, projectedCostUsd: () => 1 });
     await expect(runner.run(request("expensive"))).rejects.toThrow(RuntimeBudgetExceededError);
     expect(calls()).toBe(0);
@@ -102,7 +102,7 @@ describe("budget enforcement at the boundary", () => {
 
   it("does not charge the budget for a cache hit", async () => {
     const { provider } = countingProvider();
-    const ledger = new RuntimeBudgetLedger(join(dir, "ledger.json"), { maxSpendUsd: 10, maxCalls: 10 });
+    const ledger = new RuntimeBudgetLedger(join(dir, "ledger.json"), { maxSpendUsd: 10, callObservabilityThreshold: 10 });
     const runner = new InstrumentedRunner(provider, { budget: ledger, projectedCostUsd: () => 0.001 });
     await runner.run(request("same"));
     const afterFirst = ledger.calls;

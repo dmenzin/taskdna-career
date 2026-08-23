@@ -49,6 +49,10 @@ import {
   type DirectionAgentOutput, type EvidenceScope, type ExperienceAgentOutput,
 } from "../src/agent/splitAgents";
 import { channelIntegrityFor, divergenceContrast, summarizeIntegrity, type ChannelIntegrity } from "../src/agent/channelIntegrity";
+import {
+  agentLatencyProfile, callSamples, criticalPath, latencyQualityTrade,
+  LATENCY_VERSION, STABLE_PERCENTILE_MINIMUM, type CallLatencySample, type CriticalPath,
+} from "../src/agent/latency";
 import { buildFrameCorpus, allFrameJobs } from "../src/bench/frameCorpus";
 import { evaluateArchitecture, pairedDifference, CHANNELS } from "../src/bench/frameEvaluation";
 import { experienceLexicalArchitecture, oracleNormalizerArchitecture, type RankingArchitecture } from "../src/bench/architectures";
@@ -165,8 +169,23 @@ process.stdout.write(`  shared baseline   : ${sharedHits}/${corpus.people.length
 process.stdout.write(`\nNEW CALLS REQUIRED:\n`);
 process.stdout.write(`  split agents      : ${splitMisses}  (${corpus.people.length} people x 2 agents x ${VARIANTS.length} variants)\n`);
 process.stdout.write(`  projected WORST-CASE spend: $${projectedCost.toFixed(3)}\n`);
-process.stdout.write(`  budget remaining  : $${ledger.remainingUsd().toFixed(3)} of $${RUNTIME_BUDGET_LIMITS.maxSpendUsd}, ${ledger.remainingCalls()} of ${RUNTIME_BUDGET_LIMITS.maxCalls} calls\n`);
+process.stdout.write(`\nBUDGET (dollar ceiling is the HARD control; calls are observability only):\n`);
+process.stdout.write(`  cumulative spend  : $${ledger.spentUsd.toFixed(4)}\n`);
+process.stdout.write(`  remaining         : $${ledger.remainingUsd().toFixed(3)} of $${RUNTIME_BUDGET_LIMITS.maxSpendUsd}\n`);
+process.stdout.write(`  after this run    : $${(ledger.remainingUsd() - projectedCost).toFixed(3)} remaining, worst case\n`);
 process.stdout.write(`  share of remaining: ${((projectedCost / Math.max(1e-9, ledger.remainingUsd())) * 100).toFixed(1)}%\n`);
+process.stdout.write(`  calls made        : ${ledger.calls} (threshold ${RUNTIME_BUDGET_LIMITS.callObservabilityThreshold}${ledger.pastCallThreshold() ? ", CROSSED" : ""})\n`);
+process.stdout.write(`\nCONFIGURATION under test:\n`);
+process.stdout.write(`  prompts           : shared=${PERSON_BLUEPRINT_PROMPT.version} job=${JOB_BLUEPRINT_PROMPT.version} experience-agent=${EXPERIENCE_AGENT_PROMPT.version} direction-agent=${DIRECTION_AGENT_PROMPT.version}\n`);
+process.stdout.write(`  schema version    : ${SPLIT_AGENT_VERSION} (matcher reads the same five role fields from every arm)\n`);
+process.stdout.write(`  output allowance  : person ${personMaxOutput}, job ${jobMaxOutput} (calibrated, includes reasoning tokens)\n`);
+process.stdout.write(`\nUSER-FACING LATENCY (${LATENCY_VERSION}):\n`);
+process.stdout.write(`  AFFECTED. The split arms make 2 person calls where shared makes 1, so the\n`);
+process.stdout.write(`  critical path changes. Job interpretation is precomputed and is NOT user wait.\n`);
+process.stdout.write(`  Fresh-call distributions come from the ${splitMisses} new calls; with 12 samples per\n`);
+process.stdout.write(`  agent, p90/p95 are order statistics (stable needs >=${STABLE_PERCENTILE_MINIMUM}) and are labelled so.\n`);
+process.stdout.write(`  The shared baseline is fully cached, so its fresh latency is reused from the\n`);
+process.stdout.write(`  completed arm's recorded telemetry rather than re-measured.\n`);
 
 if (jobHits < jobs.length || sharedHits < corpus.people.length) {
   process.stdout.write(
@@ -232,6 +251,10 @@ for (const person of corpus.people) {
 blueprintsByArchitecture.set("shared", sharedBlueprints);
 
 process.stdout.write(`\ninterpreting split agents...\n`);
+// Kept so per-call latency can be reported per agent type, and so the raw rows survive into the
+// artifact for a Pareto frontier later rather than being summarised away now.
+const splitRecords: Awaited<ReturnType<InstrumentedRunner["run"]>>["record"][] = [];
+const splitTelemetry: Record<string, ReturnType<InstrumentedRunner["telemetry"]>> = {};
 for (const variant of VARIANTS) {
   const experienceRunner = new InstrumentedRunner(experienceProvider, {
     experimentId, cachePath: splitCachePath(variant.id, "experience"), budget: ledger, projectedCostUsd: projectedFor,
@@ -242,17 +265,22 @@ for (const variant of VARIANTS) {
   const built = new Map<string, CareerBlueprint>();
   let done = 0;
   for (const person of corpus.people) {
-    const experienceText = (await experienceRunner.run(splitRequest(person.personId, variant.scope, "experience"))).text;
-    const directionText = (await directionRunner.run(splitRequest(person.personId, variant.scope, "direction"))).text;
+    // Issued one at a time on purpose: a concurrent pair would contend and distort each
+    // measurement, and clean per-call timing is what the parallel critical-path estimate needs.
+    const experience = await experienceRunner.run(splitRequest(person.personId, variant.scope, "experience"));
+    const direction = await directionRunner.run(splitRequest(person.personId, variant.scope, "direction"));
     let experienceOut: ExperienceAgentOutput | null = null;
     let directionOut: DirectionAgentOutput | null = null;
-    try { experienceOut = JSON.parse(experienceText) as ExperienceAgentOutput; } catch { /* counted as empty */ }
-    try { directionOut = JSON.parse(directionText) as DirectionAgentOutput; } catch { /* counted as empty */ }
+    try { experienceOut = JSON.parse(experience.text) as ExperienceAgentOutput; } catch { /* counted as empty */ }
+    try { directionOut = JSON.parse(direction.text) as DirectionAgentOutput; } catch { /* counted as empty */ }
     built.set(person.personId, foldSplitOutputs(person.personId, experienceOut, directionOut));
     done += 1;
     if (done % 4 === 0 || done === corpus.people.length) process.stdout.write(`  ${variant.id} ${done}/${corpus.people.length}\n`);
   }
   blueprintsByArchitecture.set(variant.id, built);
+  splitRecords.push(...experienceRunner.records, ...directionRunner.records);
+  splitTelemetry[`${variant.id}:experience`] = experienceRunner.telemetry();
+  splitTelemetry[`${variant.id}:direction`] = directionRunner.telemetry();
 }
 
 // ---- evaluate: same matcher for every architecture ---------------------------------------
@@ -263,6 +291,20 @@ const normalizerControl = oracleNormalizerArchitecture(
 const architectures = [...blueprintsByArchitecture.entries()].map(([id, blueprints]) =>
   createAgentFieldMatchArchitecture(blueprints, jobWork, id) as unknown as RankingArchitecture<never>,
 );
+
+// Deterministic local work on the user's critical path: assemble the blueprint, then score every
+// job in the pool. Timed per person so it can be added to the model latency honestly rather than
+// assumed negligible. This is CPU-local, with no network in it.
+function measureDeterministicMsPerPerson(architecture: RankingArchitecture<never>): number {
+  const started = process.hrtime.bigint();
+  for (const person of corpus.people) {
+    const prepared = architecture.prepare(person as never);
+    for (const job of corpus.jobsByPerson.get(person.personId) ?? []) {
+      for (const channel of CHANNELS) architecture.score(prepared, job as never, channel);
+    }
+  }
+  return Number(process.hrtime.bigint() - started) / 1e6 / Math.max(1, corpus.people.length);
+}
 
 process.stdout.write(`\n================ ${family} (n=${people}), matcher held at agent-field-match ================\n`);
 process.stdout.write(`${"architecture".padEnd(22)}${CHANNELS.map((c) => c.padStart(14)).join("")}\n`);
@@ -308,12 +350,101 @@ for (const [id, blueprints] of blueprintsByArchitecture) {
   );
 }
 
+// ---- latency: what a real user would actually wait ---------------------------------------
+const allSamples: CallLatencySample[] = [
+  ...callSamples(jobRunner.records), ...callSamples(sharedRunner.records), ...callSamples(splitRecords),
+];
+const profile = agentLatencyProfile(allSamples);
+
+process.stdout.write(`\nPER-CALL LATENCY (${LATENCY_VERSION}), fresh calls only\n`);
+process.stdout.write(`${"agent".padEnd(20)}${"n".padStart(5)}${"mean".padStart(10)}${"p50".padStart(9)}${"p90".padStart(9)}${"p95".padStart(9)}${"max".padStart(9)}\n`);
+for (const [agent, dist] of Object.entries(profile.freshByAgent)) {
+  process.stdout.write(
+    `${agent.padEnd(20)}${String(dist.n).padStart(5)}${dist.meanMs.toFixed(0).padStart(10)}${dist.p50Ms.toFixed(0).padStart(9)}` +
+    `${dist.p90Ms.toFixed(0).padStart(9)}${dist.p95Ms.toFixed(0).padStart(9)}${dist.maxMs.toFixed(0).padStart(9)}` +
+    `${dist.percentilesAreStable ? "" : "   <- p90/p95 are order statistics, not percentiles"}\n`,
+  );
+}
+process.stdout.write(`cache-hit population (separate, never mixed in): n=${profile.cacheHit.n}, p50 ${profile.cacheHit.p50Ms.toFixed(1)}ms, max ${profile.cacheHit.maxMs.toFixed(1)}ms\n`);
+
+// The shared baseline is fully cached here, so its FRESH latency cannot be re-measured. It is
+// read from the completed arm's recorded telemetry instead of being silently reported as ~0ms.
+const priorArmPath = `artifacts/agent_experiments/agent-vs-lexical-${provider}-${family.toLowerCase()}-n${people}.json`;
+let sharedFresh = { p50Ms: 0, p95Ms: 0, source: "unavailable" };
+if (existsSync(priorArmPath)) {
+  const prior = JSON.parse(readFileSync(priorArmPath, "utf8")) as { telemetry?: { person?: { p50LatencyMs?: number; p95LatencyMs?: number } } };
+  sharedFresh = {
+    p50Ms: prior.telemetry?.person?.p50LatencyMs ?? 0,
+    p95Ms: prior.telemetry?.person?.p95LatencyMs ?? 0,
+    source: priorArmPath,
+  };
+}
+
+const deterministicMs = measureDeterministicMsPerPerson(architectures[0]!);
+const paths: CriticalPath[] = [];
+paths.push(criticalPath({
+  architecture: "shared",
+  personAgents: [{ promptId: PERSON_BLUEPRINT_PROMPT.id, distribution: { n: people, meanMs: sharedFresh.p50Ms, p50Ms: sharedFresh.p50Ms, p90Ms: sharedFresh.p95Ms, p95Ms: sharedFresh.p95Ms, maxMs: sharedFresh.p95Ms, percentilesAreStable: false } }],
+  agentsAreIndependent: false, // one call: nothing to parallelise
+  deterministicMs,
+}));
+for (const variant of VARIANTS) {
+  const experience = profile.freshByAgent[EXPERIENCE_AGENT_PROMPT.id];
+  const direction = profile.freshByAgent[DIRECTION_AGENT_PROMPT.id];
+  if (!experience || !direction) continue;
+  paths.push(criticalPath({
+    architecture: variant.id,
+    personAgents: [
+      { promptId: EXPERIENCE_AGENT_PROMPT.id, distribution: experience },
+      { promptId: DIRECTION_AGENT_PROMPT.id, distribution: direction },
+    ],
+    // Experience and Direction read the same evidence and write different channels, so they are
+    // independent by the four-channel contract and could be issued concurrently.
+    agentsAreIndependent: true,
+    deterministicMs,
+  }));
+}
+
+process.stdout.write(`\nEND-USER CRITICAL PATH — evidence submitted to first usable recommendations\n`);
+process.stdout.write(`(job interpretation EXCLUDED: precomputed per job, amortised, never user wait)\n`);
+process.stdout.write(`deterministic assembly + retrieval + ranking: ${deterministicMs.toFixed(1)}ms per person, measured locally\n\n`);
+process.stdout.write(`${"architecture".padEnd(20)}${"agents".padStart(7)}${"seq p50".padStart(10)}${"seq p95".padStart(10)}${"par p50*".padStart(10)}${"par p95*".padStart(10)}${"TTFR p50".padStart(11)}${"TTFR p95".padStart(11)}\n`);
+for (const path of paths) {
+  process.stdout.write(
+    `${path.architecture.padEnd(20)}${String(path.agentCount).padStart(7)}` +
+    `${(path.sequentialUserWaitP50Ms / 1000).toFixed(1).padStart(9)}s${(path.sequentialUserWaitP95Ms / 1000).toFixed(1).padStart(9)}s` +
+    `${(path.estimatedParallelP50Ms / 1000).toFixed(1).padStart(9)}s${(path.estimatedParallelP95Ms / 1000).toFixed(1).padStart(9)}s` +
+    `${(path.timeToFirstUsableResultP50Ms / 1000).toFixed(1).padStart(10)}s${(path.timeToFirstUsableResultP95Ms / 1000).toFixed(1).padStart(10)}s\n`,
+  );
+}
+process.stdout.write(`\n* parallel figures are DERIVED from calls timed one at a time. They exclude the contention a\n`);
+process.stdout.write(`  concurrent implementation would add, so they are a LOWER BOUND on parallel user wait.\n`);
+process.stdout.write(`  TTFR = time to first usable result = parallel agents + deterministic work.\n`);
+
+// Quality against added wait, reported as an exchange rate rather than a blended score: pricing
+// NDCG points in seconds is a product judgement, not a measurement.
+const trades: Record<string, unknown> = {};
+const sharedPath = paths.find((p) => p.architecture === "shared")!;
+for (const path of paths.filter((p) => p.architecture !== "shared")) {
+  const qualityDelta = (results.get(`${path.architecture}:direction`)?.meanNdcg10 ?? 0) - (results.get("shared:direction")?.meanNdcg10 ?? 0);
+  trades[path.architecture] = latencyQualityTrade(qualityDelta, sharedPath.timeToFirstUsableResultP50Ms, path.timeToFirstUsableResultP50Ms);
+}
+process.stdout.write(`\nQUALITY vs ADDED WAIT (direction channel, at p50 TTFR):\n`);
+for (const [id, trade] of Object.entries(trades)) {
+  const t = trade as { qualityDelta: number; addedWaitMs: number; dominates: boolean };
+  process.stdout.write(
+    `  ${id.padEnd(20)} Δndcg=${t.qualityDelta >= 0 ? "+" : ""}${t.qualityDelta.toFixed(3)}  ` +
+    `added wait ${(t.addedWaitMs / 1000).toFixed(1)}s  ${t.dominates ? "DOMINATES (better and no slower)" : ""}\n`,
+  );
+}
+
 const telemetry = {
-  job: jobRunner.telemetry(), shared: sharedRunner.telemetry(),
+  job: jobRunner.telemetry(), shared: sharedRunner.telemetry(), split: splitTelemetry,
 };
 process.stdout.write(`\ncost:\n`);
 process.stdout.write(`  reused from cache : ${telemetry.job.cacheHits + telemetry.shared.cacheHits} calls at $0\n`);
-process.stdout.write(`  budget now        : $${ledger.spentUsd.toFixed(4)} / $${RUNTIME_BUDGET_LIMITS.maxSpendUsd}, ${ledger.calls} / ${RUNTIME_BUDGET_LIMITS.maxCalls} calls\n`);
+process.stdout.write(`  fresh calls made  : ${profile.freshCalls}\n`);
+process.stdout.write(`  budget now        : $${ledger.spentUsd.toFixed(4)} / $${RUNTIME_BUDGET_LIMITS.maxSpendUsd} (HARD), ${ledger.calls} calls\n`);
 
 mkdirSync("artifacts/agent_experiments", { recursive: true });
 const outputPath = `artifacts/agent_experiments/split-agents-${provider}-${family.toLowerCase()}-n${people}.json`;
@@ -327,6 +458,28 @@ writeFileSync(outputPath, JSON.stringify({
   },
   scores: [...results.entries()].map(([key, value]) => ({ key, ndcg10: value.meanNdcg10, recall10: value.meanRecall10, surprising: value.meanSurprisingRecall10 })),
   comparisons, integrity, integrityRows, divergenceCases: cases, telemetry,
-  budgetAfter: { spentUsd: ledger.spentUsd, calls: ledger.calls },
+  latency: {
+    version: LATENCY_VERSION,
+    stablePercentileMinimum: STABLE_PERCENTILE_MINIMUM,
+    freshByAgent: profile.freshByAgent,
+    cacheHitPopulation: profile.cacheHit,
+    freshCalls: profile.freshCalls,
+    cachedCalls: profile.cachedCalls,
+    deterministicMsPerPerson: deterministicMs,
+    sharedBaselineFreshLatency: sharedFresh,
+    criticalPaths: paths,
+    qualityVsWait: trades,
+    // Raw per-call rows, deliberately unsummarised, so a Pareto frontier can be built later from
+    // measurements rather than from remembered timings.
+    rawCalls: allSamples,
+    notes: [
+      "Job interpretation is excluded from user wait: JobBlueprints are precomputed per job and amortised across every user.",
+      "Distributions cover FRESH calls only; cache hits are a separate population because mixing them reports a p50 of ~0ms.",
+      "Parallel critical-path figures are DERIVED from calls timed individually and exclude concurrency contention, so they are a lower bound.",
+      `p90/p95 are single order statistics below ${STABLE_PERCENTILE_MINIMUM} samples and are not percentile estimates.`,
+      "Model compute, network round trip and provider queueing are reported together; the API exposes no server-side timing to separate them.",
+    ],
+  },
+  budgetAfter: { spentUsd: ledger.spentUsd, calls: ledger.calls, hardSpendCapUsd: RUNTIME_BUDGET_LIMITS.maxSpendUsd },
 }, null, 2) + "\n");
 process.stdout.write(`\nwrote ${outputPath}\n`);

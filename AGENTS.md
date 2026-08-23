@@ -163,6 +163,26 @@ product-scoring changes.
   `docs/V3_COEFFICIENT_INVENTORY.md`. `PROVISIONAL_BASELINE` and `UNJUSTIFIED` values may
   remain runnable defaults, but must never be described as calibrated weights, and tests
   must never imply their human validity.
+- **Every paid model experiment starts with a zero-call dry run.** It must report fresh calls
+  required, cache hits and reuse, worst-case dollar spend, cumulative spend to date, projected
+  remaining dollar budget, provider/model, reasoning effort, prompt and schema versions, and
+  whether any user-facing latency measurement is affected. Missing cache reuse where reuse was
+  expected is a **stop condition**, not a cost to absorb: it means the configuration drifted from
+  the arm it claims to extend. **Call count is tracked but is not an authorization ceiling**
+  (`docs/RESEARCH_CONTRACT_AMENDMENTS.md` § B2, B3). The hard operational controls are the dollar
+  ceiling and bounded architecture — never a person-by-job loop.
+- **User-facing latency is a product metric, and total experiment runtime is not.** Report the
+  critical path a real user waits on: person-side agents plus deterministic assembly and
+  retrieval. Job interpretation is precomputed corpus cost and is excluded. Compute latency
+  distributions over **fresh calls only** — cache hits are a separate population, and mixing them
+  reports a p50 of zero. Never sum independent channel agents and call it user wait; they may run
+  concurrently, so report measured-sequential and **estimated**-parallel separately. Label p90/p95
+  as order statistics below 20 samples. Architecture choice is multi-objective: a trivial accuracy
+  gain does not justify a large increase in user wait (§ C2).
+- **Runtime caches are committed only for SYNTHETIC benchmark inputs.** Real user inputs,
+  production data, credentials, and any model interpretation derived from a real person must never
+  be committed. `artifacts/agent_runtime/` is **not** blanket-safe merely because today's contents
+  are synthetic; `tests/runtime-cache-policy.test.ts` enforces this (§ B4).
 - **Commit and push meaningful checkpoints.** Commit code and the completed experiment
   record together at the end of each experiment iteration, then choose the next issue.
   Never leave uncommitted product-scoring changes at the end of a session.

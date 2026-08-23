@@ -9,9 +9,18 @@ playwright-report/
 tsconfig.tsbuildinfo
 .env*
 !.env.example
-# artifacts/agent_runtime/ was ignored here until 2026-08-23. That rule destroyed an entire
+# artifacts/agent_runtime/ was ignored wholesale until 2026-08-23. That rule destroyed an entire
 # experimental arm: the Anthropic caches and budget ledger were never committed, lived only on one
-# machine's ephemeral disk, and vanished with it (docs/PROVIDER_HANDOFF_STATE.md). Model
-# interpretations are PAID, SLOW, and irreproducible once a moving model alias moves. They are
-# primary evidence and belong in version control. They contain no credentials, and a test asserts
-# it. The whole tree is ~1 MB per arm.
+# machine's ephemeral disk, and vanished with it (docs/PROVIDER_HANDOFF_STATE.md).
+#
+# The tree is NOT blanket-safe to commit. What is committable is narrow and deliberate:
+# interpretations of SYNTHETIC BENCHMARK inputs, which are generated from a seeded corpus, contain
+# no real person's data, and are paid, slow and irreproducible once a moving model alias moves.
+# Those are primary evidence and belong in version control.
+#
+# What must NEVER be committed: real user inputs, production data, credentials, or model
+# interpretations derived from any real person. `tests/runtime-cache-policy.test.ts` enforces this
+# rather than trusting the comment, and the two ignore rules below are the default-deny for the
+# paths where non-synthetic material would land.
+artifacts/agent_runtime/**/user/
+artifacts/agent_runtime/**/production/

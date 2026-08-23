@@ -27,14 +27,78 @@ four-channel-independence, LOCKED, or baseline rules.
 
 ## B. HARD RUNTIME API BUDGET
 
-| limit | value |
-| --- | --- |
-| external runtime-agent spend | **$25.00 USD** |
-| runtime model calls | **1,000** |
+| control | value | kind |
+| --- | --- | --- |
+| external runtime-agent spend | **$25.00 USD** | **HARD — refuses the call** |
+| runtime model calls | 1,000 | observability threshold — warns only |
 
-- Both limits are **enforced in code and telemetry**, not prose:
-  `src/agent/budget.ts` refuses the call that would breach either ceiling, and the ledger is
-  persisted so the cap survives process restarts within the run.
+- The dollar ceiling is **enforced in code and telemetry**, not prose: `src/agent/budget.ts`
+  refuses the call that would breach it, and the ledger is persisted so the cap survives process
+  restarts within the run.
+
+### B2. AMENDMENT 2026-08-23 — call count is observability, not authorization
+
+Adopted at the user's direction, prioritising product quality and user experience over a proxy
+metric.
+
+Call count was only ever a stand-in for spend. Enforcing it *alongside* the dollar cap added no
+protection the dollar cap did not already give, while blocking exactly the experiments worth
+running: cheap, high-information screens that reuse existing caches. The proposed split-agent
+screen costs 48 calls and $2.89 against a fully-cached job corpus, and under the old rule its
+authorization would have been argued in units of calls rather than dollars.
+
+**Call count is still recorded for every call**, and crossing 1,000 prints a notice. What that
+notice means is "re-read the architecture for an unbounded pattern", not "stop".
+
+Runtime experimentation now stops only for:
+
+1. a provider or system limit,
+2. the hard dollar ceiling,
+3. a genuine scientific-integrity issue,
+4. a safety, secret, or data-handling issue,
+5. an experiment that would create an **unbounded runtime pattern** — most importantly a
+   person-by-job model loop, which remains prohibited by `docs/HYBRID_AGENT_READINESS.md`.
+
+Item 5 is what the call cap was really guarding, and it is a design-review trigger rather than a
+number to discover two thirds of the way through a batch.
+
+### B3. AMENDMENT 2026-08-23 — mandatory zero-call dry run
+
+**Every paid model experiment must first produce a zero-call dry run**, and the dry run must
+report all of:
+
+| field | why it is required |
+| --- | --- |
+| fresh API calls required | the only number that costs money |
+| cache hits and reuse | distinguishes new work from work already paid for |
+| worst-case dollar cost | computed from the full output allowance, not hoped-for output |
+| cumulative spend to date | a per-experiment figure hides an accumulating total |
+| projected remaining dollar budget | the hard control's headroom |
+| provider and model | a moving alias makes this non-obvious |
+| reasoning effort | changes cost, latency and output; confounds a comparison silently |
+| prompt and schema versions | a stale cache key is a stale scientific result |
+| user-facing latency impact | whether the change alters what a real user waits for |
+
+A dry run that cannot report full cache reuse where reuse was expected is a **stop condition**:
+it means the configuration has drifted from the arm it claims to extend, and running would re-bill
+completed work.
+
+### B4. AMENDMENT 2026-08-23 — runtime cache commit policy
+
+Runtime caches are committed, reversing the original blanket ignore that destroyed the Anthropic
+arm. The permission is **narrow**:
+
+- **May be committed**: interpretations of SYNTHETIC BENCHMARK inputs, generated from the seeded
+  corpus. They contain no real person's data, and they are paid, slow and irreproducible once a
+  moving model alias moves.
+- **Must NEVER be committed**: real user inputs, production data, credentials, or model
+  interpretations derived from any real person — including interpretations that are only
+  *indirectly* user-derived.
+
+`artifacts/agent_runtime/` is **not** blanket-safe, and must not be treated as safe merely because
+today's contents happen to be synthetic. `tests/runtime-cache-policy.test.ts` enforces the policy:
+every tracked cache file must be attributable to a synthetic benchmark family, no cache may sit
+under a user or production path, and no tracked cache may contain a credential.
 - **Cache all reusable calls.** A cache hit consumes no budget. Every behaviour-changing input
   belongs in the cache key (`docs/CACHE_AUDIT.md`).
 - Before any batch projected to consume **>20% of remaining budget**, first state the expected
@@ -68,6 +132,42 @@ invalidate results that are no longer comparable. A repair that happens to help 
 architecture currently being tested demands more scrutiny, not less.
 
 Report every family **separately**. Never average the families into a single number.
+
+## C2. AMENDMENT 2026-08-23 — user-facing latency is a first-class product metric
+
+Total benchmark runtime is **not** a product measurement and must not be reported as one. "The
+experiment took 33 minutes" is dominated by job interpretation, which is a one-time corpus cost
+amortised across every user who ever sees that job. No user waits for it.
+
+For every model-dependent architecture, persist enough telemetry to estimate what a real user
+experiences, and report the **critical path** rather than a total:
+
+- **Per fresh call**: wall-clock duration, prompt/agent type, person vs job, provider, model,
+  reasoning effort, input/output/reasoning tokens, cache hit or miss.
+- **Distributions by agent type**: mean, p50, p90, p95, max — computed over **fresh calls only**.
+  Cache hits resolve in under a millisecond and are reported as their own separate population;
+  mixing the two makes a cache-warm rerun report a p50 of zero, which the committed Claude
+  artifact already does.
+- **When n is small, say so.** Below 20 samples, p90 and p95 are single order statistics rather
+  than percentile estimates, and must be labelled as such rather than presented as percentiles.
+- **Critical path**: person-side agents plus deterministic assembly, retrieval and ranking. Job
+  interpretation is excluded because it is precomputed.
+- **Never sum independent agents and call it user wait.** Experience, Preference, Qualification
+  and Direction are independent by the four-channel contract and may run concurrently. Report
+  measured-sequential and derived-parallel separately, and label the parallel figure **estimated**
+  — calls timed one at a time do not include the contention a concurrent implementation adds.
+- **Report time-to-first-usable-result and time-to-full-result** separately.
+- **Distinguish** fresh-model latency, cache-hit latency, and deterministic local processing.
+  Model compute, network round trip and provider queueing cannot be separated from an API that
+  exposes no server-side timing, and must be reported together rather than split into invented
+  components.
+
+Architecture selection is **multi-objective**: semantic quality, retrieval quality, contamination,
+false discovery, cost, and user-facing latency. A more accurate architecture is **not**
+automatically selected when the gain is trivial relative to a large increase in user wait. Raw
+per-call latency stays in the experiment artifact so a Pareto frontier can be constructed later
+instead of relying on remembered timings. No blended quality-per-second score is introduced — the
+exchange rate between NDCG and seconds is a product judgement, not a measurement.
 
 ## D. METRIC CONTRACTS
 

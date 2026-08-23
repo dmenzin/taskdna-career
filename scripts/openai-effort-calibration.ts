@@ -70,7 +70,7 @@ const jobInput = { responsibilities: job.responsibilities.map((r) => r.text).joi
 const ledger = new RuntimeBudgetLedger("artifacts/agent_runtime/budget-ledger.json");
 process.stdout.write(`\nOPENAI REASONING CALIBRATION\n`);
 process.stdout.write(`model=${DEFAULT_OPENAI_MODEL} (requested alias)  family=${family}  probe allowance=${probeAllowance}\n`);
-process.stdout.write(`budget before: $${ledger.spentUsd.toFixed(4)} / $${RUNTIME_BUDGET_LIMITS.maxSpendUsd}, ${ledger.calls} / ${RUNTIME_BUDGET_LIMITS.maxCalls} calls\n`);
+process.stdout.write(`budget before: $${ledger.spentUsd.toFixed(4)} / $${RUNTIME_BUDGET_LIMITS.maxSpendUsd}, ${ledger.calls} / ${RUNTIME_BUDGET_LIMITS.callObservabilityThreshold} calls\n`);
 process.stdout.write(`probe calls: ${efforts.length * 2} (one person + one job per effort)\n\n`);
 
 interface Row {
@@ -203,7 +203,7 @@ process.stdout.write(
   `\nreference: the Claude arm's recorded ${ANTHROPIC_ARM_TOKENS.inputTokens} in / ${ANTHROPIC_ARM_TOKENS.outputTokens} out\n` +
   `           would cost $${anthropicTokensOnOpenAiPricing.toFixed(2)} at this model's configured pricing\n`,
 );
-process.stdout.write(`\nbudget after: $${ledger.spentUsd.toFixed(4)} / $${RUNTIME_BUDGET_LIMITS.maxSpendUsd}, ${ledger.calls} / ${RUNTIME_BUDGET_LIMITS.maxCalls} calls\n`);
+process.stdout.write(`\nbudget after: $${ledger.spentUsd.toFixed(4)} / $${RUNTIME_BUDGET_LIMITS.maxSpendUsd}, ${ledger.calls} / ${RUNTIME_BUDGET_LIMITS.callObservabilityThreshold} calls\n`);
 
 mkdirSync("artifacts/agent_experiments", { recursive: true });
 const outputPath = `artifacts/agent_experiments/openai-effort-calibration-${family.toLowerCase()}.json`;

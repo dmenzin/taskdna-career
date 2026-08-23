@@ -21,10 +21,21 @@ import { dirname } from "node:path";
 
 export const RUNTIME_BUDGET_VERSION = "runtime-budget.v1";
 
-/** The contract ceilings. Changing these is a contract amendment, not a code tweak. */
+/**
+ * The contract ceilings. Changing these is a contract amendment, not a code tweak.
+ *
+ * AMENDMENT 2026-08-23 (§ B2): `maxCalls` is now an OBSERVABILITY THRESHOLD, not an
+ * authorization ceiling. Call count was only ever a proxy for spend, and treating a proxy as the
+ * hard control blocked cheap, high-information experiments while doing nothing a dollar cap does
+ * not already do. Crossing it warns; it does not refuse.
+ *
+ * `maxSpendUsd` remains HARD. Together with the bounded-architecture rule — interpret per person
+ * and per job, never per pair — it is what actually prevents runaway spend.
+ */
 export const RUNTIME_BUDGET_LIMITS = {
   maxSpendUsd: 25,
-  maxCalls: 1000,
+  /** Warn-only. See the amendment note above. */
+  callObservabilityThreshold: 1000,
 } as const;
 
 export interface ModelPricing {
@@ -130,9 +141,16 @@ export interface BudgetLedgerEntry {
   cacheHit: boolean;
 }
 
+export interface BudgetLimits {
+  /** HARD. A call projected to breach this is refused. */
+  maxSpendUsd: number;
+  /** WARN-ONLY. Tracked for observability; never refuses a call. */
+  callObservabilityThreshold: number;
+}
+
 export interface BudgetLedgerState {
   version: string;
-  limits: { maxSpendUsd: number; maxCalls: number };
+  limits: BudgetLimits;
   calls: number;
   spentUsd: number;
   entries: BudgetLedgerEntry[];
@@ -140,7 +158,7 @@ export interface BudgetLedgerState {
 
 export class RuntimeBudgetExceededError extends Error {
   constructor(
-    readonly reason: "SPEND_CAP" | "CALL_CAP",
+    readonly reason: "SPEND_CAP",
     message: string,
   ) {
     super(message);
@@ -159,7 +177,7 @@ export class RuntimeBudgetLedger {
 
   constructor(
     private readonly path: string,
-    private readonly limits: { maxSpendUsd: number; maxCalls: number } = RUNTIME_BUDGET_LIMITS,
+    private readonly limits: BudgetLimits = RUNTIME_BUDGET_LIMITS,
   ) {
     this.state = existsSync(path)
       ? (JSON.parse(readFileSync(path, "utf8")) as BudgetLedgerState)
@@ -178,24 +196,34 @@ export class RuntimeBudgetLedger {
     return Math.max(0, this.limits.maxSpendUsd - this.state.spentUsd);
   }
 
-  remainingCalls(): number {
-    return Math.max(0, this.limits.maxCalls - this.state.calls);
+  /**
+   * Calls remaining before the observability threshold is crossed. Informational only.
+   *
+   * Can legitimately be zero while the ledger keeps accepting calls, because the threshold does
+   * not gate anything. Read `remainingUsd()` for the number that actually constrains a run.
+   */
+  callsBeforeThreshold(): number {
+    return Math.max(0, this.limits.callObservabilityThreshold - this.state.calls);
+  }
+
+  /** Has the call count passed the point where a human should look at the architecture? */
+  pastCallThreshold(): boolean {
+    return this.state.calls >= this.limits.callObservabilityThreshold;
   }
 
   /**
-   * Refuse a call that would breach either ceiling.
+   * Refuse a call that would breach the DOLLAR ceiling.
    *
    * `projectedCostUsd` is the WORST-CASE cost of the call about to be made (computed from
    * max output tokens, not hoped-for output). Checking the actual cost afterwards would
    * enforce nothing — by then the money is spent.
+   *
+   * Call count is deliberately NOT enforced here. It is a proxy for spend, and enforcing a proxy
+   * alongside the real thing only blocks cheap experiments. What call count is genuinely good for
+   * is detecting an UNBOUNDED ARCHITECTURE — a person-by-job loop, a retry storm — and that is a
+   * design review trigger, not something to discover by having a batch die two thirds through.
    */
   reserve(projectedCostUsd: number): void {
-    if (this.state.calls + 1 > this.limits.maxCalls) {
-      throw new RuntimeBudgetExceededError(
-        "CALL_CAP",
-        `runtime call cap reached: ${this.state.calls}/${this.limits.maxCalls} calls already made`,
-      );
-    }
     if (this.state.spentUsd + projectedCostUsd > this.limits.maxSpendUsd) {
       throw new RuntimeBudgetExceededError(
         "SPEND_CAP",

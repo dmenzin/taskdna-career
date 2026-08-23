@@ -38,11 +38,14 @@ add(
 );
 
 const ledger = new RuntimeBudgetLedger("artifacts/agent_runtime/budget-ledger.json");
+// Only the DOLLAR ceiling can fail this check. Call count is observability: a run that has made
+// 1,200 cheap calls is not in trouble, and a run that has spent $24.90 is, regardless of count.
 add(
   "runtime budget available",
-  ledger.remainingCalls() > 0 && ledger.remainingUsd() > 0,
-  `$${ledger.remainingUsd().toFixed(2)} of $${RUNTIME_BUDGET_LIMITS.maxSpendUsd} and ` +
-    `${ledger.remainingCalls()} of ${RUNTIME_BUDGET_LIMITS.maxCalls} calls remaining`,
+  ledger.remainingUsd() > 0,
+  `$${ledger.remainingUsd().toFixed(2)} of $${RUNTIME_BUDGET_LIMITS.maxSpendUsd} remaining (HARD cap); ` +
+    `${ledger.calls} calls made against a ${RUNTIME_BUDGET_LIMITS.callObservabilityThreshold}-call ` +
+    `observability threshold${ledger.pastCallThreshold() ? " — THRESHOLD CROSSED, re-read the architecture" : ""}`,
 );
 
 // Recorded rather than asserted. The Anthropic arm being unreachable is the premise of this

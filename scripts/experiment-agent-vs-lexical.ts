@@ -127,7 +127,7 @@ if (effort !== CANONICAL_EFFORT) {
 }
 process.stdout.write(`projected calls   : ${projectedCalls}  (${corpus.people.length} person + ${jobs.length} job; never person x job)\n`);
 process.stdout.write(`projected WORST-CASE spend: $${projectedCost.toFixed(3)}\n`);
-process.stdout.write(`budget remaining  : $${remaining.toFixed(3)} of $${RUNTIME_BUDGET_LIMITS.maxSpendUsd}, ${ledger.remainingCalls()} of ${RUNTIME_BUDGET_LIMITS.maxCalls} calls\n`);
+process.stdout.write(`budget remaining  : $${remaining.toFixed(3)} of $${RUNTIME_BUDGET_LIMITS.maxSpendUsd}, ${ledger.callsBeforeThreshold()} of ${RUNTIME_BUDGET_LIMITS.callObservabilityThreshold} calls\n`);
 process.stdout.write(`share of remaining: ${(shareOfRemaining * 100).toFixed(1)}%\n`);
 
 if (ledger.requiresInformationValueReview(projectedCost)) {
@@ -142,9 +142,15 @@ if (ledger.requiresInformationValueReview(projectedCost)) {
     `  Reduce --people before raising the budget.\n`,
   );
 }
-if (projectedCalls > ledger.remainingCalls()) {
-  process.stderr.write(`\nprojected ${projectedCalls} calls exceeds the ${ledger.remainingCalls()} remaining; reduce --people\n`);
-  process.exit(1);
+if (projectedCalls > ledger.callsBeforeThreshold()) {
+  // Warns, does not refuse. Call count is a proxy for spend and the dollar cap already enforces
+  // the real thing; what a high call count genuinely signals is an architecture worth re-reading
+  // for an unbounded pattern, which is a design question rather than a reason to abort a batch.
+  process.stdout.write(
+    `\n  NOTE: ${projectedCalls} projected calls crosses the ${RUNTIME_BUDGET_LIMITS.callObservabilityThreshold}-call\n` +
+    `  observability threshold. Not a stop condition. Confirm the architecture is bounded —\n` +
+    `  interpretation is per person and per job, never per pair — and that spend stays capped.\n`,
+  );
 }
 if (dryRun) {
   process.stdout.write(`\n--dry-run: nothing was sent to the provider.\n`);
@@ -284,7 +290,7 @@ process.stdout.write(`  person interpretation (onboarding): ${telemetry.person.c
 process.stdout.write(`  job interpretation (corpus, amortised): ${telemetry.job.calls} calls, $${telemetry.job.costUsd.toFixed(4)}, p50 ${telemetry.job.p50LatencyMs}ms\n`);
 process.stdout.write(`  total $${totalCost.toFixed(4)} in ${(elapsedMs / 1000).toFixed(0)}s\n`);
 process.stdout.write(`  cost per person blueprint: $${(telemetry.person.costUsd / Math.max(1, corpus.people.length)).toFixed(4)}\n`);
-process.stdout.write(`  budget now: $${ledger.spentUsd.toFixed(4)} / $${RUNTIME_BUDGET_LIMITS.maxSpendUsd}, ${ledger.calls} / ${RUNTIME_BUDGET_LIMITS.maxCalls} calls\n`);
+process.stdout.write(`  budget now: $${ledger.spentUsd.toFixed(4)} / $${RUNTIME_BUDGET_LIMITS.maxSpendUsd}, ${ledger.calls} / ${RUNTIME_BUDGET_LIMITS.callObservabilityThreshold} calls\n`);
 
 // The provider is in the FILENAME. Arms must never overwrite each other: the Claude
 // SEMANTIC_BRIDGE artifact is the only surviving evidence from that arm, and losing it to a

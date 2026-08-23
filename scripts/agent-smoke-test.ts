@@ -29,7 +29,7 @@ if (!hasAnthropicCredentials()) {
 
 const ledger = new RuntimeBudgetLedger("artifacts/agent_runtime/budget-ledger.json");
 process.stdout.write(
-  `  budget before: $${ledger.spentUsd.toFixed(4)} / $${RUNTIME_BUDGET_LIMITS.maxSpendUsd} · ${ledger.calls} / ${RUNTIME_BUDGET_LIMITS.maxCalls} calls\n\n`,
+  `  budget before: $${ledger.spentUsd.toFixed(4)} / $${RUNTIME_BUDGET_LIMITS.maxSpendUsd} · ${ledger.calls} / ${RUNTIME_BUDGET_LIMITS.callObservabilityThreshold} calls\n\n`,
 );
 
 // A deliberately tiny structured task. The point is to exercise the path, not to learn anything.
@@ -107,7 +107,7 @@ try {
     "scanned every ModelCallRecord and the persisted ledger");
 
   // Budget enforcement must REFUSE, not merely report.
-  const tinyLedger = new RuntimeBudgetLedger("artifacts/agent_runtime/smoke-refusal-probe.json", { maxSpendUsd: 0.000001, maxCalls: 5 });
+  const tinyLedger = new RuntimeBudgetLedger("artifacts/agent_runtime/smoke-refusal-probe.json", { maxSpendUsd: 0.000001, callObservabilityThreshold: 5 });
   let refused = false;
   try {
     tinyLedger.reserve(1);
@@ -120,7 +120,7 @@ try {
 }
 
 process.stdout.write(
-  `\n  budget after:  $${ledger.spentUsd.toFixed(4)} / $${RUNTIME_BUDGET_LIMITS.maxSpendUsd} · ${ledger.calls} / ${RUNTIME_BUDGET_LIMITS.maxCalls} calls\n`,
+  `\n  budget after:  $${ledger.spentUsd.toFixed(4)} / $${RUNTIME_BUDGET_LIMITS.maxSpendUsd} · ${ledger.calls} / ${RUNTIME_BUDGET_LIMITS.callObservabilityThreshold} calls\n`,
 );
 const passed = checks.every((check) => check.pass);
 process.stdout.write(`\n${checks.filter((c) => c.pass).length}/${checks.length} checks passed\n`);

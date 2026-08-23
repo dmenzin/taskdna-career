@@ -37,7 +37,13 @@ afterEach(() => rmSync(dir, { recursive: true, force: true }));
 describe("contract ceilings", () => {
   it("are the values the amendment declares", () => {
     expect(RUNTIME_BUDGET_LIMITS.maxSpendUsd).toBe(25);
-    expect(RUNTIME_BUDGET_LIMITS.maxCalls).toBe(1000);
+    expect(RUNTIME_BUDGET_LIMITS.callObservabilityThreshold).toBe(1000);
+  });
+
+  it("exposes exactly one hard control, so nobody has to guess which limit binds", () => {
+    // `maxCalls` was renamed rather than repurposed on purpose: a field still called a cap while
+    // no longer capping anything is how a relaxed control gets mistaken for an enforced one.
+    expect(RUNTIME_BUDGET_LIMITS).not.toHaveProperty("maxCalls");
   });
 });
 
@@ -70,7 +76,7 @@ describe("cost estimation", () => {
 
 describe("the ledger refuses rather than reports", () => {
   it("throws on the call that would breach the spend cap", () => {
-    const ledger = new RuntimeBudgetLedger(ledgerPath, { maxSpendUsd: 1, maxCalls: 100 });
+    const ledger = new RuntimeBudgetLedger(ledgerPath, { maxSpendUsd: 1, callObservabilityThreshold: 100 });
     ledger.record(entry(0.9));
     expect(() => ledger.reserve(0.05)).not.toThrow();
     expect(() => ledger.reserve(0.2)).toThrowError(RuntimeBudgetExceededError);
@@ -81,15 +87,30 @@ describe("the ledger refuses rather than reports", () => {
     }
   });
 
-  it("throws on the call that would breach the call cap", () => {
-    const ledger = new RuntimeBudgetLedger(ledgerPath, { maxSpendUsd: 100, maxCalls: 2 });
+  it("does NOT refuse on call count, which is observability rather than authorization", () => {
+    // Amendment 2026-08-23 § B2. Call count was only ever a proxy for spend, and enforcing a
+    // proxy next to the real control blocked cheap, high-information experiments while adding
+    // nothing. Crossing the threshold must be VISIBLE and must not abort a run.
+    const ledger = new RuntimeBudgetLedger(ledgerPath, { maxSpendUsd: 100, callObservabilityThreshold: 2 });
     ledger.record(entry(0.01));
     ledger.record(entry(0.01));
-    expect(() => ledger.reserve(0.01)).toThrowError(/call cap reached/);
+    expect(ledger.pastCallThreshold()).toBe(true);
+    expect(ledger.callsBeforeThreshold()).toBe(0);
+    expect(() => ledger.reserve(0.01)).not.toThrow();
+  });
+
+  it("still refuses on dollars once the call threshold no longer gates anything", () => {
+    // The dollar cap must remain the hard control. If relaxing the call cap had also relaxed
+    // this, the amendment would have removed the only real protection.
+    const ledger = new RuntimeBudgetLedger(ledgerPath, { maxSpendUsd: 1, callObservabilityThreshold: 1 });
+    ledger.record(entry(0.99));
+    expect(ledger.pastCallThreshold()).toBe(true);
+    expect(() => ledger.reserve(0.5)).toThrowError(RuntimeBudgetExceededError);
+    expect(() => ledger.reserve(0.5)).toThrowError(/spend cap/);
   });
 
   it("charges nothing for a cache hit — neither spend nor a call", () => {
-    const ledger = new RuntimeBudgetLedger(ledgerPath, { maxSpendUsd: 1, maxCalls: 1 });
+    const ledger = new RuntimeBudgetLedger(ledgerPath, { maxSpendUsd: 1, callObservabilityThreshold: 1 });
     ledger.record(entry(5, true));
     expect(ledger.spentUsd).toBe(0);
     expect(ledger.calls).toBe(0);
@@ -101,10 +122,10 @@ describe("the cap survives a restart", () => {
   // An 8-hour autonomous run will restart processes. A ledger that resets on restart is not
   // a cap — it is a per-process suggestion.
   it("reloads spend and call counts from disk", () => {
-    const first = new RuntimeBudgetLedger(ledgerPath, { maxSpendUsd: 1, maxCalls: 10 });
+    const first = new RuntimeBudgetLedger(ledgerPath, { maxSpendUsd: 1, callObservabilityThreshold: 10 });
     first.record(entry(0.95));
 
-    const reloaded = new RuntimeBudgetLedger(ledgerPath, { maxSpendUsd: 1, maxCalls: 10 });
+    const reloaded = new RuntimeBudgetLedger(ledgerPath, { maxSpendUsd: 1, callObservabilityThreshold: 10 });
     expect(reloaded.spentUsd).toBeCloseTo(0.95, 6);
     expect(reloaded.calls).toBe(1);
     expect(() => reloaded.reserve(0.5)).toThrowError(RuntimeBudgetExceededError);
@@ -117,7 +138,7 @@ describe("the cap survives a restart", () => {
 
 describe("large-batch review trigger", () => {
   it("flags a batch consuming more than 20% of remaining budget", () => {
-    const ledger = new RuntimeBudgetLedger(ledgerPath, { maxSpendUsd: 10, maxCalls: 100 });
+    const ledger = new RuntimeBudgetLedger(ledgerPath, { maxSpendUsd: 10, callObservabilityThreshold: 100 });
     expect(ledger.requiresInformationValueReview(1.9)).toBe(false);
     expect(ledger.requiresInformationValueReview(2.5)).toBe(true);
   });
