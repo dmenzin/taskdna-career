@@ -76,15 +76,19 @@ export interface CareerInput {
   id?: string;
   name?: string;
   currentField?: string;
+  /** The career narrative. Distinct observable source; must not have the explicit lists concatenated into it. */
   careerText: string;
   explicitPreferences?: string[];
   explicitDislikes?: string[];
+  /** Self-reported contradictions. A fourth distinct observable source. */
+  contradictoryStatements?: string[];
   skills?: string[];
 }
 
 // Generic persona-free entry point: inference sees only observable input, never fixture priors.
 export function buildProfileFromCareerInput(input: CareerInput): UserProfile {
-  const combinedText = [input.careerText, ...(input.explicitPreferences ?? []), ...(input.explicitDislikes ?? [])].join(" ");
+  // Skill-keyword detection may scan every source; evidence extraction keeps them separate.
+  const combinedText = [input.careerText, ...(input.explicitPreferences ?? []), ...(input.explicitDislikes ?? []), ...(input.contradictoryStatements ?? [])].join(" ");
   const detectedSkills = input.skills?.length ? input.skills : skillLexicon.filter((skill) => combinedText.toLowerCase().includes(skill));
   const genericPersona: (typeof personas)[number] = {
     id: input.id ?? "generic-user",
@@ -102,6 +106,7 @@ export function buildProfileFromCareerInput(input: CareerInput): UserProfile {
   const evidence = extractEvidence(genericPersona, input.careerText, {
     explicitPreferences: input.explicitPreferences,
     explicitDislikes: input.explicitDislikes,
+    contradictoryStatements: input.contradictoryStatements,
   });
   const taskDna = inferTaskDna(genericPersona, evidence, { neutralPrior: true });
   const capabilities = inferCapabilities(genericPersona, evidence);
@@ -110,18 +115,34 @@ export function buildProfileFromCareerInput(input: CareerInput): UserProfile {
   return { persona: genericPersona, evidence, taskDna, capabilities, contradictions, confidence };
 }
 
+/**
+ * Runtime bound on narrative extraction.
+ *
+ * This replaces a hard `slice(0, 10)` that silently discarded every sentence after the
+ * tenth, so preference evidence disappeared purely because it appeared later in a realistic
+ * career narrative. The budget is now large enough that no plausible resume loses evidence,
+ * while still bounding work on adversarial or machine-generated input. Sentence
+ * classification is linear in text length, so the character budget is the real guard.
+ */
+export const EVIDENCE_EXTRACTION_LIMITS = {
+  maxSentences: 200,
+  maxCharacters: 40000,
+  version: "evidence-extraction-budget.v1",
+} as const;
+
 export function extractEvidence(
   persona: (typeof personas)[number],
   careerText: string,
-  options: { explicitPreferences?: string[]; explicitDislikes?: string[] } = {},
+  options: { explicitPreferences?: string[]; explicitDislikes?: string[]; contradictoryStatements?: string[] } = {},
 ): UserEvidence[] {
   const sentences = careerText
+    .slice(0, EVIDENCE_EXTRACTION_LIMITS.maxCharacters)
     .split(/[.!?]+/)
     .map((sentence) => sentence.trim())
     .filter(Boolean);
-  const uniqueSentences = Array.from(new Map(sentences.map((sentence) => [sentence.toLowerCase(), sentence])).values());
+  const uniqueSentences = Array.from(new Map(sentences.map((sentence) => [normalizeStatement(sentence), sentence])).values());
   const fallback = uniqueSentences.length ? uniqueSentences : [careerText];
-  const fromText = fallback.slice(0, 10).map((sentence, index) => {
+  const fromText = fallback.slice(0, EVIDENCE_EXTRACTION_LIMITS.maxSentences).map((sentence, index) => {
     const classified = classifySentence(sentence);
     return makeEvidence(persona, sentence, {
       id: `ev-${persona.id}-${index + 1}`,
@@ -131,9 +152,20 @@ export function extractEvidence(
       reliability: evidenceReliability(sentence, index),
     });
   });
+  // Each observable source is a distinct evidence stream. A statement that already reached
+  // the extractor through the career narrative must not be counted again from an explicit
+  // list: exact-normalized text is the dedup key, so one underlying statement produces one
+  // evidence item no matter how many plumbing paths carry it.
+  const seen = new Set(fromText.map((item) => normalizeStatement(item.originalText)));
+  const takeNew = (phrases: string[]) => phrases.filter((phrase) => {
+    const key = normalizeStatement(phrase);
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
   // Explicit stated preferences/dislikes carry a forced class: a bare phrase in a
   // dislike list is a dislike even without a dislike verb.
-  const explicitPreferences = (options.explicitPreferences ?? []).slice(0, 4).map((phrase, index) => {
+  const explicitPreferences = takeNew(options.explicitPreferences ?? []).slice(0, 4).map((phrase, index) => {
     const signals = sentenceWorkSignals(phrase);
     return makeEvidence(persona, phrase, {
       id: `ev-${persona.id}-pref-${index + 1}`,
@@ -143,7 +175,7 @@ export function extractEvidence(
       reliability: 0.78,
     });
   });
-  const explicitDislikes = (options.explicitDislikes ?? []).slice(0, 4).map((phrase, index) => {
+  const explicitDislikes = takeNew(options.explicitDislikes ?? []).slice(0, 4).map((phrase, index) => {
     const signals = sentenceWorkSignals(phrase);
     const inverted = Object.fromEntries(Object.entries(signals).map(([key, value]) => [key, 10 - (value ?? 5)])) as Partial<Vector>;
     return makeEvidence(persona, phrase, {
@@ -154,7 +186,24 @@ export function extractEvidence(
       reliability: 0.78,
     });
   });
-  return [...fromText, ...explicitPreferences, ...explicitDislikes];
+  // Contradictory statements are their own observable source, so their dependence group is
+  // distinct from the narrative's and they are classified by their own language.
+  const contradictory = takeNew(options.contradictoryStatements ?? []).slice(0, 4).map((statement, index) => {
+    const classified = classifySentence(statement);
+    return makeEvidence(persona, statement, {
+      id: `ev-${persona.id}-contra-${index + 1}`,
+      sourceType: classified.evidenceClass === "DISLIKE" ? "EXPLICIT_DISLIKE" : "WORK_HISTORY",
+      sourceReference: "contradictory statements",
+      classified,
+      reliability: 0.6,
+    });
+  });
+  return [...fromText, ...explicitPreferences, ...explicitDislikes, ...contradictory];
+}
+
+/** Exact-normalized statement identity used for cross-source duplicate suppression. */
+export function normalizeStatement(text: string) {
+  return text.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 }
 
 function makeEvidence(

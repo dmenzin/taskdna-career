@@ -1,0 +1,74 @@
+{
+  "tier": "CHECKPOINT",
+  "version": "eval-checkpoint.v1",
+  "totalMs": 13643,
+  "passed": true,
+  "steps": [
+    {
+      "label": "unit tests",
+      "pass": true,
+      "ms": 4444,
+      "detail": "pass"
+    },
+    {
+      "label": "typecheck",
+      "pass": true,
+      "ms": 1613,
+      "detail": "pass"
+    },
+    {
+      "label": "generator semantic polarity + monotonicity",
+      "pass": true,
+      "ms": 614,
+      "detail": "semanticPolarityPass=true eligiblePass=true"
+    },
+    {
+      "label": "generator positional bias",
+      "pass": true,
+      "ms": 633,
+      "detail": "samplerPass=true corpusPass=true"
+    },
+    {
+      "label": "DEVELOPMENT preference dashboard",
+      "pass": true,
+      "ms": 822,
+      "detail": "primary=2.4152237706848902 recall=0.31313131313131315 warnings=[\"PREDICTION_TO_5_RISK\",\"VARIANCE_COLLAPSE\"]"
+    },
+    {
+      "label": "DEVELOPMENT metrics reproducible",
+      "pass": true,
+      "ms": 848,
+      "detail": "sha256=89e9a1c173a99717"
+    },
+    {
+      "label": "VALIDATION preference dashboard (confirmation only)",
+      "pass": true,
+      "ms": 732,
+      "detail": "primary=2.1839480091143164"
+    },
+    {
+      "label": "four-channel isolation",
+      "pass": true,
+      "ms": 1068,
+      "detail": "pass"
+    },
+    {
+      "label": "mapper/scorer regression",
+      "pass": true,
+      "ms": 1352,
+      "detail": "pass"
+    },
+    {
+      "label": "preference metric red team",
+      "pass": true,
+      "ms": 999,
+      "detail": "pass"
+    },
+    {
+      "label": "LOCKED_CONFIRMATION stays guarded",
+      "pass": true,
+      "ms": 515,
+      "detail": "not executed"
+    }
+  ]
+}

@@ -1,0 +1,291 @@
+{
+  "seed": 20260823,
+  "tolerances": {
+    "maxAbsSamplerPositionSpearman": 0.35,
+    "maxCorpusSelectionRateSpread": 0.2,
+    "maxCorpusHalfMeanSelectionRateGap": 0.12
+  },
+  "pass": true,
+  "samplerPass": true,
+  "corpusPass": true,
+  "samplerUniformity": {
+    "version": "generator-bias.v1",
+    "trials": 20000,
+    "counts": [
+      {
+        "id": "problem_structure",
+        "position": 0,
+        "count": 6927,
+        "rate": 0.34635
+      },
+      {
+        "id": "measurable_feedback",
+        "position": 1,
+        "count": 7046,
+        "rate": 0.3523
+      },
+      {
+        "id": "investigation_orientation",
+        "position": 2,
+        "count": 7017,
+        "rate": 0.35085
+      },
+      {
+        "id": "evidence_density",
+        "position": 3,
+        "count": 6991,
+        "rate": 0.34955
+      },
+      {
+        "id": "experimentation_preference",
+        "position": 4,
+        "count": 7171,
+        "rate": 0.35855
+      },
+      {
+        "id": "scope_preference",
+        "position": 5,
+        "count": 7164,
+        "rate": 0.3582
+      },
+      {
+        "id": "software_as_tool",
+        "position": 6,
+        "count": 7102,
+        "rate": 0.3551
+      },
+      {
+        "id": "reasoning_style",
+        "position": 7,
+        "count": 7047,
+        "rate": 0.35235
+      },
+      {
+        "id": "creation_style",
+        "position": 8,
+        "count": 6940,
+        "rate": 0.347
+      },
+      {
+        "id": "real_system_grounding",
+        "position": 9,
+        "count": 7140,
+        "rate": 0.357
+      },
+      {
+        "id": "closure_preference",
+        "position": 10,
+        "count": 7035,
+        "rate": 0.35175
+      },
+      {
+        "id": "causal_reasoning",
+        "position": 11,
+        "count": 7134,
+        "rate": 0.3567
+      },
+      {
+        "id": "integration_preference",
+        "position": 12,
+        "count": 7090,
+        "rate": 0.3545
+      },
+      {
+        "id": "customer_interaction_preference",
+        "position": 13,
+        "count": 6985,
+        "rate": 0.34925
+      },
+      {
+        "id": "coordination_preference",
+        "position": 14,
+        "count": 7053,
+        "rate": 0.35265
+      },
+      {
+        "id": "theory_vs_application",
+        "position": 15,
+        "count": 7094,
+        "rate": 0.3547
+      },
+      {
+        "id": "repetition_tolerance",
+        "position": 16,
+        "count": 7000,
+        "rate": 0.35
+      }
+    ],
+    "positionVersusRateSpearman": 0.1053921568627451,
+    "chiSquare": 12.385572305229452,
+    "degreesOfFreedom": 16,
+    "chiSquareCriticalValue": 39.252,
+    "maxRate": 0.35855,
+    "minRate": 0.34635,
+    "firstHalfMeanRate": 0.35290625000000003,
+    "secondHalfMeanRate": 0.3526166666666667
+  },
+  "corpusSelectionBias": {
+    "version": "generator-bias.v1",
+    "subjects": 450,
+    "rows": [
+      {
+        "id": "problem_structure",
+        "position": 0,
+        "opportunities": 297,
+        "opportunityRate": 0.66,
+        "realized": 142,
+        "realizedRate": 0.31555555555555553,
+        "selectionRateGivenOpportunity": 0.4781144781144781
+      },
+      {
+        "id": "measurable_feedback",
+        "position": 1,
+        "opportunities": 309,
+        "opportunityRate": 0.6866666666666666,
+        "realized": 144,
+        "realizedRate": 0.32,
+        "selectionRateGivenOpportunity": 0.46601941747572817
+      },
+      {
+        "id": "investigation_orientation",
+        "position": 2,
+        "opportunities": 318,
+        "opportunityRate": 0.7066666666666667,
+        "realized": 143,
+        "realizedRate": 0.31777777777777777,
+        "selectionRateGivenOpportunity": 0.449685534591195
+      },
+      {
+        "id": "evidence_density",
+        "position": 3,
+        "opportunities": 286,
+        "opportunityRate": 0.6355555555555555,
+        "realized": 129,
+        "realizedRate": 0.2866666666666667,
+        "selectionRateGivenOpportunity": 0.45104895104895104
+      },
+      {
+        "id": "experimentation_preference",
+        "position": 4,
+        "opportunities": 298,
+        "opportunityRate": 0.6622222222222223,
+        "realized": 128,
+        "realizedRate": 0.28444444444444444,
+        "selectionRateGivenOpportunity": 0.42953020134228187
+      },
+      {
+        "id": "scope_preference",
+        "position": 5,
+        "opportunities": 312,
+        "opportunityRate": 0.6933333333333334,
+        "realized": 147,
+        "realizedRate": 0.32666666666666666,
+        "selectionRateGivenOpportunity": 0.47115384615384615
+      },
+      {
+        "id": "software_as_tool",
+        "position": 6,
+        "opportunities": 297,
+        "opportunityRate": 0.66,
+        "realized": 138,
+        "realizedRate": 0.30666666666666664,
+        "selectionRateGivenOpportunity": 0.46464646464646464
+      },
+      {
+        "id": "reasoning_style",
+        "position": 7,
+        "opportunities": 284,
+        "opportunityRate": 0.6311111111111111,
+        "realized": 127,
+        "realizedRate": 0.2822222222222222,
+        "selectionRateGivenOpportunity": 0.4471830985915493
+      },
+      {
+        "id": "creation_style",
+        "position": 8,
+        "opportunities": 311,
+        "opportunityRate": 0.6911111111111111,
+        "realized": 128,
+        "realizedRate": 0.28444444444444444,
+        "selectionRateGivenOpportunity": 0.4115755627009646
+      },
+      {
+        "id": "real_system_grounding",
+        "position": 9,
+        "opportunities": 287,
+        "opportunityRate": 0.6377777777777778,
+        "realized": 129,
+        "realizedRate": 0.2866666666666667,
+        "selectionRateGivenOpportunity": 0.44947735191637633
+      },
+      {
+        "id": "closure_preference",
+        "position": 10,
+        "opportunities": 291,
+        "opportunityRate": 0.6466666666666666,
+        "realized": 137,
+        "realizedRate": 0.30444444444444446,
+        "selectionRateGivenOpportunity": 0.47079037800687284
+      },
+      {
+        "id": "causal_reasoning",
+        "position": 11,
+        "opportunities": 289,
+        "opportunityRate": 0.6422222222222222,
+        "realized": 111,
+        "realizedRate": 0.24666666666666667,
+        "selectionRateGivenOpportunity": 0.38408304498269896
+      },
+      {
+        "id": "integration_preference",
+        "position": 12,
+        "opportunities": 300,
+        "opportunityRate": 0.6666666666666666,
+        "realized": 132,
+        "realizedRate": 0.29333333333333333,
+        "selectionRateGivenOpportunity": 0.44
+      },
+      {
+        "id": "customer_interaction_preference",
+        "position": 13,
+        "opportunities": 282,
+        "opportunityRate": 0.6266666666666667,
+        "realized": 116,
+        "realizedRate": 0.2577777777777778,
+        "selectionRateGivenOpportunity": 0.41134751773049644
+      },
+      {
+        "id": "coordination_preference",
+        "position": 14,
+        "opportunities": 292,
+        "opportunityRate": 0.6488888888888888,
+        "realized": 140,
+        "realizedRate": 0.3111111111111111,
+        "selectionRateGivenOpportunity": 0.4794520547945205
+      },
+      {
+        "id": "theory_vs_application",
+        "position": 15,
+        "opportunities": 295,
+        "opportunityRate": 0.6555555555555556,
+        "realized": 128,
+        "realizedRate": 0.28444444444444444,
+        "selectionRateGivenOpportunity": 0.43389830508474575
+      },
+      {
+        "id": "repetition_tolerance",
+        "position": 16,
+        "opportunities": 285,
+        "opportunityRate": 0.6333333333333333,
+        "realized": 120,
+        "realizedRate": 0.26666666666666666,
+        "selectionRateGivenOpportunity": 0.42105263157894735
+      }
+    ],
+    "positionVersusSelectionRateSpearman": -0.4338235294117647,
+    "positionVersusRealizedRateSpearman": -0.570377616556292,
+    "selectionRateSpread": 0.09536900981182156,
+    "firstHalfMeanSelectionRate": 0.4571727489955618,
+    "secondHalfMeanSelectionRate": 0.43351964964395806
+  }
+}

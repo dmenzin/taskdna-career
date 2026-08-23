@@ -1,0 +1,407 @@
+{
+  "mode": "VALIDATION",
+  "seed": 20260823,
+  "metricVersion": "iteration-readiness.v3-stance-aware",
+  "availabilityVersion": "evidence-availability.v2-stance-aware",
+  "inferenceVisiblePreferenceFields": [
+    "resumeText",
+    "explicitPreferences",
+    "explicitDislikes",
+    "contradictoryStatements"
+  ],
+  "subjects": 100,
+  "dimensionRecords": 1700,
+  "primaryPreferenceDecoderMetric": "AVAILABLE_EVIDENCE_PREFERENCE_MACRO_MAE_V1",
+  "supersededPrimaryPreferenceDecoderMetric": "AUTONOMOUS_OBSERVED_PREFERENCE_MACRO_MAE_V1",
+  "autonomousPreferenceDimensions": [
+    "measurable_feedback",
+    "experimentation_preference"
+  ],
+  "AVAILABLE_EVIDENCE_PREFERENCE_MACRO_MAE_V1": 2.1839480091143164,
+  "AVAILABLE_EVIDENCE_PREFERENCE_MICRO_MAE": 2.182767169073412,
+  "RECOGNIZED_EVIDENCE_PREFERENCE_MACRO_MAE": 1.8183649589113868,
+  "RECOGNIZED_EVIDENCE_PREFERENCE_MICRO_MAE": 1.773759700590252,
+  "AVAILABLE_TO_RECOGNIZED_RECALL": 0.46774193548387094,
+  "ZERO_AVAILABLE_EVIDENCE_MAE": 1.7074147083387488,
+  "LEGACY_ALL_DIMENSION_MAE": 1.7024183446496202,
+  "eligibleDimensionRecordCount": 200,
+  "availableEligibleCoverage": 0.31,
+  "recognizedEligibleCoverage": 0.435,
+  "recognizedOutsideAvailableRate": 0.6666666666666666,
+  "availableEligibleSubjectCount": 53,
+  "recognizedEligibleSubjectCount": 58,
+  "constant5": {
+    "availableEligibleMicroMae": 2.447006714635363,
+    "zeroAvailableEvidenceMae": 1.654277956134241,
+    "allDimensionMae": 1.837258204363985
+  },
+  "developmentPopulationPrior": {
+    "availableEligibleMicroMae": 2.4470067146353642,
+    "zeroAvailableEvidenceMae": 1.6461932119881146,
+    "allDimensionMae": 1.7935957652511971,
+    "warning": "Prior estimated on DEVELOPMENT truth; diagnostic only."
+  },
+  "pairedDecoderVsConstant": {
+    "meanErrorDelta": -0.26423954556195106,
+    "decoderWins": 22,
+    "constantWins": 9,
+    "ties": 31
+  },
+  "distribution": {
+    "predictionMean": 4.987307667822036,
+    "predictionVariance": 0.4906876114178511,
+    "truthMean": 5.2939689157987395,
+    "truthVariance": 4.404927221463016,
+    "varianceRatio": 0.11139516880709739
+  },
+  "byCohort": [
+    {
+      "cohort": "validation",
+      "n": 100,
+      "mae": 1.7024183446496202
+    }
+  ],
+  "byDimension": [
+    {
+      "id": "problem_structure",
+      "eligible": false,
+      "availableCoverage": 0.37,
+      "recognizedCoverage": 0.59,
+      "availableToRecognizedRecall": 0.918918918918919,
+      "availableMae": 1.73118884811955,
+      "recognizedMae": 1.586260085719823,
+      "allMae": 1.6973000547669428,
+      "predictionVariance": 0.5890302946856801,
+      "truthVariance": 4.763523511352491
+    },
+    {
+      "id": "measurable_feedback",
+      "eligible": true,
+      "availableCoverage": 0.28,
+      "recognizedCoverage": 0.53,
+      "availableToRecognizedRecall": 0.42857142857142855,
+      "availableMae": 2.6292753705242355,
+      "recognizedMae": 1.8755748190159998,
+      "allMae": 2.0202578241951255,
+      "predictionVariance": 0.41347810242523997,
+      "truthVariance": 4.902841404926585
+    },
+    {
+      "id": "investigation_orientation",
+      "eligible": false,
+      "availableCoverage": 0.4,
+      "recognizedCoverage": 0.51,
+      "availableToRecognizedRecall": 0.85,
+      "availableMae": 1.9296009620346954,
+      "recognizedMae": 1.8565349920974021,
+      "allMae": 1.7754911068400938,
+      "predictionVariance": 0.5587184427317305,
+      "truthVariance": 4.906956473602431
+    },
+    {
+      "id": "evidence_density",
+      "eligible": false,
+      "availableCoverage": 0.32,
+      "recognizedCoverage": 0.34,
+      "availableToRecognizedRecall": 0.46875,
+      "availableMae": 2.0196013577260894,
+      "recognizedMae": 1.30479878372177,
+      "allMae": 1.776265841416376,
+      "predictionVariance": 0.27160401482234536,
+      "truthVariance": 4.299387915480739
+    },
+    {
+      "id": "experimentation_preference",
+      "eligible": true,
+      "availableCoverage": 0.34,
+      "recognizedCoverage": 0.34,
+      "availableToRecognizedRecall": 0.5,
+      "availableMae": 1.8150545325844993,
+      "recognizedMae": 1.6150478983383527,
+      "allMae": 1.6892901181378621,
+      "predictionVariance": 0.5145416918913984,
+      "truthVariance": 4.487679520583797
+    },
+    {
+      "id": "scope_preference",
+      "eligible": false,
+      "availableCoverage": 0.34,
+      "recognizedCoverage": 0.53,
+      "availableToRecognizedRecall": 0.6470588235294118,
+      "availableMae": 2.084755645792707,
+      "recognizedMae": 1.792726569965858,
+      "allMae": 1.7241992307975005,
+      "predictionVariance": 0.33928293595775005,
+      "truthVariance": 4.338743723231433
+    },
+    {
+      "id": "software_as_tool",
+      "eligible": false,
+      "availableCoverage": 0.29,
+      "recognizedCoverage": 0.15,
+      "availableToRecognizedRecall": 0.5172413793103449,
+      "availableMae": 2.2679456295215625,
+      "recognizedMae": 2.1557694943183416,
+      "allMae": 1.677599423910807,
+      "predictionVariance": 0.27076976639999956,
+      "truthVariance": 3.386972473903658
+    },
+    {
+      "id": "reasoning_style",
+      "eligible": false,
+      "availableCoverage": 0.3,
+      "recognizedCoverage": 0.2,
+      "availableToRecognizedRecall": 0.2,
+      "availableMae": 2.521825340974052,
+      "recognizedMae": 1.7524719385287255,
+      "allMae": 1.7807087533498933,
+      "predictionVariance": 0.3164834735999996,
+      "truthVariance": 3.97782973566703
+    },
+    {
+      "id": "creation_style",
+      "eligible": false,
+      "availableCoverage": 0.25,
+      "recognizedCoverage": 0.32,
+      "availableToRecognizedRecall": 0.6,
+      "availableMae": 2.092296344596305,
+      "recognizedMae": 1.8783754381483664,
+      "allMae": 1.7334959680650401,
+      "predictionVariance": 0.21765077742604852,
+      "truthVariance": 4.290729712004182
+    },
+    {
+      "id": "real_system_grounding",
+      "eligible": false,
+      "availableCoverage": 0.33,
+      "recognizedCoverage": 0.35,
+      "availableToRecognizedRecall": 0.5757575757575758,
+      "availableMae": 1.655338055154135,
+      "recognizedMae": 1.6089368122903904,
+      "allMae": 1.6566374766729215,
+      "predictionVariance": 0.7324789194553714,
+      "truthVariance": 4.145029356634556
+    },
+    {
+      "id": "closure_preference",
+      "eligible": false,
+      "availableCoverage": 0.37,
+      "recognizedCoverage": 0.39,
+      "availableToRecognizedRecall": 0.6756756756756757,
+      "availableMae": 2.083564512948209,
+      "recognizedMae": 1.8304423870149424,
+      "allMae": 1.7478717385690015,
+      "predictionVariance": 0.48586929545454466,
+      "truthVariance": 4.694257645894155
+    },
+    {
+      "id": "causal_reasoning",
+      "eligible": false,
+      "availableCoverage": 0.28,
+      "recognizedCoverage": 0.35,
+      "availableToRecognizedRecall": 0.4642857142857143,
+      "availableMae": 2.195336336267379,
+      "recognizedMae": 1.6061064855109923,
+      "allMae": 1.7706684785948892,
+      "predictionVariance": 0.9317054502469228,
+      "truthVariance": 4.108809355818844
+    },
+    {
+      "id": "integration_preference",
+      "eligible": false,
+      "availableCoverage": 0.28,
+      "recognizedCoverage": 0.18,
+      "availableToRecognizedRecall": 0.6428571428571429,
+      "availableMae": 1.6635248229279447,
+      "recognizedMae": 1.2893777831458593,
+      "allMae": 1.5489205982379437,
+      "predictionVariance": 0.2789349696000001,
+      "truthVariance": 4.261482851890574
+    },
+    {
+      "id": "customer_interaction_preference",
+      "eligible": false,
+      "availableCoverage": 0.26,
+      "recognizedCoverage": 0.19,
+      "availableToRecognizedRecall": 0.7307692307692307,
+      "availableMae": 1.7938031415362004,
+      "recognizedMae": 1.5994076178119103,
+      "allMae": 1.6592628377535863,
+      "predictionVariance": 0.17454171228383364,
+      "truthVariance": 4.21723330942677
+    },
+    {
+      "id": "coordination_preference",
+      "eligible": false,
+      "availableCoverage": 0.37,
+      "recognizedCoverage": 0.54,
+      "availableToRecognizedRecall": 0.918918918918919,
+      "availableMae": 1.424538286670101,
+      "recognizedMae": 1.8253757554453722,
+      "allMae": 1.684834946202094,
+      "predictionVariance": 1.0598479904596225,
+      "truthVariance": 4.191745228594
+    },
+    {
+      "id": "theory_vs_application",
+      "eligible": false,
+      "availableCoverage": 0.33,
+      "recognizedCoverage": 0.43,
+      "availableToRecognizedRecall": 0.8484848484848485,
+      "availableMae": 1.730462193606797,
+      "recognizedMae": 1.471925378204492,
+      "allMae": 1.693310016625847,
+      "predictionVariance": 0.538173317751495,
+      "truthVariance": 5.014939609539981
+    },
+    {
+      "id": "repetition_tolerance",
+      "eligible": false,
+      "availableCoverage": 0.28,
+      "recognizedCoverage": 0.35,
+      "availableToRecognizedRecall": 0.9642857142857143,
+      "availableMae": 1.2104813394229033,
+      "recognizedMae": 1.2349055323835334,
+      "allMae": 1.3049974449076271,
+      "predictionVariance": 0.5102196240810827,
+      "truthVariance": 3.410764128947983
+    }
+  ],
+  "byEvidenceCount": [
+    {
+      "count": 0,
+      "n": 1071,
+      "mae": 1.719938105691678
+    },
+    {
+      "count": 1,
+      "n": 506,
+      "mae": 1.6464053241870098
+    },
+    {
+      "count": 2,
+      "n": 106,
+      "mae": 1.718017564378816
+    },
+    {
+      "count": 3,
+      "n": 16,
+      "mae": 2.1811272997667634
+    },
+    {
+      "count": 4,
+      "n": 1,
+      "mae": 1.968482049517487
+    }
+  ],
+  "confidence": {
+    "dimensionPearsonError": -0.041942066283278456,
+    "dimensionSpearmanError": -0.05100444029945952,
+    "subjectPearsonMae": -0.25548555510498533,
+    "subjectSpearmanMae": -0.21839126475121673,
+    "buckets": [
+      {
+        "bucket": "0-0.35",
+        "n": 1027,
+        "mae": 1.7285778439560056
+      },
+      {
+        "bucket": "0.35-0.5",
+        "n": 570,
+        "mae": 1.683436527382653
+      },
+      {
+        "bucket": "0.5-0.65",
+        "n": 99,
+        "mae": 1.544313100973077
+      },
+      {
+        "bucket": "0.65-1.01",
+        "n": 4,
+        "mae": 1.6039806392723945
+      }
+    ],
+    "monotonicErrorDecrease": false,
+    "governance": "UNVALIDATED: must not modify V3 scoring without an explicit experiment and metric contract"
+  },
+  "complementary": {
+    "directionalAccuracy": 0.3548387096774194,
+    "directionalLeanEpsilon": 0.05,
+    "neutralPredictionRate": 0.5,
+    "directionalCoverage": 0.5,
+    "directionalAccuracyAmongLeaning": 0.7096774193548387,
+    "withinDimensionRankSpearman": 0.032809145322536155,
+    "extremePreferenceRecall": 0.3888888888888889,
+    "calibrationSlopeTruthOnPrediction": 1.065874785632244
+  },
+  "antiGoodhart": {
+    "meanCollapse": true,
+    "varianceCollapse": false,
+    "predictionTo5Gaming": false,
+    "improvementOnlyZeroAvailableEvidence": false,
+    "reducedCoverage": "compare against preregistered before value",
+    "excessiveAbstention": "not applicable to preference decoder; required for mapper evaluation",
+    "duplicatedEvidenceWithinField": "0 of 100 subjects repeat an exact-normalized statement inside one inference-visible field",
+    "duplicatedEvidenceAcrossSources": "0 of 100 subjects expose the same (dimension, phrase, meaning) placement through more than one inference-visible field",
+    "duplicatedEvidenceScope": "EXACT-NORMALIZED ONLY. Paraphrase and common-source duplication remain unresolved; see docs/DUPLICATE_EVIDENCE.md.",
+    "conflictingAvailability": "0 of 1700 (subject, dimension) rows expose both HIGH-meaning and LOW-meaning language (genuinely mixed evidence, not a duplicate)",
+    "availableDenominatorIsExtractorIndependent": "AVAILABLE_EVIDENCE_PREFERENCE_MACRO_MAE_V1's denominator is fixed by src/lab/evidenceAvailability.ts before the extractor runs; the extractor recognizing fewer cases cannot shrink it (see tests/available-evidence.test.ts)."
+  },
+  "shrinkage": [
+    {
+      "lambda": 0,
+      "allDimensionMae": 1.837258204363985,
+      "availableEvidencePreferenceMacroMae": 2.4480780322893243,
+      "availableEvidencePreferenceMicroMae": 2.447006714635363,
+      "zeroAvailableEvidenceMae": 1.654277956134241,
+      "predictionVariance": 0
+    },
+    {
+      "lambda": 0.25,
+      "allDimensionMae": 1.7955029504601752,
+      "availableEvidencePreferenceMacroMae": 2.380397890922527,
+      "availableEvidencePreferenceMicroMae": 2.379538365577594,
+      "zeroAvailableEvidenceMae": 1.649950719699572,
+      "predictionVariance": 0.030667975713615625
+    },
+    {
+      "lambda": 0.5,
+      "allDimensionMae": 1.7582276085701256,
+      "availableEvidencePreferenceMacroMae": 2.31271774955573,
+      "availableEvidencePreferenceMicroMae": 2.3120700165198267,
+      "zeroAvailableEvidenceMae": 1.657737762921776,
+      "predictionVariance": 0.12267190285446287
+    },
+    {
+      "lambda": 0.75,
+      "allDimensionMae": 1.7258645175739922,
+      "availableEvidencePreferenceMacroMae": 2.245037608188934,
+      "availableEvidencePreferenceMicroMae": 2.2446016674620592,
+      "zeroAvailableEvidenceMae": 1.6772199073501002,
+      "predictionVariance": 0.2760117814225396
+    },
+    {
+      "lambda": 1,
+      "allDimensionMae": 1.7024183446496202,
+      "availableEvidencePreferenceMacroMae": 2.1839480091143164,
+      "availableEvidencePreferenceMicroMae": 2.182767169073412,
+      "zeroAvailableEvidenceMae": 1.7074147083387488,
+      "predictionVariance": 0.4906876114178511
+    }
+  ],
+  "shrinkageGovernance": "DIAGNOSTIC ONLY: never automatically select or adopt the minimum-MAE lambda",
+  "warnings": [
+    "PREDICTION_TO_5_RISK",
+    "RECOGNIZED_EXCEEDS_AVAILABLE_POSSIBLE_FALSE_POSITIVE"
+  ],
+  "legacySuperseded": {
+    "warning": "Recognized-evidence-gated inclusion lets the extractor shrink its own denominator by missing evidence. Superseded by AVAILABLE_EVIDENCE_PREFERENCE_MACRO_MAE_V1.",
+    "autonomousObservedPreferenceMacroMae": 1.8183649589113868,
+    "autonomousObservedPreferenceMicroMae": 1.773759700590252,
+    "autonomousEvidenceCoverage": 0.435,
+    "allDimensionRecognizedMacroMae": 1.70630323389004,
+    "allDimensionRecognizedMicroMae": 1.6725874001726027,
+    "allDimensionRecognizedCoverage": 0.37,
+    "allDimensionZeroRecognizedMae": 1.719938105691678
+  }
+}

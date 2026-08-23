@@ -12,10 +12,18 @@ import { occupationToLabSkeleton } from "@/onet/adapter";
 import { loadOnetCorpus } from "@/onet/corpus";
 import { ONET_STRATA, isKnowledgeWorkScope, stratumFor, type OnetStratum } from "@/onet/strata";
 import type { OnetOccupationSkeleton } from "@/onet/types";
+import {
+  genericPhrase,
+  ONET_PREFERENCE_PHRASES,
+  planPreferenceStatements,
+  statementsForConstruction,
+  statementsForSource,
+  type PreferenceSourceBudget,
+} from "@/lab/preferencePhrases";
 import { between, chance, hashSeed, mulberry32, pick, pickN, type Rng } from "@/lab/rng";
 import type { SubjectCohortV2, TwinPair, VirtualSubject, VirtualSubjectObservations, VirtualSubjectTruth } from "@/lab/types";
 
-export const ONET_LAB_VERSION = "subject-lab.v2-onet";
+export const ONET_LAB_VERSION = "subject-lab.v2-onet-semantic-polarity";
 export const ONET_LAB_SEED = 20260823;
 export const COHORT_SIZES: Record<SubjectCohortV2, number> = {
   development: 150,
@@ -28,27 +36,12 @@ export const TOTAL_SUBJECTS = Object.values(COHORT_SIZES).reduce((sum, count) =>
 const FIRST = ["Amina", "Blake", "Cara", "Dev", "Ellis", "Farah", "Gabe", "Hana", "Ivan", "Jules", "Keiko", "Luis", "Maya", "Nico", "Orla", "Pavel"];
 const LAST = ["Okoye", "Diaz", "Shah", "Berg", "Wahl", "Costa", "Ng", "Ali", "Novak", "Park", "Silva", "Hughes", "Khan", "Frost", "Abebe", "Quinn"];
 
-// Natural preference language for every TaskDNA dimension, independent of any occupation.
-// [high-side phrases, low-side phrases]
-export const PREFERENCE_PHRASES: Record<DimensionId, [string[], string[]]> = {
-  problem_structure: [["well-scoped problems I can finish", "bounded diagnostic questions"], ["open-ended ambiguity", "problems nobody has framed yet"]],
-  measurable_feedback: [["work where I can see the numbers move", "fast observable feedback"], ["long-horizon work without clear metrics", "slow uncertain feedback loops"]],
-  investigation_orientation: [["digging into why something failed", "root-cause investigation"], ["keeping many workstreams coordinated", "status coordination and administration"]],
-  evidence_density: [["logs and measurements", "working directly from raw data"], ["summaries and administrative packets", "narrative reports over raw data"]],
-  experimentation_preference: [["running targeted experiments", "testing ideas before trusting them"], ["executing an established playbook", "following the proven procedure"]],
-  scope_preference: [["owning one bounded subsystem deeply", "a well-fenced area of responsibility"], ["sprawling many-team problems", "very broad ambiguous scope"]],
-  software_as_tool: [["building small tools to remove drudgery", "scripting away repetitive work"], ["hands-on work away from screens", "work that does not revolve around software"]],
-  reasoning_style: [["forming and testing hypotheses", "reasoning from first causes"], ["applying documented rules precisely", "compliance-first checking"]],
-  creation_style: [["making something concrete within constraints", "constrained creative work"], ["blank-page invention", "wide-open greenfield creation"]],
-  real_system_grounding: [["physical systems I can observe", "real equipment and real users"], ["purely abstract processes", "work that never touches a real system"]],
-  closure_preference: [["closing the loop and verifying the fix", "finishing things properly"], ["perpetual exploration without a finish line", "open threads that never close"]],
-  causal_reasoning: [["understanding why something happened", "tracing mechanisms to the root"], ["recording what happened", "cataloging events without digging"]],
-  integration_preference: [["connecting systems and evidence streams", "cross-system integration work"], ["working one isolated piece at a time", "staying inside a single silo"]],
-  customer_interaction_preference: [["customer-facing troubleshooting", "talking with users about their real problems"], ["internal-only analysis", "heads-down work without customer contact"]],
-  coordination_preference: [["stakeholder orchestration", "aligning many owners on a decision"], ["solo deep work", "long uninterrupted focus without meetings"]],
-  theory_vs_application: [["applied hands-on testing", "practical work over theory"], ["abstract modeling and theory", "conceptual work over immediate application"]],
-  repetition_tolerance: [["repeatable protocols done well", "routine workflows I can perfect"], ["novel problems every week", "work that never repeats"]],
-};
+/**
+ * Preference phrase catalog. Re-exported from src/lab/preferencePhrases.ts, which also
+ * owns the statement planner that pairs a phrase's behaviour SIDE with a LIKE/DISLIKE
+ * STANCE so the generated sentence means what the hidden truth says.
+ */
+export const PREFERENCE_PHRASES: Record<DimensionId, [string[], string[]]> = ONET_PREFERENCE_PHRASES;
 
 export interface OnetLabContext {
   occupations: OnetOccupationSkeleton[];
@@ -184,30 +177,41 @@ function observeOnetSubject(truth: VirtualSubjectTruth, rng: Rng, index: number,
   const stale = chance(rng, 0.2);
   const occupation = truth.occupationalSkeleton;
   const title = misleadingTitle ? pick(rng, ["Coordinator", "Specialist", "Associate", "Analyst", "Program Lead"]) : shortTitle(occupation.title);
-  const likedTasks = preferencePhrases(truth.taskDnaTruth, true, rng);
-  const dislikedTasks = preferencePhrases(truth.taskDnaTruth, false, rng);
   // EXPOSURE ONLY: verbatim O*NET task statements describe what the person did,
   // never what they enjoyed.
   const exposureTasks = pickN(rng, occupation.tasks, Math.min(sparse ? 1 : 3, occupation.tasks.length)).map(lowerFirst);
-  const struggle = truth.careerHistoryTruth.burnedOut
-    ? `Burned out on ${pick(rng, occupation.workContext.length ? occupation.workContext : ["the daily grind"])} and the parts of the job that felt like ${dislikedTasks[0]}.`
-    : `Struggled with ${pick(rng, dislikedTasks)} even when the team called it a success.`;
+  // Every preference statement is planned once with explicit (dimension, behaviour side,
+  // stance, meaning) semantics and assigned to exactly ONE observable source, so no
+  // statement reaches the inference system through two plumbing paths. Sparse subjects
+  // expose no narrative or list preference language at all.
+  const sources: PreferenceSourceBudget = {
+    resumeNarrative: !sparse,
+    explicitPreferenceList: !sparse,
+    explicitDislikeList: !sparse,
+    contradictoryStatement: contradictory,
+  };
+  const plan = planPreferenceStatements(truth.taskDnaTruth, rng, {
+    catalog: ONET_PREFERENCE_PHRASES,
+    sources,
+    includeAspiration: !truth.careerHistoryTruth.occupationFitsPreference,
+    burnedOut: truth.careerHistoryTruth.burnedOut,
+    workContext: occupation.workContext.length ? pick(rng, occupation.workContext) : "the daily grind",
+  });
   const achievement = exposureTasks[0]
     ? `Delivered results when I had to ${exposureTasks[0].replace(/\.$/, "")}, using ${pick(rng, truth.capabilityTruth)}.`
     : `Used ${pick(rng, truth.capabilityTruth)} on the team's core workflow.`;
-  const aspiration = truth.careerHistoryTruth.occupationFitsPreference
-    ? ""
-    : ` Longer term I want more of ${likedTasks[0] ?? "different work"} than my current role gives me.`;
   const hobby = chance(rng, 0.35) ? " Outside work I tinker with side projects that are more interesting than my title suggests." : "";
-  const contradiction = contradictory ? ` I say I dislike ${dislikedTasks[0]}, but I also spent a year doing it because it paid the bills.` : "";
   const stuffing = keywordStuffed
     ? ` Skills: ${[...occupation.skills, ...occupation.knowledge, ...occupation.generalizedWorkActivities.slice(0, 6)].join(", ")}.`
     : "";
   const vague = sparse ? "I have done some projects and like solving problems but I am not sure what kind." : "";
   const workHistorySentences = exposureTasks.map((task) => `In this role I would ${task.replace(/\.$/, "")}.`);
+  const narrative = statementsForSource(plan, "RESUME_NARRATIVE").map((statement) => statement.text);
+  const struggleStatements = [...statementsForConstruction(plan, "STRUGGLE"), ...statementsForConstruction(plan, "BURNOUT")];
+  const struggle = struggleStatements[0]?.text ?? `Struggled with ${genericPhrase("DISLIKE")} even when the team called it a success.`;
   const resumeText = sparse
     ? `${title}. ${vague} ${workHistorySentences[0] ?? ""} ${hobby}${stuffing}`
-    : `${title} working in ${occupation.industry}. ${workHistorySentences.join(" ")} ${achievement} I enjoy ${likedTasks.slice(0, 2).join(" and ")}. I avoid ${dislikedTasks.slice(0, 2).join(" and ")}. ${struggle}${contradiction}${aspiration}${hobby}${stuffing} ${stale ? "Most of this is from an older role." : ""}`;
+    : `${title} working in ${occupation.industry}. ${workHistorySentences.join(" ")} ${achievement} ${narrative.join(" ")}${hobby}${stuffing} ${stale ? "Most of this is from an older role." : ""}`;
 
   return {
     subjectId: truth.subjectId,
@@ -218,13 +222,41 @@ function observeOnetSubject(truth: VirtualSubjectTruth, rng: Rng, index: number,
     achievements: sparse ? [] : [achievement],
     failuresOrStruggles: [struggle],
     scenarioResponses: [],
-    explicitPreferences: sparse ? [] : likedTasks.slice(0, 2),
-    explicitDislikes: sparse ? [] : dislikedTasks.slice(0, 2),
+    explicitPreferences: statementsForSource(plan, "EXPLICIT_PREFERENCE_LIST").map((statement) => statement.text),
+    explicitDislikes: statementsForSource(plan, "EXPLICIT_DISLIKE_LIST").map((statement) => statement.text),
     incompleteInformation: sparse ? ["career goals unspecified", "skills underspecified"] : [],
-    contradictoryStatements: contradictory ? [`Claims to dislike ${dislikedTasks[0]} while reporting paid success doing it.`] : [],
+    contradictoryStatements: statementsForSource(plan, "CONTRADICTORY_STATEMENT").map((statement) => statement.text),
     statedSkills: sparse ? truth.capabilityTruth.slice(0, 1) : truth.capabilityTruth,
     networkIntake: createSubjectNetwork(truth, rng, index),
     evidenceQualityMetadata: { sparse, contradictory, misleadingTitle, stale },
+    preferenceStatementPlan: plan,
+  };
+}
+
+/**
+ * Regenerate one subject's observations with deliberately backwards polarity (a LOW truth
+ * expressed as a dislike of LOW-side behaviour). Used only to prove the semantic-consistency
+ * audit fails on malformed language; never part of a graded corpus.
+ */
+export function observeWithInvertedPolarity(subject: VirtualSubject, seed = ONET_LAB_SEED): VirtualSubject {
+  const rng = mulberry32(hashSeed(`inverted:${seed}:${subject.truth.subjectId}`));
+  const truth = { ...subject.truth, subjectId: `${subject.truth.subjectId}-inverted` };
+  const plan = planPreferenceStatements(truth.taskDnaTruth, rng, {
+    catalog: ONET_PREFERENCE_PHRASES,
+    sources: { resumeNarrative: true, explicitPreferenceList: true, explicitDislikeList: true, contradictoryStatement: false },
+    adversarialPolarityInversion: true,
+  });
+  return {
+    truth,
+    observations: {
+      ...subject.observations,
+      subjectId: truth.subjectId,
+      resumeText: `${subject.observations.apparentField} role. ${statementsForSource(plan, "RESUME_NARRATIVE").map((s) => s.text).join(" ")}`.trim(),
+      explicitPreferences: statementsForSource(plan, "EXPLICIT_PREFERENCE_LIST").map((s) => s.text),
+      explicitDislikes: statementsForSource(plan, "EXPLICIT_DISLIKE_LIST").map((s) => s.text),
+      contradictoryStatements: [],
+      preferenceStatementPlan: plan,
+    },
   };
 }
 
@@ -441,13 +473,6 @@ function nudgeTowardOccupation(input: Vector, occupation: OnetOccupationSkeleton
 
 function dimensionsFromVector(values: Vector, high: boolean) {
   return DIMENSION_IDS.filter((id) => (high ? values[id] >= 7.2 : values[id] <= 3.2)).slice(0, 4);
-}
-
-function preferencePhrases(values: Vector, high: boolean, rng: Rng) {
-  const eligible = DIMENSION_IDS.filter((id) => (high ? values[id] >= 6.5 : values[id] <= 4));
-  const phrases = eligible.map((id) => pick(rng, PREFERENCE_PHRASES[id][high ? 0 : 1]));
-  if (!phrases.length) return high ? ["work that suits me"] : ["work that drains me"];
-  return phrases.slice(0, 3);
 }
 
 function expectedProperties(values: Vector, capabilities: string[], occupationFits: boolean) {

@@ -2,10 +2,16 @@ import { DIMENSION_IDS } from "@/config/model";
 import { observationsToProfile } from "@/lab/evaluate";
 import type { DimensionId, UserEvidence } from "@/domain/types";
 import type { VirtualSubject } from "@/lab/types";
-import { availabilityForSubject } from "@/lab/evidenceAvailability";
+import {
+  availabilityForSubject,
+  crossSourceDuplicatePlacements,
+  EVIDENCE_AVAILABILITY_VERSION,
+  INFERENCE_VISIBLE_PREFERENCE_FIELDS,
+  withinFieldDuplicateUnits,
+} from "@/lab/evidenceAvailability";
 import { AUTONOMOUS_PREFERENCE_DIMENSIONS_V1, PRIMARY_PREFERENCE_DECODER_METRIC, SUPERSEDED_PRIMARY_PREFERENCE_DECODER_METRIC } from "@/lab/preferenceTarget";
 
-export const ITERATION_EVALUATOR_VERSION = "iteration-readiness.v2";
+export const ITERATION_EVALUATOR_VERSION = "iteration-readiness.v3-stance-aware";
 export type EvaluationMode = "DEVELOPMENT" | "VALIDATION" | "LOCKED_CONFIRMATION";
 
 export function selectEvaluationSplit(subjects: VirtualSubject[], mode: EvaluationMode, unlock = false) {
@@ -25,11 +31,12 @@ function preferenceEvidence(evidence: UserEvidence) {
  *
  * Two independent concepts drive every metric below, per the readiness-hardening audit:
  *
- *  - AVAILABLE:   the observation GENERATOR placed valid preference/dislike phrase
- *                 evidence for this dimension in fields visible to the inference system
- *                 (explicitPreferences / explicitDislikes). Computed by
- *                 src/lab/evidenceAvailability.ts, entirely independent of the
- *                 extractor/decoder under test.
+ *  - AVAILABLE:   the observation GENERATOR exposed preference language for this dimension
+ *                 in a field the inference system actually receives (resumeText,
+ *                 explicitPreferences, explicitDislikes, contradictoryStatements) whose
+ *                 MEANING is directional once behaviour side and LIKE/DISLIKE stance are
+ *                 combined. Computed by src/lab/evidenceAvailability.ts, entirely
+ *                 independent of the extractor/decoder under test.
  *  - RECOGNIZED:  the extractor (src/domain/evidence.ts + src/domain/workStructure.ts)
  *                 actually produced a PREFERENCE/DISLIKE evidence item that maps to this
  *                 dimension (profile.evidence -> inferredTaskDimensions).
@@ -57,6 +64,8 @@ export function diagnosePreference(subjects: VirtualSubject[], developmentSubjec
         truth: subject.truth.taskDnaTruth[id], prediction: dimension.value,
         confidence: dimension.confidence,
         available: availability[id].available,
+        conflicting: availability[id].conflicting,
+        exposedMeaning: availability[id].availableHigh && availability[id].availableLow ? "MIXED" : availability[id].availableHigh ? "HIGH" : availability[id].availableLow ? "LOW" : "NONE",
         recognized: recognizedSet.has(id),
         evidenceCount: profile.evidence.filter((e) => preferenceEvidence(e) && id in e.inferredTaskDimensions).length,
         prior: devPrior[id],
@@ -125,24 +134,31 @@ export function diagnosePreference(subjects: VirtualSubject[], developmentSubjec
   // NOTE: a naive "duplicate (subjectId, dimensionId, evidenceCount) triple" check is a
   // structural no-op here, because `records` already has exactly one row per
   // (subject, dimension) by construction (see the DIMENSION_IDS.map above) -- that key
-  // can never repeat regardless of evidenceCount, so such a check could never fire. The
-  // real "duplicating easy evidence" attack surface is the generator/extractor emitting
-  // the SAME phrase more than once for one subject to farm coverage/confidence; that is
-  // what duplicatePhraseSubjects actually detects.
-  const duplicatePhraseSubjects = subjects.filter((s) =>
-    new Set(s.observations.explicitPreferences).size !== s.observations.explicitPreferences.length ||
-    new Set(s.observations.explicitDislikes).size !== s.observations.explicitDislikes.length,
-  );
+  // can never repeat regardless of evidenceCount, so such a check could never fire.
+  //
+  // The real attack surface has two shapes, and both are measured directly against the
+  // generated text rather than inferred from generator metadata:
+  //  - WITHIN-FIELD: the same statement emitted twice inside one field.
+  //  - CROSS-SOURCE: one underlying statement reaching inference through two plumbing paths
+  //    (the defect where explicitPreferences/explicitDislikes were also concatenated into
+  //    careerText). Exact-normalized only -- paraphrase/common-source duplication is a
+  //    separate unresolved problem, tracked in docs/DUPLICATE_EVIDENCE.md.
+  const withinFieldDuplicateSubjects = subjects.filter((s) => withinFieldDuplicateUnits(s.observations).length > 0);
+  const crossSourceDuplicateSubjects = subjects.filter((s) => crossSourceDuplicatePlacements(s.observations).length > 0);
+  const conflictingAvailabilityRecords = records.filter((r) => r.conflicting);
   const warnings = [
     ...(Math.abs(mean(records.map((r) => r.prediction)) - 5) < .1 ? ["PREDICTION_TO_5_RISK"] : []),
     ...(predictionVariance / truthVariance < .1 ? ["VARIANCE_COLLAPSE"] : []),
     ...(availableEligible.length / Math.max(1, eligible.length) < .1 ? ["LOW_AVAILABLE_EVIDENCE_COVERAGE"] : []),
-    ...(duplicatePhraseSubjects.length ? ["DUPLICATED_EVIDENCE_PHRASES"] : []),
+    ...(withinFieldDuplicateSubjects.length ? ["DUPLICATED_EVIDENCE_PHRASES_WITHIN_FIELD"] : []),
+    ...(crossSourceDuplicateSubjects.length ? ["DUPLICATED_EVIDENCE_ACROSS_SOURCES"] : []),
     ...(recognizedEligible.length > availableEligible.length ? ["RECOGNIZED_EXCEEDS_AVAILABLE_POSSIBLE_FALSE_POSITIVE"] : []),
   ];
 
   return {
     metricVersion: ITERATION_EVALUATOR_VERSION,
+    availabilityVersion: EVIDENCE_AVAILABILITY_VERSION,
+    inferenceVisiblePreferenceFields: INFERENCE_VISIBLE_PREFERENCE_FIELDS,
     subjects: subjects.length, dimensionRecords: records.length,
     primaryPreferenceDecoderMetric: PRIMARY_PREFERENCE_DECODER_METRIC,
     supersededPrimaryPreferenceDecoderMetric: SUPERSEDED_PRIMARY_PREFERENCE_DECODER_METRIC,
@@ -160,6 +176,13 @@ export function diagnosePreference(subjects: VirtualSubject[], developmentSubjec
     eligibleDimensionRecordCount: eligible.length,
     availableEligibleCoverage: eligible.length ? availableEligible.length / eligible.length : 0,
     recognizedEligibleCoverage: eligible.length ? recognizedEligible.length / eligible.length : 0,
+    // Fraction of RECOGNIZED eligible records for which the generator exposed no directional
+    // preference language at all. The extractor's work-structure lexicon fires on exposure
+    // vocabulary sitting inside a preference sentence, so this is nonzero in the honest
+    // corpus: a real extractor over-attribution property and an open research question, not
+    // an attack. It can never inflate AVAILABLE_TO_RECOGNIZED_RECALL, which is defined as
+    // recognized-AND-available over available.
+    recognizedOutsideAvailableRate: recognizedEligible.length ? recognizedEligible.filter((r) => !r.available).length / recognizedEligible.length : 0,
     availableEligibleSubjectCount: subjectIdsOf(availableEligible).length,
     recognizedEligibleSubjectCount: subjectIdsOf(recognizedEligible).length,
 
@@ -184,7 +207,10 @@ export function diagnosePreference(subjects: VirtualSubject[], developmentSubjec
       improvementOnlyZeroAvailableEvidence: mae(availableEligible) >= constant(availableEligible) && mae(zeroAvailableEligible) < constant(zeroAvailableEligible),
       reducedCoverage: "compare against preregistered before value",
       excessiveAbstention: "not applicable to preference decoder; required for mapper evaluation",
-      duplicatedEvidence: `checked for literal duplicate phrases within a subject's explicitPreferences/explicitDislikes; ${duplicatePhraseSubjects.length} of ${subjects.length} subjects flagged`,
+      duplicatedEvidenceWithinField: `${withinFieldDuplicateSubjects.length} of ${subjects.length} subjects repeat an exact-normalized statement inside one inference-visible field`,
+      duplicatedEvidenceAcrossSources: `${crossSourceDuplicateSubjects.length} of ${subjects.length} subjects expose the same (dimension, phrase, meaning) placement through more than one inference-visible field`,
+      duplicatedEvidenceScope: "EXACT-NORMALIZED ONLY. Paraphrase and common-source duplication remain unresolved; see docs/DUPLICATE_EVIDENCE.md.",
+      conflictingAvailability: `${conflictingAvailabilityRecords.length} of ${records.length} (subject, dimension) rows expose both HIGH-meaning and LOW-meaning language (genuinely mixed evidence, not a duplicate)`,
       availableDenominatorIsExtractorIndependent: "AVAILABLE_EVIDENCE_PREFERENCE_MACRO_MAE_V1's denominator is fixed by src/lab/evidenceAvailability.ts before the extractor runs; the extractor recognizing fewer cases cannot shrink it (see tests/available-evidence.test.ts).",
     },
     shrinkage, shrinkageGovernance: "DIAGNOSTIC ONLY: never automatically select or adopt the minimum-MAE lambda", warnings,
@@ -213,12 +239,30 @@ const variance = (x:number[]) => { const m=mean(x); return mean(x.map(v=>(v-m)**
 function pearson(pairs:[number,number][]) { const x=pairs.map(p=>p[0]),y=pairs.map(p=>p[1]),mx=mean(x),my=mean(y); const den=Math.sqrt(x.reduce((s,v)=>s+(v-mx)**2,0)*y.reduce((s,v)=>s+(v-my)**2,0)); return den ? pairs.reduce((s,p)=>s+(p[0]-mx)*(p[1]-my),0)/den : 0; }
 function spearman(pairs:[number,number][]) { const rank=(xs:number[])=>xs.map(v=>xs.filter(x=>x<v).length+xs.filter(x=>x===v).length/2); const x=rank(pairs.map(p=>p[0])),y=rank(pairs.map(p=>p[1])); return pearson(x.map((v,i)=>[v,y[i]!])); }
 function confidenceBuckets(records: (RecordRow & {available:boolean})[]) { return [[0,.35],[.35,.5],[.5,.65],[.65,1.01]].map(([min,max])=>{const s=records.filter(r=>r.confidence>=min!&&r.confidence<max!);return {bucket:`${min}-${max}`,n:s.length,mae:mae(s)};}); }
+/**
+ * Minimum |prediction - 5| for the decoder to count as having expressed a direction at all.
+ * Below it the decoder is sitting on the neutral prior, which is an ABSTENTION rather than a
+ * wrong answer.
+ */
+const DIRECTIONAL_LEAN_EPSILON = 0.05;
+
 function complementaryDiagnostics(records: (RecordRow & {id:DimensionId})[]) {
   const directional = records.filter(r=>Math.abs(r.truth-5)>=1);
   const extreme = records.filter(r=>Math.abs(r.truth-5)>=3);
+  const leans = (r:RecordRow) => Math.abs(r.prediction-5)>=DIRECTIONAL_LEAN_EPSILON;
+  const directionalLeaning = directional.filter(leans);
   const slopeDen = records.reduce((s,r)=>s+(r.prediction-mean(records.map(x=>x.prediction)))**2,0);
   return {
+    // directionalAccuracy scores a prediction pinned at the neutral prior as WRONG, because
+    // sign(0) matches neither sign(+) nor sign(-). That conflates two very different
+    // failures, so it must be read together with the decomposition below: a low
+    // directionalAccuracy alongside a high neutralPredictionRate means "the decoder rarely
+    // commits", not "the decoder points the wrong way".
     directionalAccuracy: directional.length ? directional.filter(r=>Math.sign(r.prediction-5)===Math.sign(r.truth-5)).length/directional.length : 0,
+    directionalLeanEpsilon: DIRECTIONAL_LEAN_EPSILON,
+    neutralPredictionRate: directional.length ? (directional.length-directionalLeaning.length)/directional.length : 0,
+    directionalCoverage: directional.length ? directionalLeaning.length/directional.length : 0,
+    directionalAccuracyAmongLeaning: directionalLeaning.length ? directionalLeaning.filter(r=>Math.sign(r.prediction-5)===Math.sign(r.truth-5)).length/directionalLeaning.length : null,
     withinDimensionRankSpearman: mean(DIMENSION_IDS.map(id=>spearman(records.filter(r=>r.id===id).map(r=>[r.prediction,r.truth])))),
     extremePreferenceRecall: extreme.length ? extreme.filter(r=>Math.sign(r.prediction-5)===Math.sign(r.truth-5)&&Math.abs(r.prediction-5)>=1).length/extreme.length : 0,
     calibrationSlopeTruthOnPrediction: slopeDen ? records.reduce((s,r)=>s+(r.prediction-mean(records.map(x=>x.prediction)))*(r.truth-mean(records.map(x=>x.truth))),0)/slopeDen : 0,

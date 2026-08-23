@@ -1,19 +1,19 @@
 {
-  "version": "preference-metric-red-team.v1",
+  "version": "preference-metric-red-team.v2",
   "seed": 20260823,
-  "baselinePrimaryMetric": 2.532517362545144,
+  "baselinePrimaryMetric": 2.4152237706848902,
   "attacks": [
     {
       "id": "RECOGNIZE_FEWER_CASES",
       "description": "Simulate the extractor recognizing zero cases (as if all lexicon rules were deleted).",
       "verdict": "RESISTED_DIRECTLY",
       "evidence": {
-        "primaryMetricBefore": 2.532517362545144,
-        "primaryMetricAfter": 2.532517362545144,
+        "primaryMetricBefore": 2.4152237706848902,
+        "primaryMetricAfter": 2.4152237706848902,
         "primaryMetricUnchanged": true,
-        "recognizedEligibleCoverageBefore": 0.20666666666666667,
+        "recognizedEligibleCoverageBefore": 0.3,
         "recognizedEligibleCoverageAfter": 0,
-        "availableToRecognizedRecallBefore": 0.3076923076923077,
+        "availableToRecognizedRecallBefore": 0.31313131313131315,
         "availableToRecognizedRecallAfter": 0
       }
     },
@@ -30,8 +30,8 @@
       "description": "Always predict the neutral value 5 for every eligible dimension.",
       "verdict": "EXPOSED_BY_GUARDRAIL",
       "evidence": {
-        "primaryMetricUnderAttack": 2.5085930795445606,
-        "primaryMetricUnderConstant5CompanionMetric": 2.4855193870017054,
+        "primaryMetricUnderAttack": 2.5140425619538966,
+        "primaryMetricUnderConstant5CompanionMetric": 2.4961233056370022,
         "predictionVarianceUnderAttack": 0,
         "guardrail": "constant5.availableEligibleMicroMae is reported alongside the primary metric specifically so a constant-5 decoder is immediately visible as matching the naive baseline exactly, and predictionVariance=0 trips VARIANCE_COLLAPSE in `warnings`."
       }
@@ -39,31 +39,31 @@
     {
       "id": "SHRINK_TOWARD_5",
       "description": "Blend predictions toward 5 by some lambda and report only the best-looking lambda.",
-      "verdict": "EXPOSED_BY_GUARDRAIL",
+      "verdict": "RESISTED_DIRECTLY",
       "evidence": {
         "shrinkageCurve": [
           {
             "lambda": 0,
-            "mae": 2.5085930795445606
+            "mae": 2.5140425619538966
           },
           {
             "lambda": 0.25,
-            "mae": 2.513161680370161
+            "mae": 2.4893378641366457
           },
           {
             "lambda": 0.5,
-            "mae": 2.51773028119576
+            "mae": 2.4646331663193934
           },
           {
             "lambda": 0.75,
-            "mae": 2.5222988820213605
+            "mae": 2.439928468502142
           },
           {
             "lambda": 1,
-            "mae": 2.532517362545144
+            "mae": 2.4152237706848902
           }
         ],
-        "bestLambdaByRawMae": 0,
+        "bestLambdaByRawMae": 1,
         "guardrail": "shrinkageGovernance is a hardcoded string: 'DIAGNOSTIC ONLY: never automatically select or adopt the minimum-MAE lambda'. The protocol (docs/AUTONOMOUS_ITERATION_PROTOCOL.md) explicitly forbids selecting shrinkage lambda by best MAE. The curve is reported specifically so cherry-picking a lambda is visible."
       }
     },
@@ -97,17 +97,43 @@
     },
     {
       "id": "DUPLICATE_EASY_EVIDENCE",
-      "description": "Repeat the same easy phrase multiple times in explicitPreferences to farm coverage/confidence.",
+      "description": "Repeat the same easy phrase to farm coverage/confidence, either inside one field or across two plumbing paths.",
       "verdict": "EXPOSED_BY_GUARDRAIL",
       "evidence": {
         "duplicatedFieldStillLabeledAvailableOnce": true,
-        "guardrail": "warnings includes DUPLICATED_EVIDENCE_PHRASES whenever any subject's explicitPreferences or explicitDislikes contains a literal duplicate string (see tests/preference-metric-red-team.test.ts). Availability itself is a boolean per dimension, not a count, so duplication cannot inflate the primary metric's per-dimension weight even if undetected."
+        "withinFieldDuplicatesDetected": 1,
+        "crossSourceDuplicatesDetected": 1,
+        "honestCorpusWithinFieldDuplicateSubjects": 0,
+        "honestCorpusCrossSourceDuplicateSubjects": 0,
+        "guardrail": "warnings includes DUPLICATED_EVIDENCE_PHRASES_WITHIN_FIELD and DUPLICATED_EVIDENCE_ACROSS_SOURCES; both are measured on the generated text by src/lab/evidenceAvailability.ts, not asserted from generator metadata. The generator assigns each statement to exactly one observable source, and extractEvidence additionally suppresses exact-normalized cross-source repeats, so there are two independent defences. Availability itself is a boolean per dimension, not a count, so duplication cannot inflate the primary metric's per-dimension weight even if undetected.",
+        "residualRisk": "EXACT-NORMALIZED ONLY. Paraphrase and common-source duplication remain unresolved; see docs/DUPLICATE_EVIDENCE.md."
+      }
+    },
+    {
+      "id": "BACKWARDS_GENERATOR_POLARITY",
+      "description": "Generate preference language whose meaning contradicts the hidden truth (LOW truth expressed as a dislike of LOW-side behaviour).",
+      "verdict": "EXPOSED_BY_GUARDRAIL",
+      "evidence": {
+        "honestCorpusBackwardsPlacements": 0,
+        "honestCorpusSemanticPolarityPass": true,
+        "invertedCorpusFailingDimensions": 17,
+        "invertedCorpusSemanticPolarityPass": false,
+        "exampleBackwardsStatement": {
+          "subjectId": "v2-subject-002-inverted",
+          "truth": 1.8801416447618977,
+          "unit": "I avoid open-ended ambiguity",
+          "phrase": "open-ended ambiguity",
+          "behaviorSide": "LOW",
+          "stance": "DISLIKE",
+          "meaning": "HIGH"
+        },
+        "guardrail": "pnpm eval:generator-monotonicity computes per-statement semantic polarity from the RENDERED TEXT (src/lab/generatorMonotonicity.ts) and exits nonzero on any backwards statement. It is a hard gate in pnpm eval:iteration-readiness."
       }
     }
   ],
   "summary": {
-    "total": 8,
-    "resistedOrStructurallyImpossible": 2,
+    "total": 9,
+    "resistedOrStructurallyImpossible": 3,
     "exposedByGuardrail": 6,
     "note": "EXPOSED_BY_GUARDRAIL means the attack can locally change a companion number, but is unmistakably visible in a mandatory companion metric/warning, never silently improves the primary metric while hiding the mechanism."
   }

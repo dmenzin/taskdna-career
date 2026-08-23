@@ -3,6 +3,7 @@
 // primary metric's denominator and instead show up as reduced extractor recall.
 import { describe, expect, it } from "vitest";
 import { availabilityForObservations, textContainsAnyPhrase } from "@/lab/evidenceAvailability";
+import { ALL_GENERATOR_PHRASES } from "@/lab/preferencePhrases";
 import { diagnosePreference } from "@/lab/iterationMetrics";
 import { observationsToProfile } from "@/lab/evaluate";
 import { generateOnetSubjects, ONET_LAB_SEED, PREFERENCE_PHRASES } from "@/lab/onetLab";
@@ -76,20 +77,92 @@ describe("evidence availability is defined independently of extractor output", (
     // A subject whose hidden truth would make measurable_feedback "eligible" by value,
     // but whose generated observation fields contain no measurable_feedback phrase text,
     // must be labeled unavailable -- availability tracks generator OUTPUT, not the latent
-    // truth vector.
-    const subject = withObservations(baseSubject, { explicitPreferences: [], explicitDislikes: [] });
+    // truth vector. Every inference-visible field must be cleared, because availability is
+    // now read from all four of them, not just the two explicit lists.
+    const subject = withObservations(baseSubject, {
+      resumeText: "Analyst working in engineering.",
+      explicitPreferences: [],
+      explicitDislikes: [],
+      contradictoryStatements: [],
+    });
     const availability = availabilityForObservations(subject.observations);
     expect(availability.measurable_feedback.available).toBe(false);
   });
 
-  it("phrase matching is unambiguous: no cross-dimension substring collisions", () => {
-    const all: { id: string; phrase: string }[] = [];
-    for (const [id, [high, low]] of Object.entries(PREFERENCE_PHRASES)) {
-      for (const phrase of [...high, ...low]) all.push({ id, phrase });
+  it("counts preference language the inference system receives via resumeText, not only the explicit lists", () => {
+    // The previous availability definition read only explicitPreferences/explicitDislikes,
+    // so evidence the engine genuinely receives through the career narrative was excluded
+    // from the primary denominator. It must be included.
+    const phrase = PREFERENCE_PHRASES.measurable_feedback[0][0]!;
+    const subject = withObservations(baseSubject, {
+      resumeText: `Analyst working in engineering. I enjoy ${phrase}.`,
+      explicitPreferences: [],
+      explicitDislikes: [],
+      contradictoryStatements: [],
+    });
+    const availability = availabilityForObservations(subject.observations);
+    expect(availability.measurable_feedback.available).toBe(true);
+    expect(availability.measurable_feedback.availableHigh).toBe(true);
+    expect(availability.measurable_feedback.placements.map((placement) => placement.field)).toEqual(["resumeText"]);
+  });
+
+  it("counts preference language exposed only through contradictoryStatements", () => {
+    const phrase = PREFERENCE_PHRASES.measurable_feedback[1][0]!;
+    const subject = withObservations(baseSubject, {
+      resumeText: "Analyst working in engineering.",
+      explicitPreferences: [],
+      explicitDislikes: [],
+      contradictoryStatements: [`Claims to dislike ${phrase} while reporting paid success doing it.`],
+    });
+    const availability = availabilityForObservations(subject.observations);
+    // Dislike of the LOW-side behaviour means the person leans HIGH.
+    expect(availability.measurable_feedback.available).toBe(true);
+    expect(availability.measurable_feedback.availableHigh).toBe(true);
+    expect(availability.measurable_feedback.availableLow).toBe(false);
+  });
+
+  it("resolves stance, not phrase location: the same phrase means opposite things in the two lists", () => {
+    const lowSidePhrase = PREFERENCE_PHRASES.measurable_feedback[1][0]!;
+    const cleared = { resumeText: "Analyst working in engineering.", contradictoryStatements: [] };
+    const liked = availabilityForObservations(
+      withObservations(baseSubject, { ...cleared, explicitPreferences: [lowSidePhrase], explicitDislikes: [] }).observations,
+    );
+    const disliked = availabilityForObservations(
+      withObservations(baseSubject, { ...cleared, explicitPreferences: [], explicitDislikes: [lowSidePhrase] }).observations,
+    );
+    // LIKE + LOW-side means LOW; DISLIKE + LOW-side means HIGH. The pre-fix definition
+    // labelled both of these as low-side evidence.
+    expect(liked.measurable_feedback.availableLow).toBe(true);
+    expect(liked.measurable_feedback.availableHigh).toBe(false);
+    expect(disliked.measurable_feedback.availableHigh).toBe(true);
+    expect(disliked.measurable_feedback.availableLow).toBe(false);
+  });
+
+  it("ignores text that names a behaviour without expressing any stance", () => {
+    const phrase = PREFERENCE_PHRASES.measurable_feedback[0][0]!;
+    const subject = withObservations(baseSubject, {
+      resumeText: `Analyst working in engineering. In this role I would report on ${phrase}.`,
+      explicitPreferences: [],
+      explicitDislikes: [],
+      contradictoryStatements: [],
+    });
+    expect(availabilityForObservations(subject.observations).measurable_feedback.available).toBe(false);
+  });
+
+  it("phrase matching is unambiguous: no cross-dimension or cross-side substring collisions", () => {
+    // Checked over the UNION catalog the availability reader actually matches against, so a
+    // legacy-lab phrase cannot silently alias an O*NET-lab phrase for another dimension or
+    // the opposite pole. Same-dimension, same-side nesting (e.g. "abstract modeling" inside
+    // "abstract modeling and theory") is harmless and permitted.
+    const all: { id: string; side: number; phrase: string }[] = [];
+    for (const [id, [high, low]] of Object.entries(ALL_GENERATOR_PHRASES)) {
+      for (const phrase of high) all.push({ id, side: 0, phrase });
+      for (const phrase of low) all.push({ id, side: 1, phrase });
     }
     for (const a of all) {
       for (const b of all) {
         if (a.phrase === b.phrase) continue;
+        if (a.id === b.id && a.side === b.side) continue;
         expect(textContainsAnyPhrase([b.phrase], [a.phrase])).toBe(false);
       }
     }

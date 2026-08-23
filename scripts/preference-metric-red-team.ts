@@ -7,9 +7,10 @@ import { createHash } from "node:crypto";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { DIMENSION_IDS } from "../src/config/model";
 import { observationsToProfile } from "../src/lab/evaluate";
-import { availabilityForObservations, availabilityForSubject } from "../src/lab/evidenceAvailability";
+import { availabilityForObservations, availabilityForSubject, crossSourceDuplicatePlacements, withinFieldDuplicateUnits } from "../src/lab/evidenceAvailability";
+import { assessSemanticPolarity, semanticPolarityPass } from "../src/lab/generatorMonotonicity";
 import { diagnosePreference, selectEvaluationSplit } from "../src/lab/iterationMetrics";
-import { generateOnetSubjects, ONET_LAB_SEED, PREFERENCE_PHRASES } from "../src/lab/onetLab";
+import { generateOnetSubjects, observeWithInvertedPolarity, ONET_LAB_SEED, PREFERENCE_PHRASES } from "../src/lab/onetLab";
 import { AUTONOMOUS_PREFERENCE_DIMENSIONS_V1 } from "../src/lab/preferenceTarget";
 import type { DimensionId, UserEvidence } from "../src/domain/types";
 import type { VirtualSubject } from "../src/lab/types";
@@ -165,21 +166,46 @@ const attacks: AttackResult[] = [];
 // 8. Duplicate easy evidence to farm coverage/confidence.
 {
   const phrase = PREFERENCE_PHRASES.measurable_feedback[0][0]!;
-  const duplicated = { ...development[0]!.observations, explicitPreferences: [phrase, phrase] };
-  const availability = availabilityForObservations(duplicated);
+  const withinField = { ...development[0]!.observations, explicitPreferences: [phrase, phrase] };
+  const crossSource = { ...development[0]!.observations, resumeText: `Analyst working in engineering. I enjoy ${phrase}.`, explicitPreferences: [phrase] };
   attacks.push({
     id: "DUPLICATE_EASY_EVIDENCE",
-    description: "Repeat the same easy phrase multiple times in explicitPreferences to farm coverage/confidence.",
+    description: "Repeat the same easy phrase to farm coverage/confidence, either inside one field or across two plumbing paths.",
     verdict: "EXPOSED_BY_GUARDRAIL",
     evidence: {
-      duplicatedFieldStillLabeledAvailableOnce: availability.measurable_feedback.available,
-      guardrail: "warnings includes DUPLICATED_EVIDENCE_PHRASES whenever any subject's explicitPreferences or explicitDislikes contains a literal duplicate string (see tests/preference-metric-red-team.test.ts). Availability itself is a boolean per dimension, not a count, so duplication cannot inflate the primary metric's per-dimension weight even if undetected.",
+      duplicatedFieldStillLabeledAvailableOnce: availabilityForObservations(withinField).measurable_feedback.available,
+      withinFieldDuplicatesDetected: withinFieldDuplicateUnits(withinField).length,
+      crossSourceDuplicatesDetected: crossSourceDuplicatePlacements(crossSource).length,
+      honestCorpusWithinFieldDuplicateSubjects: development.filter((s) => withinFieldDuplicateUnits(s.observations).length > 0).length,
+      honestCorpusCrossSourceDuplicateSubjects: development.filter((s) => crossSourceDuplicatePlacements(s.observations).length > 0).length,
+      guardrail: "warnings includes DUPLICATED_EVIDENCE_PHRASES_WITHIN_FIELD and DUPLICATED_EVIDENCE_ACROSS_SOURCES; both are measured on the generated text by src/lab/evidenceAvailability.ts, not asserted from generator metadata. The generator assigns each statement to exactly one observable source, and extractEvidence additionally suppresses exact-normalized cross-source repeats, so there are two independent defences. Availability itself is a boolean per dimension, not a count, so duplication cannot inflate the primary metric's per-dimension weight even if undetected.",
+      residualRisk: "EXACT-NORMALIZED ONLY. Paraphrase and common-source duplication remain unresolved; see docs/DUPLICATE_EVIDENCE.md.",
+    },
+  });
+}
+
+// 9. Emit semantically backwards preference language (the pre-fix generator defect).
+{
+  const inverted = development.map((subject) => observeWithInvertedPolarity(subject));
+  const polarity = assessSemanticPolarity(inverted);
+  const honestPolarity = assessSemanticPolarity(development);
+  attacks.push({
+    id: "BACKWARDS_GENERATOR_POLARITY",
+    description: "Generate preference language whose meaning contradicts the hidden truth (LOW truth expressed as a dislike of LOW-side behaviour).",
+    verdict: semanticPolarityPass(polarity) ? "RESISTED_DIRECTLY" : "EXPOSED_BY_GUARDRAIL",
+    evidence: {
+      honestCorpusBackwardsPlacements: honestPolarity.reduce((sum, row) => sum + row.backwardsPlacements, 0),
+      honestCorpusSemanticPolarityPass: semanticPolarityPass(honestPolarity),
+      invertedCorpusFailingDimensions: polarity.filter((row) => !row.pass).length,
+      invertedCorpusSemanticPolarityPass: semanticPolarityPass(polarity),
+      exampleBackwardsStatement: polarity.find((row) => !row.pass)?.examples[0],
+      guardrail: "pnpm eval:generator-monotonicity computes per-statement semantic polarity from the RENDERED TEXT (src/lab/generatorMonotonicity.ts) and exits nonzero on any backwards statement. It is a hard gate in pnpm eval:iteration-readiness.",
     },
   });
 }
 
 const report = {
-  version: "preference-metric-red-team.v1",
+  version: "preference-metric-red-team.v2",
   seed: ONET_LAB_SEED,
   baselinePrimaryMetric: baselinePrimary,
   attacks,

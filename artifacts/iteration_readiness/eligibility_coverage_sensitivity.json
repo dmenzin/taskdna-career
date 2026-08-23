@@ -21,7 +21,7 @@
       "id": "problem_structure",
       "classification": "VALID_WITH_REDEFINITION",
       "currentMaeEligible": false,
-      "measuredCoverage": 0.5555555555555556,
+      "measuredCoverage": 0.31555555555555553,
       "nonCoverageCriteriaPass": true,
       "eligibleAtFloor": {
         "0": false,
@@ -34,7 +34,7 @@
       "id": "measurable_feedback",
       "classification": "VALID_BIPOLAR_CONTINUOUS",
       "currentMaeEligible": true,
-      "measuredCoverage": 0.5866666666666667,
+      "measuredCoverage": 0.32,
       "nonCoverageCriteriaPass": true,
       "eligibleAtFloor": {
         "0": true,
@@ -47,7 +47,7 @@
       "id": "investigation_orientation",
       "classification": "BETTER_AS_TWO_INDEPENDENT_PREFERENCES",
       "currentMaeEligible": false,
-      "measuredCoverage": 0.5288888888888889,
+      "measuredCoverage": 0.31777777777777777,
       "nonCoverageCriteriaPass": true,
       "eligibleAtFloor": {
         "0": false,
@@ -60,7 +60,7 @@
       "id": "evidence_density",
       "classification": "VALID_WITH_REDEFINITION",
       "currentMaeEligible": false,
-      "measuredCoverage": 0.4222222222222222,
+      "measuredCoverage": 0.2866666666666667,
       "nonCoverageCriteriaPass": true,
       "eligibleAtFloor": {
         "0": false,
@@ -73,7 +73,7 @@
       "id": "experimentation_preference",
       "classification": "VALID_BIPOLAR_CONTINUOUS",
       "currentMaeEligible": true,
-      "measuredCoverage": 0.3111111111111111,
+      "measuredCoverage": 0.28444444444444444,
       "nonCoverageCriteriaPass": true,
       "eligibleAtFloor": {
         "0": true,
@@ -86,7 +86,7 @@
       "id": "scope_preference",
       "classification": "OVERLAPS_ANOTHER_DIMENSION",
       "currentMaeEligible": false,
-      "measuredCoverage": 0.25333333333333335,
+      "measuredCoverage": 0.32666666666666666,
       "nonCoverageCriteriaPass": true,
       "eligibleAtFloor": {
         "0": false,
@@ -99,7 +99,7 @@
       "id": "software_as_tool",
       "classification": "VALID_WITH_REDEFINITION",
       "currentMaeEligible": false,
-      "measuredCoverage": 0.18,
+      "measuredCoverage": 0.30666666666666664,
       "nonCoverageCriteriaPass": true,
       "eligibleAtFloor": {
         "0": false,
@@ -112,7 +112,7 @@
       "id": "reasoning_style",
       "classification": "OVERLAPS_ANOTHER_DIMENSION",
       "currentMaeEligible": false,
-      "measuredCoverage": 0.15333333333333332,
+      "measuredCoverage": 0.2822222222222222,
       "nonCoverageCriteriaPass": true,
       "eligibleAtFloor": {
         "0": false,
@@ -125,7 +125,7 @@
       "id": "creation_style",
       "classification": "VALID_WITH_REDEFINITION",
       "currentMaeEligible": false,
-      "measuredCoverage": 0.1,
+      "measuredCoverage": 0.28444444444444444,
       "nonCoverageCriteriaPass": true,
       "eligibleAtFloor": {
         "0": false,
@@ -138,7 +138,7 @@
       "id": "real_system_grounding",
       "classification": "BETTER_AS_TWO_INDEPENDENT_PREFERENCES",
       "currentMaeEligible": false,
-      "measuredCoverage": 0.06444444444444444,
+      "measuredCoverage": 0.2866666666666667,
       "nonCoverageCriteriaPass": true,
       "eligibleAtFloor": {
         "0": false,
@@ -151,7 +151,7 @@
       "id": "closure_preference",
       "classification": "VALID_WITH_REDEFINITION",
       "currentMaeEligible": false,
-      "measuredCoverage": 0.06222222222222222,
+      "measuredCoverage": 0.30444444444444446,
       "nonCoverageCriteriaPass": true,
       "eligibleAtFloor": {
         "0": false,
@@ -164,7 +164,7 @@
       "id": "causal_reasoning",
       "classification": "OVERLAPS_ANOTHER_DIMENSION",
       "currentMaeEligible": false,
-      "measuredCoverage": 0.03777777777777778,
+      "measuredCoverage": 0.24666666666666667,
       "nonCoverageCriteriaPass": true,
       "eligibleAtFloor": {
         "0": false,
@@ -177,20 +177,20 @@
       "id": "integration_preference",
       "classification": "CONSTRUCT_VALID_BUT_INSUFFICIENT_TEST_COVERAGE",
       "currentMaeEligible": false,
-      "measuredCoverage": 0.04,
+      "measuredCoverage": 0.29333333333333333,
       "nonCoverageCriteriaPass": true,
       "eligibleAtFloor": {
         "0": true,
-        "0.05": false,
-        "0.1": false,
-        "0.2": false
+        "0.05": true,
+        "0.1": true,
+        "0.2": true
       }
     },
     {
       "id": "customer_interaction_preference",
       "classification": "BETTER_AS_TWO_INDEPENDENT_PREFERENCES",
       "currentMaeEligible": false,
-      "measuredCoverage": 0.02,
+      "measuredCoverage": 0.2577777777777778,
       "nonCoverageCriteriaPass": true,
       "eligibleAtFloor": {
         "0": false,
@@ -203,8 +203,8 @@
       "id": "coordination_preference",
       "classification": "BETTER_AS_TWO_INDEPENDENT_PREFERENCES",
       "currentMaeEligible": false,
-      "measuredCoverage": 0.008888888888888889,
-      "nonCoverageCriteriaPass": false,
+      "measuredCoverage": 0.3111111111111111,
+      "nonCoverageCriteriaPass": true,
       "eligibleAtFloor": {
         "0": false,
         "0.05": false,
@@ -216,7 +216,7 @@
       "id": "theory_vs_application",
       "classification": "VALID_WITH_REDEFINITION",
       "currentMaeEligible": false,
-      "measuredCoverage": 0.006666666666666667,
+      "measuredCoverage": 0.28444444444444444,
       "nonCoverageCriteriaPass": true,
       "eligibleAtFloor": {
         "0": false,
@@ -229,7 +229,7 @@
       "id": "repetition_tolerance",
       "classification": "BETTER_AS_TWO_INDEPENDENT_PREFERENCES",
       "currentMaeEligible": false,
-      "measuredCoverage": 0.008888888888888889,
+      "measuredCoverage": 0.26666666666666666,
       "nonCoverageCriteriaPass": true,
       "eligibleAtFloor": {
         "0": false,
@@ -239,7 +239,5 @@
       }
     }
   ],
-  "dimensionsThatFlipSolelyDueToThreshold": [
-    "integration_preference"
-  ]
+  "dimensionsThatFlipSolelyDueToThreshold": []
 }

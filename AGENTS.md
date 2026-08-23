@@ -14,12 +14,62 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 These rules persist across all future Cursor agent sessions on this repository,
 including any autonomous iteration loop. Read `docs/AUTONOMOUS_ITERATION_PROTOCOL.md`,
+`docs/RESEARCH_PORTFOLIO.md`, `docs/EXPERIMENT_TIERS.md`,
 `docs/EXPERIMENT_PERMISSIONS.md`, `docs/V3_COMPUTATIONAL_CONTRACT.md`, and
 `docs/BASELINE_MANIFEST.md` before making product-scoring changes.
 
 - **Channel independence.** Preference, Experience, Qualification, and Direction Fit
   (`src/v3/fit.ts`) are four independent computational outputs. No channel reads another
   channel's evidence collection. Never collapse them into a single score.
+- **The four channels are parallel, and none implies another.** Experience does not imply
+  Direction; Direction does not imply Experience; Experience does not imply Preference;
+  Preference does not imply Experience. `experience -> relevant jobs` and
+  `direction -> relevant jobs` are parallel workstreams that must both be pursued
+  (`docs/FOUR_CHANNEL_PARALLEL_SCOPE.md`, `tests/four-channel-parallel.test.ts`).
+- **Generated preference language must mean what the hidden truth says.** Preference direction
+  is `f(behaviour side, LIKE/DISLIKE stance)` (`src/lab/preferenceSemantics.ts`). Never emit
+  `LOW truth -> DISLIKE low-side` or `HIGH truth -> DISLIKE high-side` outside an explicitly
+  flagged adversarial case. `pnpm eval:generator-monotonicity` gates this from the RENDERED
+  TEXT, never from generator metadata (`docs/PREFERENCE_GENERATOR_SEMANTICS.md`).
+- **Availability has exactly one implementation.** `src/lab/evidenceAvailability.ts` reads all
+  four inference-visible fields and resolves stance from the surrounding construction. Never
+  define availability elsewhere, never match a phrase without its stance, and never read
+  `preferenceStatementPlan` from an evaluator that grades the decoder
+  (`docs/AVAILABLE_EVIDENCE_DEFINITION.md`).
+- **Keep observable sources distinct.** Career narrative, explicit preference list, explicit
+  dislike list, and contradictory statements are four separate sources. Never concatenate the
+  lists into the narrative and also pass them separately; one statement must not be counted
+  twice (`docs/DUPLICATE_EVIDENCE.md`).
+- **Sample dimensions without positional bias.** Never `DIMENSION_IDS.filter(...).slice(0, N)`.
+  Shuffle deterministically before truncating (`docs/GENERATOR_SELECTION_BIAS.md`).
+- **Use the evaluation tiers.** FAST (`pnpm eval:fast`, seconds) after every edit; CHECKPOINT
+  (`pnpm eval:checkpoint`, ~14 s) every 45-90 minutes; FULL only at the beginning, the end, and
+  after major architecture changes. Never require `pnpm build` after an ordinary experiment
+  (`docs/EXPERIMENT_TIERS.md`).
+- **Declare a workstream, information value, scope, and mechanism for every experiment.**
+  `pnpm experiment:guard` rejects missing declarations, a third consecutive experiment on
+  substantially the same mechanism without written justification, and unpreregistered
+  threshold/coefficient/regex/keyword/prompt nudging. Review the portfolio globally every 60-90
+  minutes (`docs/RESEARCH_PORTFOLIO.md`).
+- **Models and agents interpret language; they never author a score.** A learned component may
+  sit at a `LANGUAGE_INTERPRETATION` or `CANDIDATE_RERANKING` boundary
+  (`src/v3/strategy.ts`) and must expose model/version, prompt version, input, candidate
+  context, structured output, abstention/confidence, provenance, cache key, latency, cost, and a
+  deterministic fallback (`src/v3/learnedComponent.ts`). Invoke selectively. Never build a
+  person-by-job model loop: interpret unique person evidence and unique job responsibilities
+  once, cache by content, and reuse (`docs/HYBRID_AGENT_READINESS.md`).
+- **Do not precommit to a model family.** CNN, transformer, embedding retriever, cross-encoder,
+  LLM, and rules are candidate families only where appropriate. Architecture must emerge from
+  comparative evidence on the same evaluators.
+- **Every cache key must contain every behaviour-changing input.** Source text, context, corpus
+  hash, mapper/tokenizer/retriever version, topK, thresholds, reranker/model version, prompt
+  version, decoding parameters, and relevant config. Never trade a stale scientific result for
+  speed (`docs/CACHE_AUDIT.md`).
+- **Every product-critical subsystem needs an evaluator and an improvement path.**
+  `config/product-critical-subsystems.json` is the registry;
+  `tests/subsystem-coverage.test.ts` keeps it honest. "Optimize every function" means every
+  product-critical SUBSYSTEM has a path to improvement, not that every function gets a
+  coefficient sweep.
 - **No Overall V3 score.** Do not introduce, optimize, or imply a combined/Overall score
   for V3. `docs/V3_COMPUTATIONAL_CONTRACT.md` states this deliberately.
 - **Legacy all-17D MAE is not product quality.** `LEGACY_ALL_DIMENSION_MAE` (and any

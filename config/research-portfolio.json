@@ -1,0 +1,110 @@
+{
+  "version": "research-portfolio.v1",
+  "purpose": "Structure the autonomous run as a portfolio of workstreams rather than a stream of small tweaks. Every experiment declares a workstream, expected information value, scope, and the mechanism it tests. Reviewed globally every 60-90 minutes.",
+  "reviewCadenceMinutes": { "min": 60, "max": 90 },
+  "informationValues": ["HIGH", "MEDIUM", "LOW"],
+  "scopes": ["LOCAL", "SUBSYSTEM", "ARCHITECTURAL"],
+  "antiRepetitionRule": {
+    "maxConsecutiveExperimentsPerMechanism": 2,
+    "thirdRequires": "writtenJustification",
+    "justificationMustArgue": "why a third experiment on substantially the same mechanism has greater information value than switching workstreams",
+    "forbiddenWithoutPreregisteredParameterSearch": [
+      "incremental threshold nudging",
+      "incremental coefficient nudging",
+      "additive regex accumulation",
+      "additive keyword accumulation",
+      "prompt variant sweeps"
+    ]
+  },
+  "workstreams": [
+    {
+      "id": 1,
+      "name": "measurement / evaluation validity",
+      "largestUncertainty": "Whether the repaired synthetic construct measures anything that transfers to real people. The generator now produces semantically coherent language and the availability denominator is stance-aware and extractor-independent, but the whole target is still synthetic: no human-labelled preference truth exists.",
+      "currentHypothesis": "With backwards polarity, positional bias, late-sentence loss, and duplicate evidence paths removed, DEVELOPMENT metrics are now valid RELATIVE measures for comparing decoders, and remain invalid as absolute claims about human preference recovery.",
+      "currentBestStrategy": "AVAILABLE_EVIDENCE_PREFERENCE_MACRO_MAE_V1 as primary, always published with RECOGNIZED_* macro/micro, AVAILABLE_TO_RECOGNIZED_RECALL, ZERO_AVAILABLE_EVIDENCE_MAE, LEGACY_ALL_DIMENSION_MAE, constant-5, development prior, and the shrinkage curve.",
+      "strongestFailedAlternative": "AUTONOMOUS_OBSERVED_PREFERENCE_MACRO_MAE_V1, whose inclusion set was gated on extractor recognition. It let the algorithm shrink its own denominator by missing evidence. Superseded, still reported for comparison.",
+      "highestValueNextExperiment": "Preregistered metric-contract review of integration_preference. Its exclusion from AUTONOMOUS_PREFERENCE_DIMENSIONS_V1 was justified solely by ~4% generator coverage, but that 4% was an artifact of the positional sampling bias fixed in the preflight: at position 12 in DIMENSION_IDS it was almost never reached by filter-then-slice. Measured coverage under unbiased sampling is 0.2933, well above the 0.10 floor, and it passes every non-coverage monotonicity criterion. Promoting it would take the eligible set from 2 dimensions to 3, materially widening the only construct-valid measurement surface the project has. Deliberately NOT applied in the preflight because changing the eligible set is a metric-contract change, not a decoder experiment.",
+      "secondNextExperiment": "Establish whether directional accuracy among LEANING predictions (now reported separately from raw directionalAccuracy) is a better primary construct than continuous MAE, given that MAE is dominated by how often the decoder sits on the neutral prior.",
+      "diminishingReturnsEvidence": "None yet: this workstream was just substantially repaired. Re-assess after the first two experiments.",
+      "openBlockers": ["No independent human preference truth. Absolute validity claims are out of scope for autonomous work."]
+    },
+    {
+      "id": 2,
+      "name": "preference representation + extraction",
+      "largestUncertainty": "Whether a 17-dimension bipolar vector is the right representation at all. Eight of the seventeen dimensions are classified as construct-invalid or overlapping in src/lab/preferenceTarget.ts, and only two are MAE-eligible.",
+      "currentHypothesis": "Extraction recall, not scoring arithmetic, is the binding constraint. AVAILABLE_TO_RECOGNIZED_RECALL is about 0.31: the regex/lexicon extractor misses roughly two thirds of the preference language the generator exposes, so predictions stay pinned near the neutral prior and prediction variance is under 10% of truth variance.",
+      "currentBestStrategy": "Regex evidence classes (src/domain/evidence.ts) over a work-structure lexicon (src/domain/workStructure.ts), with explicit-list stance forcing.",
+      "strongestFailedAlternative": "Not yet attempted at a family level. The lexicon has only been extended, never replaced.",
+      "highestValueNextExperiment": "Replace lexical phrase matching with embedding retrieval at the preference_evidence_extraction boundary and measure AVAILABLE_TO_RECOGNIZED_RECALL. This is an ARCHITECTURAL-scope test of a different family, not a lexicon extension.",
+      "diminishingReturnsEvidence": "Adding lexicon entries has repeatedly moved recall a few points without changing the variance-collapse picture. Further additive lexicon work is explicitly deprioritized.",
+      "openBlockers": []
+    },
+    {
+      "id": 3,
+      "name": "Task/DWA mapping",
+      "largestUncertainty": "Whether token-overlap retrieval over 12,579 O*NET task statements can distinguish genuinely different work, or whether it mostly matches shared generic vocabulary.",
+      "currentHypothesis": "Lexical retrieval gives adequate recall for candidate generation but poor precision on broad DWAs; a reranking stage is where precision must come from.",
+      "currentBestStrategy": "Deterministic lexical retrieval (topK=5) with a task/DWA/abstain threshold policy. Now 55x faster after hoisting corpus tokenization, and memoized by cacheKey.",
+      "strongestFailedAlternative": "None recorded. The CandidateReranker seam exists but no reranker has been wired.",
+      "highestValueNextExperiment": "Wire a cross-encoder or selective LLM reranker at the contextual_reranking boundary and measure precision on the ambiguity/broad-collision fixtures, with abstention rate as a guardrail.",
+      "diminishingReturnsEvidence": "None yet.",
+      "openBlockers": ["No human-labelled mapping truth. Mapping ACCURACY cannot be established autonomously; only relative behaviour on known-answer fixtures."]
+    },
+    {
+      "id": 4,
+      "name": "Preference Fit",
+      "largestUncertainty": "Whether coverage-weighted mean stance contribution is the right aggregation, and how absence of evidence should differ from neutral evidence.",
+      "currentHypothesis": "Treating absence of LIKE as distinct from DISLIKE is correct and load-bearing; the open question is how to weight partial DWA-level matches.",
+      "currentBestStrategy": "preferenceFit in src/v3/fit.ts: UNKNOWN excluded, NEUTRAL contributes zero, DWA matches at DWA_PARTIAL_CREDIT=0.6.",
+      "strongestFailedAlternative": "None recorded.",
+      "highestValueNextExperiment": "Test whether DWA_PARTIAL_CREDIT has any defensible basis at all, or whether DWA-level matches should abstain rather than contribute partial credit. This is a MECHANISM question, not a coefficient sweep.",
+      "diminishingReturnsEvidence": "None yet.",
+      "openBlockers": ["Real Preference Fit validity requires human judgement of whether a job contains liked work."]
+    },
+    {
+      "id": 5,
+      "name": "Experience Fit",
+      "largestUncertainty": "Whether self-reported strength and ownership carry usable signal, given the documented led>performed>unknown>assisted ordering anomaly in EXPERIENCE_OWNERSHIP_WEIGHTS.",
+      "currentHypothesis": "Source-group deduplication matters more than the ordinal weights: many bullets from one role are one observation stream, not independent samples.",
+      "currentBestStrategy": "experienceFit with source-group dedup and PROVISIONAL_BASELINE strength/ownership weights.",
+      "strongestFailedAlternative": "None recorded.",
+      "highestValueNextExperiment": "Ablate the ownership weights entirely (all 1.0) and check whether any evaluable behaviour changes. If nothing moves, the weights are decoration and should be removed rather than tuned.",
+      "diminishingReturnsEvidence": "None yet.",
+      "openBlockers": []
+    },
+    {
+      "id": 6,
+      "name": "Qualification Fit",
+      "largestUncertainty": "Ambiguous equivalence. Whether 'BSc Computer Science' satisfies 'Bachelor's in a technical field' is an interpretation problem that a fixed alias table cannot solve.",
+      "currentHypothesis": "Exact-plus-alias matching is adequate for skills and inadequate for education and credentials.",
+      "currentBestStrategy": "qualificationFit with DEFAULT_ALIASES and PREFERRED_REQUIREMENT_WEIGHT=0.25.",
+      "strongestFailedAlternative": "None recorded.",
+      "highestValueNextExperiment": "Introduce a cached, versioned equivalence-judgement component behind the AliasProvider seam (a LANGUAGE_INTERPRETATION boundary) and measure hard-gap precision. The requirement arithmetic stays deterministic.",
+      "diminishingReturnsEvidence": "None yet.",
+      "openBlockers": ["Credential equivalence often has a legal/regulatory answer that no model should be trusted to invent."]
+    },
+    {
+      "id": 7,
+      "name": "Direction Fit",
+      "largestUncertainty": "Aspiration language is rare and weak in the current corpus, so Direction Fit is the least-evidenced channel.",
+      "currentHypothesis": "Direction requires its own elicitation, not extraction from resumes. Resumes describe the past; direction is about the future.",
+      "currentBestStrategy": "directionFit over mapped aspiration evidence, structurally identical to experience matching but semantically distinct and never inferred from experience.",
+      "strongestFailedAlternative": "None recorded.",
+      "highestValueNextExperiment": "Measure how often the generator exposes aspiration language at all, then test whether desired-future-work retrieval finds materially different jobs than experience retrieval on the same subject. Direction and experience must be run as PARALLEL workstreams, not one derived from the other.",
+      "diminishingReturnsEvidence": "None yet.",
+      "openBlockers": []
+    },
+    {
+      "id": 8,
+      "name": "robustness / leakage / architecture",
+      "largestUncertainty": "Whether title/occupation leakage is fully closed, and whether the evaluation harness itself is fast and modular enough to sustain many meaningful experiments.",
+      "currentHypothesis": "The harness was the binding constraint: mapWork cost 214 ms per call before this preflight, which made any mapping experiment at evaluation scale infeasible.",
+      "currentBestStrategy": "Title-stripping twins, occupation_context creating no person signal, three evaluation tiers (FAST/CHECKPOINT/FULL), declared strategy boundaries, and cacheKey-invalidated memoization.",
+      "strongestFailedAlternative": "None recorded.",
+      "highestValueNextExperiment": "Adversarial-cohort leakage sweep: confirm no channel score can be predicted from title alone once titles are stripped.",
+      "diminishingReturnsEvidence": "None yet.",
+      "openBlockers": []
+    }
+  ]
+}
