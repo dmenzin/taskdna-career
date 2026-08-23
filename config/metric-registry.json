@@ -1,24 +1,128 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "metrics": [
     {
-      "name": "AUTONOMOUS_OBSERVED_PREFERENCE_MACRO_MAE_V1",
+      "name": "AVAILABLE_EVIDENCE_PREFERENCE_MACRO_MAE_V1",
       "subsystem": "preference decoder",
-      "construct": "continuous interpretation of supported evidence for explicitly eligible preference dimensions",
+      "construct": "continuous interpretation of GENERATOR-EXPOSED evidence for explicitly eligible preference dimensions, independent of extractor recognition",
       "prediction": "inferred value for measurable_feedback or experimentation_preference",
-      "groundTruth": "synthetic hidden preference for the same generator-observed and extractor-supported dimension",
-      "observationUnit": "eligible subject",
-      "aggregation": "supported eligible dimension MAE within subject, then equal subject mean",
+      "groundTruth": "synthetic hidden preference for the same eligible dimension, included whenever the observation generator placed valid preference/dislike phrase evidence for it in explicitPreferences/explicitDislikes (src/lab/evidenceAvailability.ts), whether or not the extractor recognized it",
+      "observationUnit": "eligible subject with at least one available-evidence eligible dimension",
+      "aggregation": "available-evidence eligible dimension MAE within subject, then equal subject mean",
       "scale": "0-10 absolute-error points",
       "datasetSplit": "synthetic DEVELOPMENT or VALIDATION",
       "naiveBaseline": "constant 5 plus coverage/variance guardrails",
       "knownFailureModes": [
+        "generator-exposure drift",
+        "shrinkage",
+        "constant-5 gaming"
+      ],
+      "allowedUse": "PRIMARY autonomous synthetic preference-decoder metric",
+      "forbiddenInterpretation": "full 17D profile, job fit, mapper accuracy, extractor recall, or human validity",
+      "mandatoryCompanions": [
+        "AVAILABLE_EVIDENCE_PREFERENCE_MICRO_MAE",
+        "RECOGNIZED_EVIDENCE_PREFERENCE_MACRO_MAE",
+        "RECOGNIZED_EVIDENCE_PREFERENCE_MICRO_MAE",
+        "AVAILABLE_TO_RECOGNIZED_RECALL",
+        "ZERO_AVAILABLE_EVIDENCE_MAE",
+        "LEGACY_ALL_DIMENSION_MAE"
+      ],
+      "governanceNote": "Supersedes AUTONOMOUS_OBSERVED_PREFERENCE_MACRO_MAE_V1 (see that record's status below) because a recognized-evidence-gated denominator lets the algorithm under test shrink its own denominator by recognizing fewer cases -- a selection-bias/Goodhart path. The extractor recognizing fewer cases MUST NOT remove a subject/dimension from this metric's denominator; see tests/available-evidence.test.ts."
+    },
+    {
+      "name": "AVAILABLE_EVIDENCE_PREFERENCE_MICRO_MAE",
+      "subsystem": "preference decoder",
+      "construct": "flat interpretation error over generator-exposed eligible-dimension records",
+      "prediction": "inferred dimension value",
+      "groundTruth": "same available-evidence-gated synthetic truth as the macro metric",
+      "observationUnit": "available-evidence eligible subject-dimension",
+      "aggregation": "flat mean, no subject reweighting",
+      "scale": "0-10 absolute-error points",
+      "datasetSplit": "synthetic DEVELOPMENT or VALIDATION",
+      "naiveBaseline": "constant 5",
+      "knownFailureModes": ["subjects with more available evidence dominate"],
+      "allowedUse": "mandatory companion to the primary metric",
+      "forbiddenInterpretation": "equal-subject decoder performance"
+    },
+    {
+      "name": "RECOGNIZED_EVIDENCE_PREFERENCE_MACRO_MAE",
+      "subsystem": "preference decoder",
+      "construct": "continuous interpretation error restricted to cases the extractor itself recognized as PREFERENCE/DISLIKE evidence for the dimension",
+      "prediction": "inferred value for measurable_feedback or experimentation_preference",
+      "groundTruth": "synthetic hidden preference restricted to profile.evidence -> inferredTaskDimensions recognition",
+      "observationUnit": "recognized eligible subject",
+      "aggregation": "recognized eligible dimension MAE within subject, then equal subject mean",
+      "scale": "0-10 absolute-error points",
+      "datasetSplit": "synthetic DEVELOPMENT or VALIDATION",
+      "naiveBaseline": "constant 5",
+      "knownFailureModes": ["extractor can shrink its own denominator by recognizing less", "not a substitute for the primary metric"],
+      "allowedUse": "extractor-recall diagnostic; compare against AVAILABLE_EVIDENCE_PREFERENCE_MACRO_MAE_V1, never report alone",
+      "forbiddenInterpretation": "primary decoder quality claim; full 17D profile; human validity"
+    },
+    {
+      "name": "RECOGNIZED_EVIDENCE_PREFERENCE_MICRO_MAE",
+      "subsystem": "preference decoder",
+      "construct": "flat interpretation error over extractor-recognized eligible-dimension records",
+      "prediction": "inferred dimension value",
+      "groundTruth": "same recognized-evidence-gated synthetic truth as RECOGNIZED_EVIDENCE_PREFERENCE_MACRO_MAE",
+      "observationUnit": "recognized eligible subject-dimension",
+      "aggregation": "flat mean",
+      "scale": "0-10 absolute-error points",
+      "datasetSplit": "synthetic DEVELOPMENT or VALIDATION",
+      "naiveBaseline": "constant 5",
+      "knownFailureModes": ["subjects with more recognized evidence dominate"],
+      "allowedUse": "extractor-recall diagnostic",
+      "forbiddenInterpretation": "primary decoder quality claim"
+    },
+    {
+      "name": "AVAILABLE_TO_RECOGNIZED_RECALL",
+      "subsystem": "preference decoder / extractor",
+      "construct": "extractor recall conditional on generator exposure: of eligible-dimension records where evidence was actually available, what fraction did the extractor recognize",
+      "prediction": "not applicable (diagnostic ratio, not a decoder prediction)",
+      "groundTruth": "availability label from src/lab/evidenceAvailability.ts intersected with extractor recognition",
+      "observationUnit": "available-evidence eligible subject-dimension",
+      "aggregation": "count(recognized AND available) / count(available)",
+      "scale": "rate 0-1, or null when no available-evidence records exist",
+      "datasetSplit": "synthetic DEVELOPMENT or VALIDATION",
+      "naiveBaseline": "not applicable",
+      "knownFailureModes": ["can be gamed upward only by improving true recognition, never by hiding evidence, since the denominator is availability-fixed"],
+      "allowedUse": "extractor recall/coverage diagnostic, mandatory companion to the primary metric",
+      "forbiddenInterpretation": "decoder interpretation accuracy"
+    },
+    {
+      "name": "ZERO_AVAILABLE_EVIDENCE_MAE",
+      "subsystem": "preference prior/imputation",
+      "construct": "decoder behavior on eligible dimensions where the generator exposed no preference/dislike evidence at all",
+      "prediction": "inferred dimension value (typically the neutral prior)",
+      "groundTruth": "unobserved-by-design generator latent value for eligible dimensions with no available evidence",
+      "observationUnit": "zero-available-evidence eligible subject-dimension",
+      "aggregation": "flat mean",
+      "scale": "0-10 absolute-error points",
+      "datasetSplit": "synthetic DEVELOPMENT or VALIDATION",
+      "naiveBaseline": "constant 5 and development-population prior",
+      "knownFailureModes": ["rewards shrinkage", "truth not observable by design, so improving this number is not meaningful decoder progress"],
+      "allowedUse": "prior/imputation diagnostic only",
+      "forbiddenInterpretation": "evidence extraction accuracy; decoder interpretation quality"
+    },
+    {
+      "name": "AUTONOMOUS_OBSERVED_PREFERENCE_MACRO_MAE_V1",
+      "subsystem": "preference decoder",
+      "construct": "SUPERSEDED: continuous interpretation of supported evidence for explicitly eligible preference dimensions, where inclusion depended on extractor recognition",
+      "prediction": "inferred value for measurable_feedback or experimentation_preference",
+      "groundTruth": "synthetic hidden preference for the same generator-observed and extractor-supported dimension",
+      "observationUnit": "eligible subject",
+      "aggregation": "supported (extractor-recognized) eligible dimension MAE within subject, then equal subject mean",
+      "scale": "0-10 absolute-error points",
+      "datasetSplit": "synthetic DEVELOPMENT or VALIDATION",
+      "naiveBaseline": "constant 5 plus coverage/variance guardrails",
+      "knownFailureModes": [
+        "SELECTION BIAS: the extractor under test can shrink this metric's own denominator by recognizing fewer cases (Goodhart path)",
         "coverage reduction",
         "shrinkage",
         "generator drift"
       ],
-      "allowedUse": "primary autonomous synthetic preference-decoder metric",
-      "forbiddenInterpretation": "full 17D profile, job fit, mapper accuracy, or human validity"
+      "allowedUse": "SUPERSEDED as of the readiness-hardening audit. Retained only under `legacySuperseded` in diagnostic reports for before/after comparison. Do NOT use as the primary autonomous synthetic preference-decoder metric.",
+      "forbiddenInterpretation": "primary metric; full 17D profile; job fit; mapper accuracy; or human validity"
     },
     {
       "name": "LEGACY_ALL_DIMENSION_MAE",
@@ -41,55 +145,58 @@
     {
       "name": "OBSERVED_PREFERENCE_MACRO_MAE",
       "subsystem": "preference decoder",
-      "construct": "interpretation of available preference/dislike evidence",
+      "construct": "SUPERSEDED (all-17-dimension, extractor-recognition-gated): interpretation of recognized preference/dislike evidence, not scoped to the eligible dimension set",
       "prediction": "inferred dimension value",
       "groundTruth": "synthetic truth only where PREFERENCE/DISLIKE evidence produced a dimension signal",
       "observationUnit": "subject",
-      "aggregation": "within-subject mean supported-dimension error, then equal mean over eligible subjects",
+      "aggregation": "within-subject mean recognized-dimension error, then equal mean over subjects",
       "scale": "0-10 absolute-error points",
       "datasetSplit": "synthetic development or validation",
       "naiveBaseline": "constant 5",
       "knownFailureModes": [
         "extractor can reduce declared coverage",
-        "generator phrase semantics may be invalid"
+        "generator phrase semantics may be invalid",
+        "SELECTION BIAS: recognition-gated denominator"
       ],
-      "allowedUse": "primary synthetic decoder experiment metric with coverage guard",
-      "forbiddenInterpretation": "full profile, job fit, or human validity"
+      "allowedUse": "SUPERSEDED. Reported as `legacySuperseded.allDimensionRecognizedMacroMae` for comparison only.",
+      "forbiddenInterpretation": "primary metric; full profile, job fit, or human validity"
     },
     {
       "name": "OBSERVED_PREFERENCE_MICRO_MAE",
       "subsystem": "preference decoder",
-      "construct": "supported evidence interpretation",
+      "construct": "SUPERSEDED (all-17-dimension, extractor-recognition-gated): flat recognized evidence interpretation",
       "prediction": "inferred dimension value",
-      "groundTruth": "same supported synthetic truth",
-      "observationUnit": "supported subject-dimension",
+      "groundTruth": "same recognized synthetic truth",
+      "observationUnit": "recognized subject-dimension",
       "aggregation": "flat mean",
       "scale": "0-10 absolute-error points",
       "datasetSplit": "synthetic development or validation",
       "naiveBaseline": "constant 5",
       "knownFailureModes": [
-        "subjects with more evidence dominate"
+        "subjects with more evidence dominate",
+        "SELECTION BIAS: recognition-gated denominator"
       ],
-      "allowedUse": "secondary decoder diagnostic",
-      "forbiddenInterpretation": "equal-subject decoder performance"
+      "allowedUse": "SUPERSEDED. Reported as `legacySuperseded.allDimensionRecognizedMicroMae` for comparison only.",
+      "forbiddenInterpretation": "equal-subject decoder performance; primary metric"
     },
     {
       "name": "ZERO_EVIDENCE_MAE",
       "subsystem": "preference prior/imputation",
-      "construct": "behavior without extracted preference support",
+      "construct": "SUPERSEDED (all-17-dimension, extractor-recognition-gated): behavior without recognized preference support",
       "prediction": "inferred dimension value",
       "groundTruth": "unobserved generator latent value",
-      "observationUnit": "unsupported subject-dimension",
+      "observationUnit": "unrecognized subject-dimension",
       "aggregation": "flat mean",
       "scale": "0-10 absolute-error points",
       "datasetSplit": "synthetic",
       "naiveBaseline": "constant 5 and development prior",
       "knownFailureModes": [
         "rewards shrinkage",
-        "truth not observable"
+        "truth not observable",
+        "recognition-gated (not availability-gated) cut point"
       ],
-      "allowedUse": "prior/imputation diagnostic only",
-      "forbiddenInterpretation": "evidence extraction accuracy"
+      "allowedUse": "SUPERSEDED. Reported as `legacySuperseded.allDimensionZeroRecognizedMae` for comparison only. Use ZERO_AVAILABLE_EVIDENCE_MAE for the availability-gated analog.",
+      "forbiddenInterpretation": "evidence extraction accuracy; primary metric"
     },
     {
       "name": "TASK_MAPPING_TOP1_RECALL_AT_K",
