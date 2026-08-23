@@ -42,6 +42,8 @@
     "bench:frame-competition": "tsx scripts/bench-frame-competition.ts",
     "bench:frame-freeze": "tsx scripts/freeze-frame-corpus.ts",
     "agent:smoke": "tsx scripts/agent-smoke-test.ts",
+    "openai:preflight": "tsx scripts/openai-preflight.ts",
+    "openai:calibrate": "tsx scripts/openai-effort-calibration.ts",
     "experiment:agent-vs-lexical": "tsx scripts/experiment-agent-vs-lexical.ts",
     "analyze:blueprints": "tsx scripts/analyze-blueprints.ts",
     "audit:metric-contracts": "tsx scripts/audit-metric-contracts.ts",
@@ -72,6 +74,7 @@
     "clsx": "^2.1.1",
     "lucide-react": "^1.33.0",
     "next": "^16.3.2",
+    "openai": "^7.5.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "zod": "^4.4.3"

@@ -1,0 +1,36 @@
+{
+  "preflight": "openai-arm",
+  "providerVersion": "openai-provider.v1",
+  "requestedModel": "gpt-5.6-sol",
+  "resolvedModel": null,
+  "blocker": "INSUFFICIENT_QUOTA",
+  "checks": [
+    {
+      "name": "OpenAI credential present",
+      "pass": true,
+      "detail": "boolean presence only; the value is never read, logged or persisted"
+    },
+    {
+      "name": "model pricing configured",
+      "pass": true,
+      "detail": "gpt-5.6-sol priced from the table rather than the conservative unknown-model rate"
+    },
+    {
+      "name": "runtime budget available",
+      "pass": true,
+      "detail": "$25.00 of $25 and 1000 of 1000 calls remaining"
+    },
+    {
+      "name": "Anthropic arm state understood",
+      "pass": true,
+      "detail": "Anthropic credential absent; the Claude arm is frozen and its caches are gone (docs/PROVIDER_HANDOFF_STATE.md)"
+    },
+    {
+      "name": "provider reachable",
+      "pass": false,
+      "detail": "INSUFFICIENT_QUOTA: credential is valid but the account has no available quota or billing; no call can succeed"
+    }
+  ],
+  "passed": false,
+  "timestamp": "2026-08-23T13:07:51.206Z"
+}
