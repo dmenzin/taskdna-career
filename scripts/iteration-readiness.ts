@@ -105,8 +105,14 @@ add("active V3 coefficients have explicit governance status",V3_COEFFICIENT_GOVE
 // --- product-level metric readiness checks ---
 
 // [ ] every optimizable product-critical subsystem has a complete contract AND a runnable evaluator
+//
+// The bound is >=31, not ==31. Rows 1-31 are the required subsystem coverage; later rows are
+// decision metrics added by ongoing work. Pinning the exact total made this gate fail the
+// moment a legitimate new decision metric was contracted, which trains people to edit the
+// assertion rather than read it. `audit:metric-contracts` still fails on any row that claims a
+// runnable benchmark whose command does not resolve, which is the property that matters.
 const contracts=run("pnpm",["exec","tsx","scripts/audit-metric-contracts.ts"]);
-try{const c=JSON.parse(contracts.stdout);add("metric contracts have runnable evaluators",contracts.status===0&&c.passed===true&&c.contracts===31&&c.blockingGaps.length===0,`${c.contracts} contracts, ${c.runnable} runnable, ${c.notRunnable} explicitly excluded (${c.excluded.map((e:{row:number})=>`row ${e.row}`).join(", ")}), ${c.blockingGaps.length} blocking gaps`);}catch(e){add("metric contracts have runnable evaluators",false,`${String(e)} ${(contracts.stderr||contracts.stdout||"").slice(-300)}`);}
+try{const c=JSON.parse(contracts.stdout);add("metric contracts have runnable evaluators",contracts.status===0&&c.passed===true&&c.contracts>=31&&c.blockingGaps.length===0,`${c.contracts} contracts, ${c.runnable} runnable, ${c.notRunnable} explicitly excluded (${c.excluded.map((e:{row:number})=>`row ${e.row}`).join(", ")}), ${c.blockingGaps.length} blocking gaps`);}catch(e){add("metric contracts have runnable evaluators",false,`${String(e)} ${(contracts.stderr||contracts.stdout||"").slice(-300)}`);}
 
 // [ ] planted-truth benchmark is non-circular, leak-free and deterministic
 const planted=run("pnpm",["exec","vitest","run","tests/bench-planted-truth.test.ts","tests/metric-contracts.test.ts"]);add("planted-truth benchmark validity",planted.status===0,planted.status===0?"labels are computed from planted atom identity with no scoring/mapping import; no atom id, planted label or corpus metadata reaches pipeline input; corpus is byte-identical across runs":(planted.stdout+planted.stderr).slice(-800));
