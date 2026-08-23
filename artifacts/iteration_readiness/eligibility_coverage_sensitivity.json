@@ -1,0 +1,245 @@
+{
+  "version": "eligibility-sensitivity.v1",
+  "seed": 20260823,
+  "currentPolicyFloor": {
+    "value": 0.1,
+    "unit": "fraction of subjects with generator-exposed evidence for the dimension",
+    "status": "POLICY_PARAMETER_NOT_SCIENTIFIC_FACT",
+    "rationale": "Below this floor, per-dimension MAE is estimated from too few available-evidence subjects to be a stable autonomous signal; the value itself is a chosen tolerance, not derived from the construct.",
+    "sensitivityReport": "docs/ELIGIBILITY_COVERAGE_SENSITIVITY.md",
+    "sensitivityCommand": "pnpm eval:eligibility-sensitivity"
+  },
+  "floors": [
+    0,
+    0.05,
+    0.1,
+    0.2
+  ],
+  "governance": "Diagnostic only. This script must never change AUTONOMOUS_PREFERENCE_DIMENSIONS_V1 or ELIGIBILITY_COVERAGE_FLOOR_POLICY; it only reports what the floor value implies.",
+  "rows": [
+    {
+      "id": "problem_structure",
+      "classification": "VALID_WITH_REDEFINITION",
+      "currentMaeEligible": false,
+      "measuredCoverage": 0.5555555555555556,
+      "nonCoverageCriteriaPass": true,
+      "eligibleAtFloor": {
+        "0": false,
+        "0.05": false,
+        "0.1": false,
+        "0.2": false
+      }
+    },
+    {
+      "id": "measurable_feedback",
+      "classification": "VALID_BIPOLAR_CONTINUOUS",
+      "currentMaeEligible": true,
+      "measuredCoverage": 0.5866666666666667,
+      "nonCoverageCriteriaPass": true,
+      "eligibleAtFloor": {
+        "0": true,
+        "0.05": true,
+        "0.1": true,
+        "0.2": true
+      }
+    },
+    {
+      "id": "investigation_orientation",
+      "classification": "BETTER_AS_TWO_INDEPENDENT_PREFERENCES",
+      "currentMaeEligible": false,
+      "measuredCoverage": 0.5288888888888889,
+      "nonCoverageCriteriaPass": true,
+      "eligibleAtFloor": {
+        "0": false,
+        "0.05": false,
+        "0.1": false,
+        "0.2": false
+      }
+    },
+    {
+      "id": "evidence_density",
+      "classification": "VALID_WITH_REDEFINITION",
+      "currentMaeEligible": false,
+      "measuredCoverage": 0.4222222222222222,
+      "nonCoverageCriteriaPass": true,
+      "eligibleAtFloor": {
+        "0": false,
+        "0.05": false,
+        "0.1": false,
+        "0.2": false
+      }
+    },
+    {
+      "id": "experimentation_preference",
+      "classification": "VALID_BIPOLAR_CONTINUOUS",
+      "currentMaeEligible": true,
+      "measuredCoverage": 0.3111111111111111,
+      "nonCoverageCriteriaPass": true,
+      "eligibleAtFloor": {
+        "0": true,
+        "0.05": true,
+        "0.1": true,
+        "0.2": true
+      }
+    },
+    {
+      "id": "scope_preference",
+      "classification": "OVERLAPS_ANOTHER_DIMENSION",
+      "currentMaeEligible": false,
+      "measuredCoverage": 0.25333333333333335,
+      "nonCoverageCriteriaPass": true,
+      "eligibleAtFloor": {
+        "0": false,
+        "0.05": false,
+        "0.1": false,
+        "0.2": false
+      }
+    },
+    {
+      "id": "software_as_tool",
+      "classification": "VALID_WITH_REDEFINITION",
+      "currentMaeEligible": false,
+      "measuredCoverage": 0.18,
+      "nonCoverageCriteriaPass": true,
+      "eligibleAtFloor": {
+        "0": false,
+        "0.05": false,
+        "0.1": false,
+        "0.2": false
+      }
+    },
+    {
+      "id": "reasoning_style",
+      "classification": "OVERLAPS_ANOTHER_DIMENSION",
+      "currentMaeEligible": false,
+      "measuredCoverage": 0.15333333333333332,
+      "nonCoverageCriteriaPass": true,
+      "eligibleAtFloor": {
+        "0": false,
+        "0.05": false,
+        "0.1": false,
+        "0.2": false
+      }
+    },
+    {
+      "id": "creation_style",
+      "classification": "VALID_WITH_REDEFINITION",
+      "currentMaeEligible": false,
+      "measuredCoverage": 0.1,
+      "nonCoverageCriteriaPass": true,
+      "eligibleAtFloor": {
+        "0": false,
+        "0.05": false,
+        "0.1": false,
+        "0.2": false
+      }
+    },
+    {
+      "id": "real_system_grounding",
+      "classification": "BETTER_AS_TWO_INDEPENDENT_PREFERENCES",
+      "currentMaeEligible": false,
+      "measuredCoverage": 0.06444444444444444,
+      "nonCoverageCriteriaPass": true,
+      "eligibleAtFloor": {
+        "0": false,
+        "0.05": false,
+        "0.1": false,
+        "0.2": false
+      }
+    },
+    {
+      "id": "closure_preference",
+      "classification": "VALID_WITH_REDEFINITION",
+      "currentMaeEligible": false,
+      "measuredCoverage": 0.06222222222222222,
+      "nonCoverageCriteriaPass": true,
+      "eligibleAtFloor": {
+        "0": false,
+        "0.05": false,
+        "0.1": false,
+        "0.2": false
+      }
+    },
+    {
+      "id": "causal_reasoning",
+      "classification": "OVERLAPS_ANOTHER_DIMENSION",
+      "currentMaeEligible": false,
+      "measuredCoverage": 0.03777777777777778,
+      "nonCoverageCriteriaPass": true,
+      "eligibleAtFloor": {
+        "0": false,
+        "0.05": false,
+        "0.1": false,
+        "0.2": false
+      }
+    },
+    {
+      "id": "integration_preference",
+      "classification": "CONSTRUCT_VALID_BUT_INSUFFICIENT_TEST_COVERAGE",
+      "currentMaeEligible": false,
+      "measuredCoverage": 0.04,
+      "nonCoverageCriteriaPass": true,
+      "eligibleAtFloor": {
+        "0": true,
+        "0.05": false,
+        "0.1": false,
+        "0.2": false
+      }
+    },
+    {
+      "id": "customer_interaction_preference",
+      "classification": "BETTER_AS_TWO_INDEPENDENT_PREFERENCES",
+      "currentMaeEligible": false,
+      "measuredCoverage": 0.02,
+      "nonCoverageCriteriaPass": true,
+      "eligibleAtFloor": {
+        "0": false,
+        "0.05": false,
+        "0.1": false,
+        "0.2": false
+      }
+    },
+    {
+      "id": "coordination_preference",
+      "classification": "BETTER_AS_TWO_INDEPENDENT_PREFERENCES",
+      "currentMaeEligible": false,
+      "measuredCoverage": 0.008888888888888889,
+      "nonCoverageCriteriaPass": false,
+      "eligibleAtFloor": {
+        "0": false,
+        "0.05": false,
+        "0.1": false,
+        "0.2": false
+      }
+    },
+    {
+      "id": "theory_vs_application",
+      "classification": "VALID_WITH_REDEFINITION",
+      "currentMaeEligible": false,
+      "measuredCoverage": 0.006666666666666667,
+      "nonCoverageCriteriaPass": true,
+      "eligibleAtFloor": {
+        "0": false,
+        "0.05": false,
+        "0.1": false,
+        "0.2": false
+      }
+    },
+    {
+      "id": "repetition_tolerance",
+      "classification": "BETTER_AS_TWO_INDEPENDENT_PREFERENCES",
+      "currentMaeEligible": false,
+      "measuredCoverage": 0.008888888888888889,
+      "nonCoverageCriteriaPass": true,
+      "eligibleAtFloor": {
+        "0": false,
+        "0.05": false,
+        "0.1": false,
+        "0.2": false
+      }
+    }
+  ],
+  "dimensionsThatFlipSolelyDueToThreshold": [
+    "integration_preference"
+  ]
+}
