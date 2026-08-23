@@ -184,6 +184,30 @@ exchange rate between NDCG and seconds is a product judgement, not a measurement
 
 ---
 
+## E. AMENDMENT 2026-08-23 — machine-checked research program
+
+Adopted to close the configuration-management failure the Direction-v1 collapse exposed: two
+source files were independently allowed to define what a semantic construct meant, and
+preregistration for current experiments lived in operator prose.
+
+- **`src/agent/semanticContract.ts` is the sole source of channel ontology.** Existing v1
+  prompt versions compose from the extracted `*_V1` fragments and are frozen by SHA-256 in
+  `config/prompt-render-freeze.json`. A source refactor that changes a rendered prompt is a
+  scientific incident, not a cleanup. Improvements (contrastive examples, full non-implication
+  set, explicit abstention) are a new prompt version, evaluated as an experiment.
+- **`config/agentic-research-program.json` is the authoritative backlog.** Statuses are
+  UNTESTED, PREREGISTERED, IN_PROGRESS, SUPPORTED, REJECTED, INCONCLUSIVE, BLOCKED, DEFERRED,
+  SUPERSEDED — not binary pass/fail. `docs/AGENTIC_RESEARCH_PROGRAM.md` is a generated
+  projection; the data wins.
+- **`config/experiment-registry.json` is append-only.** Every paid agent-runtime experiment
+  must have a record before execution. `assertPreregistered` refuses spend (and dry-run) on an
+  unknown id. A superseded design gets a new record; the old one keeps its verdict.
+- **`config/component-registry.json` classifies components by behaviour**, not by name.
+  Historical "Agent" names stay for cache reproducibility and are grandfathered; no new
+  component may be called an Agent unless it is TOOL_USING_AGENT or PLANNER.
+- **`docs/AGENTIC_DEVELOPMENT_ROADMAP.md` is rationale, not a second program.** If it and the
+  JSON disagree, the JSON wins.
+
 ## Relationship to the standing rules
 
 Unchanged and still binding: no Overall V3 score; four-channel independence; benchmark labels

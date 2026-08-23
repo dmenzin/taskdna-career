@@ -33,6 +33,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { InstrumentedRunner, cacheKeyFor, type ModelRequest } from "../src/agent/runtime";
 import { checkArmReadiness, buildProvider, armCachePath, splitAgentCachePath, CANONICAL_EFFORT, defaultModelFor, type ProviderName } from "../src/agent/providerRegistry";
 import { RuntimeBudgetLedger, RUNTIME_BUDGET_LIMITS, worstCaseCostUsd } from "../src/agent/budget";
+import { assertPreregistered } from "../src/agent/experimentRegistry";
 import {
   createAgentFieldMatchArchitecture,
   JOB_BLUEPRINT_PROMPT,
@@ -65,6 +66,10 @@ const provider = arg("provider", "openai") as ProviderName;
 const model = arg("model", defaultModelFor(provider));
 const effort = arg("effort", CANONICAL_EFFORT);
 const dryRun = process.argv.includes("--dry-run");
+const experimentId = `split-agents:${provider}:${family}:${effort}`;
+// Dry-run included: discovering a missing record here is the point. A check that ran only
+// after the first paid call would be a post-hoc autopsy.
+assertPreregistered(experimentId);
 // Sized from `pnpm openai:calibrate`, not inherited. The split agents emit fewer entries each
 // than the shared blueprint but carry extra provenance fields, so the person allowance is kept
 // at the calibrated value rather than reduced on a guess.
@@ -272,7 +277,6 @@ if (!readiness.ready) {
 }
 
 // ---- interpret ---------------------------------------------------------------------------
-const experimentId = `split-agents:${provider}:${family}:${effort}`;
 const projectedFor = (r: { prompt: { render: (i: Record<string, unknown>) => string }; input: Record<string, unknown> }) =>
   worstCaseCostUsd(model, r.prompt.render(r.input), splitMaxOutput);
 

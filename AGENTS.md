@@ -163,6 +163,21 @@ product-scoring changes.
   `docs/V3_COEFFICIENT_INVENTORY.md`. `PROVISIONAL_BASELINE` and `UNJUSTIFIED` values may
   remain runnable defaults, but must never be described as calibrated weights, and tests
   must never imply their human validity.
+- **Channel ontology has one source.** `src/agent/semanticContract.ts` owns what Experience,
+  Preference, Qualification and Direction mean. Active v1 prompts compose from the `*_V1`
+  fragments in that file and must remain byte-identical (`tests/prompt-render-freeze.test.ts`).
+  New wording, contrastive examples, or abstention rules are a new prompt version, never an edit
+  of a frozen one. Historical names stay; `config/component-registry.json` classifies what each
+  component actually does.
+- **The agentic research program is data, not prose.** `config/agentic-research-program.json` is
+  the backlog; `docs/AGENTIC_RESEARCH_PROGRAM.md` is generated from it (`pnpm research:program`).
+  `docs/AGENTIC_DEVELOPMENT_ROADMAP.md` is the decision rationale and must not grow a competing
+  stage map. Forgetting a tracked question is a failing test, not an oversight.
+- **Every paid agent-runtime experiment is preregistered in
+  `config/experiment-registry.json` before it can spend**, including on `--dry-run`.
+  `assertPreregistered` is the gate; `pnpm experiment:preregister` appends a record. Historical
+  records are never rewritten to look cleaner. The older `pnpm experiment:new` path still
+  serves the V3 preference-decoder loop and is not a substitute for this registry.
 - **Every paid model experiment starts with a zero-call dry run.** It must report fresh calls
   required, cache hits and reuse, worst-case dollar spend, cumulative spend to date, projected
   remaining dollar budget, provider/model, reasoning effort, prompt and schema versions, and

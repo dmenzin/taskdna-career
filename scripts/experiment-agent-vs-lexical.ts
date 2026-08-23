@@ -43,6 +43,7 @@ import {
   type ProviderName,
 } from "../src/agent/providerRegistry";
 import { RuntimeBudgetLedger, RUNTIME_BUDGET_LIMITS, worstCaseCostUsd } from "../src/agent/budget";
+import { assertPreregistered } from "../src/agent/experimentRegistry";
 import {
   createAgentArchitecture,
   createAgentFieldMatchArchitecture,
@@ -83,6 +84,8 @@ const model = arg("model", defaultModelFor(provider));
 // reasoning-depth arm rather than the canonical cross-provider comparison, and the artifact
 // records the setting so the two can never be confused.
 const effort = arg("effort", CANONICAL_EFFORT);
+const experimentId = `agent-vs-lexical:${provider}:${family}:${effort}`;
+assertPreregistered(experimentId);
 // Output allowances are sized to the task, not left at a generic default. The reservation is
 // worst-case, so an oversized ceiling reserves budget that will never be spent and can block a
 // legitimate experiment: at 2048 tokens/call this run reserved $16.0 to spend roughly $2.
@@ -199,7 +202,6 @@ const tolerateRefusal = (error: unknown) => {
   if (!(error instanceof ModelRefusalError)) return null;
   return { text: "{}", usage: { inputTokens: null, outputTokens: null, costUsd: 0, costIsEstimate: true } };
 };
-const experimentId = `agent-vs-lexical:${provider}:${family}:${effort}`;
 const personRunner = new InstrumentedRunner(personProvider, {
   budget: ledger, experimentId,
   projectedCostUsd: projectedFor(personMaxOutput), onError: tolerateRefusal,

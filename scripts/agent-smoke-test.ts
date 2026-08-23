@@ -12,6 +12,7 @@
 import { InstrumentedRunner, type ModelRequest } from "../src/agent/runtime";
 import { createAnthropicProvider, hasAnthropicCredentials, worstCaseCostUsd, DEFAULT_MODEL } from "../src/agent/anthropicProvider";
 import { RuntimeBudgetLedger, RUNTIME_BUDGET_LIMITS } from "../src/agent/budget";
+import { assertPreregistered } from "../src/agent/experimentRegistry";
 
 const checks: { name: string; pass: boolean; detail: string }[] = [];
 const add = (name: string, pass: boolean, detail: string) => {
@@ -27,6 +28,7 @@ if (!hasAnthropicCredentials()) {
   process.exit(1);
 }
 
+assertPreregistered("smoke-test");
 const ledger = new RuntimeBudgetLedger("artifacts/agent_runtime/budget-ledger.json");
 process.stdout.write(
   `  budget before: $${ledger.spentUsd.toFixed(4)} / $${RUNTIME_BUDGET_LIMITS.maxSpendUsd} · ${ledger.calls} / ${RUNTIME_BUDGET_LIMITS.callObservabilityThreshold} calls\n\n`,

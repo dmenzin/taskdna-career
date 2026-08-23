@@ -26,6 +26,7 @@ import {
   type OpenAiEffort,
 } from "../src/agent/openaiProvider";
 import { RuntimeBudgetLedger, RUNTIME_BUDGET_LIMITS, estimateCostUsd, worstCaseCostUsd } from "../src/agent/budget";
+import { assertPreregistered } from "../src/agent/experimentRegistry";
 import {
   JOB_BLUEPRINT_PROMPT,
   JOB_BLUEPRINT_SCHEMA,
@@ -38,6 +39,7 @@ import type { RenderFamily } from "../src/bench/semanticFrame";
 
 const arg = (name: string, fallback: string) => process.argv.find((a) => a.startsWith(`--${name}=`))?.split("=")[1] ?? fallback;
 const family = arg("family", "SEMANTIC_BRIDGE") as RenderFamily;
+assertPreregistered(`openai-effort-calibration:${family}`);
 const efforts = arg("efforts", "low,medium,high").split(",") as OpenAiEffort[];
 // Deliberately generous, so a setting FAILS on quality of reasoning rather than on a ceiling we
 // chose. The measured consumption below is what sizes the real arm.

@@ -20,6 +20,7 @@
 // interpretation is cached by content, so the same job in two people's pools is paid for once.
 import { InstrumentedRunner, type ModelRequest, type PromptSpec } from "@/agent/runtime";
 import { worstCaseCostUsd } from "@/agent/budget";
+import { NORMALISATION_V1, SHARED_CHANNEL_SEPARATION_V1 } from "@/agent/semanticContract";
 import { contentTokens } from "@/bench/render";
 import type { Channel } from "@/bench/labels";
 import type { PlantedFrameJob, PlantedFramePerson } from "@/bench/frameCorpus";
@@ -85,18 +86,18 @@ export const JOB_BLUEPRINT_SCHEMA = {
 } as const;
 
 /**
- * The normalisation instruction is the load-bearing part of both prompts.
+ * The normalisation instruction is the load-bearing part of both prompts, and it now lives in
+ * exactly one place.
  *
  * Both sides are told to rewrite into *plain, general* language. Neither is told what the other
  * side's vocabulary looks like, and neither is given a target list — that would be handing over
  * the answer. They meet in the middle only if the model genuinely understands both.
+ *
+ * Previously this text was duplicated here and in `splitAgents.ts`. Two files independently
+ * defining a semantic rule is the configuration-management failure that produced the Direction-v1
+ * collapse; see `semanticContract.ts`.
  */
-const NORMALISE = [
-  "Rewrite every field in plain, general, industry-neutral English.",
-  "Use the most ordinary word for each idea, not the wording of the source text.",
-  "Two people describing the same work in different styles must produce the same fields.",
-  "Never copy a distinctive phrase from the input if a plainer word means the same thing.",
-].join(" ");
+const NORMALISE = NORMALISATION_V1;
 
 export const PERSON_BLUEPRINT_PROMPT: PromptSpec = {
   id: "person-blueprint",
@@ -107,9 +108,7 @@ export const PERSON_BLUEPRINT_PROMPT: PromptSpec = {
     [
       "You are reading one person's description of their own working life.",
       "",
-      "Separate what they HAVE DONE from what they LIKE, what they DISLIKE, and what they WANT NEXT.",
-      "These four are independent. Never infer one from another: work someone has done is not",
-      "automatically work they enjoy, and work they want next is not work they have done.",
+      ...SHARED_CHANNEL_SEPARATION_V1,
       "",
       NORMALISE,
       "",

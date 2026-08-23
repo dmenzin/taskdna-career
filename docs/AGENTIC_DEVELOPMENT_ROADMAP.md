@@ -1,8 +1,13 @@
 # Agentic development roadmap
 
 What should happen next, given the evidence in `docs/AGENTIC_ARCHITECTURE_FORENSIC_AUDIT.md`. That
-document establishes what is true; this one decides what to do about it. Numbers are not repeated
-here except where a decision turns on them.
+document establishes what is true; this one is the **decision rationale** — why the next
+experiments are ranked the way they are, and what a stage is allowed to conclude.
+
+**This file is not the live program.** Status, dependencies, estimates and next actions live in
+`config/agentic-research-program.json`. `docs/AGENTIC_RESEARCH_PROGRAM.md` is the generated
+projection of that file. If this rationale and the JSON ever disagree, the JSON wins; edit this
+file to restore the rationale, do not invent a third map.
 
 ---
 
@@ -23,7 +28,12 @@ speculative and matcher/representation work as the main line.
 
 ## Top five experiments, ranked by information value
 
-### E1 — Provenance on the shared CareerBlueprint
+These five are the decision ranking. Each is a live item in the research program; the id in
+parentheses is the one the tests track. Rank is information value, not execution order of every
+item in the backlog — cheaper deterministic work (R-01, T-01) can run in parallel without
+displacing these.
+
+### E1 — Provenance on the shared CareerBlueprint (`P-01`)
 
 - **Question.** Can the incumbent architecture be made auditable without splitting it?
 - **Why it matters.** Claim-level auditability is the split architecture's only clear remaining
@@ -46,7 +56,7 @@ speculative and matcher/representation work as the main line.
   form, which materially strengthens the specialist case. INCONCLUSIVE → keep shared v1 as baseline
   and go to E2 before spending more.
 
-### E2 — Stochastic stability
+### E2 — Stochastic stability (`S-01`)
 
 - **Question.** Does run-to-run generation variance threaten any existing conclusion?
 - **Why it matters.** Every result in the program is a single generation per input. Reasoning tokens
@@ -67,7 +77,7 @@ speculative and matcher/representation work as the main line.
   trials before it can be believed**, and prior deltas are downgraded to provisional. INCONCLUSIVE →
   widen to 5 trials on 6 people before concluding.
 
-### E3 — Resolve v2 Direction at adequate power
+### E3 — Resolve v2 Direction at adequate power (`D-01`)
 
 - **Question.** Does a correctly-scoped Direction Agent beat the shared blueprint on Direction, or
   only tie it?
@@ -87,7 +97,7 @@ speculative and matcher/representation work as the main line.
   for Direction. INCONCLUSIVE at n=36 → the effect is smaller than the benchmark can resolve; stop
   spending on it.
 
-### E4 — `MIXED_EVIDENCE` benchmark family
+### E4 — `MIXED_EVIDENCE` benchmark family (`M-01`)
 
 - **Question.** How much of the current performance depends on the benchmark handing over
   pre-sorted, stance-labelled evidence?
@@ -107,7 +117,7 @@ speculative and matcher/representation work as the main line.
 - **Decision rule.** This is a **benchmark-contract change** and needs preregistration and explicit
   approval before the renderer is written, per amendment C.
 
-### E5 — Qualification extraction and partition agreement
+### E5 — Qualification extraction and partition agreement (`Q-01`)
 
 **This entry was mis-scoped in the first draft, in two ways that mattered.** The corrections are
 recorded rather than quietly edited, because both would have produced an experiment that violated a
@@ -159,50 +169,76 @@ has three entries.
 Each stage exits on a condition, not on a feeling. We do not stay in architecture experimentation
 indefinitely.
 
-### Stage 1 — Semantic architecture *(current)*
+The first draft of this file had six stages. Two coverage holes the audit found — semantic
+construct coverage (Qualification, uncertainty, contradictions) and a distinct agentic-expansion
+gate — were being implicitly folded into "architecture" and "production". That is how they would
+have been forgotten. The live program therefore has **eight** stages. The historical six-stage
+wording is superseded, not deleted from git; this section is the reconciled map.
 
-Establish the best single-user-call representation and its matcher.
-**Contains:** E1, E5, and E3 only if E1 fails.
-**EXIT WHEN:** one architecture is the measured baseline on both DEVELOPMENT families with
-claim-level provenance instrumented, its channel contamination is ≤ 0.05, and no decision metric is
-gated by an unvalidated threshold.
+Statuses and next actions are **not** maintained here. See `config/agentic-research-program.json`.
 
-### Stage 2 — Stability and robustness
+### S1 — Semantic architecture *(current)*
 
-Establish that conclusions survive generation variance.
-**Contains:** E2; threshold sensitivity analysis for the provenance floor and ambiguity margin;
-reasoning-effort sensitivity as its own arm.
-**EXIT WHEN:** effect signs are stable across ≥3 generations and the decision metrics' thresholds
-have a documented sensitivity range.
+Establish the best single-user-call representation and its matcher, including claim-level
+auditability.
+**Contains:** `P-01` (E1), `R-01`, `CT-01`, `N-01`, and `D-01` (E3) only if `P-01` fails and
+`S-01` passes.
+**EXIT WHEN:** one DEVELOPMENT architecture has acceptable semantic quality, channel integrity and
+claim-level auditability, with no clearly superior unresolved architecture immediately adjacent.
 
-### Stage 3 — Generalisation
+### S2 — Inference stability
 
-**Contains:** exactly one VALIDATION run against the frozen Stage-2 architecture.
-**ENTRY GATE:** all four conditions in the audit's transition rule.
-**EXIT WHEN:** the VALIDATION result is recorded, whatever it says. **Runs once per frozen
-architecture.** LOCKED stays untouched.
+Establish that conclusions survive generation variance and that KEEP/REJECT thresholds have a
+documented sensitivity range.
+**Contains:** `S-01` (E2) and `T-01`.
+**EXIT WHEN:** the architectural decision and the principal quality conclusions are stable across
+repeated independent generations, and every KEEP/REJECT threshold has a documented sensitivity
+range.
 
-### Stage 4 — Product-realistic evidence
+### S3 — Semantic construct coverage
 
-**Contains:** E4, plus an evidence-routing decision — deterministic router, model router, or
-structured onboarding that makes routing unnecessary.
-**EXIT WHEN:** the architecture holds up on unlabelled narrative evidence, or the product commits to
-structured onboarding and that becomes a documented architectural precondition.
+Close the gap between a four-channel contract and a three-channel implementation, and define
+uncertainty and contradiction handling before they are shown to a user.
+**Contains:** `Q-01` (E5), `U-01`, `C-01`, `X-01`.
+**EXIT WHEN:** every product-required construct (E/P/Q/D, uncertainty, contradictions) has defined
+truth, a defined metric, and a measured implementation.
 
-### Stage 5 — Human validity
+### S4 — Generalisation
 
-**Contains:** the review program in the audit §15. Corrections are held out under a custodian, never
-folded into tuning.
-**EXIT WHEN:** real users agree with the representation at a preregistered rate on a preregistered
-sample. **No production claim before this stage completes.**
+**Contains:** `V-01` — exactly one VALIDATION run against the frozen architecture.
+**ENTRY GATE:** the architecture-freeze conditions in the audit. Two of four currently fail.
+**EXIT WHEN:** the frozen architecture passes predefined VALIDATION criteria with no tuning on
+VALIDATION. **Runs once per frozen architecture.** LOCKED stays untouched.
 
-### Stage 6 — Production cost, latency, security
+### S5 — Product-realistic evidence
 
-**Contains:** a genuinely concurrent latency benchmark (the current parallel figures are
-optimistically biased estimates); prompt-injection hardening with data/instruction separation before
-any untrusted content is ingested; per-user cost model at scale.
-**EXIT WHEN:** measured p95 user wait under real concurrency meets a product threshold, and the
-injection surface is closed.
+**Contains:** `M-01` (E4), `M-02`, `J-01`, plus an evidence-routing decision — deterministic
+router, model router, or structured onboarding that makes routing unnecessary.
+**EXIT WHEN:** the architecture works without synthetic pre-routing of evidence and survives
+realistic ambiguity and contradiction.
+
+### S6 — Human validity
+
+**Contains:** `H-01`. Corrections are held out under a custodian, never folded into tuning.
+**EXIT WHEN:** real users show acceptable claim correctness, omission and error rates, correction
+burden, provenance fidelity and recommendation usefulness. **No production claim before this
+stage completes.**
+
+### S7 — Research-to-product integration
+
+User-facing latency, cost, privacy, security, and the actual replacement of the deterministic
+product path.
+**Contains:** `L-01`, `SEC-01`, `I-01`.
+**EXIT WHEN:** a validated semantic architecture runs in the product path with defined
+persistence, migration, fallback, latency UX, cost, privacy and security.
+
+### S8 — Agentic expansion
+
+Genuinely tool-using or planning components, each justified individually against a simpler
+alternative. Nothing in the repository is in this class today.
+**Contains:** `A-01`, `A-02`, `A-03`.
+**EXIT WHEN:** each genuinely agentic workflow individually demonstrates value over a simpler
+deterministic or single-call alternative.
 
 ---
 
@@ -219,8 +255,10 @@ injection surface is closed.
 - **Do not treat the parallel latency figures as measured.** They are optimistically biased estimates
   from individually-timed calls.
 - **Do not claim production readiness.** Human validity is zero.
-- **Do not use `docs/` growth as progress.** ~90 files with real duplication; consolidate rather than
-  add.
+- **Do not use `docs/` growth as progress.** The live program is
+  `config/agentic-research-program.json`; this file is rationale. Consolidate rather than add.
+- **Do not run a paid experiment that is not in `config/experiment-registry.json`.** The scripts
+  refuse. Add the record with `pnpm experiment:preregister` and commit it first.
 
 ## Autonomy boundary for this repository
 

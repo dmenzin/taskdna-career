@@ -102,6 +102,10 @@ add("AGENTS.md contains persistent TaskDNA experiment rules",agentsMd.includes("
 const allowedGovernanceStatuses=new Set(["STRUCTURAL","PROVISIONAL_BASELINE","EMPIRICALLY_JUSTIFIED","UNJUSTIFIED","EXPERIMENTAL_DISABLED"]);
 add("active V3 coefficients have explicit governance status",V3_COEFFICIENT_GOVERNANCE.length>0&&V3_COEFFICIENT_GOVERNANCE.every(r=>allowedGovernanceStatuses.has(r.status)&&r.rationale.length>0),`${V3_COEFFICIENT_GOVERNANCE.length} coefficients: ${V3_COEFFICIENT_GOVERNANCE.map(r=>`${r.id}=${r.status}`).join(", ")}`);
 
+// [ ] agentic research program stays machine-checked
+const agenticGov=run("pnpm",["exec","vitest","run","tests/prompt-render-freeze.test.ts","tests/research-program.test.ts","tests/experiment-registry.test.ts"]);
+add("agentic research program governance",agenticGov.status===0,agenticGov.status===0?"rendered prompts frozen, research-program consistent, paid scripts preregistered":(agenticGov.stdout+agenticGov.stderr).slice(-800));
+
 // --- product-level metric readiness checks ---
 
 // [ ] every optimizable product-critical subsystem has a complete contract AND a runnable evaluator

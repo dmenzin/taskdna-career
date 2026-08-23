@@ -36,6 +36,7 @@
 import type { PromptSpec } from "@/agent/runtime";
 import type { CareerBlueprint, StructuredWork } from "@/agent/agentArchitecture";
 import type { PlantedFramePerson } from "@/bench/frameCorpus";
+import { NORMALISATION_V1, NON_IMPLICATION_SPLIT_V1 } from "@/agent/semanticContract";
 
 export const SPLIT_AGENT_VERSION = "split-agents.v2";
 
@@ -153,28 +154,15 @@ export const DIRECTION_AGENT_SCHEMA = {
 } as const;
 
 /**
- * The normalisation instruction, copied VERBATIM from the shared prompt.
+ * Both fragments now come from the one file that owns channel ontology.
  *
- * It must be byte-identical, or the comparison silently becomes "these words normalise better"
- * rather than "a dedicated agent extracts better". This is the load-bearing text in both arms.
+ * `NON_IMPLICATION_SPLIT_V1` is preserved WITH ITS DEFECT: it covers performed <-> desired and says
+ * nothing about liked -> desired, which is precisely the gap the v1 Direction Agent walked through.
+ * It is kept byte-identical so the v1 arm stays reconstructible from its cache. A future prompt
+ * version should compose from `NON_IMPLICATIONS` instead, which enumerates all nine rules.
  */
-const NORMALISE = [
-  "Rewrite every field in plain, general, industry-neutral English.",
-  "Use the most ordinary word for each idea, not the wording of the source text.",
-  "Two people describing the same work in different styles must produce the same fields.",
-  "Never copy a distinctive phrase from the input if a plainer word means the same thing.",
-].join(" ");
-
-/**
- * The non-implication, stated the same way to both agents.
- *
- * This is the product's most important negative constraint: recommending someone back into the
- * work they are trying to leave is the failure mode that loses a user's trust permanently.
- */
-const NON_IMPLICATION = [
-  "Work someone has done is NOT automatically work they want. Work they want is NOT automatically",
-  "work they have done. Never infer one from the other.",
-].join(" ");
+const NORMALISE = NORMALISATION_V1;
+const NON_IMPLICATION = NON_IMPLICATION_SPLIT_V1;
 
 export const EXPERIENCE_AGENT_PROMPT: PromptSpec = {
   id: "experience-agent",
