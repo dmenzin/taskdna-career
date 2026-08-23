@@ -19,7 +19,7 @@
 // loop would cost people x jobs calls and is the architecture this file exists to avoid. Every
 // interpretation is cached by content, so the same job in two people's pools is paid for once.
 import { InstrumentedRunner, type ModelRequest, type PromptSpec } from "@/agent/runtime";
-import { worstCaseCostUsd } from "@/agent/anthropicProvider";
+import { worstCaseCostUsd } from "@/agent/budget";
 import { contentTokens } from "@/bench/render";
 import type { Channel } from "@/bench/labels";
 import type { PlantedFrameJob, PlantedFramePerson } from "@/bench/frameCorpus";

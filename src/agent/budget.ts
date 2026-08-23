@@ -38,22 +38,50 @@ export interface ModelPricing {
   cacheWritePerMTok: number;
 }
 
-// Published Anthropic list prices, USD per million tokens. Recorded here so a cost figure can
-// be audited against a number someone chose deliberately. NEVER invent a price: an unknown
-// model is charged at UNKNOWN_MODEL_PRICING below, which is deliberately the most expensive
-// entry, so an unpriced model can only ever cause us to UNDER-spend the cap.
+// Published list prices, USD per million tokens. Recorded here so a cost figure can be audited
+// against a number someone chose deliberately. NEVER invent a price: an unknown model is charged
+// at UNKNOWN_MODEL_PRICING below, which is deliberately the most expensive entry, so an unpriced
+// model can only ever cause us to UNDER-spend the cap.
 //
 // Sonnet 5 carries a promotional rate ($2/$10) through 2026-08-31. The full rate is used here
 // because the amendment requires conservative estimation; a promo that expires mid-run must
-// not silently push actual spend above a cap computed from the discounted price.
+// not silently push actual spend above a cap computed from the discounted price. The same
+// reasoning applies to gpt-5.6-sol, whose $4/$20 rate is promotional through at least
+// 2026-11-21: the pre-promotion $5/$30 is used, so a promo lapsing mid-run cannot push actual
+// spend above a cap computed from the discount.
+//
+// OpenAI bills REASONING tokens as output tokens. Callers must fold
+// `output_tokens_details.reasoning_tokens` into `outputTokens` (the Responses API already does,
+// in its top-level `output_tokens`), or a reasoning model will look far cheaper than it is.
 export const MODEL_PRICING: Record<string, ModelPricing> = {
   "claude-opus-5": { inputPerMTok: 5, outputPerMTok: 25, cacheReadPerMTok: 0.5, cacheWritePerMTok: 6.25 },
   "claude-sonnet-5": { inputPerMTok: 3, outputPerMTok: 15, cacheReadPerMTok: 0.3, cacheWritePerMTok: 3.75 },
   "claude-haiku-4-5": { inputPerMTok: 1, outputPerMTok: 5, cacheReadPerMTok: 0.1, cacheWritePerMTok: 1.25 },
+  "gpt-5.6-sol": { inputPerMTok: 5, outputPerMTok: 30, cacheReadPerMTok: 0.5, cacheWritePerMTok: 6.25 },
+  "gpt-5.6-terra": { inputPerMTok: 2.5, outputPerMTok: 15, cacheReadPerMTok: 0.25, cacheWritePerMTok: 3.125 },
+  "gpt-5.6-luna": { inputPerMTok: 1, outputPerMTok: 6, cacheReadPerMTok: 0.1, cacheWritePerMTok: 1.25 },
 };
 
 /** Charged for any model absent from the table. The most expensive known entry, on purpose. */
-export const UNKNOWN_MODEL_PRICING: ModelPricing = MODEL_PRICING["claude-opus-5"];
+export const UNKNOWN_MODEL_PRICING: ModelPricing = MODEL_PRICING["gpt-5.6-sol"];
+
+/**
+ * Worst-case cost of a call, for budget reservation BEFORE it is made.
+ *
+ * Reserving on actual cost would enforce nothing — by then the money is spent — so the
+ * reservation assumes the full output allowance is used. Provider-neutral on purpose: it lives
+ * here rather than in a provider module so that provider-agnostic code never has to import a
+ * specific vendor to price a call.
+ *
+ * On a reasoning model the full output allowance is the realistic case rather than the
+ * pessimistic one, because reasoning tokens are drawn from the same `max_output_tokens` pool.
+ */
+export function worstCaseCostUsd(model: string, promptText: string, maxOutputTokens: number): number {
+  // ~3 characters per token is a coarse but deliberately CONSERVATIVE input estimate; it
+  // overstates for prose, and overstating is the safe direction for a spend cap.
+  const approximateInputTokens = Math.ceil(promptText.length / 3);
+  return estimateCostUsd(model, { inputTokens: approximateInputTokens, outputTokens: maxOutputTokens }).costUsd;
+}
 
 export interface TokenUsage {
   inputTokens: number | null;

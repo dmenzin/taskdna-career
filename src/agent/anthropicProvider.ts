@@ -132,14 +132,8 @@ export function createAnthropicProvider(options: AnthropicProviderOptions = {}):
 }
 
 /**
- * Worst-case cost of a call, for budget reservation BEFORE it is made.
- *
- * Reserving on actual cost would enforce nothing — by then the money is spent — so the
- * reservation assumes the full output allowance is used.
+ * Re-exported so existing callers keep working. The implementation moved to `budget.ts` when a
+ * second provider arrived: provider-agnostic code must be able to price a call without importing
+ * a specific vendor's module.
  */
-export function worstCaseCostUsd(model: string, promptText: string, maxOutputTokens: number): number {
-  // ~4 characters per token is a coarse but deliberately CONSERVATIVE input estimate; it
-  // overstates for prose, and overstating is the safe direction for a spend cap.
-  const approximateInputTokens = Math.ceil(promptText.length / 3);
-  return estimateCostUsd(model, { inputTokens: approximateInputTokens, outputTokens: maxOutputTokens }).costUsd;
-}
+export { worstCaseCostUsd } from "@/agent/budget";
