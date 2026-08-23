@@ -148,6 +148,11 @@
       "detail": "experience NDCG=0.9372, preference NDCG=0.6177, direction NDCG=0.7689; saturated=[]; score-space dominance violations=0"
     },
     {
+      "name": "product red team",
+      "pass": true,
+      "detail": "20 pass, 0 limitation, 0 fail across 20 attacks (circular gold, self-labelled mapping gold, title-collision false positives, cross-title misses, incidental over-reward, candidate-pool misses, novelty without relevance, Overall score, Pareto inconsistency, channel leakage, qualification mutation, duplicate recommendations, dev-only improvement, untraceability, unsupported explanation, metadata leakage, saturated benchmark, weakened baseline, metric without evaluator)"
+    },
+    {
       "name": "locked confirmation guarded",
       "pass": true,
       "detail": "not executed by readiness"

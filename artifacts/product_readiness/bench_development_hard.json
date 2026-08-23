@@ -298,10 +298,10 @@
     }
   ],
   "runtimeMs": {
-    "corpusBuild": 175,
-    "pipeline": 7880,
-    "metrics": 5034,
-    "total": 13089
+    "corpusBuild": 160,
+    "pipeline": 8010,
+    "metrics": 4987,
+    "total": 13157
   },
   "cache": {
     "hits": 11253,

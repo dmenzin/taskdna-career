@@ -1,73 +1,97 @@
 {
   "tier": "CHECKPOINT",
   "version": "eval-checkpoint.v1",
-  "totalMs": 13643,
+  "totalMs": 57930,
   "passed": true,
   "steps": [
     {
       "label": "unit tests",
       "pass": true,
-      "ms": 4444,
+      "ms": 15769,
       "detail": "pass"
     },
     {
       "label": "typecheck",
       "pass": true,
-      "ms": 1613,
+      "ms": 1632,
       "detail": "pass"
     },
     {
       "label": "generator semantic polarity + monotonicity",
       "pass": true,
-      "ms": 614,
+      "ms": 603,
       "detail": "semanticPolarityPass=true eligiblePass=true"
     },
     {
       "label": "generator positional bias",
       "pass": true,
-      "ms": 633,
+      "ms": 675,
       "detail": "samplerPass=true corpusPass=true"
     },
     {
       "label": "DEVELOPMENT preference dashboard",
       "pass": true,
-      "ms": 822,
+      "ms": 860,
       "detail": "primary=2.4152237706848902 recall=0.31313131313131315 warnings=[\"PREDICTION_TO_5_RISK\",\"VARIANCE_COLLAPSE\"]"
     },
     {
       "label": "DEVELOPMENT metrics reproducible",
       "pass": true,
-      "ms": 848,
+      "ms": 827,
       "detail": "sha256=89e9a1c173a99717"
     },
     {
       "label": "VALIDATION preference dashboard (confirmation only)",
       "pass": true,
-      "ms": 732,
+      "ms": 695,
       "detail": "primary=2.1839480091143164"
     },
     {
       "label": "four-channel isolation",
       "pass": true,
-      "ms": 1068,
+      "ms": 1153,
       "detail": "pass"
     },
     {
       "label": "mapper/scorer regression",
       "pass": true,
-      "ms": 1352,
+      "ms": 1414,
       "detail": "pass"
     },
     {
       "label": "preference metric red team",
       "pass": true,
-      "ms": 999,
+      "ms": 1038,
       "detail": "pass"
+    },
+    {
+      "label": "metric contract audit",
+      "pass": true,
+      "ms": 351,
+      "detail": "31 contracts, 26 runnable, 5 explicitly excluded"
+    },
+    {
+      "label": "product ranking benchmark (hard tier)",
+      "pass": true,
+      "ms": 14932,
+      "detail": "experience=0.9372 preference=0.6177 direction=0.7689"
+    },
+    {
+      "label": "subsystem benchmarks and trace fixture",
+      "pass": true,
+      "ms": 7148,
+      "detail": "extraction macroF1=0.8354, trace failed stages=1"
+    },
+    {
+      "label": "product red team",
+      "pass": true,
+      "ms": 10327,
+      "detail": "20 pass, 0 limitation, 0 fail"
     },
     {
       "label": "LOCKED_CONFIRMATION stays guarded",
       "pass": true,
-      "ms": 515,
+      "ms": 501,
       "detail": "not executed"
     }
   ]
