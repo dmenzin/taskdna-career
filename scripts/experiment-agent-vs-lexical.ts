@@ -41,13 +41,14 @@ import {
   experienceLexicalArchitecture,
   onetCanonicalArchitecture,
   oracleArchitecture,
+  oracleNormalizerArchitecture,
   randomArchitecture,
   resumeLexicalArchitecture,
   titleOnlyArchitecture,
   constantScoreArchitecture,
   type RankingArchitecture,
 } from "../src/bench/architectures";
-import type { RenderFamily } from "../src/bench/semanticFrame";
+import { CONCEPTS_BY_ID, IDENTITY_ROLES, type RenderFamily } from "../src/bench/semanticFrame";
 
 const arg = (name: string, fallback: string) => process.argv.find((a) => a.startsWith(`--${name}=`))?.split("=")[1] ?? fallback;
 const people = Number(arg("people", "12"));
@@ -171,6 +172,14 @@ try {
   onet = onetCanonicalArchitecture(mapWork as never) as unknown as RankingArchitecture<never>;
 } catch { /* competitor unavailable; reported as absent rather than silently skipped */ }
 
+// CONTROL, not a competitor: perfect normalisation through the corpus's own neutral register.
+// If the agent lands near this, normalisation is the whole game and the headline is partly an
+// artifact of how the lexicon was authored. If this is well below 1.000, token matching — not
+// the representation — is the binding constraint.
+const normalizerControl = oracleNormalizerArchitecture(
+  (id) => CONCEPTS_BY_ID.get(id)?.neutralForms ?? [],
+  IDENTITY_ROLES,
+) as unknown as RankingArchitecture<never>;
 const agent = createAgentArchitecture(blueprints, jobWork) as unknown as RankingArchitecture<never>;
 const candidates = [
   randomArchitecture, constantScoreArchitecture, titleOnlyArchitecture,
@@ -181,7 +190,7 @@ const candidates = [
 process.stdout.write(`\n================ ${family} (n=${people}) ================\n`);
 process.stdout.write(`${"architecture".padEnd(22)}${CHANNELS.map((c) => c.padStart(14)).join("")}\n`);
 const results = new Map<string, ReturnType<typeof evaluateArchitecture>>();
-for (const architecture of [...candidates, oracleArchitecture as unknown as RankingArchitecture<never>]) {
+for (const architecture of [...candidates, normalizerControl, oracleArchitecture as unknown as RankingArchitecture<never>]) {
   const cells: string[] = [];
   for (const channel of CHANNELS) {
     const result = evaluateArchitecture(architecture, corpus, channel, 10);

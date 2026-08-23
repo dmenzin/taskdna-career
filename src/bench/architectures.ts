@@ -15,6 +15,7 @@ import { contentTokens } from "@/bench/render";
 import { mulberry32 } from "@/lab/rng";
 import type { Channel } from "@/bench/labels";
 import type { PlantedFrameJob, PlantedFramePerson } from "@/bench/frameCorpus";
+import type { WorkFrame } from "@/bench/semanticFrame";
 
 export const ARCHITECTURE_HARNESS_VERSION = "architectures.v1";
 
@@ -287,3 +288,61 @@ export const charNgramArchitecture: RankingArchitecture<{
     return cosine(prepared.liked, jobGrams) - cosine(prepared.disliked, jobGrams);
   },
 };
+
+/**
+ * ORACLE NORMALIZER — a control, not a candidate.
+ *
+ * WHAT VALIDITY THREAT THIS EXISTS TO TEST
+ * ----------------------------------------
+ * The agent arm is told to normalise both sides into "plain, general English". The corpus's
+ * own `neutralForms` are also plain English. So an agent win could mean either of two very
+ * different things:
+ *
+ *   (a) the model genuinely understands both vocabularies and maps them onto common ground, or
+ *   (b) the task reduces to "reach the neutral register the corpus author happened to write",
+ *       in which case the result is partly an artifact of how the lexicon was authored.
+ *
+ * This control performs PERFECT normalisation by construction: it reads planted frames and
+ * renders them through `neutralForms` on both sides. It therefore measures the CEILING of the
+ * normalise-then-token-match strategy.
+ *
+ * How to read it against the agent:
+ *   agent ≈ this        normalisation is the whole game; interpretation quality is not the
+ *                       binding constraint, and (b) is a live concern for the headline.
+ *   agent << this       the agent's interpretation is lossy; there is real headroom.
+ *   this << 1.000       even PERFECT normalisation cannot solve the task by token matching,
+ *                       so the matching function — not the representation — is the bottleneck.
+ *
+ * It reads hidden truth, so it can never be reported as a competing architecture.
+ */
+export function oracleNormalizerArchitecture(
+  neutralFormsFor: (conceptId: string) => string[],
+  identityRoles: readonly string[],
+): RankingArchitecture<{ experience: Set<string>; liked: Set<string>; disliked: Set<string>; desired: Set<string> }> {
+  // Deterministic: always the FIRST neutral form, so both sides normalise identically. Picking
+  // randomly would inject noise that has nothing to do with the property being measured.
+  const normalise = (frames: { frame: WorkFrame }[]): Set<string> =>
+    contentTokens(
+      frames
+        .map((entry) => identityRoles.map((role) => neutralFormsFor(entry.frame[role as keyof WorkFrame] ?? "")[0] ?? "").join(" "))
+        .join(" "),
+    );
+
+  return {
+    id: "oracle-normalizer",
+    version: "1",
+    description: "CONTROL. Perfect normalisation of planted truth through the corpus's own neutral register.",
+    prepare: (person) => ({
+      experience: normalise(person.performed.map((entry) => entry.work)),
+      liked: normalise(person.liked),
+      disliked: normalise(person.disliked),
+      desired: normalise(person.desired),
+    }),
+    score: (prepared, job, channel) => {
+      const jobTokens = normalise([...job.coreWork, ...job.incidentalWork]);
+      if (channel === "experience") return jaccard(prepared.experience, jobTokens);
+      if (channel === "direction") return jaccard(prepared.desired, jobTokens);
+      return jaccard(prepared.liked, jobTokens) - jaccard(prepared.disliked, jobTokens);
+    },
+  };
+}

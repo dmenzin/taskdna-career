@@ -10,6 +10,7 @@ import {
   experienceLexicalArchitecture,
   onetCanonicalArchitecture,
   oracleArchitecture,
+  oracleNormalizerArchitecture,
   randomArchitecture,
   resumeLexicalArchitecture,
   titleOnlyArchitecture,
@@ -17,7 +18,7 @@ import {
 } from "../src/bench/architectures";
 import { CHANNELS, evaluateArchitecture, pairedDifference, FRAME_EVALUATION_VERSION } from "../src/bench/frameEvaluation";
 import { buildFrameCorpus, FRAME_CORPUS_VERSION } from "../src/bench/frameCorpus";
-import { RENDER_FAMILIES, SEMANTIC_FRAME_VERSION, type RenderFamily } from "../src/bench/semanticFrame";
+import { CONCEPTS_BY_ID, IDENTITY_ROLES, RENDER_FAMILIES, SEMANTIC_FRAME_VERSION, type RenderFamily } from "../src/bench/semanticFrame";
 import type { Channel } from "../src/bench/labels";
 
 const people = Number(process.argv.find((a) => a.startsWith("--people="))?.split("=")[1] ?? 48);
@@ -50,6 +51,12 @@ const candidates = [
 // The oracle is a CEILING, never a competitor. Kept in a separate list so it cannot be
 // accidentally reported as if it had beaten anything.
 const ceiling = oracleArchitecture as unknown as RankingArchitecture<never>;
+// CONTROL, not a competitor: perfect normalisation through the corpus's own neutral register.
+// Establishes the ceiling of the normalise-then-token-match strategy, which is NOT 1.000.
+const normalizerControl = oracleNormalizerArchitecture(
+  (id) => CONCEPTS_BY_ID.get(id)?.neutralForms ?? [],
+  IDENTITY_ROLES,
+) as unknown as RankingArchitecture<never>;
 
 const rows: Record<string, unknown>[] = [];
 process.stdout.write(`\nFRAME COMPETITION — ${FRAME_CORPUS_VERSION} / ${SEMANTIC_FRAME_VERSION} / ${FRAME_EVALUATION_VERSION}\n`);
@@ -63,7 +70,7 @@ for (const family of RENDER_FAMILIES as readonly RenderFamily[]) {
   const byChannel = new Map<Channel, Map<string, ReturnType<typeof evaluateArchitecture>>>();
   for (const channel of CHANNELS) byChannel.set(channel, new Map());
 
-  for (const architecture of [...candidates, ceiling]) {
+  for (const architecture of [...candidates, normalizerControl, ceiling]) {
     const cells: string[] = [];
     for (const channel of CHANNELS) {
       const result = evaluateArchitecture(architecture, corpus, channel, 10);

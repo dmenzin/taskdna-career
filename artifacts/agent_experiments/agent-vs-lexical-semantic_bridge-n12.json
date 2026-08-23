@@ -1,0 +1,304 @@
+{
+  "experiment": "agent-vs-lexical",
+  "family": "SEMANTIC_BRIDGE",
+  "people": 12,
+  "model": "claude-opus-5",
+  "promptVersions": {
+    "person": "v1",
+    "job": "v1"
+  },
+  "scores": [
+    {
+      "key": "random:experience",
+      "ndcg10": 0.2696233233506071,
+      "recall10": 0.3541666666666667,
+      "surprising": 0.37361111111111117,
+      "transition": 0.3333333333333333
+    },
+    {
+      "key": "random:preference",
+      "ndcg10": 0.27787328775058223,
+      "recall10": 0.35644841269841265,
+      "surprising": 0.37361111111111117,
+      "transition": 0.3333333333333333
+    },
+    {
+      "key": "random:direction",
+      "ndcg10": 0.22118821269412856,
+      "recall10": 0.3333333333333333,
+      "surprising": 0.37361111111111117,
+      "transition": 0.3333333333333333
+    },
+    {
+      "key": "constant-score:experience",
+      "ndcg10": 0.34553516520702826,
+      "recall10": 0.40625,
+      "surprising": 0.38472222222222224,
+      "transition": 0.5
+    },
+    {
+      "key": "constant-score:preference",
+      "ndcg10": 0.25038801386296833,
+      "recall10": 0.41974206349206344,
+      "surprising": 0.38472222222222224,
+      "transition": 0.5
+    },
+    {
+      "key": "constant-score:direction",
+      "ndcg10": 0.27557859912191324,
+      "recall10": 0.5,
+      "surprising": 0.38472222222222224,
+      "transition": 0.5
+    },
+    {
+      "key": "title-only:experience",
+      "ndcg10": 0.28861918003204984,
+      "recall10": 0.3541666666666667,
+      "surprising": 0.16111111111111112,
+      "transition": 0.25
+    },
+    {
+      "key": "title-only:preference",
+      "ndcg10": 0.19737600064071215,
+      "recall10": 0.33462301587301585,
+      "surprising": 0.16111111111111112,
+      "transition": 0.25
+    },
+    {
+      "key": "title-only:direction",
+      "ndcg10": 0.30814643004003534,
+      "recall10": 0.4583333333333333,
+      "surprising": 0.16111111111111112,
+      "transition": 0.25
+    },
+    {
+      "key": "char-ngram-lexical:experience",
+      "ndcg10": 0.4095804854844232,
+      "recall10": 0.4895833333333333,
+      "surprising": 0.5180555555555556,
+      "transition": 0.4166666666666667
+    },
+    {
+      "key": "char-ngram-lexical:preference",
+      "ndcg10": 0.2661184421343267,
+      "recall10": 0.3636904761904762,
+      "surprising": 0.39444444444444443,
+      "transition": 0.3333333333333333
+    },
+    {
+      "key": "char-ngram-lexical:direction",
+      "ndcg10": 0.11417626264034053,
+      "recall10": 0.20833333333333334,
+      "surprising": 0.4597222222222222,
+      "transition": 0.25
+    },
+    {
+      "key": "resume-lexical:experience",
+      "ndcg10": 0.4418032700134809,
+      "recall10": 0.4791666666666667,
+      "surprising": 0.4180555555555556,
+      "transition": 0.16666666666666666
+    },
+    {
+      "key": "resume-lexical:preference",
+      "ndcg10": 0.22893202771901075,
+      "recall10": 0.33888888888888885,
+      "surprising": 0.4180555555555556,
+      "transition": 0.16666666666666666
+    },
+    {
+      "key": "resume-lexical:direction",
+      "ndcg10": 0.1612250828291563,
+      "recall10": 0.3333333333333333,
+      "surprising": 0.4180555555555556,
+      "transition": 0.16666666666666666
+    },
+    {
+      "key": "experience-lexical:experience",
+      "ndcg10": 0.3985358655896527,
+      "recall10": 0.4895833333333333,
+      "surprising": 0.5166666666666667,
+      "transition": 0.25
+    },
+    {
+      "key": "experience-lexical:preference",
+      "ndcg10": 0.3320556129539145,
+      "recall10": 0.3969246031746032,
+      "surprising": 0.36944444444444446,
+      "transition": 0.25
+    },
+    {
+      "key": "experience-lexical:direction",
+      "ndcg10": 0.1417402496840766,
+      "recall10": 0.25,
+      "surprising": 0.4277777777777778,
+      "transition": 0.16666666666666666
+    },
+    {
+      "key": "onet-canonical:experience",
+      "ndcg10": 0.34553516520702826,
+      "recall10": 0.40625,
+      "surprising": 0.38472222222222224,
+      "transition": 0.5
+    },
+    {
+      "key": "onet-canonical:preference",
+      "ndcg10": 0.25038801386296833,
+      "recall10": 0.41974206349206344,
+      "surprising": 0.38472222222222224,
+      "transition": 0.5
+    },
+    {
+      "key": "onet-canonical:direction",
+      "ndcg10": 0.27557859912191324,
+      "recall10": 0.5,
+      "surprising": 0.38472222222222224,
+      "transition": 0.5
+    },
+    {
+      "key": "agent-blueprint:experience",
+      "ndcg10": 0.6446624858122889,
+      "recall10": 0.6145833333333334,
+      "surprising": 0.6597222222222222,
+      "transition": 0.08333333333333333
+    },
+    {
+      "key": "agent-blueprint:preference",
+      "ndcg10": 0.545488017439555,
+      "recall10": 0.5946428571428571,
+      "surprising": 0.40138888888888896,
+      "transition": 0.4166666666666667
+    },
+    {
+      "key": "agent-blueprint:direction",
+      "ndcg10": 0.7002433904640787,
+      "recall10": 0.9583333333333334,
+      "surprising": 0.4527777777777779,
+      "transition": 0.9166666666666666
+    },
+    {
+      "key": "oracle-normalizer:experience",
+      "ndcg10": 0.8078260350993988,
+      "recall10": 0.75,
+      "surprising": 0.8138888888888888,
+      "transition": 0
+    },
+    {
+      "key": "oracle-normalizer:preference",
+      "ndcg10": 0.6163550332392749,
+      "recall10": 0.5660714285714286,
+      "surprising": 0.37083333333333335,
+      "transition": 0.5833333333333334
+    },
+    {
+      "key": "oracle-normalizer:direction",
+      "ndcg10": 0.9933100657623489,
+      "recall10": 1,
+      "surprising": 0.29027777777777775,
+      "transition": 1
+    },
+    {
+      "key": "oracle-planted-truth:experience",
+      "ndcg10": 1,
+      "recall10": 1,
+      "surprising": 1,
+      "transition": 0
+    },
+    {
+      "key": "oracle-planted-truth:preference",
+      "ndcg10": 0.9792315781642307,
+      "recall10": 0.8677579365079365,
+      "surprising": 0.4263888888888889,
+      "transition": 1
+    },
+    {
+      "key": "oracle-planted-truth:direction",
+      "ndcg10": 1,
+      "recall10": 1,
+      "surprising": 0.33749999999999997,
+      "transition": 1
+    }
+  ],
+  "comparisons": [
+    {
+      "system": "agent-blueprint",
+      "reference": "experience-lexical",
+      "family": "SEMANTIC_BRIDGE",
+      "channel": "experience",
+      "pairedN": 12,
+      "meanSystem": 0.6446624858122889,
+      "meanReference": 0.3985358655896527,
+      "meanDifference": 0.2461266202226361,
+      "ci95": {
+        "low": 0.1338271509899341,
+        "high": 0.3575212016163308
+      },
+      "significant": true,
+      "resolvableDifference": 0.11184702531319833
+    },
+    {
+      "system": "agent-blueprint",
+      "reference": "experience-lexical",
+      "family": "SEMANTIC_BRIDGE",
+      "channel": "preference",
+      "pairedN": 12,
+      "meanSystem": 0.545488017439555,
+      "meanReference": 0.3320556129539145,
+      "meanDifference": 0.21343240448564052,
+      "ci95": {
+        "low": 0.03239992833919648,
+        "high": 0.3671388682827558
+      },
+      "significant": true,
+      "resolvableDifference": 0.16736946997177968
+    },
+    {
+      "system": "agent-blueprint",
+      "reference": "experience-lexical",
+      "family": "SEMANTIC_BRIDGE",
+      "channel": "direction",
+      "pairedN": 12,
+      "meanSystem": 0.7002433904640787,
+      "meanReference": 0.1417402496840766,
+      "meanDifference": 0.5585031407800022,
+      "ci95": {
+        "low": 0.38709130349170023,
+        "high": 0.713123335087756
+      },
+      "significant": true,
+      "resolvableDifference": 0.1630160157980279
+    }
+  ],
+  "telemetry": {
+    "person": {
+      "calls": 12,
+      "cacheHits": 12,
+      "cacheMisses": 0,
+      "errors": 0,
+      "inputTokens": 27065,
+      "outputTokens": 11790,
+      "costUsd": 0,
+      "anyCostEstimated": true,
+      "p50LatencyMs": 0,
+      "p95LatencyMs": 0
+    },
+    "job": {
+      "calls": 288,
+      "cacheHits": 288,
+      "cacheMisses": 0,
+      "errors": 0,
+      "inputTokens": 197188,
+      "outputTokens": 65678,
+      "costUsd": 0,
+      "anyCostEstimated": true,
+      "p50LatencyMs": 0,
+      "p95LatencyMs": 0
+    }
+  },
+  "totalCostUsd": 0,
+  "elapsedMs": 276,
+  "refusals": {
+    "count": 0,
+    "samples": []
+  }
+}

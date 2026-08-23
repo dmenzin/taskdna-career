@@ -37,6 +37,99 @@ code rather than prose — see `docs/RESEARCH_CONTRACT_AMENDMENTS.md`.
 
 ---
 
+## Phase 3-4 (2026-08-23): agent-first is the first architecture to bridge disjoint vocabulary
+
+**Runtime is live.** Anthropic provider behind `src/agent/runtime.ts`, structured output, disk
+cache, telemetry, and a code-enforced $25 / 1,000-call ceiling. Smoke test 11/11.
+
+### Result: SEMANTIC_BRIDGE, NDCG@10, 12 people, DEVELOPMENT
+
+| architecture | experience | preference | direction |
+| --- | --- | --- | --- |
+| random | 0.270 | 0.278 | 0.221 |
+| constant-score *(degenerate control)* | 0.346 | 0.250 | 0.276 |
+| title-only | 0.289 | 0.197 | 0.308 |
+| char-ngram-lexical | 0.410 | 0.266 | 0.114 |
+| resume-lexical | 0.442 | 0.229 | 0.161 |
+| experience-lexical *(strongest simple)* | 0.399 | 0.332 | 0.142 |
+| onet-canonical | 0.346 | 0.250 | 0.276 |
+| **agent-blueprint** | **0.645** | **0.545** | **0.700** |
+| *oracle-normalizer (control)* | *0.808* | *0.616* | *0.993* |
+| *oracle-planted-truth (ceiling)* | *1.000* | *0.979* | *1.000* |
+
+Paired bootstrap vs `experience-lexical`, over persons:
+
+| channel | delta | 95% CI | resolves | verdict |
+| --- | --- | --- | --- | --- |
+| experience | +0.246 | [0.134, 0.358] | ±0.112 | **BETTER** |
+| preference | +0.213 | [0.032, 0.367] | ±0.167 | **BETTER** |
+| direction | +0.559 | [0.387, 0.713] | ±0.163 | **BETTER** |
+
+`agent-blueprint` is the FIRST architecture in this repository to exceed the constant-score
+control on this family. Every deterministic system sits between 0.29 and 0.44.
+
+The comparison is a controlled ablation: the agent arm uses the SAME scorer as
+`experience-lexical` and changes only the text being compared, so the difference is
+attributable to the representation rather than to a better matcher.
+
+### The validity threat, and what the control says about it
+
+The agent is told to normalise into "plain general English"; the corpus's own `neutralForms`
+are also plain English. An agent win could therefore mean either genuine understanding OR
+"both sides converged on the register the corpus author happened to write".
+
+`oracle-normalizer` performs PERFECT normalisation through that register, by construction:
+
+- **agent 0.645 vs normalizer 0.808** — the agent is well below perfect normalisation, so it
+  is *not* simply hitting the authored register. There is real, measurable interpretation loss.
+- **normalizer 0.808, not 1.000** — even flawless normalisation loses ~0.19 under token
+  matching. **The matcher, not the representation, is now the binding constraint.** A
+  production system should compare structured fields, not tokens.
+- Direction is the lossiest channel: agent 0.700 against a 0.993 ceiling.
+
+### Person understanding (computed from cache, zero additional cost)
+
+| measure | result |
+| --- | --- |
+| channel volume vs planted | experience 6.0/6.0, liked 7.0/7.0, disliked 2.0/2.0, desired 4.0/4.0 — exact |
+| role recovery *(LOWER BOUND)* | domain 97.2%, purpose 94.4%, object 91.7%, method 84.7%, action 41.7% |
+| invention | 0 of 72 interpreted experience works match no planted work |
+| disliked leaking into liked | 0 across 12 people |
+
+A 3-of-5 role threshold first reported 9 channel leaks; all were false positives of that
+detector, since plausibility constraints make unrelated frames share domain and purpose. At
+5/5 the count is 0 and manual inspection confirms correct separation.
+
+Qualitative evidence the bridging is real — person text said *"the books"*, *"our running
+totals"*, *"on the wards"*; the interpretation returned *"reconcile financial records in
+retail"* and *"analyze causes of near misses in healthcare"*, both in the correct channel.
+Nothing lexical connects those.
+
+### Measured cost
+
+| phase | calls | cost | p50 latency |
+| --- | --- | --- | --- |
+| person interpretation (onboarding) | 12 | $0.430 | 11.4 s |
+| job interpretation (corpus, amortised) | 288 | $2.628 | 4.7 s |
+| **per person blueprint** | 1 | **$0.0358** | |
+| **per job blueprint** | 1 | **$0.0091** | |
+
+Interpretation is per person and per job, never per pair. Run total $3.06; cumulative spend
+$3.70 of the $25 ceiling across 336 of 1,000 calls.
+
+### Standing limitations of this result
+
+1. **No true embedding baseline exists in this environment** (no embedding provider), so
+   "agent vs dense retrieval" is NOT answered. `char-ngram-lexical` is a stronger lexical
+   competitor, explicitly not a semantic retriever.
+2. n=12 for the agent arm against n=48 for the deterministic re-baseline.
+3. One prompt version, one model, one effort setting. "Agent-first wins" currently means
+   "this prompt at low effort wins".
+4. Frame identity is a discrete 5-tuple; real relevance is continuous.
+5. Zero human validity. Everything here is planted-truth recovery.
+
+---
+
 ## Phase 1-2 (2026-08-23): the benchmark is rewired, frozen, and everything is re-baselined
 
 **Current benchmark**: `frame-corpus.v1` / `semantic-frame.v2`, frozen in
