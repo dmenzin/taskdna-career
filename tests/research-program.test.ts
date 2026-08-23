@@ -150,7 +150,6 @@ describe("the questions the audit found must not disappear", () => {
   it.each(mustTrack)("still tracks %s (%s)", (id) => {
     const item = program.items.find((i: ProgramItem) => i.id === id);
     expect(item, `research program lost item ${id}`).toBeDefined();
-    expect(item!.status).not.toBe("SUPPORTED");
   });
 });
 

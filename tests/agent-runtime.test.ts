@@ -54,6 +54,16 @@ describe("cache key", () => {
     const two: ModelRequest = { prompt, input: { b: 2, a: 1 }, decoding: { temperature: 0, maxOutputTokens: 64 } };
     expect(cacheKeyFor(provider, one)).toBe(cacheKeyFor(provider, two));
   });
+
+  it("treats trialId as experiment identity without invalidating existing caches", () => {
+    const provider = countingProvider().provider;
+    const base = request("x");
+    const withTrial = { ...base, trialId: "t1" };
+    const withOther = { ...base, trialId: "t2" };
+    expect(cacheKeyFor(provider, base)).not.toBe(cacheKeyFor(provider, withTrial));
+    expect(cacheKeyFor(provider, withTrial)).not.toBe(cacheKeyFor(provider, withOther));
+    expect(cacheKeyFor(provider, base)).toBe(cacheKeyFor(provider, { ...base }));
+  });
 });
 
 describe("caching", () => {

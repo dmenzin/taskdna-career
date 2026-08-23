@@ -48,6 +48,12 @@ export interface ModelRequest {
    * biased. The pairing has to happen per subject, before aggregation.
    */
   subjectId?: string;
+  /**
+   * Experiment-identity only. Does not change the rendered prompt. When set, it participates
+   * in the cache key so independent fresh trials cannot hit each other. Omitted from the key
+   * when unset so existing paid caches stay valid.
+   */
+  trialId?: string;
 }
 
 export interface ModelUsage {
@@ -175,6 +181,7 @@ export function cacheKeyFor(provider: ModelProvider, request: ModelRequest): str
     promptVersion: request.prompt.version,
     decoding: request.decoding,
     input: sortDeep(request.input),
+    ...(request.trialId ? { trialId: request.trialId } : {}),
   });
   return createHash("sha256").update(stable).digest("hex");
 }

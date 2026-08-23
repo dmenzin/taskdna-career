@@ -76,6 +76,13 @@ describe("P-01 is a minimal prompt/schema change", () => {
 });
 
 describe("T-01 does not retune thresholds after seeing results", () => {
+  it("refuses S-01 paid execution until authorized", () => {
+    const source = readFileSync("scripts/experiment-stochastic-stability.ts", "utf8");
+    expect(source).toContain("assertPreregistered");
+    expect(source).toContain("trialId");
+    expect(source).toContain("Paid execution of S-01 is not authorized");
+  });
+
   it("sweeps a fixed grid and reports flips without picking a winner", () => {
     const source = readFileSync("scripts/experiment-t01.ts", "utf8");
     expect(source).toContain("sweepProvenanceThresholds");

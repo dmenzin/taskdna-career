@@ -1,0 +1,3115 @@
+{
+  "experiment": "P-01",
+  "experimentId": "person-blueprint-v2:openai:LEXICAL_TRAP:low",
+  "family": "LEXICAL_TRAP",
+  "people": 12,
+  "provider": "openai",
+  "requestedModel": "gpt-5.6-sol",
+  "reasoning": "low",
+  "promptVersions": {
+    "personV1": "v1",
+    "personV2": "v2",
+    "job": "v1"
+  },
+  "schema": "person-blueprint.v2",
+  "matcher": "agent-field-match",
+  "matcherPolicy": "frozen; R-01 diagnostic only",
+  "stripProvenanceBeforeMatch": true,
+  "scores": [
+    {
+      "key": "experience-lexical:experience",
+      "ndcg10": 0.621568784411846,
+      "recall10": 0.5729166666666666,
+      "surprising": 0.6708333333333334
+    },
+    {
+      "key": "experience-lexical:preference",
+      "ndcg10": 0.44418789451466884,
+      "recall10": 0.4952050264550265,
+      "surprising": 0.3513888888888889
+    },
+    {
+      "key": "experience-lexical:direction",
+      "ndcg10": 0.59378075183988,
+      "recall10": 0.7916666666666666,
+      "surprising": 0.3375000000000001
+    },
+    {
+      "key": "person-blueprint-v1:experience",
+      "ndcg10": 0.7452764509336977,
+      "recall10": 0.75,
+      "surprising": 0.7972222222222222
+    },
+    {
+      "key": "person-blueprint-v1:preference",
+      "ndcg10": 0.6317246518486225,
+      "recall10": 0.5984457671957671,
+      "surprising": 0.39166666666666666
+    },
+    {
+      "key": "person-blueprint-v1:direction",
+      "ndcg10": 0.7316815094271113,
+      "recall10": 0.875,
+      "surprising": 0.29027777777777775
+    },
+    {
+      "key": "person-blueprint-v2:experience",
+      "ndcg10": 0.7267016761675803,
+      "recall10": 0.7291666666666666,
+      "surprising": 0.7458333333333332
+    },
+    {
+      "key": "person-blueprint-v2:preference",
+      "ndcg10": 0.6461019760445018,
+      "recall10": 0.6445767195767196,
+      "surprising": 0.4777777777777777
+    },
+    {
+      "key": "person-blueprint-v2:direction",
+      "ndcg10": 0.6700062165746544,
+      "recall10": 0.8333333333333334,
+      "surprising": 0.3527777777777778
+    }
+  ],
+  "comparisons": [
+    {
+      "system": "person-blueprint-v2",
+      "reference": "person-blueprint-v1",
+      "family": "LEXICAL_TRAP",
+      "channel": "experience",
+      "pairedN": 12,
+      "meanSystem": 0.7267016761675803,
+      "meanReference": 0.7452764509336977,
+      "meanDifference": -0.018574774766117533,
+      "ci95": {
+        "low": -0.09706589416856089,
+        "high": 0.05418428690361989
+      },
+      "significant": false,
+      "resolvableDifference": 0.07562509053609039
+    },
+    {
+      "system": "person-blueprint-v2",
+      "reference": "person-blueprint-v1",
+      "family": "LEXICAL_TRAP",
+      "channel": "preference",
+      "pairedN": 12,
+      "meanSystem": 0.6461019760445018,
+      "meanReference": 0.6317246518486225,
+      "meanDifference": 0.014377324195879245,
+      "ci95": {
+        "low": -0.0430635983285548,
+        "high": 0.08262430963176982
+      },
+      "significant": false,
+      "resolvableDifference": 0.06284395398016232
+    },
+    {
+      "system": "person-blueprint-v2",
+      "reference": "person-blueprint-v1",
+      "family": "LEXICAL_TRAP",
+      "channel": "direction",
+      "pairedN": 12,
+      "meanSystem": 0.6700062165746544,
+      "meanReference": 0.7316815094271113,
+      "meanDifference": -0.06167529285245695,
+      "ci95": {
+        "low": -0.17184574423506507,
+        "high": 0.042916389467989445
+      },
+      "significant": false,
+      "resolvableDifference": 0.10738106685152726
+    }
+  ],
+  "provenance": {
+    "version": "provenance.v1",
+    "floor": 0.6,
+    "margin": 0.1,
+    "byChannel": {
+      "experience": {
+        "claims": 72,
+        "contaminationRate": 0,
+        "unsupportedClaimRate": 0,
+        "ambiguousRate": 0,
+        "keep": true
+      },
+      "liked": {
+        "claims": 84,
+        "contaminationRate": 0,
+        "unsupportedClaimRate": 0,
+        "ambiguousRate": 0.011904761904761904,
+        "keep": true
+      },
+      "disliked": {
+        "claims": 24,
+        "contaminationRate": 0,
+        "unsupportedClaimRate": 0,
+        "ambiguousRate": 0,
+        "keep": true
+      },
+      "desired": {
+        "claims": 48,
+        "contaminationRate": 0,
+        "unsupportedClaimRate": 0,
+        "ambiguousRate": 0,
+        "keep": true
+      }
+    },
+    "perPerson": {
+      "frame-development-p001": {
+        "experience": {
+          "claims": 6,
+          "supported": 6,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        },
+        "liked": {
+          "claims": 7,
+          "supported": 7,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        },
+        "disliked": {
+          "claims": 2,
+          "supported": 2,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        },
+        "desired": {
+          "claims": 4,
+          "supported": 4,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        }
+      },
+      "frame-development-p002": {
+        "experience": {
+          "claims": 6,
+          "supported": 6,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        },
+        "liked": {
+          "claims": 7,
+          "supported": 7,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        },
+        "disliked": {
+          "claims": 2,
+          "supported": 2,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        },
+        "desired": {
+          "claims": 4,
+          "supported": 4,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        }
+      },
+      "frame-development-p003": {
+        "experience": {
+          "claims": 6,
+          "supported": 6,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        },
+        "liked": {
+          "claims": 7,
+          "supported": 7,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        },
+        "disliked": {
+          "claims": 2,
+          "supported": 2,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        },
+        "desired": {
+          "claims": 4,
+          "supported": 4,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        }
+      },
+      "frame-development-p004": {
+        "experience": {
+          "claims": 6,
+          "supported": 6,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        },
+        "liked": {
+          "claims": 7,
+          "supported": 7,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        },
+        "disliked": {
+          "claims": 2,
+          "supported": 2,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        },
+        "desired": {
+          "claims": 4,
+          "supported": 4,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        }
+      },
+      "frame-development-p005": {
+        "experience": {
+          "claims": 6,
+          "supported": 6,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        },
+        "liked": {
+          "claims": 7,
+          "supported": 7,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        },
+        "disliked": {
+          "claims": 2,
+          "supported": 2,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        },
+        "desired": {
+          "claims": 4,
+          "supported": 4,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        }
+      },
+      "frame-development-p006": {
+        "experience": {
+          "claims": 6,
+          "supported": 6,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        },
+        "liked": {
+          "claims": 7,
+          "supported": 7,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        },
+        "disliked": {
+          "claims": 2,
+          "supported": 2,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        },
+        "desired": {
+          "claims": 4,
+          "supported": 4,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        }
+      },
+      "frame-development-p007": {
+        "experience": {
+          "claims": 6,
+          "supported": 6,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        },
+        "liked": {
+          "claims": 7,
+          "supported": 7,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        },
+        "disliked": {
+          "claims": 2,
+          "supported": 2,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        },
+        "desired": {
+          "claims": 4,
+          "supported": 4,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        }
+      },
+      "frame-development-p008": {
+        "experience": {
+          "claims": 6,
+          "supported": 6,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        },
+        "liked": {
+          "claims": 7,
+          "supported": 7,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        },
+        "disliked": {
+          "claims": 2,
+          "supported": 2,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        },
+        "desired": {
+          "claims": 4,
+          "supported": 4,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        }
+      },
+      "frame-development-p009": {
+        "experience": {
+          "claims": 6,
+          "supported": 6,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        },
+        "liked": {
+          "claims": 7,
+          "supported": 6,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 1,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        },
+        "disliked": {
+          "claims": 2,
+          "supported": 2,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        },
+        "desired": {
+          "claims": 4,
+          "supported": 4,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        }
+      },
+      "frame-development-p010": {
+        "experience": {
+          "claims": 6,
+          "supported": 6,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        },
+        "liked": {
+          "claims": 7,
+          "supported": 7,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        },
+        "disliked": {
+          "claims": 2,
+          "supported": 2,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        },
+        "desired": {
+          "claims": 4,
+          "supported": 4,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        }
+      },
+      "frame-development-p011": {
+        "experience": {
+          "claims": 6,
+          "supported": 6,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        },
+        "liked": {
+          "claims": 7,
+          "supported": 7,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        },
+        "disliked": {
+          "claims": 2,
+          "supported": 2,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        },
+        "desired": {
+          "claims": 4,
+          "supported": 4,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        }
+      },
+      "frame-development-p012": {
+        "experience": {
+          "claims": 6,
+          "supported": 6,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        },
+        "liked": {
+          "claims": 7,
+          "supported": 7,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        },
+        "disliked": {
+          "claims": 2,
+          "supported": 2,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        },
+        "desired": {
+          "claims": 4,
+          "supported": 4,
+          "evidenceContamination": 0,
+          "evidenceContaminationFromVisibleSource": 0,
+          "interpretationDrift": 0,
+          "unsupportedClaims": 0,
+          "ambiguousProvenance": 0,
+          "evidenceContaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "bySourceChannel": {}
+        }
+      }
+    }
+  },
+  "volumes": {
+    "meanRatio": {
+      "experience": 1,
+      "liked": 1,
+      "disliked": 1,
+      "desired": 1
+    },
+    "perPerson": [
+      {
+        "experience": {
+          "interpreted": 6,
+          "planted": 6,
+          "ratio": 1
+        },
+        "liked": {
+          "interpreted": 7,
+          "planted": 7,
+          "ratio": 1
+        },
+        "disliked": {
+          "interpreted": 2,
+          "planted": 2,
+          "ratio": 1
+        },
+        "desired": {
+          "interpreted": 4,
+          "planted": 4,
+          "ratio": 1
+        }
+      },
+      {
+        "experience": {
+          "interpreted": 6,
+          "planted": 6,
+          "ratio": 1
+        },
+        "liked": {
+          "interpreted": 7,
+          "planted": 7,
+          "ratio": 1
+        },
+        "disliked": {
+          "interpreted": 2,
+          "planted": 2,
+          "ratio": 1
+        },
+        "desired": {
+          "interpreted": 4,
+          "planted": 4,
+          "ratio": 1
+        }
+      },
+      {
+        "experience": {
+          "interpreted": 6,
+          "planted": 6,
+          "ratio": 1
+        },
+        "liked": {
+          "interpreted": 7,
+          "planted": 7,
+          "ratio": 1
+        },
+        "disliked": {
+          "interpreted": 2,
+          "planted": 2,
+          "ratio": 1
+        },
+        "desired": {
+          "interpreted": 4,
+          "planted": 4,
+          "ratio": 1
+        }
+      },
+      {
+        "experience": {
+          "interpreted": 6,
+          "planted": 6,
+          "ratio": 1
+        },
+        "liked": {
+          "interpreted": 7,
+          "planted": 7,
+          "ratio": 1
+        },
+        "disliked": {
+          "interpreted": 2,
+          "planted": 2,
+          "ratio": 1
+        },
+        "desired": {
+          "interpreted": 4,
+          "planted": 4,
+          "ratio": 1
+        }
+      },
+      {
+        "experience": {
+          "interpreted": 6,
+          "planted": 6,
+          "ratio": 1
+        },
+        "liked": {
+          "interpreted": 7,
+          "planted": 7,
+          "ratio": 1
+        },
+        "disliked": {
+          "interpreted": 2,
+          "planted": 2,
+          "ratio": 1
+        },
+        "desired": {
+          "interpreted": 4,
+          "planted": 4,
+          "ratio": 1
+        }
+      },
+      {
+        "experience": {
+          "interpreted": 6,
+          "planted": 6,
+          "ratio": 1
+        },
+        "liked": {
+          "interpreted": 7,
+          "planted": 7,
+          "ratio": 1
+        },
+        "disliked": {
+          "interpreted": 2,
+          "planted": 2,
+          "ratio": 1
+        },
+        "desired": {
+          "interpreted": 4,
+          "planted": 4,
+          "ratio": 1
+        }
+      },
+      {
+        "experience": {
+          "interpreted": 6,
+          "planted": 6,
+          "ratio": 1
+        },
+        "liked": {
+          "interpreted": 7,
+          "planted": 7,
+          "ratio": 1
+        },
+        "disliked": {
+          "interpreted": 2,
+          "planted": 2,
+          "ratio": 1
+        },
+        "desired": {
+          "interpreted": 4,
+          "planted": 4,
+          "ratio": 1
+        }
+      },
+      {
+        "experience": {
+          "interpreted": 6,
+          "planted": 6,
+          "ratio": 1
+        },
+        "liked": {
+          "interpreted": 7,
+          "planted": 7,
+          "ratio": 1
+        },
+        "disliked": {
+          "interpreted": 2,
+          "planted": 2,
+          "ratio": 1
+        },
+        "desired": {
+          "interpreted": 4,
+          "planted": 4,
+          "ratio": 1
+        }
+      },
+      {
+        "experience": {
+          "interpreted": 6,
+          "planted": 6,
+          "ratio": 1
+        },
+        "liked": {
+          "interpreted": 7,
+          "planted": 7,
+          "ratio": 1
+        },
+        "disliked": {
+          "interpreted": 2,
+          "planted": 2,
+          "ratio": 1
+        },
+        "desired": {
+          "interpreted": 4,
+          "planted": 4,
+          "ratio": 1
+        }
+      },
+      {
+        "experience": {
+          "interpreted": 6,
+          "planted": 6,
+          "ratio": 1
+        },
+        "liked": {
+          "interpreted": 7,
+          "planted": 7,
+          "ratio": 1
+        },
+        "disliked": {
+          "interpreted": 2,
+          "planted": 2,
+          "ratio": 1
+        },
+        "desired": {
+          "interpreted": 4,
+          "planted": 4,
+          "ratio": 1
+        }
+      },
+      {
+        "experience": {
+          "interpreted": 6,
+          "planted": 6,
+          "ratio": 1
+        },
+        "liked": {
+          "interpreted": 7,
+          "planted": 7,
+          "ratio": 1
+        },
+        "disliked": {
+          "interpreted": 2,
+          "planted": 2,
+          "ratio": 1
+        },
+        "desired": {
+          "interpreted": 4,
+          "planted": 4,
+          "ratio": 1
+        }
+      },
+      {
+        "experience": {
+          "interpreted": 6,
+          "planted": 6,
+          "ratio": 1
+        },
+        "liked": {
+          "interpreted": 7,
+          "planted": 7,
+          "ratio": 1
+        },
+        "disliked": {
+          "interpreted": 2,
+          "planted": 2,
+          "ratio": 1
+        },
+        "desired": {
+          "interpreted": 4,
+          "planted": 4,
+          "ratio": 1
+        }
+      }
+    ]
+  },
+  "integrity": {
+    "people": 12,
+    "directionIntoExperienceRate": 0,
+    "experienceIntoDirectionRate": 0,
+    "dislikedIntoLikedRate": 0,
+    "performedRecall": 0.013888888888888888,
+    "desiredRecall": 0,
+    "meanExperienceEntries": 6,
+    "meanDesiredEntries": 4,
+    "emptyExperienceChannels": 0,
+    "emptyDesiredChannels": 0
+  },
+  "decision": {
+    "case": "A",
+    "result": "SUPPORTED",
+    "retrievalHolds": true,
+    "provenanceClean": true,
+    "retrievalRegressed": false
+  },
+  "blueprintsV2": {
+    "frame-development-p001": {
+      "personId": "frame-development-p001",
+      "experience": [
+        {
+          "action": "analyze",
+          "object": "repeated problems",
+          "purpose": "keep operations running",
+          "method": "narrow down possible causes step by step",
+          "domain": "controlled work setting",
+          "evidence": "I went through it carefully problems that kept cropping up somewhere every step gets checked, to keep operations running, mostly by systematic narrowing."
+        },
+        {
+          "action": "analyze",
+          "object": "repeated problems",
+          "purpose": "keep operations running",
+          "method": "test possible causes in a structured way",
+          "domain": "manufacturing",
+          "evidence": "I went through it carefully issues that kept coming back in manufacturing, to keep operations running, mostly by structured testing."
+        },
+        {
+          "action": "review",
+          "object": "contract terms",
+          "purpose": "reduce risk",
+          "method": "collect existing written information",
+          "domain": "industrial setting",
+          "evidence": "Most weeks I went through it carefully the agreement clauses in an industrial setting. to make it safer, and the way in was collecting what had been set down."
+        },
+        {
+          "action": "analyze",
+          "object": "repeated problems",
+          "purpose": "improve the customer experience",
+          "method": "analyze numerical data",
+          "domain": "education",
+          "evidence": "A lot of my time went on went through it carefully problems that kept cropping up in schools — to improve the customer experience — numerical analysis."
+        },
+        {
+          "action": "track",
+          "object": "stock shortages",
+          "purpose": "follow rules and limits",
+          "method": "rule out possible causes one by one",
+          "domain": "retail",
+          "evidence": "Most weeks I tracked supply gaps in stores. to keep us inside the limits, and the way in was process of elimination."
+        },
+        {
+          "action": "process",
+          "object": "required submissions",
+          "purpose": "reduce risk",
+          "method": "rule out possible causes one by one",
+          "domain": "local government",
+          "evidence": "in local government, I worked through it in detail the submissions that were due. ruling out causes one by one was how I did it, to make it safer."
+        }
+      ],
+      "liked": [
+        {
+          "action": "analyze",
+          "object": "repeated problems",
+          "purpose": "improve the service",
+          "method": "",
+          "domain": "education",
+          "evidence": "What I liked most: went through it carefully issues that kept coming back in education to make the service better."
+        },
+        {
+          "action": "analyze",
+          "object": "repeated problems",
+          "purpose": "keep operations running",
+          "method": "",
+          "domain": "controlled work setting",
+          "evidence": "I always wanted more of the work where I went through it carefully problems that kept cropping up somewhere every step gets checked to keep operations running."
+        },
+        {
+          "action": "analyze",
+          "object": "repeated problems",
+          "purpose": "restore service",
+          "method": "",
+          "domain": "industrial setting",
+          "evidence": "What I liked most: went through it carefully problems that kept cropping up in an industrial setting to restore service."
+        },
+        {
+          "action": "negotiate",
+          "object": "contract terms",
+          "purpose": "follow rules and limits",
+          "method": "",
+          "domain": "controlled work setting",
+          "evidence": "I always wanted more of the work where I agreed terms on the agreement clauses somewhere every step gets checked to keep us inside the limits."
+        },
+        {
+          "action": "track",
+          "object": "repeated problems",
+          "purpose": "improve the customer experience",
+          "method": "",
+          "domain": "public services",
+          "evidence": "What I liked most: tracked issues that kept coming back across public services to improve the customer experience."
+        },
+        {
+          "action": "prioritize",
+          "object": "repeated problems",
+          "purpose": "improve the service",
+          "method": "",
+          "domain": "public services",
+          "evidence": "What I liked most: triaged problems that kept cropping up across public services to make the service better."
+        },
+        {
+          "action": "monitor",
+          "object": "staff coverage",
+          "purpose": "improve the service",
+          "method": "",
+          "domain": "local government",
+          "evidence": "I always wanted more of the work where I observed shift cover in local government to make the service better."
+        }
+      ],
+      "disliked": [
+        {
+          "action": "process",
+          "object": "required reports",
+          "purpose": "reduce risk",
+          "method": "",
+          "domain": "public sector",
+          "evidence": "What I disliked most: worked through it in detail the returns that had to go in in the public sector to make it safer."
+        },
+        {
+          "action": "monitor",
+          "object": "stock shortages",
+          "purpose": "follow rules and limits",
+          "method": "",
+          "domain": "retail",
+          "evidence": "The part I came to dread was when I monitored supply gaps in retail to stay within what we were allowed."
+        }
+      ],
+      "desired": [
+        {
+          "action": "negotiate",
+          "object": "contract terms",
+          "purpose": "follow rules and limits",
+          "method": "",
+          "domain": "regulated setting",
+          "evidence": "What I want to move into next is work where I negotiated contract terms in a place where the rules are tight to stay within what we were allowed."
+        },
+        {
+          "action": "monitor",
+          "object": "repeated problems",
+          "purpose": "improve satisfaction",
+          "method": "",
+          "domain": "local government",
+          "evidence": "The direction I want next: observed problems that kept cropping up in local government to raise satisfaction."
+        },
+        {
+          "action": "negotiate",
+          "object": "stock shortages",
+          "purpose": "increase output",
+          "method": "",
+          "domain": "regulated setting",
+          "evidence": "The direction I want next: agreed terms on stock shortages in a place where the rules are tight to increase throughput."
+        },
+        {
+          "action": "negotiate",
+          "object": "stock shortages",
+          "purpose": "reduce risk",
+          "method": "",
+          "domain": "manufacturing",
+          "evidence": "What I want to move into next is work where I agreed terms on inventory shortfalls in manufacturing to lower our exposure."
+        }
+      ]
+    },
+    "frame-development-p002": {
+      "personId": "frame-development-p002",
+      "experience": [
+        {
+          "action": "prioritize",
+          "object": "recurring problems",
+          "purpose": "prevent them from happening again",
+          "method": "collect accounts of what happened",
+          "domain": "regulated setting",
+          "evidence": "prioritised issues that kept coming back in a place where the rules are tight. to prevent recurrence, and the way in was gathering accounts of what happened"
+        },
+        {
+          "action": "track",
+          "object": "access requests",
+          "purpose": "handle more requests",
+          "method": "narrow them down step by step",
+          "domain": "public services",
+          "evidence": "tracked permission requests across public services — to handle more volume — systematic narrowing"
+        },
+        {
+          "action": "review",
+          "object": "required reports",
+          "purpose": "follow rules",
+          "method": "observe work directly",
+          "domain": "education",
+          "evidence": "worked through it in detail the returns that had to go in across teaching institutions, to stay within what we were allowed, mostly by direct observation"
+        },
+        {
+          "action": "fix",
+          "object": "recurring problems",
+          "purpose": "restore service",
+          "method": "collect written records",
+          "domain": "production",
+          "evidence": "corrected problems that kept cropping up in manufacturing, to restore service, mostly by collecting what had been set down"
+        },
+        {
+          "action": "track",
+          "object": "user access approvals",
+          "purpose": "handle more requests",
+          "method": "use numerical analysis",
+          "domain": "regulated setting",
+          "evidence": "tracked user access approvals in a place where the rules are tight — to handle more volume — quantitative methods"
+        },
+        {
+          "action": "observe",
+          "object": "recurring problems",
+          "purpose": "prevent them from happening again",
+          "method": "use statistical analysis",
+          "domain": "local government",
+          "evidence": "observed problems that kept cropping up in local government, to stop it happening again, mostly by statistical analysis"
+        }
+      ],
+      "liked": [
+        {
+          "action": "observe",
+          "object": "recurring problems",
+          "purpose": "solve them permanently",
+          "method": "",
+          "domain": "public sector",
+          "evidence": "observed issues that kept coming back in the public sector for lasting resolution"
+        },
+        {
+          "action": "review",
+          "object": "required submissions",
+          "purpose": "follow rules",
+          "method": "check them carefully",
+          "domain": "education",
+          "evidence": "went through it carefully the submissions that were due in education to stay within what we were allowed"
+        },
+        {
+          "action": "prioritize",
+          "object": "recurring problems",
+          "purpose": "prevent them from happening again",
+          "method": "rank them by urgency",
+          "domain": "regulated setting",
+          "evidence": "ranked by urgency problems that kept cropping up in a place where the rules are tight to stop it happening again"
+        },
+        {
+          "action": "fix",
+          "object": "safety incidents that almost happened",
+          "purpose": "follow rules",
+          "method": "work on site",
+          "domain": "public sector",
+          "evidence": "fixed near misses on site in the public sector to stay within what we were allowed"
+        },
+        {
+          "action": "plan",
+          "object": "access requests",
+          "purpose": "improve the customer experience",
+          "method": "",
+          "domain": "regulated setting",
+          "evidence": "planned out permission requests in a place where the rules are tight to improve the customer experience"
+        },
+        {
+          "action": "analyze",
+          "object": "recurring problems",
+          "purpose": "solve them permanently",
+          "method": "examine them in detail",
+          "domain": "public sector",
+          "evidence": "worked through it in detail problems that kept cropping up in the public sector for lasting resolution"
+        },
+        {
+          "action": "negotiate",
+          "object": "contract terms",
+          "purpose": "follow rules",
+          "method": "reach agreement",
+          "domain": "regulated setting",
+          "evidence": "agreed terms on the agreement clauses in a place where the rules are tight to keep us inside the limits"
+        }
+      ],
+      "disliked": [
+        {
+          "action": "monitor",
+          "object": "access requests",
+          "purpose": "process more requests",
+          "method": "",
+          "domain": "regulated setting",
+          "evidence": "monitored access requests in a place where the rules are tight to increase throughput"
+        },
+        {
+          "action": "observe",
+          "object": "access requests",
+          "purpose": "handle more requests",
+          "method": "",
+          "domain": "local government",
+          "evidence": "observed access requests in local government to raise capacity"
+        }
+      ],
+      "desired": [
+        {
+          "action": "fix",
+          "object": "safety incidents that almost happened",
+          "purpose": "follow rules",
+          "method": "work on site",
+          "domain": "public services",
+          "evidence": "remediated near misses on site across public services to keep us inside the limits"
+        },
+        {
+          "action": "define",
+          "object": "access requests",
+          "purpose": "improve the service",
+          "method": "",
+          "domain": "regulated setting",
+          "evidence": "specified permission requests in a place where the rules are tight to make the service better"
+        },
+        {
+          "action": "review",
+          "object": "contract terms",
+          "purpose": "follow rules",
+          "method": "check them carefully",
+          "domain": "production",
+          "evidence": "went through it carefully contractual conditions on the production side to keep us inside the limits"
+        },
+        {
+          "action": "track",
+          "object": "supply shortages",
+          "purpose": "increase capacity",
+          "method": "",
+          "domain": "retail",
+          "evidence": "tracked supply gaps across consumer sales to raise capacity"
+        }
+      ]
+    },
+    "frame-development-p003": {
+      "personId": "frame-development-p003",
+      "experience": [
+        {
+          "action": "review",
+          "object": "workplace accidents",
+          "purpose": "follow rules",
+          "method": "collecting records",
+          "domain": "public sector",
+          "evidence": "I went through it carefully workplace accidents in the public sector, to keep us inside the limits, mostly by collecting what had been set down."
+        },
+        {
+          "action": "resolve",
+          "object": "service complaints",
+          "purpose": "provide a lasting solution",
+          "method": "gathering accounts of events",
+          "domain": "regulated setting",
+          "evidence": "A lot of my time went on fixed service complaints somewhere every step gets checked — for lasting resolution — gathering accounts of what happened."
+        },
+        {
+          "action": "analyze",
+          "object": "contract terms",
+          "purpose": "follow rules",
+          "method": "observing the process",
+          "domain": "manufacturing",
+          "evidence": "A lot of my time went on worked through it in detail contract terms in an industrial setting — to keep us inside the limits — watching the process in action."
+        },
+        {
+          "action": "review",
+          "object": "permission requests",
+          "purpose": "reduce risk",
+          "method": "using numerical analysis",
+          "domain": "regulated setting",
+          "evidence": "Most weeks I went through it carefully permission requests somewhere every step gets checked. to reduce risk, and the way in was quantitative methods."
+        },
+        {
+          "action": "resolve",
+          "object": "escalated problems",
+          "purpose": "improve service",
+          "method": "using structured tests",
+          "domain": "consumer sales",
+          "evidence": "Most weeks I fixed escalations across consumer sales. to make the service better, and the way in was structured testing."
+        },
+        {
+          "action": "correct",
+          "object": "workplace accidents",
+          "purpose": "follow rules",
+          "method": "using numerical analysis",
+          "domain": "regulated setting",
+          "evidence": "somewhere every step gets checked, I remediated workplace accidents. quantitative methods was how I did it, to keep us inside the limits."
+        }
+      ],
+      "liked": [
+        {
+          "action": "review",
+          "object": "contract terms",
+          "purpose": "follow rules",
+          "method": "",
+          "domain": "manufacturing",
+          "evidence": "I always wanted more of the work where I went through it carefully the agreement clauses on the production side to stay within what we were allowed."
+        },
+        {
+          "action": "review",
+          "object": "permission requests",
+          "purpose": "reduce risk",
+          "method": "",
+          "domain": "regulated setting",
+          "evidence": "What I liked most: went through it carefully permission requests somewhere every step gets checked to reduce risk."
+        },
+        {
+          "action": "correct",
+          "object": "workplace accidents",
+          "purpose": "follow rules",
+          "method": "",
+          "domain": "regulated setting",
+          "evidence": "The part I genuinely enjoyed was when I corrected workplace accidents in a place where the rules are tight to keep us inside the limits."
+        },
+        {
+          "action": "reconcile",
+          "object": "required submissions",
+          "purpose": "follow rules",
+          "method": "",
+          "domain": "regulated setting",
+          "evidence": "I always wanted more of the work where I reconciled the returns that had to go in in a place where the rules are tight to stay within what we were allowed."
+        },
+        {
+          "action": "analyze",
+          "object": "contract terms",
+          "purpose": "follow rules",
+          "method": "",
+          "domain": "regulated setting",
+          "evidence": "What I liked most: worked through it in detail the agreement clauses somewhere every step gets checked to stay within what we were allowed."
+        },
+        {
+          "action": "coach",
+          "object": "a team on required submissions",
+          "purpose": "prevent recurrence",
+          "method": "",
+          "domain": "public sector",
+          "evidence": "What I liked most: coached the team on the submissions that were due in the public sector to stop it happening again."
+        },
+        {
+          "action": "train",
+          "object": "people on workplace accidents",
+          "purpose": "prevent recurrence",
+          "method": "",
+          "domain": "manufacturing",
+          "evidence": "I always wanted more of the work where I trained others on workplace accidents in manufacturing to stop it happening again."
+        }
+      ],
+      "disliked": [
+        {
+          "action": "correct",
+          "object": "escalated problems",
+          "purpose": "provide a lasting solution",
+          "method": "",
+          "domain": "regulated setting",
+          "evidence": "I would be happy never again to be the one who corrected escalations in a place where the rules are tight for lasting resolution."
+        },
+        {
+          "action": "analyze",
+          "object": "workplace accidents",
+          "purpose": "follow rules",
+          "method": "",
+          "domain": "local government",
+          "evidence": "What I disliked most: worked through it in detail safety incidents in local government to keep us inside the limits."
+        }
+      ],
+      "desired": [
+        {
+          "action": "reconcile",
+          "object": "required submissions",
+          "purpose": "follow rules",
+          "method": "",
+          "domain": "regulated setting",
+          "evidence": "What I want to move into next is work where I resolved differences in the submissions that were due in a place where the rules are tight to keep us inside the limits."
+        },
+        {
+          "action": "analyze",
+          "object": "contract terms",
+          "purpose": "follow rules",
+          "method": "",
+          "domain": "regulated setting",
+          "evidence": "The direction I want next: worked through it in detail contractual conditions somewhere every step gets checked to keep us inside the limits."
+        },
+        {
+          "action": "track",
+          "object": "recurring problems",
+          "purpose": "reduce downtime",
+          "method": "",
+          "domain": "regulated setting",
+          "evidence": "Going forward I am looking for a role where I tracked problems that kept cropping up in a place where the rules are tight to reduce downtime."
+        },
+        {
+          "action": "review",
+          "object": "contract terms",
+          "purpose": "follow rules",
+          "method": "",
+          "domain": "public sector",
+          "evidence": "The direction I want next: went through it carefully contract terms across public services to keep us inside the limits."
+        }
+      ]
+    },
+    "frame-development-p004": {
+      "personId": "frame-development-p004",
+      "experience": [
+        {
+          "action": "teach",
+          "object": "people about safety incidents",
+          "purpose": "follow rules",
+          "method": "observe work directly",
+          "domain": "industrial operations",
+          "evidence": "Most weeks I taught safety incidents in an industrial setting. to keep us inside the limits, and the way in was direct observation."
+        },
+        {
+          "action": "review",
+          "object": "contract terms",
+          "purpose": "follow rules",
+          "method": "analyze numbers",
+          "domain": "local government",
+          "evidence": "I worked through it in detail contract terms in local government, to stay within what we were allowed, mostly by numerical analysis."
+        },
+        {
+          "action": "prioritize",
+          "object": "workplace accidents",
+          "purpose": "follow rules",
+          "method": "observe work directly",
+          "domain": "public sector",
+          "evidence": "I ranked by urgency workplace accidents in the public sector, to keep us inside the limits, mostly by direct observation."
+        },
+        {
+          "action": "agree",
+          "object": "contract terms",
+          "purpose": "follow rules",
+          "method": "rule out possible causes one at a time",
+          "domain": "regulated workplace",
+          "evidence": "I settled contract terms in a place where the rules are tight, to keep us inside the limits, mostly by ruling out causes one by one."
+        },
+        {
+          "action": "forecast",
+          "object": "staffing coverage",
+          "purpose": "improve customer service",
+          "method": "collect accounts of events",
+          "domain": "public sector",
+          "evidence": "in the public sector, I forecast shift cover. gathering accounts of what happened was how I did it, to improve the customer experience."
+        },
+        {
+          "action": "analyze",
+          "object": "recurring problems",
+          "purpose": "follow rules",
+          "method": "use statistical analysis",
+          "domain": "regulated workplace",
+          "evidence": "in a place where the rules are tight, I worked through it in detail problems that kept cropping up. statistical analysis was how I did it, to keep us inside the limits."
+        }
+      ],
+      "liked": [
+        {
+          "action": "prioritize",
+          "object": "safety incidents",
+          "purpose": "follow rules",
+          "method": "",
+          "domain": "public sector",
+          "evidence": "The part I genuinely enjoyed was when I triaged safety incidents in the public sector to keep us inside the limits."
+        },
+        {
+          "action": "agree",
+          "object": "contract terms",
+          "purpose": "follow rules",
+          "method": "",
+          "domain": "regulated workplace",
+          "evidence": "What I liked most: settled contractual conditions in a place where the rules are tight to stay within what we were allowed."
+        },
+        {
+          "action": "forecast",
+          "object": "staffing coverage",
+          "purpose": "improve customer service",
+          "method": "",
+          "domain": "local government",
+          "evidence": "The part I genuinely enjoyed was when I forecast shift cover in local government to improve the customer experience."
+        },
+        {
+          "action": "negotiate",
+          "object": "contract terms",
+          "purpose": "follow rules",
+          "method": "",
+          "domain": "production operations",
+          "evidence": "I always wanted more of the work where I negotiated the agreement clauses on the production side to stay within what we were allowed."
+        },
+        {
+          "action": "finalize",
+          "object": "staffing plans",
+          "purpose": "follow rules",
+          "method": "",
+          "domain": "retail",
+          "evidence": "What I liked most: settled headcount planning in retail to stay within what we were allowed."
+        },
+        {
+          "action": "analyze",
+          "object": "recurring problems",
+          "purpose": "keep operations running",
+          "method": "",
+          "domain": "production operations",
+          "evidence": "What I liked most: worked through it in detail issues that kept coming back on the production side to keep operations running."
+        },
+        {
+          "action": "plan",
+          "object": "required reports",
+          "purpose": "follow rules",
+          "method": "",
+          "domain": "regulated workplace",
+          "evidence": "I always wanted more of the work where I planned out the returns that had to go in somewhere every step gets checked to keep us inside the limits."
+        }
+      ],
+      "disliked": [
+        {
+          "action": "teach",
+          "object": "people about workplace accidents",
+          "purpose": "follow rules",
+          "method": "",
+          "domain": "manufacturing",
+          "evidence": "The part I came to dread was when I taught workplace accidents in manufacturing to stay within what we were allowed."
+        },
+        {
+          "action": "review",
+          "object": "contract terms",
+          "purpose": "follow rules",
+          "method": "review carefully",
+          "domain": "public sector",
+          "evidence": "What I disliked most: went through it carefully contract terms in the public sector to stay within what we were allowed."
+        }
+      ],
+      "desired": [
+        {
+          "action": "negotiate",
+          "object": "contract terms",
+          "purpose": "follow rules",
+          "method": "",
+          "domain": "production operations",
+          "evidence": "Going forward I am looking for a role where I negotiated the agreement clauses on the production side to keep us inside the limits."
+        },
+        {
+          "action": "agree",
+          "object": "staffing coverage terms",
+          "purpose": "follow rules",
+          "method": "",
+          "domain": "retail",
+          "evidence": "The direction I want next: agreed terms on shift cover across consumer sales to keep us inside the limits."
+        },
+        {
+          "action": "prioritize",
+          "object": "recurring problems",
+          "purpose": "reduce downtime",
+          "method": "",
+          "domain": "local government",
+          "evidence": "What I want to move into next is work where I prioritised problems that kept cropping up in local government to reduce downtime."
+        },
+        {
+          "action": "track",
+          "object": "supply shortages",
+          "purpose": "increase output",
+          "method": "",
+          "domain": "regulated workplace",
+          "evidence": "What I want to move into next is work where I tracked supply gaps somewhere every step gets checked to increase throughput."
+        }
+      ]
+    },
+    "frame-development-p005": {
+      "personId": "frame-development-p005",
+      "experience": [
+        {
+          "action": "agree",
+          "object": "contract terms",
+          "purpose": "follow rules",
+          "method": "narrow options step by step",
+          "domain": "industrial workplace",
+          "evidence": "Most weeks I agreed terms on contract terms in an industrial setting. to keep us inside the limits, and the way in was systematic narrowing."
+        },
+        {
+          "action": "negotiate",
+          "object": "contract terms",
+          "purpose": "improve safety",
+          "method": "test in a structured way",
+          "domain": "regulated workplace",
+          "evidence": "A lot of my time went on negotiated contractual conditions in a place where the rules are tight — to make it safer — structured testing."
+        },
+        {
+          "action": "review",
+          "object": "recurring problems",
+          "purpose": "stop them happening again",
+          "method": "analyze numbers",
+          "domain": "regulated workplace",
+          "evidence": "A lot of my time went on went through it carefully issues that kept coming back in a place where the rules are tight — to prevent recurrence — numerical analysis."
+        },
+        {
+          "action": "define",
+          "object": "requests for access",
+          "purpose": "follow rules",
+          "method": "analyze data",
+          "domain": "schools",
+          "evidence": "in schools, I specified access requests. statistical analysis was how I did it, to keep us inside the limits."
+        },
+        {
+          "action": "review",
+          "object": "contract terms",
+          "purpose": "follow rules",
+          "method": "collect accounts of events",
+          "domain": "closely monitored workplace",
+          "evidence": "Most weeks I went through it carefully the agreement clauses somewhere every step gets checked. to stay within what we were allowed, and the way in was gathering accounts of what happened."
+        },
+        {
+          "action": "review",
+          "object": "problems needing higher-level attention",
+          "purpose": "improve satisfaction",
+          "method": "try different approaches",
+          "domain": "closely monitored workplace",
+          "evidence": "somewhere every step gets checked, I went through it carefully escalations. trialling variations was how I did it, to raise satisfaction."
+        }
+      ],
+      "liked": [
+        {
+          "action": "investigate",
+          "object": "service complaints",
+          "purpose": "improve satisfaction",
+          "method": "work through details",
+          "domain": "regulated workplace",
+          "evidence": "What I liked most: worked through it in detail service complaints in a place where the rules are tight to raise satisfaction."
+        },
+        {
+          "action": "agree",
+          "object": "contract terms",
+          "purpose": "follow rules",
+          "method": "",
+          "domain": "industrial workplace",
+          "evidence": "What I liked most: agreed terms on the agreement clauses in an industrial setting to keep us inside the limits."
+        },
+        {
+          "action": "review",
+          "object": "contract terms",
+          "purpose": "follow rules",
+          "method": "review carefully",
+          "domain": "regulated workplace",
+          "evidence": "I always wanted more of the work where I went through it carefully contractual conditions in a place where the rules are tight to keep us inside the limits."
+        },
+        {
+          "action": "investigate",
+          "object": "service complaints",
+          "purpose": "improve service",
+          "method": "work through details",
+          "domain": "consumer sales",
+          "evidence": "I always wanted more of the work where I worked through it in detail service complaints across consumer sales to make the service better."
+        },
+        {
+          "action": "assess",
+          "object": "events that nearly caused harm",
+          "purpose": "improve safety",
+          "method": "sort by priority",
+          "domain": "regulated work site",
+          "evidence": "I always wanted more of the work where I triaged near misses on site in a place where the rules are tight to make it safer."
+        },
+        {
+          "action": "teach",
+          "object": "required reports",
+          "purpose": "reduce risk",
+          "method": "",
+          "domain": "educational institutions",
+          "evidence": "What I liked most: taught the returns that had to go in across teaching institutions to reduce risk."
+        },
+        {
+          "action": "assess",
+          "object": "recurring problems",
+          "purpose": "stop them happening again",
+          "method": "sort by priority",
+          "domain": "regulated workplace",
+          "evidence": "I always wanted more of the work where I triaged issues that kept coming back in a place where the rules are tight to prevent recurrence."
+        }
+      ],
+      "disliked": [
+        {
+          "action": "design",
+          "object": "requests for access",
+          "purpose": "follow rules",
+          "method": "",
+          "domain": "schools",
+          "evidence": "What I disliked most: designed access requests in schools to keep us inside the limits."
+        },
+        {
+          "action": "review",
+          "object": "recurring problems",
+          "purpose": "stop them happening again",
+          "method": "review carefully",
+          "domain": "regulated workplace",
+          "evidence": "The part I came to dread was when I went through it carefully problems that kept cropping up in a place where the rules are tight to prevent recurrence."
+        }
+      ],
+      "desired": [
+        {
+          "action": "investigate",
+          "object": "problems needing higher-level attention",
+          "purpose": "improve service",
+          "method": "work through details",
+          "domain": "consumer sales",
+          "evidence": "The direction I want next: worked through it in detail escalations across consumer sales to make the service better."
+        },
+        {
+          "action": "assess",
+          "object": "safety incidents",
+          "purpose": "reduce risk",
+          "method": "sort by priority",
+          "domain": "closely monitored workplace",
+          "evidence": "What I want to move into next is work where I triaged safety incidents somewhere every step gets checked to reduce risk."
+        },
+        {
+          "action": "fix",
+          "object": "events that nearly caused harm",
+          "purpose": "stop them happening again",
+          "method": "",
+          "domain": "regulated work site",
+          "evidence": "Going forward I am looking for a role where I remediated near misses on site in a place where the rules are tight to prevent recurrence."
+        },
+        {
+          "action": "resolve",
+          "object": "inventory shortages",
+          "purpose": "reduce downtime",
+          "method": "",
+          "domain": "consumer sales",
+          "evidence": "The direction I want next: settled inventory shortfalls across consumer sales to reduce downtime."
+        }
+      ]
+    },
+    "frame-development-p006": {
+      "personId": "frame-development-p006",
+      "experience": [
+        {
+          "action": "prioritize",
+          "object": "inventory shortages",
+          "purpose": "follow rules",
+          "method": "using structured testing",
+          "domain": "regulated work",
+          "evidence": "I ranked by urgency inventory shortfalls in a place where the rules are tight, to stay within what we were allowed, mostly by structured testing."
+        },
+        {
+          "action": "define",
+          "object": "required reports",
+          "purpose": "solve problems permanently",
+          "method": "by eliminating possible causes one at a time",
+          "domain": "education",
+          "evidence": "I specified the returns that had to go in in education, for lasting resolution, mostly by ruling out causes one by one."
+        },
+        {
+          "action": "track",
+          "object": "customer complaints",
+          "purpose": "reduce risk",
+          "method": "through direct observation at the work site",
+          "domain": "regulated work",
+          "evidence": "somewhere every step gets checked, I tracked customer complaints. on-site observation was how I did it, to lower our exposure."
+        },
+        {
+          "action": "train",
+          "object": "a team on required reports",
+          "purpose": "follow rules",
+          "method": "by collecting documented information",
+          "domain": "education",
+          "evidence": "I coached the team on the submissions that were due in schools, to keep us inside the limits, mostly by collecting what had been set down."
+        },
+        {
+          "action": "define",
+          "object": "contract terms",
+          "purpose": "follow rules",
+          "method": "by eliminating possible causes one at a time",
+          "domain": "regulated work",
+          "evidence": "Most weeks I specified the agreement clauses somewhere every step gets checked. to stay within what we were allowed, and the way in was ruling out causes one by one."
+        },
+        {
+          "action": "observe",
+          "object": "recurring problems",
+          "purpose": "solve problems permanently",
+          "method": "by narrowing down possible causes in a structured way",
+          "domain": "education",
+          "evidence": "Most weeks I observed problems that kept cropping up in schools. for lasting resolution, and the way in was systematic narrowing."
+        }
+      ],
+      "liked": [
+        {
+          "action": "observe",
+          "object": "recurring problems",
+          "purpose": "prevent them from happening again",
+          "method": "",
+          "domain": "education",
+          "evidence": "The part I genuinely enjoyed was when I observed problems that kept cropping up across teaching institutions to prevent recurrence."
+        },
+        {
+          "action": "plan",
+          "object": "required reports",
+          "purpose": "prevent problems from happening again",
+          "method": "",
+          "domain": "education",
+          "evidence": "What I liked most: planned out the submissions that were due across teaching institutions to stop it happening again."
+        },
+        {
+          "action": "observe",
+          "object": "escalated issues",
+          "purpose": "reduce risk",
+          "method": "",
+          "domain": "regulated work",
+          "evidence": "What I liked most: observed escalations in a place where the rules are tight to lower our exposure."
+        },
+        {
+          "action": "forecast",
+          "object": "inventory shortages",
+          "purpose": "reduce risk",
+          "method": "using models",
+          "domain": "retail",
+          "evidence": "The part I genuinely enjoyed was when I modelled future stock shortages in retail to lower our exposure."
+        },
+        {
+          "action": "review",
+          "object": "contract terms",
+          "purpose": "reduce risk",
+          "method": "carefully",
+          "domain": "regulated work",
+          "evidence": "I always wanted more of the work where I went through it carefully contract terms in a place where the rules are tight to reduce risk."
+        },
+        {
+          "action": "teach",
+          "object": "required reporting",
+          "purpose": "prevent problems from happening again",
+          "method": "",
+          "domain": "regulated work",
+          "evidence": "What I liked most: taught the returns that had to go in somewhere every step gets checked to prevent recurrence."
+        },
+        {
+          "action": "correct",
+          "object": "safety incidents",
+          "purpose": "follow rules",
+          "method": "",
+          "domain": "regulated work",
+          "evidence": "What I liked most: corrected safety incidents somewhere every step gets checked to keep us inside the limits."
+        }
+      ],
+      "disliked": [
+        {
+          "action": "train",
+          "object": "a team on required reports",
+          "purpose": "follow rules",
+          "method": "",
+          "domain": "education",
+          "evidence": "The part I came to dread was when I coached the team on the submissions that were due in schools to keep us inside the limits."
+        },
+        {
+          "action": "prioritize",
+          "object": "inventory shortages",
+          "purpose": "follow rules",
+          "method": "",
+          "domain": "regulated work",
+          "evidence": "What I disliked most: triaged inventory shortfalls in a place where the rules are tight to stay within what we were allowed."
+        }
+      ],
+      "desired": [
+        {
+          "action": "forecast",
+          "object": "inventory shortages",
+          "purpose": "improve safety",
+          "method": "",
+          "domain": "retail",
+          "evidence": "The direction I want next: forecast supply gaps in stores to make it safer."
+        },
+        {
+          "action": "review",
+          "object": "contract terms",
+          "purpose": "reduce risk",
+          "method": "carefully",
+          "domain": "regulated work",
+          "evidence": "What I want to move into next is work where I went through it carefully the agreement clauses somewhere every step gets checked to reduce risk."
+        },
+        {
+          "action": "monitor",
+          "object": "inventory shortages",
+          "purpose": "improve safety",
+          "method": "",
+          "domain": "retail",
+          "evidence": "What I want to move into next is work where I monitored inventory shortfalls across consumer sales to make it safer."
+        },
+        {
+          "action": "analyze",
+          "object": "recurring problems",
+          "purpose": "prevent them from happening again",
+          "method": "in detail",
+          "domain": "public services",
+          "evidence": "Going forward I am looking for a role where I worked through it in detail issues that kept coming back across public services to stop it happening again."
+        }
+      ]
+    },
+    "frame-development-p007": {
+      "personId": "frame-development-p007",
+      "experience": [
+        {
+          "action": "forecast",
+          "object": "supply shortages",
+          "purpose": "stay within allowed limits",
+          "method": "by observing the work directly",
+          "domain": "manufacturing",
+          "evidence": "projected supply gaps on the production side. to stay within what we were allowed, and the way in was watching the process in action"
+        },
+        {
+          "action": "analyze",
+          "object": "recurring problems",
+          "purpose": "prevent them from happening again",
+          "method": "using numerical methods",
+          "domain": "education",
+          "evidence": "across teaching institutions, I worked through it in detail problems that kept cropping up. quantitative methods was how I did it, to stop it happening again"
+        },
+        {
+          "action": "review",
+          "object": "required submissions",
+          "purpose": "reduce risk",
+          "method": "by observing work on site",
+          "domain": "regulated workplace",
+          "evidence": "worked through it in detail the returns that had to go in in a place where the rules are tight. to make it safer, and the way in was on-site observation"
+        },
+        {
+          "action": "resolve",
+          "object": "escalated problems",
+          "purpose": "prevent them from happening again",
+          "method": "by direct observation",
+          "domain": "closely controlled workplace",
+          "evidence": "fixed escalations somewhere every step gets checked — to stop it happening again — direct observation"
+        },
+        {
+          "action": "analyze",
+          "object": "recurring problems",
+          "purpose": "prevent them from happening again",
+          "method": "using controlled tests",
+          "domain": "closely controlled workplace",
+          "evidence": "worked through it in detail problems that kept cropping up somewhere every step gets checked — to stop it happening again — controlled experiments"
+        },
+        {
+          "action": "prioritize",
+          "object": "escalated problems",
+          "purpose": "resolve them permanently",
+          "method": "using numerical analysis",
+          "domain": "closely controlled workplace",
+          "evidence": "prioritised escalations somewhere every step gets checked — for lasting resolution — numerical analysis"
+        }
+      ],
+      "liked": [
+        {
+          "action": "prioritize",
+          "object": "escalated problems",
+          "purpose": "resolve them permanently",
+          "method": "by urgency",
+          "domain": "regulated workplace",
+          "evidence": "ranked by urgency escalations in a place where the rules are tight for lasting resolution"
+        },
+        {
+          "action": "forecast",
+          "object": "inventory shortages",
+          "purpose": "stay within allowed limits",
+          "method": "",
+          "domain": "manufacturing",
+          "evidence": "forecast inventory shortfalls in manufacturing to keep us inside the limits"
+        },
+        {
+          "action": "analyze",
+          "object": "recurring problems",
+          "purpose": "resolve them permanently",
+          "method": "by detailed review",
+          "domain": "education",
+          "evidence": "worked through it in detail issues that kept coming back in schools for lasting resolution"
+        },
+        {
+          "action": "observe",
+          "object": "staffing levels",
+          "purpose": "stay within allowed limits",
+          "method": "",
+          "domain": "regulated workplace",
+          "evidence": "observed staffing levels in a place where the rules are tight to keep us inside the limits"
+        },
+        {
+          "action": "prioritize",
+          "object": "near misses",
+          "purpose": "improve safety",
+          "method": "by urgency",
+          "domain": "regulated workplace",
+          "evidence": "ranked by urgency near misses on site in a place where the rules are tight to make it safer"
+        },
+        {
+          "action": "prioritize",
+          "object": "recurring problems",
+          "purpose": "comply with rules",
+          "method": "",
+          "domain": "industrial workplace",
+          "evidence": "triaged problems that kept cropping up in an industrial setting to stay within what we were allowed"
+        },
+        {
+          "action": "analyze",
+          "object": "recurring problems",
+          "purpose": "prevent them from happening again",
+          "method": "by careful review",
+          "domain": "manufacturing",
+          "evidence": "went through it carefully problems that kept cropping up in manufacturing to prevent recurrence"
+        }
+      ],
+      "disliked": [
+        {
+          "action": "analyze",
+          "object": "recurring problems",
+          "purpose": "prevent them from happening again",
+          "method": "by detailed review",
+          "domain": "closely controlled workplace",
+          "evidence": "worked through it in detail issues that kept coming back somewhere every step gets checked to stop it happening again"
+        },
+        {
+          "action": "review",
+          "object": "required submissions",
+          "purpose": "reduce risk",
+          "method": "by detailed review",
+          "domain": "regulated workplace",
+          "evidence": "worked through it in detail the submissions that were due in a place where the rules are tight to reduce risk"
+        }
+      ],
+      "desired": [
+        {
+          "action": "observe",
+          "object": "workforce planning",
+          "purpose": "stay within allowed limits",
+          "method": "",
+          "domain": "closely controlled workplace",
+          "evidence": "observed headcount planning somewhere every step gets checked to keep us inside the limits"
+        },
+        {
+          "action": "prioritize",
+          "object": "safety incidents",
+          "purpose": "improve safety",
+          "method": "by urgency",
+          "domain": "closely controlled workplace",
+          "evidence": "ranked by urgency safety incidents somewhere every step gets checked to make it safer"
+        },
+        {
+          "action": "plan",
+          "object": "required submissions",
+          "purpose": "stay within allowed limits",
+          "method": "",
+          "domain": "local government",
+          "evidence": "planned out the returns that had to go in in local government to keep us inside the limits"
+        },
+        {
+          "action": "resolve",
+          "object": "inventory shortages",
+          "purpose": "reduce interruptions",
+          "method": "",
+          "domain": "manufacturing",
+          "evidence": "settled inventory shortfalls on the production side to reduce downtime"
+        }
+      ]
+    },
+    "frame-development-p008": {
+      "personId": "frame-development-p008",
+      "experience": [
+        {
+          "action": "analyze",
+          "object": "recurring problems",
+          "purpose": "solve them permanently",
+          "method": "collecting accounts of events",
+          "domain": "manufacturing",
+          "evidence": "Most weeks I worked through it in detail problems that kept cropping up in an industrial setting. for lasting resolution, and the way in was gathering accounts of what happened."
+        },
+        {
+          "action": "check",
+          "object": "required reports",
+          "purpose": "solve problems permanently",
+          "method": "analyzing numbers",
+          "domain": "regulated setting",
+          "evidence": "Most weeks I reconciled the returns that had to go in in a place where the rules are tight. for lasting resolution, and the way in was numerical analysis."
+        },
+        {
+          "action": "monitor",
+          "object": "staffing levels",
+          "purpose": "improve customer experience",
+          "method": "collecting accounts of events",
+          "domain": "local government",
+          "evidence": "A lot of my time went on observed staffing levels in local government — to improve the customer experience — gathering accounts of what happened."
+        },
+        {
+          "action": "prioritize",
+          "object": "recurring problems",
+          "purpose": "increase satisfaction",
+          "method": "reviewing written records",
+          "domain": "education",
+          "evidence": "Most weeks I ranked by urgency problems that kept cropping up across teaching institutions. to raise satisfaction, and the way in was collecting what had been set down."
+        },
+        {
+          "action": "analyze",
+          "object": "contract terms",
+          "purpose": "follow rules and limits",
+          "method": "using structured tests",
+          "domain": "manufacturing",
+          "evidence": "Most weeks I worked through it in detail contract terms in manufacturing. to keep us inside the limits, and the way in was structured testing."
+        },
+        {
+          "action": "forecast",
+          "object": "required submissions",
+          "purpose": "prevent recurrence",
+          "method": "eliminating possible causes one at a time",
+          "domain": "local government",
+          "evidence": "Most weeks I projected the submissions that were due in local government. to stop it happening again, and the way in was ruling out causes one by one."
+        }
+      ],
+      "liked": [
+        {
+          "action": "analyze",
+          "object": "contract terms",
+          "purpose": "follow rules and limits",
+          "method": "",
+          "domain": "manufacturing",
+          "evidence": "I always wanted more of the work where I worked through it in detail contract terms on the production side to keep us inside the limits."
+        },
+        {
+          "action": "check",
+          "object": "required reports",
+          "purpose": "prevent recurrence",
+          "method": "",
+          "domain": "regulated setting",
+          "evidence": "I always wanted more of the work where I balanced the returns that had to go in somewhere every step gets checked to stop it happening again."
+        },
+        {
+          "action": "prioritize",
+          "object": "recurring problems",
+          "purpose": "improve service",
+          "method": "",
+          "domain": "education",
+          "evidence": "I always wanted more of the work where I prioritised issues that kept coming back across teaching institutions to make the service better."
+        },
+        {
+          "action": "plan",
+          "object": "contract terms",
+          "purpose": "improve safety",
+          "method": "",
+          "domain": "local government",
+          "evidence": "I always wanted more of the work where I planned out contract terms in local government to make it safer."
+        },
+        {
+          "action": "resolve",
+          "object": "escalated problems",
+          "purpose": "improve customer experience",
+          "method": "",
+          "domain": "retail",
+          "evidence": "What I liked most: corrected escalations in stores to improve the customer experience."
+        },
+        {
+          "action": "teach",
+          "object": "required reports",
+          "purpose": "prevent recurrence",
+          "method": "",
+          "domain": "education",
+          "evidence": "What I liked most: taught the returns that had to go in across teaching institutions to prevent recurrence."
+        },
+        {
+          "action": "analyze",
+          "object": "workplace accidents",
+          "purpose": "reduce risk",
+          "method": "",
+          "domain": "regulated setting",
+          "evidence": "I always wanted more of the work where I worked through it in detail workplace accidents in a place where the rules are tight to lower our exposure."
+        }
+      ],
+      "disliked": [
+        {
+          "action": "review",
+          "object": "recurring problems",
+          "purpose": "prevent recurrence",
+          "method": "examining them carefully",
+          "domain": "manufacturing",
+          "evidence": "What I disliked most: went through it carefully problems that kept cropping up on the production side to stop it happening again."
+        },
+        {
+          "action": "forecast",
+          "object": "required submissions",
+          "purpose": "prevent recurrence",
+          "method": "",
+          "domain": "local government",
+          "evidence": "What I disliked most: forecast the submissions that were due in local government to stop it happening again."
+        }
+      ],
+      "desired": [
+        {
+          "action": "design",
+          "object": "contract terms",
+          "purpose": "reduce risk",
+          "method": "",
+          "domain": "public sector",
+          "evidence": "Going forward I am looking for a role where I designed the agreement clauses in the public sector to lower our exposure."
+        },
+        {
+          "action": "resolve",
+          "object": "customer complaints",
+          "purpose": "increase satisfaction",
+          "method": "",
+          "domain": "retail",
+          "evidence": "What I want to move into next is work where I remediated customer complaints in retail to raise satisfaction."
+        },
+        {
+          "action": "monitor",
+          "object": "access requests",
+          "purpose": "improve service",
+          "method": "",
+          "domain": "regulated setting",
+          "evidence": "Going forward I am looking for a role where I observed access requests somewhere every step gets checked to make the service better."
+        },
+        {
+          "action": "review",
+          "object": "contract terms",
+          "purpose": "follow rules and limits",
+          "method": "examining them carefully",
+          "domain": "local government",
+          "evidence": "What I want to move into next is work where I went through it carefully the agreement clauses in local government to stay within what we were allowed."
+        }
+      ]
+    },
+    "frame-development-p009": {
+      "personId": "frame-development-p009",
+      "experience": [
+        {
+          "action": "reconcile",
+          "object": "required submissions",
+          "purpose": "comply with rules",
+          "method": "review written records",
+          "domain": "regulated setting",
+          "evidence": "resolved differences in the submissions that were due in a place where the rules are tight. to stay within what we were allowed, and the way in was collecting what had been set down."
+        },
+        {
+          "action": "forecast",
+          "object": "future staffing needs",
+          "purpose": "increase output",
+          "method": "collect reports of past events",
+          "domain": "retail sales",
+          "evidence": "modelled future staffing levels across consumer sales — to increase throughput — gathering accounts of what happened."
+        },
+        {
+          "action": "analyze",
+          "object": "recurring production problems",
+          "purpose": "comply with rules",
+          "method": "observe work directly",
+          "domain": "manufacturing",
+          "evidence": "worked through it in detail problems that kept cropping up on the production side — to keep us inside the limits — direct observation."
+        },
+        {
+          "action": "train",
+          "object": "people about workplace near misses",
+          "purpose": "comply with rules",
+          "method": "collect incident accounts",
+          "domain": "local government",
+          "evidence": "I trained others on near misses on site in local government, to keep us inside the limits, mostly by gathering accounts of what happened."
+        },
+        {
+          "action": "investigate",
+          "object": "workplace accidents",
+          "purpose": "prevent them from happening again",
+          "method": "rule out possible causes",
+          "domain": "regulated setting",
+          "evidence": "went through it carefully workplace accidents somewhere every step gets checked — to prevent recurrence — process of elimination."
+        },
+        {
+          "action": "train",
+          "object": "people about workplace accidents",
+          "purpose": "comply with rules",
+          "method": "review written records",
+          "domain": "manufacturing",
+          "evidence": "I trained others on workplace accidents in manufacturing. to stay within what we were allowed, and the way in was collecting what had been set down."
+        }
+      ],
+      "liked": [
+        {
+          "action": "reconcile",
+          "object": "required submissions",
+          "purpose": "comply with rules",
+          "method": "",
+          "domain": "regulated setting",
+          "evidence": "reconciled the submissions that were due in a place where the rules are tight to stay within what we were allowed."
+        },
+        {
+          "action": "train",
+          "object": "people about workplace accidents",
+          "purpose": "comply with rules",
+          "method": "",
+          "domain": "public sector",
+          "evidence": "trained others on workplace accidents in the public sector to keep us inside the limits."
+        },
+        {
+          "action": "investigate",
+          "object": "safety incidents",
+          "purpose": "find a lasting solution",
+          "method": "review them carefully",
+          "domain": "regulated setting",
+          "evidence": "went through it carefully safety incidents somewhere every step gets checked for lasting resolution."
+        },
+        {
+          "action": "prioritize",
+          "object": "recurring problems",
+          "purpose": "comply with rules",
+          "method": "rank by urgency",
+          "domain": "regulated setting",
+          "evidence": "ranked by urgency problems that kept cropping up in a place where the rules are tight to keep us inside the limits."
+        },
+        {
+          "action": "prioritize",
+          "object": "inventory shortages",
+          "purpose": "reduce interruptions",
+          "method": "rank by urgency",
+          "domain": "manufacturing",
+          "evidence": "ranked by urgency stock shortages on the production side to reduce downtime."
+        },
+        {
+          "action": "track",
+          "object": "supply shortages",
+          "purpose": "improve safety",
+          "method": "",
+          "domain": "retail",
+          "evidence": "tracked supply gaps in stores to make it safer."
+        },
+        {
+          "action": "fix",
+          "object": "recurring production problems",
+          "purpose": "comply with rules",
+          "method": "",
+          "domain": "manufacturing",
+          "evidence": "remediated issues that kept coming back on the production side to stay within what we were allowed."
+        }
+      ],
+      "disliked": [
+        {
+          "action": "forecast",
+          "object": "future staffing needs",
+          "purpose": "increase output",
+          "method": "",
+          "domain": "retail",
+          "evidence": "modelled future headcount planning in stores to increase throughput."
+        },
+        {
+          "action": "train",
+          "object": "people about workplace near misses",
+          "purpose": "comply with rules",
+          "method": "",
+          "domain": "manufacturing",
+          "evidence": "trained others on near misses on site in an industrial setting to stay within what we were allowed."
+        }
+      ],
+      "desired": [
+        {
+          "action": "prioritize",
+          "object": "recurring problems",
+          "purpose": "comply with rules",
+          "method": "",
+          "domain": "regulated setting",
+          "evidence": "prioritised issues that kept coming back somewhere every step gets checked to stay within what we were allowed."
+        },
+        {
+          "action": "prioritize",
+          "object": "inventory shortages",
+          "purpose": "keep operations running",
+          "method": "",
+          "domain": "manufacturing",
+          "evidence": "prioritised inventory shortfalls in an industrial setting to keep operations running."
+        },
+        {
+          "action": "correct",
+          "object": "required submissions",
+          "purpose": "comply with rules",
+          "method": "",
+          "domain": "local government",
+          "evidence": "corrected the returns that had to go in in local government to stay within what we were allowed."
+        },
+        {
+          "action": "prioritize",
+          "object": "inventory shortages",
+          "purpose": "comply with rules",
+          "method": "rank by urgency",
+          "domain": "regulated setting",
+          "evidence": "ranked by urgency stock shortages somewhere every step gets checked to stay within what we were allowed."
+        }
+      ]
+    },
+    "frame-development-p010": {
+      "personId": "frame-development-p010",
+      "experience": [
+        {
+          "action": "solve",
+          "object": "recurring problems",
+          "purpose": "improve the service",
+          "method": "rule out possible causes one at a time",
+          "domain": "government services",
+          "evidence": "across public services, I fixed issues that kept coming back. ruling out causes one by one was how I did it, to make the service better."
+        },
+        {
+          "action": "prioritize",
+          "object": "supply shortages",
+          "purpose": "follow limits",
+          "method": "gather recorded information",
+          "domain": "manufacturing",
+          "evidence": "triaged inventory shortfalls in an industrial setting — to stay within what we were allowed — collecting what had been set down."
+        },
+        {
+          "action": "plan",
+          "object": "staffing levels",
+          "purpose": "follow limits",
+          "method": "use numerical analysis",
+          "domain": "retail",
+          "evidence": "I designed headcount planning in stores, to keep us inside the limits, mostly by quantitative methods."
+        },
+        {
+          "action": "review",
+          "object": "required reports",
+          "purpose": "stop problems from happening again",
+          "method": "examine details and gather recorded information",
+          "domain": "regulated work",
+          "evidence": "worked through it in detail the submissions that were due in a place where the rules are tight — to prevent recurrence — collecting what had been set down."
+        },
+        {
+          "action": "correct",
+          "object": "required reports",
+          "purpose": "follow limits",
+          "method": "observe work at the location",
+          "domain": "education",
+          "evidence": "in education, I fixed the submissions that were due. on-site observation was how I did it, to keep us inside the limits."
+        },
+        {
+          "action": "prioritize",
+          "object": "service complaints",
+          "purpose": "stop problems from happening again",
+          "method": "rule out possible causes one at a time",
+          "domain": "closely monitored work",
+          "evidence": "Most weeks I ranked by urgency service complaints somewhere every step gets checked. to prevent recurrence, and the way in was process of elimination."
+        }
+      ],
+      "liked": [
+        {
+          "action": "prioritize",
+          "object": "customer complaints",
+          "purpose": "stop problems from happening again",
+          "method": "",
+          "domain": "closely monitored work",
+          "evidence": "The part I genuinely enjoyed was when I triaged customer complaints somewhere every step gets checked to prevent recurrence."
+        },
+        {
+          "action": "plan",
+          "object": "staffing levels",
+          "purpose": "follow limits",
+          "method": "",
+          "domain": "retail",
+          "evidence": "The part I genuinely enjoyed was when I planned out headcount planning across consumer sales to stay within what we were allowed."
+        },
+        {
+          "action": "correct",
+          "object": "required reports",
+          "purpose": "follow limits",
+          "method": "",
+          "domain": "education",
+          "evidence": "The part I genuinely enjoyed was when I corrected the submissions that were due in schools to keep us inside the limits."
+        },
+        {
+          "action": "define",
+          "object": "staffing plans",
+          "purpose": "improve customer service",
+          "method": "",
+          "domain": "retail",
+          "evidence": "I always wanted more of the work where I specified headcount planning across consumer sales to improve the customer experience."
+        },
+        {
+          "action": "plan",
+          "object": "access request handling",
+          "purpose": "handle more work",
+          "method": "",
+          "domain": "government",
+          "evidence": "What I liked most: planned out access requests in the public sector to handle more volume."
+        },
+        {
+          "action": "compare and correct",
+          "object": "required reports",
+          "purpose": "improve safety",
+          "method": "",
+          "domain": "regulated work",
+          "evidence": "The part I genuinely enjoyed was when I reconciled the returns that had to go in in a place where the rules are tight to make it safer."
+        },
+        {
+          "action": "agree",
+          "object": "contract terms",
+          "purpose": "follow limits",
+          "method": "",
+          "domain": "government services",
+          "evidence": "I always wanted more of the work where I settled contractual conditions across public services to keep us inside the limits."
+        }
+      ],
+      "disliked": [
+        {
+          "action": "prioritize",
+          "object": "supply shortages",
+          "purpose": "follow limits",
+          "method": "",
+          "domain": "manufacturing",
+          "evidence": "What I disliked most: prioritised supply gaps in an industrial setting to keep us inside the limits."
+        },
+        {
+          "action": "fix",
+          "object": "recurring problems",
+          "purpose": "improve satisfaction",
+          "method": "",
+          "domain": "local government",
+          "evidence": "What I disliked most: remediated problems that kept cropping up in local government to raise satisfaction."
+        }
+      ],
+      "desired": [
+        {
+          "action": "plan",
+          "object": "staffing levels",
+          "purpose": "improve satisfaction",
+          "method": "",
+          "domain": "retail",
+          "evidence": "The direction I want next: planned out staffing levels in stores to raise satisfaction."
+        },
+        {
+          "action": "plan",
+          "object": "access request handling",
+          "purpose": "handle more work",
+          "method": "",
+          "domain": "government services",
+          "evidence": "What I want to move into next is work where I planned out access requests across public services to increase throughput."
+        },
+        {
+          "action": "prioritize",
+          "object": "user access approvals",
+          "purpose": "improve safety",
+          "method": "",
+          "domain": "education",
+          "evidence": "What I want to move into next is work where I triaged user access approvals in education to make it safer."
+        },
+        {
+          "action": "forecast",
+          "object": "required reports",
+          "purpose": "create a lasting solution",
+          "method": "",
+          "domain": "retail",
+          "evidence": "The direction I want next: modelled future the returns that had to go in in stores for lasting resolution."
+        }
+      ]
+    },
+    "frame-development-p011": {
+      "personId": "frame-development-p011",
+      "experience": [
+        {
+          "action": "predict",
+          "object": "required reports",
+          "purpose": "solve the issue permanently",
+          "method": "using numerical methods",
+          "domain": "manufacturing",
+          "evidence": "projected the submissions that were due on the production side — for lasting resolution — quantitative methods"
+        },
+        {
+          "action": "track",
+          "object": "staffing coverage",
+          "purpose": "follow the rules",
+          "method": "using experiments",
+          "domain": "regulated workplace",
+          "evidence": "in a place where the rules are tight, I tracked shift cover. controlled experiments was how I did it, to keep us inside the limits."
+        },
+        {
+          "action": "review",
+          "object": "customer complaints",
+          "purpose": "reduce risk",
+          "method": "by analyzing numbers",
+          "domain": "retail",
+          "evidence": "I went through it carefully customer complaints in retail, to reduce risk, mostly by numerical analysis."
+        },
+        {
+          "action": "prioritize",
+          "object": "access requests",
+          "purpose": "follow the rules",
+          "method": "by analyzing numbers",
+          "domain": "regulated workplace",
+          "evidence": "Most weeks I ranked by urgency access requests in a place where the rules are tight. to stay within what we were allowed, and the way in was numerical analysis."
+        },
+        {
+          "action": "define",
+          "object": "required reports",
+          "purpose": "prevent the problem from happening again",
+          "method": "by observing the process",
+          "domain": "education",
+          "evidence": "I specified the returns that had to go in in schools, to stop it happening again, mostly by watching the process in action."
+        },
+        {
+          "action": "review",
+          "object": "contract terms",
+          "purpose": "follow the rules",
+          "method": "by systematically narrowing the options",
+          "domain": "public services",
+          "evidence": "Most weeks I worked through it in detail contract terms across public services. to stay within what we were allowed, and the way in was systematic narrowing."
+        }
+      ],
+      "liked": [
+        {
+          "action": "review",
+          "object": "contract terms",
+          "purpose": "follow the rules",
+          "method": "",
+          "domain": "local government",
+          "evidence": "I always wanted more of the work where I worked through it in detail contract terms in local government to keep us inside the limits."
+        },
+        {
+          "action": "predict",
+          "object": "required reports",
+          "purpose": "prevent the problem from happening again",
+          "method": "",
+          "domain": "manufacturing",
+          "evidence": "I always wanted more of the work where I projected the returns that had to go in in manufacturing to prevent recurrence."
+        },
+        {
+          "action": "observe",
+          "object": "staffing coverage",
+          "purpose": "follow the rules",
+          "method": "",
+          "domain": "controlled workplace",
+          "evidence": "I always wanted more of the work where I observed shift cover somewhere every step gets checked to stay within what we were allowed."
+        },
+        {
+          "action": "monitor",
+          "object": "recurring problems",
+          "purpose": "reduce risk",
+          "method": "",
+          "domain": "manufacturing",
+          "evidence": "The part I genuinely enjoyed was when I monitored issues that kept coming back on the production side to lower our exposure."
+        },
+        {
+          "action": "negotiate",
+          "object": "staffing plans",
+          "purpose": "improve satisfaction",
+          "method": "",
+          "domain": "regulated workplace",
+          "evidence": "What I liked most: negotiated headcount planning in a place where the rules are tight to raise satisfaction."
+        },
+        {
+          "action": "fix",
+          "object": "recurring problems",
+          "purpose": "restore service",
+          "method": "",
+          "domain": "public services",
+          "evidence": "I always wanted more of the work where I corrected issues that kept coming back across public services to restore service."
+        },
+        {
+          "action": "plan",
+          "object": "contract terms",
+          "purpose": "improve safety",
+          "method": "",
+          "domain": "regulated workplace",
+          "evidence": "The part I genuinely enjoyed was when I planned out contract terms in a place where the rules are tight to make it safer."
+        }
+      ],
+      "disliked": [
+        {
+          "action": "plan",
+          "object": "required reports",
+          "purpose": "solve the issue permanently",
+          "method": "",
+          "domain": "education",
+          "evidence": "What I disliked most: planned out the submissions that were due in education for lasting resolution."
+        },
+        {
+          "action": "prioritize",
+          "object": "access requests",
+          "purpose": "follow the rules",
+          "method": "",
+          "domain": "regulated workplace",
+          "evidence": "What I disliked most: triaged access requests in a place where the rules are tight to keep us inside the limits."
+        }
+      ],
+      "desired": [
+        {
+          "action": "monitor",
+          "object": "recurring problems",
+          "purpose": "reduce risk",
+          "method": "",
+          "domain": "manufacturing",
+          "evidence": "Going forward I am looking for a role where I monitored issues that kept coming back in an industrial setting to reduce risk."
+        },
+        {
+          "action": "negotiate",
+          "object": "staffing levels",
+          "purpose": "improve satisfaction",
+          "method": "",
+          "domain": "controlled workplace",
+          "evidence": "The direction I want next: agreed terms on staffing levels somewhere every step gets checked to raise satisfaction."
+        },
+        {
+          "action": "prioritize",
+          "object": "recurring problems",
+          "purpose": "improve service",
+          "method": "",
+          "domain": "retail",
+          "evidence": "Going forward I am looking for a role where I prioritised problems that kept cropping up in retail to make the service better."
+        },
+        {
+          "action": "predict",
+          "object": "required reports",
+          "purpose": "prevent the problem from happening again",
+          "method": "",
+          "domain": "education",
+          "evidence": "What I want to move into next is work where I forecast the submissions that were due in schools to prevent recurrence."
+        }
+      ]
+    },
+    "frame-development-p012": {
+      "personId": "frame-development-p012",
+      "experience": [
+        {
+          "action": "forecast",
+          "object": "future stock shortages",
+          "purpose": "reduce risk",
+          "method": "gather reports about past events",
+          "domain": "retail",
+          "evidence": "Most weeks I modelled future stock shortages in retail. to reduce risk, and the way in was gathering accounts of what happened."
+        },
+        {
+          "action": "resolve",
+          "object": "escalated service issues",
+          "purpose": "improve service",
+          "method": "gather records",
+          "domain": "retail stores",
+          "evidence": "in stores, I corrected escalations. collecting what had been set down was how I did it, to make the service better."
+        },
+        {
+          "action": "fix",
+          "object": "recurring problems",
+          "purpose": "prevent recurrence",
+          "method": "run controlled tests",
+          "domain": "highly controlled setting",
+          "evidence": "in a place where the rules are tight, I corrected problems that kept cropping up. controlled experiments was how I did it, to prevent recurrence."
+        },
+        {
+          "action": "negotiate",
+          "object": "staffing levels",
+          "purpose": "improve customer service",
+          "method": "rule out possible causes one at a time",
+          "domain": "highly controlled setting",
+          "evidence": "I agreed terms on staffing levels in a place where the rules are tight, to improve the customer experience, mostly by ruling out causes one by one."
+        },
+        {
+          "action": "resolve",
+          "object": "differences in required submissions",
+          "purpose": "comply with rules",
+          "method": "rule out possible causes one at a time",
+          "domain": "manufacturing",
+          "evidence": "Most weeks I resolved differences in the submissions that were due in manufacturing. to stay within what we were allowed, and the way in was ruling out causes one by one."
+        },
+        {
+          "action": "negotiate",
+          "object": "contract terms",
+          "purpose": "comply with rules",
+          "method": "use numerical analysis",
+          "domain": "manufacturing",
+          "evidence": "Most weeks I settled contractual conditions in manufacturing. to stay within what we were allowed, and the way in was quantitative methods."
+        }
+      ],
+      "liked": [
+        {
+          "action": "negotiate",
+          "object": "contract terms",
+          "purpose": "comply with rules",
+          "method": "not stated",
+          "domain": "manufacturing",
+          "evidence": "The part I genuinely enjoyed was when I settled contractual conditions in manufacturing to stay within what we were allowed."
+        },
+        {
+          "action": "resolve",
+          "object": "differences in required submissions",
+          "purpose": "comply with rules",
+          "method": "not stated",
+          "domain": "manufacturing",
+          "evidence": "I always wanted more of the work where I resolved differences in the returns that had to go in in manufacturing to stay within what we were allowed."
+        },
+        {
+          "action": "forecast",
+          "object": "stock shortages",
+          "purpose": "reduce risk",
+          "method": "not stated",
+          "domain": "retail",
+          "evidence": "The part I genuinely enjoyed was when I forecast stock shortages across consumer sales to make it safer."
+        },
+        {
+          "action": "define",
+          "object": "required submissions",
+          "purpose": "prevent recurrence",
+          "method": "not stated",
+          "domain": "highly controlled setting",
+          "evidence": "I always wanted more of the work where I specified the returns that had to go in in a place where the rules are tight to prevent recurrence."
+        },
+        {
+          "action": "teach",
+          "object": "workplace accidents",
+          "purpose": "prevent recurrence",
+          "method": "not stated",
+          "domain": "manufacturing",
+          "evidence": "What I liked most: taught workplace accidents in manufacturing for lasting resolution."
+        },
+        {
+          "action": "forecast",
+          "object": "staffing needs",
+          "purpose": "comply with limits",
+          "method": "not stated",
+          "domain": "local government",
+          "evidence": "What I liked most: forecast headcount planning in local government to keep us inside the limits."
+        },
+        {
+          "action": "fix",
+          "object": "recurring production problems",
+          "purpose": "prevent recurrence",
+          "method": "not stated",
+          "domain": "manufacturing",
+          "evidence": "I always wanted more of the work where I corrected problems that kept cropping up on the production side for lasting resolution."
+        }
+      ],
+      "disliked": [
+        {
+          "action": "resolve",
+          "object": "service complaints",
+          "purpose": "improve customer service",
+          "method": "not stated",
+          "domain": "retail",
+          "evidence": "I would be happy never again to be the one who fixed service complaints across consumer sales to improve the customer experience."
+        },
+        {
+          "action": "fix",
+          "object": "recurring problems",
+          "purpose": "prevent recurrence",
+          "method": "not stated",
+          "domain": "highly controlled setting",
+          "evidence": "I would be happy never again to be the one who corrected problems that kept cropping up in a place where the rules are tight to stop it happening again."
+        }
+      ],
+      "desired": [
+        {
+          "action": "define",
+          "object": "required submissions",
+          "purpose": "prevent recurrence",
+          "method": "not stated",
+          "domain": "highly controlled setting",
+          "evidence": "Going forward I am looking for a role where I specified the returns that had to go in somewhere every step gets checked for lasting resolution."
+        },
+        {
+          "action": "teach",
+          "object": "safety incidents",
+          "purpose": "prevent recurrence",
+          "method": "not stated",
+          "domain": "industrial setting",
+          "evidence": "The direction I want next: taught safety incidents in an industrial setting to stop it happening again."
+        },
+        {
+          "action": "monitor",
+          "object": "service complaints",
+          "purpose": "prevent recurrence",
+          "method": "observation",
+          "domain": "highly controlled setting",
+          "evidence": "Going forward I am looking for a role where I observed service complaints somewhere every step gets checked to prevent recurrence."
+        },
+        {
+          "action": "analyze",
+          "object": "recurring problems",
+          "purpose": "reduce risk",
+          "method": "work through details",
+          "domain": "highly controlled setting",
+          "evidence": "What I want to move into next is work where I worked through it in detail problems that kept cropping up somewhere every step gets checked to lower our exposure."
+        }
+      ]
+    }
+  },
+  "telemetry": {
+    "job": {
+      "calls": 288,
+      "cacheHits": 288,
+      "cacheMisses": 0,
+      "errors": 0,
+      "inputTokens": 92891,
+      "outputTokens": 92278,
+      "reasoningTokens": 50808,
+      "cachedInputTokens": 0,
+      "costUsd": 0,
+      "anyCostEstimated": true,
+      "truncated": 0,
+      "resolvedModels": [
+        "gpt-5.6-sol"
+      ],
+      "p50LatencyMs": 0,
+      "p95LatencyMs": 0
+    },
+    "baseline": {
+      "calls": 12,
+      "cacheHits": 12,
+      "cacheMisses": 0,
+      "errors": 0,
+      "inputTokens": 12698,
+      "outputTokens": 9556,
+      "reasoningTokens": 3437,
+      "cachedInputTokens": 0,
+      "costUsd": 0,
+      "anyCostEstimated": true,
+      "truncated": 0,
+      "resolvedModels": [
+        "gpt-5.6-sol"
+      ],
+      "p50LatencyMs": 0,
+      "p95LatencyMs": 0
+    },
+    "v2": {
+      "calls": 12,
+      "cacheHits": 0,
+      "cacheMisses": 12,
+      "errors": 0,
+      "inputTokens": 14126,
+      "outputTokens": 15840,
+      "reasoningTokens": 3338,
+      "cachedInputTokens": 0,
+      "costUsd": 0.54583,
+      "anyCostEstimated": true,
+      "truncated": 0,
+      "resolvedModels": [
+        "gpt-5.6-sol"
+      ],
+      "p50LatencyMs": 15037,
+      "p95LatencyMs": 18074
+    }
+  },
+  "latency": {
+    "version": "latency.v1",
+    "freshByAgent": {
+      "person-blueprint": {
+        "n": 12,
+        "meanMs": 15331.5,
+        "p50Ms": 14717,
+        "p90Ms": 17993,
+        "p95Ms": 18074,
+        "maxMs": 18074,
+        "percentilesAreStable": false
+      }
+    },
+    "cacheHitPopulation": {
+      "n": 300,
+      "meanMs": 0.0033333333333333335,
+      "p50Ms": 0,
+      "p90Ms": 0,
+      "p95Ms": 0,
+      "maxMs": 1,
+      "percentilesAreStable": true
+    },
+    "freshCalls": 12,
+    "cachedCalls": 300,
+    "deterministicMsPerPerson": 15.57162875,
+    "criticalPath": {
+      "architecture": "person-blueprint-v2",
+      "agentCount": 1,
+      "parallelBasis": "per-subject",
+      "agentsAreIndependent": false,
+      "sequentialP50Ms": 14717,
+      "sequentialP95Ms": 18074,
+      "estimatedParallelP50Ms": 14717,
+      "estimatedParallelP95Ms": 18074,
+      "deterministicMs": 15.57162875,
+      "timeToFirstUsableResultP50Ms": 14732.57162875,
+      "timeToFirstUsableResultP95Ms": 18089.57162875,
+      "sequentialUserWaitP50Ms": 14732.57162875,
+      "sequentialUserWaitP95Ms": 18089.57162875,
+      "percentilesAreStable": false
+    }
+  },
+  "budgetAfter": {
+    "spentUsd": 11.307227500000005,
+    "calls": 753,
+    "hardSpendCapUsd": 25
+  }
+}

@@ -12,14 +12,14 @@ Working principle: Use models where semantic understanding genuinely requires mo
 
 ## Current baseline
 
-- **Architecture:** shared CareerBlueprint inference + deterministic field-aware matcher
+- **Architecture:** shared CareerBlueprint inference + claim-level provenance + deterministic field-aware matcher
 - **Provider / model / effort:** openai / gpt-5.6-sol / low
-- **Prompts:** person person-blueprint@v1, job job-blueprint@v1
+- **Prompts:** person person-blueprint@v2, job job-blueprint@v1
 - **Matcher:** agent-field-match
 - **Corpus / split:** frame-corpus.v1 / DEVELOPMENT
 - **As of:** 2026-08-23
-- **Product path:** The shipping product does not run this architecture. src/app / src/v3 / src/domain import no agent module. Research harness ≠ production.
-- **Pending change:** P-01 tests whether person-blueprint@v2 can add claim-level provenance without changing ranking. The matcher stays frozen.
+- **Product path:** The shipping product does not run this architecture. src/app / src/v3 / src/domain import no agent module. Research harness ≠ production. P-01 Case A is a research KEEP, not a ship decision.
+- **Pending change:** S-01 must test whether one-generation signs and KEEP rates survive 4 independent fresh generations. Do not ship on a single generation.
 
 ## Findings
 
@@ -56,9 +56,16 @@ Correctly scoped isolated Direction repaired channel integrity; retrieval advant
 
 **Do not claim:** Do not rerun Direction merely because it is interesting. Remaining questions are stability, power, and whether the extra call is worth it versus a clean shared+provenance baseline.
 
+### `F-P01-PROVENANCE` — measured-once
+
+The one-call shared architecture can emit claim-level supporting phrases without measurable evidence contamination, and without a statistically detectable retrieval regression, on LEXICAL_TRAP DEVELOPMENT n=12.
+
+- person-blueprint-v2:openai:LEXICAL_TRAP:low SUPPORTED / Case A: experience Δ −0.019 CI [−0.097, 0.054]; contamination 0.000 on 72/84/24/48 claims; volume 1.000; T-01 KEEP set stable across 25 pairs.
+
+**Do not claim:** This is one generation. Direction's −0.062 point estimate is inside a wide interval. Do not treat this as proof that specialists are never useful, or as a product-ship decision. S-01 is next.
+
 ## Not yet known
 
-- Whether shared inference is clean once claim provenance is visible (P-01).
 - Whether one-generation architecture deltas keep their sign (S-01).
 - Whether semantically equivalent phrasing changes understanding (S-02).
 - Whether Qualification can be extracted without contaminating E/P/D (QC-01, Q-01).

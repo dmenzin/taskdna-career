@@ -21,6 +21,7 @@ const PAID_SCRIPTS = [
   "scripts/openai-effort-calibration.ts",
   "scripts/agent-smoke-test.ts",
   "scripts/experiment-p01.ts",
+  "scripts/experiment-stochastic-stability.ts",
 ];
 
 describe("experiment id matching", () => {
@@ -42,6 +43,7 @@ describe("assertPreregistered", () => {
       "split-agents:openai:LEXICAL_TRAP:low",
       "smoke-test",
       "person-blueprint-v2:openai:LEXICAL_TRAP:low",
+      "stochastic-stability:openai:LEXICAL_TRAP:low",
     ]) {
       expect(assertPreregistered(id).length, id).toBeGreaterThan(0);
     }
@@ -113,6 +115,7 @@ describe("every paid experiment script is forced through the gate", () => {
       "scripts/openai-effort-calibration.ts",
       "scripts/agent-smoke-test.ts",
       "scripts/experiment-p01.ts",
+      "scripts/experiment-stochastic-stability.ts",
     ];
     expect(PAID_SCRIPTS.sort()).toEqual(spending.sort());
   });

@@ -69,6 +69,7 @@
     "research:program": "tsx scripts/research-program.ts",
     "research:ledger": "tsx scripts/research-ledger.ts",
     "experiment:t01": "tsx scripts/experiment-t01.ts",
+    "experiment:stability": "tsx scripts/experiment-stochastic-stability.ts",
     "audit:domain-holdout": "tsx scripts/audit-domain-holdout.ts",
     "subjects:generate": "tsx scripts/subjects-generate.ts",
     "subjects:inspect": "tsx scripts/subjects-inspect.ts",

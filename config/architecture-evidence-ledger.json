@@ -4,18 +4,18 @@
   "authority": "If this ledger and the research program disagree about status, the program wins for questions and this file wins for measured findings only after a cited experiment artifact exists.",
   "workingPrinciple": "Use models where semantic understanding genuinely requires models; use deterministic systems wherever the transformation is known. Challenge this empirically; do not hard-code the destination architecture.",
   "currentBaseline": {
-    "architecture": "shared CareerBlueprint inference + deterministic field-aware matcher",
+    "architecture": "shared CareerBlueprint inference + claim-level provenance + deterministic field-aware matcher",
     "provider": "openai",
     "model": "gpt-5.6-sol",
     "effort": "low",
-    "personPrompt": "person-blueprint@v1",
+    "personPrompt": "person-blueprint@v2",
     "jobPrompt": "job-blueprint@v1",
     "matcher": "agent-field-match",
     "corpus": "frame-corpus.v1",
     "split": "DEVELOPMENT",
-    "productPath": "The shipping product does not run this architecture. src/app / src/v3 / src/domain import no agent module. Research harness ≠ production.",
+    "productPath": "The shipping product does not run this architecture. src/app / src/v3 / src/domain import no agent module. Research harness ≠ production. P-01 Case A is a research KEEP, not a ship decision.",
     "asOf": "2026-08-23",
-    "pendingChange": "P-01 tests whether person-blueprint@v2 can add claim-level provenance without changing ranking. The matcher stays frozen."
+    "pendingChange": "S-01 must test whether one-generation signs and KEEP rates survive 4 independent fresh generations. Do not ship on a single generation."
   },
   "findings": [
     {
@@ -54,10 +54,18 @@
         "Contamination 0.629 → 0.000; desired volume 2.750 → 1.000; Direction 0.806 vs shared 0.732, paired +0.074 CI [-0.066, 0.198]."
       ],
       "doNotClaim": "Do not rerun Direction merely because it is interesting. Remaining questions are stability, power, and whether the extra call is worth it versus a clean shared+provenance baseline."
+    },
+    {
+      "id": "F-P01-PROVENANCE",
+      "claim": "The one-call shared architecture can emit claim-level supporting phrases without measurable evidence contamination, and without a statistically detectable retrieval regression, on LEXICAL_TRAP DEVELOPMENT n=12.",
+      "strength": "measured-once",
+      "evidence": [
+        "person-blueprint-v2:openai:LEXICAL_TRAP:low SUPPORTED / Case A: experience Δ −0.019 CI [−0.097, 0.054]; contamination 0.000 on 72/84/24/48 claims; volume 1.000; T-01 KEEP set stable across 25 pairs."
+      ],
+      "doNotClaim": "This is one generation. Direction's −0.062 point estimate is inside a wide interval. Do not treat this as proof that specialists are never useful, or as a product-ship decision. S-01 is next."
     }
   ],
   "notYetKnown": [
-    "Whether shared inference is clean once claim provenance is visible (P-01).",
     "Whether one-generation architecture deltas keep their sign (S-01).",
     "Whether semantically equivalent phrasing changes understanding (S-02).",
     "Whether Qualification can be extracted without contaminating E/P/D (QC-01, Q-01).",

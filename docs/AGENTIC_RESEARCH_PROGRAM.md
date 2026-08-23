@@ -18,8 +18,8 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 
 | id | status | question | depends on | next action | calls | cost |
 | --- | --- | --- | --- | --- | --- | --- |
-| `P-01` | **PREREGISTERED** | Can the strongest one-call baseline gain claim-level auditability without specialist inference? | — | Dry run is green (12 fresh person@v2, 288/288 jobs reused). Paid run only after operator approval. | 12 | $0.93 |
-| `D-01` | **INCONCLUSIVE** | Does a correctly-scoped Direction Agent beat the shared blueprint on Direction, or only tie it? | P-01, S-01 | Resolve at n=24-36 only if P-01 fails and S-01 passes. Deliberately behind both. | 320 | $4.00 |
+| `P-01` | **SUPPORTED** | Can the strongest one-call baseline gain claim-level auditability without specialist inference? | — | Adopt v2 as the research incumbent. Do not ship. S-01 must test whether the near-zero Direction delta and the KEEP rates survive fresh generations. | 12 | $0.93 |
+| `D-01` | **INCONCLUSIVE** | Does a correctly-scoped Direction Agent beat the shared blueprint on Direction, or only tie it? | P-01, S-01 | P-01 Case A weakens always-on specialists. Do not rerun Direction because it is interesting. Remaining questions are S-01 sign-stability and whether the extra call beats shared+provenance. Prefer A-03 (selective rescue) over always-on if S-01 holds. | 320 | $4.00 |
 | `CT-01` | **UNTESTED** | Do the five non-implications no v1 prompt states change interpretation quality when added? | P-01 | Define semantic-contract v2 with the full rule set plus contrastive examples, as a new prompt version. Never edit a v1 prompt. | 12 | $0.45 |
 | `R-01` | **SUPPORTED** | Which of the five semantic role fields carry independent signal, and is the matcher robust to paraphrase? | — | Do not retune the matcher. A later versioned matcher experiment may drop or reweight purpose; that is not P-01. | 0 | $0.00 |
 | `N-01` | **DEFERRED** | Should the interrupted NATURAL arm be completed? | — | Do not resume. Revisit only if a regression check on ordinary cases becomes decision-relevant and is newly preregistered. The existing 47 cached calls stay on disk. | 253 | $3.00 |
@@ -30,8 +30,8 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 
 | id | status | question | depends on | next action | calls | cost |
 | --- | --- | --- | --- | --- | --- | --- |
-| `T-01` | **UNTESTED** | Are the provenance attribution thresholds (0.6 floor, 0.1 ambiguity margin) defensible? | P-01 | Sweep both thresholds over cached outputs and report verdict stability. Deterministic, zero calls. | 0 | $0.00 |
-| `S-01` | **UNTESTED** | Would we reach the same architectural decision if the model regenerated the same person's blueprint from identical prompt bytes? | P-01 | After P-01, design and preregister a repeated-generation study with an explicit sample-size justification. Do not execute until authorized. trialId belongs in experiment identity, not in semantic input. No cache reuse across trials. | 48 | $3.73 |
+| `T-01` | **SUPPORTED** | Are the provenance attribution thresholds (0.6 floor, 0.1 ambiguity margin) defensible? | P-01 | No further sweep. Revisit only if a later architecture produces non-zero contamination near the ceiling. | 0 | $0.00 |
+| `S-01` | **PREREGISTERED** | Would we reach the same architectural decision if the model regenerated the same person's blueprint from identical prompt bytes? | P-01 | Dry-run is the next authorized action. Paid run only after operator approval. Do not replay the P-01 cache as trial 0. | 48 | $3.73 |
 | `S-02` | **UNTESTED** | Does semantically equivalent evidence phrasing cause materially different TaskDNA understanding? | S-01 | After S-01, preregister controlled perturbations that preserve hidden truth: bullet vs prose, reorder, paraphrase, mild typos, first- vs third-person, inserted neutral sentences. No perturbation may change planted truth. | 48 | $3.70 |
 | `S-03` | **UNTESTED** | Do later provider/model/alias moves change TaskDNA understanding on a fixed regression panel? | S-01 | Define a tiny fixed panel and rerun it when the resolved model id changes. Do not interpret future behaviour changes as architecture changes when the model may have moved. | 12 | $0.90 |
 | `POW-01` | **UNTESTED** | For each planned architecture comparison, what sample size would materially answer the question? | — | Estimate paired effect size and variance from DEVELOPMENT before declaring future effects inconclusive forever. Do not silently enlarge a frozen split; unused frozen subjects must keep their designated split, otherwise create a new versioned generation. | 0 | $0.00 |
@@ -45,7 +45,7 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 | `Q-01` | **BLOCKED** | Can an agent extract held qualifications well enough to reproduce the planted meets-requirements/stretch partition? | M-01 | Wait for QC-01 (contract) and M-01 (visible evidence). Do not copy the Experience representation and call it Qualification. | 12 | $0.45 |
 | `U-01` | **UNTESTED** | Can the representation say 'I do not have enough evidence' instead of inventing a conclusion, and is that signal calibrated? | P-01 | Define the construct before implementing. Candidates: explicit INSUFFICIENT_EVIDENCE, claim-level evidence strength, repeated-generation agreement as an external proxy. | 12 | $0.45 |
 | `C-01` | **DEFERRED** | How should conflicting evidence and user corrections be reconciled? | P-01, U-01 | Define source precedence and versioning. Prefer deterministic reconciliation; reserve model adjudication for genuinely ambiguous semantics. | 0 | $0.00 |
-| `X-01` | **BLOCKED** | Are explanations faithful to the evidence and match factors that actually produced the ranking? | P-01 | Wait for P-01. Then build deterministic explanation validation, not a model critic. | 0 | $0.00 |
+| `X-01` | **UNTESTED** | Are explanations faithful to the evidence and match factors that actually produced the ranking? | P-01 | Build deterministic explanation validation after S-01. Do not generate persuasive prose disconnected from the scoring path. | 0 | $0.00 |
 | `QC-01` | **UNTESTED** | What does Qualification mean, as a product contract, before any Qualification prompt is written? | P-01 | Write QUALIFICATION_CONTRACT distinguishing capabilities, credentials, experience-depth, education, hard vs preferred requirements, transferable evidence, unknown/missing evidence, and gaps. Design PersonQualification and JobRequirement together. No prompt yet. | 0 | $0.00 |
 | `D-CTX-04` | **BLOCKED** | Does Qualification benefit from domain context more than Experience does? | QC-01, D-CTX-01 | Evaluate domain conditioning independently for work interpretation, Qualification interpretation, and job hard-requirement interpretation. Do not domain-specialize the whole CareerBlueprint by default. | 24 | $1.80 |
 
@@ -55,7 +55,7 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 
 | id | status | question | depends on | next action | calls | cost |
 | --- | --- | --- | --- | --- | --- | --- |
-| `V-01` | **BLOCKED** | Does the frozen architecture generalise to paraphrase families it never saw? | P-01, S-01, T-01 | Blocked by the architecture-freeze gate. Two of four conditions currently fail. | 300 | $4.00 |
+| `V-01` | **BLOCKED** | Does the frozen architecture generalise to paraphrase families it never saw? | P-01, S-01, T-01 | Blocked by the architecture-freeze gate. S-01 is the remaining unmet condition of the three named dependencies. | 300 | $4.00 |
 
 ### S5 — Product-realistic evidence
 
@@ -63,7 +63,7 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 
 | id | status | question | depends on | next action | calls | cost |
 | --- | --- | --- | --- | --- | --- | --- |
-| `M-01` | **BLOCKED** | Can TaskDNA untangle a messy person, rather than interpret evidence that was already routed for it? | P-01 | Requires explicit approval: a new benchmark family is a contract change under amendment C. Same hidden truth, new independent messy-narrative renderer, no channel labels. | 300 | $4.00 |
+| `M-01` | **DEFERRED** | Can TaskDNA untangle a messy person, rather than interpret evidence that was already routed for it? | P-01 | Requires explicit approval: a new benchmark family is a contract change under amendment C. Same hidden truth, new independent messy-narrative renderer, no channel labels. Behind S-01 on information value. | 300 | $4.00 |
 | `M-02` | **BLOCKED** | Does the architecture hold for career states the current corpus does not contain? | M-01 | New versioned corpus with its own preregistration. Do not mutate the frozen corpus. | 300 | $4.00 |
 | `J-01` | **UNTESTED** | Does JobBlueprint interpretation survive real, noisy job descriptions? | — | Assemble a noisy job-description set. Keep interpretation per job and globally cached; never per user-job pair. | 100 | $1.50 |
 | `M-03` | **BLOCKED** | Does the architecture hold on conversational NATURAL_USER renderings of the same latent truth? | M-01 | New independently versioned family after M-01. Do not promote MIXED_EVIDENCE results into claims about conversational input. | 300 | $4.00 |
@@ -109,30 +109,30 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 
 ### `P-01` — Can the strongest one-call baseline gain claim-level auditability without specialist inference?
 
-- **Status:** PREREGISTERED · **Stage:** S1 · **Split:** DEVELOPMENT
+- **Status:** SUPPORTED · **Stage:** S1 · **Split:** DEVELOPMENT
 - **Depends on:** nothing
-- **Evidence so far:** Shared blueprint emits no supporting phrase, so its provenance is unmeasurable rather than absent. Isolated Experience achieves 0.000 evidence contamination with a quote; full-context achieves 0.424. Preregistered as person-blueprint-v2:openai:LEXICAL_TRAP:low. Matcher frozen; R-01 is diagnostic only.
-- **Next action:** Dry run is green (12 fresh person@v2, 288/288 jobs reused). Paid run only after operator approval.
+- **Evidence so far:** Case A. LEXICAL_TRAP n=12, OpenAI gpt-5.6-sol low. person-blueprint@v2 vs v1 under frozen field-match: experience Δ −0.019 CI [−0.097, 0.054]; preference +0.014 [−0.043, 0.083]; direction −0.062 [−0.172, 0.043]. Provenance contamination 0.000 on experience/liked/disliked/desired (72/84/24/48 claims). Volume ratio 1.000 all channels. Actual $0.546 / 12 fresh calls. T-01 KEEP set stable across 25 threshold pairs. Working research baseline is now shared+provenance+field-match. Not shipped.
+- **Next action:** Adopt v2 as the research incumbent. Do not ship. S-01 must test whether the near-zero Direction delta and the KEEP rates survive fresh generations.
 - **Success criterion:** Retrieval holds (CI spans zero or better) AND provenance contamination <= 0.05.
 - **Cost if run:** 12 calls, ~$0.93
 - **Latency relevance:** Small expected increase in output tokens; measure per-call.
 
 ### `T-01` — Are the provenance attribution thresholds (0.6 floor, 0.1 ambiguity margin) defensible?
 
-- **Status:** UNTESTED · **Stage:** S2 · **Split:** DEVELOPMENT
+- **Status:** SUPPORTED · **Stage:** S2 · **Split:** DEVELOPMENT
 - **Depends on:** `P-01`
-- **Evidence so far:** Both thresholds are hand-set. Corroborating signal is strong (0 drift, 0 unsupported, 0-1 ambiguous across 500+ claims) but no sensitivity analysis exists.
-- **Next action:** Sweep both thresholds over cached outputs and report verdict stability. Deterministic, zero calls.
+- **Evidence so far:** 25 pairs (floor 0.40–0.80 × margin 0.05–0.20) over the P-01 quotes. Default KEEP set (all four channels true) did not flip. Contamination stayed 0.000. Thresholds remain research parameters, not a product gate, and were not selected post-hoc.
+- **Next action:** No further sweep. Revisit only if a later architecture produces non-zero contamination near the ceiling.
 - **Success criterion:** The KEEP/REJECT verdict is unchanged across a documented threshold range.
 - **Cost if run:** 0 calls, ~$0.00
 - **Latency relevance:** None.
 
 ### `S-01` — Would we reach the same architectural decision if the model regenerated the same person's blueprint from identical prompt bytes?
 
-- **Status:** UNTESTED · **Stage:** S2 · **Split:** DEVELOPMENT
+- **Status:** PREREGISTERED · **Stage:** S2 · **Split:** DEVELOPMENT
 - **Depends on:** `P-01`
-- **Evidence so far:** Nothing known. Every result is one generation per input. Reasoning tokens varied 261-982 at fixed effort, so generation is demonstrably unstable; the score effect is unmeasured. Distinct from S-02, which varies phrasing rather than asking the same bytes twice.
-- **Next action:** After P-01, design and preregister a repeated-generation study with an explicit sample-size justification. Do not execute until authorized. trialId belongs in experiment identity, not in semantic input. No cache reuse across trials.
+- **Evidence so far:** P-01 is one generation. Direction point estimate −0.062 with CI spanning zero is exactly the kind of near-zero delta that can flip sign. Distinct from S-02. Preregistered as stochastic-stability:openai:LEXICAL_TRAP:low. 12 people × 4 trials, trialId in cache identity only.
+- **Next action:** Dry-run is the next authorized action. Paid run only after operator approval. Do not replay the P-01 cache as trial 0.
 - **Success criterion:** The sign of each important architectural delta (field-match vs token-bag; shared-provenance vs incumbent) is stable across trials and ranking rank-correlation is high.
 - **Cost if run:** 48 calls, ~$3.73
 - **Latency relevance:** Yields latency variance, currently unknown.
@@ -142,7 +142,7 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 - **Status:** INCONCLUSIVE · **Stage:** S1 · **Split:** DEVELOPMENT
 - **Depends on:** `P-01`, `S-01`
 - **Evidence so far:** v2 isolated Direction 0.806 vs shared 0.732, paired delta +0.074 CI [-0.066, 0.198]. Provenance contamination 0.000 and desired volume ratio 1.000, both corrected from v1.
-- **Next action:** Resolve at n=24-36 only if P-01 fails and S-01 passes. Deliberately behind both.
+- **Next action:** P-01 Case A weakens always-on specialists. Do not rerun Direction because it is interesting. Remaining questions are S-01 sign-stability and whether the extra call beats shared+provenance. Prefer A-03 (selective rescue) over always-on if S-01 holds.
 - **Success criterion:** Direction paired delta CI excludes zero.
 - **Cost if run:** 320 calls, ~$4.00
 - **Latency relevance:** Doubles onboarding calls; requires real concurrent measurement before shipping.
@@ -201,18 +201,18 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 
 - **Status:** BLOCKED · **Stage:** S4 · **Split:** VALIDATION
 - **Depends on:** `P-01`, `S-01`, `T-01`
-- **Evidence so far:** VALIDATION has never been used by any agent arm; all four ledger experiment ids are DEVELOPMENT. Elsewhere in this codebase extraction macro F1 drops 0.831 to 0.611 across the boundary.
-- **Next action:** Blocked by the architecture-freeze gate. Two of four conditions currently fail.
+- **Evidence so far:** VALIDATION has never been used by any agent arm; all four ledger experiment ids are DEVELOPMENT. Elsewhere in this codebase extraction macro F1 drops 0.831 to 0.611 across the boundary. P-01 and T-01 now pass; S-01 does not.
+- **Next action:** Blocked by the architecture-freeze gate. S-01 is the remaining unmet condition of the three named dependencies.
 - **Success criterion:** Predefined criteria pass with no tuning on VALIDATION.
 - **Cost if run:** 300 calls, ~$4.00
 - **Latency relevance:** None beyond what DEVELOPMENT already measured.
 
 ### `M-01` — Can TaskDNA untangle a messy person, rather than interpret evidence that was already routed for it?
 
-- **Status:** BLOCKED · **Stage:** S5 · **Split:** new MIXED_EVIDENCE family
+- **Status:** DEFERRED · **Stage:** S5 · **Split:** new MIXED_EVIDENCE family
 - **Depends on:** `P-01`
-- **Evidence so far:** The frozen corpus supplies evidence pre-partitioned into three arrays with explicit LIKE/DISLIKE stance and giveaway prefixes such as 'What I liked most:'. Removing the partition inflated full-context Experience volume to 1.736 immediately.
-- **Next action:** Requires explicit approval: a new benchmark family is a contract change under amendment C. Same hidden truth, new independent messy-narrative renderer, no channel labels.
+- **Evidence so far:** The frozen corpus supplies evidence pre-partitioned into three arrays with explicit LIKE/DISLIKE stance and giveaway prefixes such as 'What I liked most:'. Removing the partition inflated full-context Experience volume to 1.736 immediately. Scientifically unblocked by P-01 Case A; still a contract change.
+- **Next action:** Requires explicit approval: a new benchmark family is a contract change under amendment C. Same hidden truth, new independent messy-narrative renderer, no channel labels. Behind S-01 on information value.
 - **Success criterion:** Channel-assignment accuracy against planted truth, plus retrieval per channel.
 - **Cost if run:** 300 calls, ~$4.00
 - **Latency relevance:** May require a routing step, which would add to the critical path.
@@ -229,10 +229,10 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 
 ### `X-01` — Are explanations faithful to the evidence and match factors that actually produced the ranking?
 
-- **Status:** BLOCKED · **Stage:** S3 · **Split:** DEVELOPMENT
+- **Status:** UNTESTED · **Stage:** S3 · **Split:** DEVELOPMENT
 - **Depends on:** `P-01`
-- **Evidence so far:** No explanation generation exists in the agent path. Provenance would make most of this deterministically checkable rather than requiring a model judge.
-- **Next action:** Wait for P-01. Then build deterministic explanation validation, not a model critic.
+- **Evidence so far:** No explanation generation exists in the agent path. P-01 now supplies claim-level quotes, so most of this is deterministically checkable rather than requiring a model judge.
+- **Next action:** Build deterministic explanation validation after S-01. Do not generate persuasive prose disconnected from the scoring path.
 - **Success criterion:** Explanation claims trace to evidence the scoring used; zero hallucinated rationale.
 - **Cost if run:** 0 calls, ~$0.00
 - **Latency relevance:** Explanation is post-ranking; affects complete-result time, not first result.
@@ -566,7 +566,8 @@ Append-only record of every runtime experiment. A paid experiment must have a re
 | `split-agents:openai:LEXICAL_TRAP:low:direction-v1` | **REJECTED** _(superseded by `split-agents:openai:LEXICAL_TRAP:low:direction-v2`)_ | LEXICAL_TRAP | 64 | $2.28 | Direction collapsed 0.732 to 0.457 / 0.447, CIs excluding zero. INVALID AS A TEST OF SPECIALISATION: the v1 Direction prompt defined WANTED to include work the person enjoys, and the 'isolated' arm was still shown preference evidence. Two independent defects pointing the same way; provenance confirmed 81/129 and 83/132 desired claims sourced from LIKE evidence. |
 | `split-agents:openai:LEXICAL_TRAP:low:direction-v2` | **INCONCLUSIVE** | LEXICAL_TRAP | 24 | $0.36 | Channel integrity fully repaired: provenance contamination 0.629 to 0.000, desired volume 2.750 to 1.000. Retrieval unresolved: isolated direction 0.806 vs shared 0.732, paired +0.074 CI [-0.066, 0.198]. Experience bit-identical from cache, so the ablation is clean. |
 | `smoke-test` | **UNTESTED** | n/a | — | — | Operational probe. Not a quality experiment. |
-| `person-blueprint-v2:openai:LEXICAL_TRAP:low` | **PREREGISTERED** | LEXICAL_TRAP | — | — | Dry run complete: 12 fresh person@v2, 0 job misses (288/288 hits), 12/12 v1 baseline hits, worst-case $0.933. Paid run not executed. |
+| `person-blueprint-v2:openai:LEXICAL_TRAP:low` | **SUPPORTED** | LEXICAL_TRAP | 12 | $0.55 | SUPPORTED / Case A. Retrieval held: experience Δ −0.019 CI [−0.097, 0.054]. Provenance contamination 0.000 on all four quote channels (72/84/24/48 claims), volume ratio 1.000. T-01 KEEP set stable across 25 threshold pairs. Direction point estimate −0.062 CI [−0.172, 0.043] is a remaining uncertainty, not a rejection. Fresh person p50 14.7s. Not shipped. |
+| `stochastic-stability:openai:LEXICAL_TRAP:low` | **PREREGISTERED** | LEXICAL_TRAP | — | — | Designed and preregistered. Dry-run only in this session. Paid execution not authorized. |
 
 ---
 
@@ -591,8 +592,8 @@ Deliberately not binary pass/fail: most of these questions resolve into somethin
 ## At a glance
 
 - **35** tracked questions across **8** stages
-- Status spread: 15 BLOCKED, 4 DEFERRED, 1 INCONCLUSIVE, 1 PREREGISTERED, 1 SUPPORTED, 13 UNTESTED
+- Status spread: 13 BLOCKED, 5 DEFERRED, 1 INCONCLUSIVE, 1 PREREGISTERED, 3 SUPPORTED, 12 UNTESTED
 - **Runnable now** (untested, no unmet dependency): `J-01`, `SEC-01`, `POW-01`, `TM-01`, `PRIV-01`
-- **Next paid experiment if authorized:** `P-01`
-- Total spend recorded so far: **$13.61** across **1041** calls
+- **Next paid experiment if authorized:** `S-01`
+- Total spend recorded so far: **$14.15** across **1053** calls
 

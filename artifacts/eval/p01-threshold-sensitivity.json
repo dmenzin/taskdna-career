@@ -1,0 +1,702 @@
+{
+  "experiment": "T-01",
+  "source": "artifacts/eval/person-blueprint-v2-openai-LEXICAL_TRAP-low.json",
+  "floors": [
+    0.4,
+    0.5,
+    0.6,
+    0.7,
+    0.8
+  ],
+  "margins": [
+    0.05,
+    0.075,
+    0.1,
+    0.15,
+    0.2
+  ],
+  "defaultKeeps": {
+    "experience": true,
+    "liked": true,
+    "disliked": true,
+    "desired": true
+  },
+  "conclusionFlips": false,
+  "cells": [
+    {
+      "floor": 0.4,
+      "margin": 0.05,
+      "isDefault": false,
+      "byChannel": {
+        "experience": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "liked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "disliked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "desired": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        }
+      }
+    },
+    {
+      "floor": 0.4,
+      "margin": 0.075,
+      "isDefault": false,
+      "byChannel": {
+        "experience": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "liked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "disliked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "desired": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        }
+      }
+    },
+    {
+      "floor": 0.4,
+      "margin": 0.1,
+      "isDefault": false,
+      "byChannel": {
+        "experience": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "liked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "disliked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "desired": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        }
+      }
+    },
+    {
+      "floor": 0.4,
+      "margin": 0.15,
+      "isDefault": false,
+      "byChannel": {
+        "experience": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "liked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "disliked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "desired": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        }
+      }
+    },
+    {
+      "floor": 0.4,
+      "margin": 0.2,
+      "isDefault": false,
+      "byChannel": {
+        "experience": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "liked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "disliked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "desired": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        }
+      }
+    },
+    {
+      "floor": 0.5,
+      "margin": 0.05,
+      "isDefault": false,
+      "byChannel": {
+        "experience": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "liked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "disliked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "desired": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        }
+      }
+    },
+    {
+      "floor": 0.5,
+      "margin": 0.075,
+      "isDefault": false,
+      "byChannel": {
+        "experience": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "liked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "disliked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "desired": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        }
+      }
+    },
+    {
+      "floor": 0.5,
+      "margin": 0.1,
+      "isDefault": false,
+      "byChannel": {
+        "experience": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "liked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "disliked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "desired": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        }
+      }
+    },
+    {
+      "floor": 0.5,
+      "margin": 0.15,
+      "isDefault": false,
+      "byChannel": {
+        "experience": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "liked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "disliked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "desired": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        }
+      }
+    },
+    {
+      "floor": 0.5,
+      "margin": 0.2,
+      "isDefault": false,
+      "byChannel": {
+        "experience": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "liked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "disliked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "desired": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        }
+      }
+    },
+    {
+      "floor": 0.6,
+      "margin": 0.05,
+      "isDefault": false,
+      "byChannel": {
+        "experience": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "liked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "disliked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "desired": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        }
+      }
+    },
+    {
+      "floor": 0.6,
+      "margin": 0.075,
+      "isDefault": false,
+      "byChannel": {
+        "experience": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "liked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "disliked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "desired": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        }
+      }
+    },
+    {
+      "floor": 0.6,
+      "margin": 0.1,
+      "isDefault": true,
+      "byChannel": {
+        "experience": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "liked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "disliked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "desired": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        }
+      }
+    },
+    {
+      "floor": 0.6,
+      "margin": 0.15,
+      "isDefault": false,
+      "byChannel": {
+        "experience": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "liked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "disliked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "desired": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        }
+      }
+    },
+    {
+      "floor": 0.6,
+      "margin": 0.2,
+      "isDefault": false,
+      "byChannel": {
+        "experience": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "liked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "disliked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "desired": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        }
+      }
+    },
+    {
+      "floor": 0.7,
+      "margin": 0.05,
+      "isDefault": false,
+      "byChannel": {
+        "experience": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "liked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "disliked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "desired": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        }
+      }
+    },
+    {
+      "floor": 0.7,
+      "margin": 0.075,
+      "isDefault": false,
+      "byChannel": {
+        "experience": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "liked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "disliked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "desired": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        }
+      }
+    },
+    {
+      "floor": 0.7,
+      "margin": 0.1,
+      "isDefault": false,
+      "byChannel": {
+        "experience": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "liked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "disliked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "desired": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        }
+      }
+    },
+    {
+      "floor": 0.7,
+      "margin": 0.15,
+      "isDefault": false,
+      "byChannel": {
+        "experience": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "liked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "disliked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "desired": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        }
+      }
+    },
+    {
+      "floor": 0.7,
+      "margin": 0.2,
+      "isDefault": false,
+      "byChannel": {
+        "experience": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "liked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "disliked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "desired": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        }
+      }
+    },
+    {
+      "floor": 0.8,
+      "margin": 0.05,
+      "isDefault": false,
+      "byChannel": {
+        "experience": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "liked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "disliked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "desired": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        }
+      }
+    },
+    {
+      "floor": 0.8,
+      "margin": 0.075,
+      "isDefault": false,
+      "byChannel": {
+        "experience": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "liked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "disliked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "desired": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        }
+      }
+    },
+    {
+      "floor": 0.8,
+      "margin": 0.1,
+      "isDefault": false,
+      "byChannel": {
+        "experience": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "liked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "disliked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "desired": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        }
+      }
+    },
+    {
+      "floor": 0.8,
+      "margin": 0.15,
+      "isDefault": false,
+      "byChannel": {
+        "experience": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "liked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "disliked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "desired": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        }
+      }
+    },
+    {
+      "floor": 0.8,
+      "margin": 0.2,
+      "isDefault": false,
+      "byChannel": {
+        "experience": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "liked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "disliked": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        },
+        "desired": {
+          "contaminationRate": 0,
+          "unsupportedClaimRate": 0,
+          "keep": true
+        }
+      }
+    }
+  ]
+}
