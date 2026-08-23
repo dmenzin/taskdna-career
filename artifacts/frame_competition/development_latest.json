@@ -220,6 +220,36 @@
     {
       "family": "NATURAL",
       "channel": "experience",
+      "architecture": "oracle-normalizer",
+      "ndcg10": 0.8383329080791934,
+      "recall10": 0.7300347222222222,
+      "surprisingRecall10": 0.8440972222222224,
+      "transitionRecall10": 0.020833333333333332,
+      "isCeiling": false
+    },
+    {
+      "family": "NATURAL",
+      "channel": "preference",
+      "architecture": "oracle-normalizer",
+      "ndcg10": 0.6794965612663297,
+      "recall10": 0.6454117063492065,
+      "surprisingRecall10": 0.36874999999999997,
+      "transitionRecall10": 0.736111111111111,
+      "isCeiling": false
+    },
+    {
+      "family": "NATURAL",
+      "channel": "direction",
+      "architecture": "oracle-normalizer",
+      "ndcg10": 0.9640159452652939,
+      "recall10": 0.9930555555555555,
+      "surprisingRecall10": 0.33993055555555557,
+      "transitionRecall10": 0.9930555555555555,
+      "isCeiling": false
+    },
+    {
+      "family": "NATURAL",
+      "channel": "experience",
       "architecture": "oracle-planted-truth",
       "ndcg10": 1,
       "recall10": 1,
@@ -562,6 +592,36 @@
     {
       "family": "SEMANTIC_BRIDGE",
       "channel": "experience",
+      "architecture": "oracle-normalizer",
+      "ndcg10": 0.8215400858846826,
+      "recall10": 0.740451388888889,
+      "surprisingRecall10": 0.8118055555555558,
+      "transitionRecall10": 0,
+      "isCeiling": false
+    },
+    {
+      "family": "SEMANTIC_BRIDGE",
+      "channel": "preference",
+      "architecture": "oracle-normalizer",
+      "ndcg10": 0.6452235453185442,
+      "recall10": 0.5904596560846561,
+      "surprisingRecall10": 0.35902777777777767,
+      "transitionRecall10": 0.75,
+      "isCeiling": false
+    },
+    {
+      "family": "SEMANTIC_BRIDGE",
+      "channel": "direction",
+      "architecture": "oracle-normalizer",
+      "ndcg10": 0.9785249614105859,
+      "recall10": 1,
+      "surprisingRecall10": 0.3281250000000001,
+      "transitionRecall10": 1,
+      "isCeiling": false
+    },
+    {
+      "family": "SEMANTIC_BRIDGE",
+      "channel": "experience",
       "architecture": "oracle-planted-truth",
       "ndcg10": 1,
       "recall10": 1,
@@ -899,6 +959,36 @@
       "recall10": 0.3645833333333333,
       "surprisingRecall10": 0.41805555555555557,
       "transitionRecall10": 0.3333333333333333,
+      "isCeiling": false
+    },
+    {
+      "family": "LEXICAL_TRAP",
+      "channel": "experience",
+      "architecture": "oracle-normalizer",
+      "ndcg10": 0.8327462180190461,
+      "recall10": 0.7508680555555557,
+      "surprisingRecall10": 0.8288194444444444,
+      "transitionRecall10": 0.020833333333333332,
+      "isCeiling": false
+    },
+    {
+      "family": "LEXICAL_TRAP",
+      "channel": "preference",
+      "architecture": "oracle-normalizer",
+      "ndcg10": 0.7070663820957125,
+      "recall10": 0.6303488756613759,
+      "surprisingRecall10": 0.3729166666666666,
+      "transitionRecall10": 0.75,
+      "isCeiling": false
+    },
+    {
+      "family": "LEXICAL_TRAP",
+      "channel": "direction",
+      "architecture": "oracle-normalizer",
+      "ndcg10": 0.9630161096270703,
+      "recall10": 0.9895833333333334,
+      "surprisingRecall10": 0.3128472222222222,
+      "transitionRecall10": 1,
       "isCeiling": false
     },
     {
