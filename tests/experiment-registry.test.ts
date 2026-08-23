@@ -44,6 +44,7 @@ describe("assertPreregistered", () => {
       "smoke-test",
       "person-blueprint-v2:openai:LEXICAL_TRAP:low",
       "stochastic-stability:openai:LEXICAL_TRAP:low",
+      "stochastic-stability:openai:LEXICAL_TRAP:low:amended",
     ]) {
       expect(assertPreregistered(id).length, id).toBeGreaterThan(0);
     }

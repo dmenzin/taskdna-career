@@ -19,7 +19,7 @@ Working principle: Use models where semantic understanding genuinely requires mo
 - **Corpus / split:** frame-corpus.v1 / DEVELOPMENT
 - **As of:** 2026-08-23
 - **Product path:** The shipping product does not run this architecture. src/app / src/v3 / src/domain import no agent module. Research harness ≠ production. P-01 Case A is a research KEEP, not a ship decision.
-- **Pending change:** S-01 must test whether one-generation signs and KEEP rates survive 4 independent fresh generations. Do not ship on a single generation.
+- **Pending change:** Shared+provenance is a provisional incumbent. S-01 (amended) must measure representation, ranking, provenance, and architecture-decision variance under identical input bytes. A CI spanning zero is not equivalence. Do not ship on a single generation.
 
 ## Findings
 
@@ -58,16 +58,20 @@ Correctly scoped isolated Direction repaired channel integrity; retrieval advant
 
 ### `F-P01-PROVENANCE` — measured-once
 
-The one-call shared architecture can emit claim-level supporting phrases without measurable evidence contamination, and without a statistically detectable retrieval regression, on LEXICAL_TRAP DEVELOPMENT n=12.
+The one-call shared architecture can emit claim-level supporting phrases without measurable evidence contamination, and with no statistically detectable retrieval regression, on LEXICAL_TRAP DEVELOPMENT n=12. Equivalence/non-inferiority of retrieval has not been established.
 
 - person-blueprint-v2:openai:LEXICAL_TRAP:low SUPPORTED / Case A: experience Δ −0.019 CI [−0.097, 0.054]; contamination 0.000 on 72/84/24/48 claims; volume 1.000; T-01 KEEP set stable across 25 pairs.
 
-**Do not claim:** This is one generation. Direction's −0.062 point estimate is inside a wide interval. Do not treat this as proof that specialists are never useful, or as a product-ship decision. S-01 is next.
+**Do not claim:** A CI spanning zero is not equivalence or proven non-inferiority. Experience Δ −0.019 [−0.097, 0.054], Preference +0.014 [−0.043, 0.083], Direction −0.062 [−0.172, 0.043] are each compatible with a real regression or a small improvement. This is one generation. Do not treat this as proof that specialists are never useful, or as a product-ship decision. S-01 (amended) is the next candidate paid experiment and is not authorized in this session.
 
 ## Not yet known
 
-- Whether one-generation architecture deltas keep their sign (S-01).
+- How much representation, ranking, provenance, and architecture-decision variance repeated v2 inference introduces (S-01 amended).
+- Whether P-01's Direction −0.062 is one noisy draw or a small systematic provenance-induced regression (S-01).
+- Whether v2 is non-inferior to v1 on retrieval; margins are unresolved (P-01, S-01, POW-01).
 - Whether semantically equivalent phrasing changes understanding (S-02).
 - Whether Qualification can be extracted without contaminating E/P/D (QC-01, Q-01).
-- Whether domain context helps, and whether wrong-domain context harms (D-CTX-01).
+- Whether domain-conditioned interpretation helps without reducing legitimate cross-domain transfer (D-CTX-01). Not executable yet.
+- Whether wrong-domain context merely fails to help or actively corrupts semantics (D-CTX-01 wrong-domain arm).
+- Whether domain context induces DOMAIN_ANCHORING (D-CTX-01, TM-01).
 

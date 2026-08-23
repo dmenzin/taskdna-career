@@ -18,8 +18,8 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 
 | id | status | question | depends on | next action | calls | cost |
 | --- | --- | --- | --- | --- | --- | --- |
-| `P-01` | **SUPPORTED** | Can the strongest one-call baseline gain claim-level auditability without specialist inference? | — | Adopt v2 as the research incumbent. Do not ship. S-01 must test whether the near-zero Direction delta and the KEEP rates survive fresh generations. | 12 | $0.93 |
-| `D-01` | **INCONCLUSIVE** | Does a correctly-scoped Direction Agent beat the shared blueprint on Direction, or only tie it? | P-01, S-01 | P-01 Case A weakens always-on specialists. Do not rerun Direction because it is interesting. Remaining questions are S-01 sign-stability and whether the extra call beats shared+provenance. Prefer A-03 (selective rescue) over always-on if S-01 holds. | 320 | $4.00 |
+| `P-01` | **SUPPORTED** | Can the strongest one-call baseline gain claim-level auditability without specialist inference? | — | Treat shared+provenance as a provisional research incumbent, not a settled baseline. Do not ship. Do not equate the P-01 CIs spanning zero with equivalence or non-inferiority. The amended S-01 design must characterize generation variance before architecture freeze. | 12 | $0.93 |
+| `D-01` | **INCONCLUSIVE** | Does a correctly-scoped Direction Agent beat the shared blueprint on Direction, or only tie it? | P-01, S-01 | P-01 Case A weakens always-on specialists. Do not rerun Direction because it is interesting. Remaining questions are S-01 architecture-decision stability (not sign-majority) and whether the extra call beats shared+provenance. Prefer A-03 (selective rescue) over always-on if S-01 holds. | 320 | $4.00 |
 | `CT-01` | **UNTESTED** | Do the five non-implications no v1 prompt states change interpretation quality when added? | P-01 | Define semantic-contract v2 with the full rule set plus contrastive examples, as a new prompt version. Never edit a v1 prompt. | 12 | $0.45 |
 | `R-01` | **SUPPORTED** | Which of the five semantic role fields carry independent signal, and is the matcher robust to paraphrase? | — | Do not retune the matcher. A later versioned matcher experiment may drop or reweight purpose; that is not P-01. | 0 | $0.00 |
 | `N-01` | **DEFERRED** | Should the interrupted NATURAL arm be completed? | — | Do not resume. Revisit only if a regression check on ordinary cases becomes decision-relevant and is newly preregistered. The existing 47 cached calls stay on disk. | 253 | $3.00 |
@@ -31,7 +31,7 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 | id | status | question | depends on | next action | calls | cost |
 | --- | --- | --- | --- | --- | --- | --- |
 | `T-01` | **SUPPORTED** | Are the provenance attribution thresholds (0.6 floor, 0.1 ambiguity margin) defensible? | P-01 | No further sweep. Revisit only if a later architecture produces non-zero contamination near the ceiling. | 0 | $0.00 |
-| `S-01` | **PREREGISTERED** | Would we reach the same architectural decision if the model regenerated the same person's blueprint from identical prompt bytes? | P-01 | Dry-run is the next authorized action. Paid run only after operator approval. Do not replay the P-01 cache as trial 0. | 48 | $3.73 |
+| `S-01` | **PREREGISTERED** | How much variation is introduced by repeated inference under identical semantic input, and can that variation change TaskDNA's representation, recommendations, or architecture decisions? | P-01 | Dry-run the amended design. Paid execution is not authorized in this session. Do not replay the P-01 cache as trial 0. Do not contaminate S-01 with paraphrases (that is S-02). | 48 | $3.73 |
 | `S-02` | **UNTESTED** | Does semantically equivalent evidence phrasing cause materially different TaskDNA understanding? | S-01 | After S-01, preregister controlled perturbations that preserve hidden truth: bullet vs prose, reorder, paraphrase, mild typos, first- vs third-person, inserted neutral sentences. No perturbation may change planted truth. | 48 | $3.70 |
 | `S-03` | **UNTESTED** | Do later provider/model/alias moves change TaskDNA understanding on a fixed regression panel? | S-01 | Define a tiny fixed panel and rerun it when the resolved model id changes. Do not interpret future behaviour changes as architecture changes when the model may have moved. | 12 | $0.90 |
 | `POW-01` | **UNTESTED** | For each planned architecture comparison, what sample size would materially answer the question? | — | Estimate paired effect size and variance from DEVELOPMENT before declaring future effects inconclusive forever. Do not silently enlarge a frozen split; unused frozen subjects must keep their designated split, otherwise create a new versioned generation. | 0 | $0.00 |
@@ -46,8 +46,8 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 | `U-01` | **UNTESTED** | Can the representation say 'I do not have enough evidence' instead of inventing a conclusion, and is that signal calibrated? | P-01 | Define the construct before implementing. Candidates: explicit INSUFFICIENT_EVIDENCE, claim-level evidence strength, repeated-generation agreement as an external proxy. | 12 | $0.45 |
 | `C-01` | **DEFERRED** | How should conflicting evidence and user corrections be reconciled? | P-01, U-01 | Define source precedence and versioning. Prefer deterministic reconciliation; reserve model adjudication for genuinely ambiguous semantics. | 0 | $0.00 |
 | `X-01` | **UNTESTED** | Are explanations faithful to the evidence and match factors that actually produced the ranking? | P-01 | Build deterministic explanation validation after S-01. Do not generate persuasive prose disconnected from the scoring path. | 0 | $0.00 |
-| `QC-01` | **UNTESTED** | What does Qualification mean, as a product contract, before any Qualification prompt is written? | P-01 | Write QUALIFICATION_CONTRACT distinguishing capabilities, credentials, experience-depth, education, hard vs preferred requirements, transferable evidence, unknown/missing evidence, and gaps. Design PersonQualification and JobRequirement together. No prompt yet. | 0 | $0.00 |
-| `D-CTX-04` | **BLOCKED** | Does Qualification benefit from domain context more than Experience does? | QC-01, D-CTX-01 | Evaluate domain conditioning independently for work interpretation, Qualification interpretation, and job hard-requirement interpretation. Do not domain-specialize the whole CareerBlueprint by default. | 24 | $1.80 |
+| `QC-01` | **UNTESTED** | What does Qualification mean, as a product contract, before any Qualification prompt is written? | P-01 | Write QUALIFICATION_CONTRACT distinguishing capabilities, credentials, experience-depth, education, hard vs preferred requirements, transferable evidence, unknown/missing evidence, and gaps. Design PersonQualification and JobRequirement together. Preserve hidden experimental domain metadata (industry / work-function / specialty, possibly per evidence item) so later D-CTX work can test conditioning without feeding those labels to the baseline interpreter. Distinguish that metadata from StructuredWork.domain. No prompt yet. | 0 | $0.00 |
+| `D-CTX-04` | **BLOCKED** | Does Qualification benefit from domain context more than Experience does? | QC-01, Q-01, D-CTX-01 | Only after QC-01, a measured Q implementation (Q-01), and D-CTX-01. Evaluate domain conditioning independently for Q vs the rest of the blueprint. Do not domain-specialize the whole CareerBlueprint by default. | 24 | $1.80 |
 
 ### S4 — Generalisation
 
@@ -63,15 +63,20 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 
 | id | status | question | depends on | next action | calls | cost |
 | --- | --- | --- | --- | --- | --- | --- |
-| `M-01` | **DEFERRED** | Can TaskDNA untangle a messy person, rather than interpret evidence that was already routed for it? | P-01 | Requires explicit approval: a new benchmark family is a contract change under amendment C. Same hidden truth, new independent messy-narrative renderer, no channel labels. Behind S-01 on information value. | 300 | $4.00 |
-| `M-02` | **BLOCKED** | Does the architecture hold for career states the current corpus does not contain? | M-01 | New versioned corpus with its own preregistration. Do not mutate the frozen corpus. | 300 | $4.00 |
-| `J-01` | **UNTESTED** | Does JobBlueprint interpretation survive real, noisy job descriptions? | — | Assemble a noisy job-description set. Keep interpretation per job and globally cached; never per user-job pair. | 100 | $1.50 |
+| `M-01` | **DEFERRED** | Can TaskDNA untangle a messy person, rather than interpret evidence that was already routed for it? | P-01 | Requires explicit approval: a new benchmark family is a contract change under amendment C. Same hidden truth, new independent messy-narrative renderer, no channel labels. Store domain-routing metadata as hidden experimental fields (industry / work-function / specialty, multi-label, per person and per evidence item where truth supports it). Do not pass that metadata to the baseline interpreter unless a preregistered D-CTX arm enables it. Behind S-01 on information value. | 300 | $4.00 |
+| `M-02` | **BLOCKED** | Does the architecture hold for career states the current corpus does not contain? | M-01 | New versioned corpus with its own preregistration. Do not mutate the frozen corpus. Include multi-domain people (finance+analytics, healthcare+operations, legal+technology, etc.) and domain-transition cases where historical domain ≠ desired domain. These are first-class, not leftover cells. | 300 | $4.00 |
+| `J-01` | **UNTESTED** | Does JobBlueprint interpretation survive real, noisy job descriptions? | — | Assemble a noisy job-description set. Keep interpretation per job and globally cached; never per user-job pair. Person-side and job-side domain context are separate later questions (D-CTX-J-01); do not assume they need the same machinery. JobBlueprints are globally precomputable, so richer job-side domain interpretation has a different cost/latency tradeoff. | 100 | $1.50 |
 | `M-03` | **BLOCKED** | Does the architecture hold on conversational NATURAL_USER renderings of the same latent truth? | M-01 | New independently versioned family after M-01. Do not promote MIXED_EVIDENCE results into claims about conversational input. | 300 | $4.00 |
 | `M-04` | **BLOCKED** | Can TaskDNA reconcile multi-source user evidence that contains planted contradictions? | M-03, C-01 | New versioned family combining resume bullets, narrative, explicit preferences, goals, and correction messages. Potential contradictions planted on purpose. | 300 | $4.00 |
-| `TM-01` | **UNTESTED** | Can product-specific transfer quality be measured separately from paraphrase recovery? | — | Define the transfer-metric contract before the next realistic benchmark freeze. Do not invent a blended TaskDNA Quality number. | 0 | $0.00 |
-| `D-CTX-01` | **BLOCKED** | Does correct oracle domain context improve semantic interpretation, and does wrong-domain context harm it? | P-01, S-01, M-01 | After the person-inference architecture is stable and MIXED_EVIDENCE exists, run four arms with model/schema/matcher/truth/scoring frozen: no context, correct oracle pack, plausible wrong pack, multi-domain pack. If perfect domain knowledge does not help, do not build a router. | 48 | $3.70 |
-| `D-CTX-02` | **BLOCKED** | Is industry, work-function, or a multi-dimensional pack the right domain-context unit? | D-CTX-01 | Only if D-CTX-01 shows oracle benefit. Compare industry vs function vs industry+function+specialty packs on the same people. | 36 | $2.80 |
-| `D-CTX-03` | **BLOCKED** | Can a cheap multi-label domain router preserve oracle-domain benefits without destroying career-transition cases? | D-CTX-01, D-CTX-02 | Only if D-CTX-01 oracle arm helps. Evaluate router precision/recall AND end-to-end semantic and ranking effect. A 95% accurate router can still be harmful if its 5% errors destroy transitions. | 24 | $1.80 |
+| `TM-01` | **UNTESTED** | Can product-specific transfer quality — including historical-domain anchoring — be measured separately from paraphrase recovery? | — | Define the transfer-metric contract before the next realistic benchmark freeze, including named failure mode DOMAIN_ANCHORING. Do not invent a blended TaskDNA Quality number. | 0 | $0.00 |
+| `D-CTX-01` | **BLOCKED** | If the semantic interpreter receives correct oracle domain context, does interpretation improve, and how much does wrong-domain or historically-salient context harm cross-domain transfer? | P-01, S-01, S-02 | Do not execute now. After S-01 and S-02, preregister four frozen arms: A universal/no-context, B correct oracle pack, C plausible wrong-domain, D multi-domain oracle. Smallest useful versioned packs only (vocabulary, objects, methods, credentials, a few contrastive examples). No recommendation restrictions, occupational priors, E/P/Q/D redefinitions, hidden truth, or target-job hints. Domain context must not mechanically reach the matcher. If perfect domain knowledge does not help, do not build a router. Distinguish structured-benchmark effect from later MIXED_EVIDENCE effect. | 48 | $3.70 |
+| `D-CTX-02` | **BLOCKED** | Which contextual abstraction — industry, work-function, hybrid, or technical specialty — and which routing unit — person, evidence-source, evidence-item, or soft internal inference — improves interpretation without narrowing transferable meaning? | D-CTX-01 | Only if D-CTX-01 shows oracle benefit. Compare no context vs oracle industry vs oracle work-function vs industry+function vs multi-label combinations. Keep model and matcher frozen. Conceptually record whether context was applied at whole-person, evidence-source, or evidence-item level; do not skip to a learned router. | 36 | $2.80 |
+| `D-CTX-03` | **BLOCKED** | Can a cheap multi-label domain router preserve oracle-domain benefits without destroying career-transition cases? | D-CTX-01, D-CTX-02 | Only if D-CTX-01 oracle arm helps. Build the cheapest adequate router. Evaluate router-level precision/recall/top-k/calibration/abstention AND end-to-end semantic recovery, E/P/Q/D, NDCG, cross-domain transfer, false discoveries, recommendation stability, latency, and cost. Never use hidden domain truth in the learned-router arm. | 24 | $1.80 |
+| `D-CTX-05` | **BLOCKED** | Which router-error and fallback behavior minimizes catastrophic wrong-domain distortion once a cheap router exists? | D-CTX-03 | Only after D-CTX-03. Compare hard top-1, top-k packs, confidence threshold, universal fallback, and weighted context blending. Do not implement now. | 24 | $1.80 |
+| `D-CTX-J-01` | **BLOCKED** | Does domain context improve JobBlueprint interpretation of credentials, jargon, methods, objects, and regulations — separately from person-side conditioning? | J-01, D-CTX-01 | Only after J-01 and a demonstrated person-side oracle benefit (D-CTX-01). Evaluate job-side context independently. Do not assume a win on people transfers to jobs. | 100 | $1.50 |
+| `D-CTX-P` | **BLOCKED** | Do domain-specific prompt instructions add value beyond a universal semantic contract plus a small versioned context pack? | D-CTX-01, D-CTX-02 | Only if universal + modular context demonstrates value and then plateaus. Preregister against that baseline. Do not write giant domain prompts now. | 36 | $2.80 |
+| `D-CTX-FT` | **BLOCKED** | Does a domain-adapted or fine-tuned model add incremental value over universal, universal+context, and domain-prompt variants? | D-CTX-P, D-CTX-05 | Do not implement. Revisit only if every listed precondition is true and cheaper stages have plateaued. | 0 | $0.00 |
+| `D-META-01` | **UNTESTED** | Can future benchmarks store industry, work-function, and specialty labels as hidden experimental metadata without leaking them into the baseline interpreter or conflating them with StructuredWork.domain? | — | Write the metadata contract (label types, multiplicity, confidence/ambiguity, provenance of the label, hidden-by-default input rule) as zero-call design work. Do not feed labels to person-blueprint@v2. Do not execute domain experiments. | 0 | $0.00 |
 
 ### S6 — Human validity
 
@@ -99,7 +104,7 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 
 | id | status | question | depends on | next action | calls | cost |
 | --- | --- | --- | --- | --- | --- | --- |
-| `A-01` | **DEFERRED** | Does career-landscape discovery need a genuinely exploratory agent? | I-01 | Do not implement until the core representation and retrieval foundation are stable. | 0 | $0.00 |
+| `A-01` | **DEFERRED** | Does career-landscape discovery need a genuinely exploratory agent? | I-01 | Do not implement until the core representation and retrieval foundation are stable. Selective retrieval of domain knowledge after the interpreter notices an ambiguity is a later agentic alternative (see domainProgram), not a reason to build tools now. Static/oracle context (D-CTX-01) must show value first. | 0 | $0.00 |
 | `A-02` | **DEFERRED** | Does outreach and opportunity pursuit warrant agentic planning? | A-01, SEC-01 | Requires reliable semantic user state, explicit user approval boundaries and narrow tool permissions first. | 0 | $0.00 |
 | `A-03` | **UNTESTED** | Is selective specialist rescue better than always-on specialist inference? | P-01, D-01 | Define triggers: ambiguous channel assignment, contradictory evidence, low evidence support, unstable repeated inference. | 60 | $2.00 |
 
@@ -111,8 +116,8 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 
 - **Status:** SUPPORTED · **Stage:** S1 · **Split:** DEVELOPMENT
 - **Depends on:** nothing
-- **Evidence so far:** Case A. LEXICAL_TRAP n=12, OpenAI gpt-5.6-sol low. person-blueprint@v2 vs v1 under frozen field-match: experience Δ −0.019 CI [−0.097, 0.054]; preference +0.014 [−0.043, 0.083]; direction −0.062 [−0.172, 0.043]. Provenance contamination 0.000 on experience/liked/disliked/desired (72/84/24/48 claims). Volume ratio 1.000 all channels. Actual $0.546 / 12 fresh calls. T-01 KEEP set stable across 25 threshold pairs. Working research baseline is now shared+provenance+field-match. Not shipped.
-- **Next action:** Adopt v2 as the research incumbent. Do not ship. S-01 must test whether the near-zero Direction delta and the KEEP rates survive fresh generations.
+- **Evidence so far:** Case A for auditability/provenance, not proven retrieval equivalence. LEXICAL_TRAP n=12, OpenAI gpt-5.6-sol low. person-blueprint@v2 vs v1 under frozen field-match: experience Δ −0.019 CI [−0.097, 0.054]; preference +0.014 [−0.043, 0.083]; direction −0.062 [−0.172, 0.043]. No statistically detectable retrieval regression was observed; equivalence/non-inferiority has NOT been established. Provenance contamination 0.000 on experience/liked/disliked/desired (72/84/24/48 claims). Volume ratio 1.000 all channels. Actual $0.546 / 12 fresh calls. T-01 KEEP set stable across 25 threshold pairs. Working research baseline is shared+provenance+field-match pending S-01. Not shipped.
+- **Next action:** Treat shared+provenance as a provisional research incumbent, not a settled baseline. Do not ship. Do not equate the P-01 CIs spanning zero with equivalence or non-inferiority. The amended S-01 design must characterize generation variance before architecture freeze.
 - **Success criterion:** Retrieval holds (CI spans zero or better) AND provenance contamination <= 0.05.
 - **Cost if run:** 12 calls, ~$0.93
 - **Latency relevance:** Small expected increase in output tokens; measure per-call.
@@ -127,13 +132,13 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 - **Cost if run:** 0 calls, ~$0.00
 - **Latency relevance:** None.
 
-### `S-01` — Would we reach the same architectural decision if the model regenerated the same person's blueprint from identical prompt bytes?
+### `S-01` — How much variation is introduced by repeated inference under identical semantic input, and can that variation change TaskDNA's representation, recommendations, or architecture decisions?
 
 - **Status:** PREREGISTERED · **Stage:** S2 · **Split:** DEVELOPMENT
 - **Depends on:** `P-01`
-- **Evidence so far:** P-01 is one generation. Direction point estimate −0.062 with CI spanning zero is exactly the kind of near-zero delta that can flip sign. Distinct from S-02. Preregistered as stochastic-stability:openai:LEXICAL_TRAP:low. 12 people × 4 trials, trialId in cache identity only.
-- **Next action:** Dry-run is the next authorized action. Paid run only after operator approval. Do not replay the P-01 cache as trial 0.
-- **Success criterion:** The sign of each important architectural delta (field-match vs token-bag; shared-provenance vs incumbent) is stable across trials and ranking rank-correlation is high.
+- **Evidence so far:** P-01 is one generation. Direction Δ −0.062 CI [−0.172, 0.043] is compatible with a meaningful regression or a small improvement. The first S-01 draft used sign-majority as the decision rule and was superseded before spend. Amended preregistration: stochastic-stability:openai:LEXICAL_TRAP:low:amended. 12 people × 4 trials; trialId in cache identity only; v1 is one frozen historical realization. Non-inferiority margins remain unresolved rather than invented. Distinct from S-02.
+- **Next action:** Dry-run the amended design. Paid execution is not authorized in this session. Do not replay the P-01 cache as trial 0. Do not contaminate S-01 with paraphrases (that is S-02).
+- **Success criterion:** Do not compress S-01 into one PASS/FAIL. Produce REPRESENTATION_STABILITY, RANKING_STABILITY, PROVENANCE_STABILITY, and ARCHITECTURE_DECISION_STABILITY, each SUPPORTED / CONCERN / INCONCLUSIVE. Sign counts may be descriptive only. Recommendation churn is 1 - |TopK_A ∩ TopK_B| / K with K=10. Non-inferiority remains unresolved unless a later, separately justified margin is preregistered.
 - **Cost if run:** 48 calls, ~$3.73
 - **Latency relevance:** Yields latency variance, currently unknown.
 
@@ -142,7 +147,7 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 - **Status:** INCONCLUSIVE · **Stage:** S1 · **Split:** DEVELOPMENT
 - **Depends on:** `P-01`, `S-01`
 - **Evidence so far:** v2 isolated Direction 0.806 vs shared 0.732, paired delta +0.074 CI [-0.066, 0.198]. Provenance contamination 0.000 and desired volume ratio 1.000, both corrected from v1.
-- **Next action:** P-01 Case A weakens always-on specialists. Do not rerun Direction because it is interesting. Remaining questions are S-01 sign-stability and whether the extra call beats shared+provenance. Prefer A-03 (selective rescue) over always-on if S-01 holds.
+- **Next action:** P-01 Case A weakens always-on specialists. Do not rerun Direction because it is interesting. Remaining questions are S-01 architecture-decision stability (not sign-majority) and whether the extra call beats shared+provenance. Prefer A-03 (selective rescue) over always-on if S-01 holds.
 - **Success criterion:** Direction paired delta CI excludes zero.
 - **Cost if run:** 320 calls, ~$4.00
 - **Latency relevance:** Doubles onboarding calls; requires real concurrent measurement before shipping.
@@ -211,8 +216,8 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 
 - **Status:** DEFERRED · **Stage:** S5 · **Split:** new MIXED_EVIDENCE family
 - **Depends on:** `P-01`
-- **Evidence so far:** The frozen corpus supplies evidence pre-partitioned into three arrays with explicit LIKE/DISLIKE stance and giveaway prefixes such as 'What I liked most:'. Removing the partition inflated full-context Experience volume to 1.736 immediately. Scientifically unblocked by P-01 Case A; still a contract change.
-- **Next action:** Requires explicit approval: a new benchmark family is a contract change under amendment C. Same hidden truth, new independent messy-narrative renderer, no channel labels. Behind S-01 on information value.
+- **Evidence so far:** The frozen corpus supplies evidence pre-partitioned into three arrays with explicit LIKE/DISLIKE stance and giveaway prefixes such as 'What I liked most:'. Removing the partition inflated full-context Experience volume to 1.736 immediately. Scientifically unblocked by P-01 Case A; still a contract change. Structured-benchmark domain effects and mixed-evidence domain effects are different claims; M-01 is required only for the latter.
+- **Next action:** Requires explicit approval: a new benchmark family is a contract change under amendment C. Same hidden truth, new independent messy-narrative renderer, no channel labels. Store domain-routing metadata as hidden experimental fields (industry / work-function / specialty, multi-label, per person and per evidence item where truth supports it). Do not pass that metadata to the baseline interpreter unless a preregistered D-CTX arm enables it. Behind S-01 on information value.
 - **Success criterion:** Channel-assignment accuracy against planted truth, plus retrieval per channel.
 - **Cost if run:** 300 calls, ~$4.00
 - **Latency relevance:** May require a routing step, which would add to the critical path.
@@ -222,8 +227,8 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 - **Status:** BLOCKED · **Stage:** S5 · **Split:** new corpus version
 - **Depends on:** `M-01`
 - **Evidence so far:** Measured from planted truth: every person has an identical 6/7/2/4 channel profile; desired-vs-performed role overlap is always 2 or 3 of 5; disliked-vs-performed is always exactly 5. No low-experience/high-direction group and no contrast group for direction aversion exist.
-- **Next action:** New versioned corpus with its own preregistration. Do not mutate the frozen corpus.
-- **Success criterion:** Performance holds across pivots, returners, generalists, and qualification/desire mismatches.
+- **Next action:** New versioned corpus with its own preregistration. Do not mutate the frozen corpus. Include multi-domain people (finance+analytics, healthcare+operations, legal+technology, etc.) and domain-transition cases where historical domain ≠ desired domain. These are first-class, not leftover cells.
+- **Success criterion:** Performance holds across pivots, returners, generalists, qualification/desire mismatches, multi-domain histories, and historical-to-desired domain transitions.
 - **Cost if run:** 300 calls, ~$4.00
 - **Latency relevance:** None.
 
@@ -252,7 +257,7 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 - **Status:** UNTESTED · **Stage:** S5 · **Split:** new job set
 - **Depends on:** nothing
 - **Evidence so far:** Job interpretation works on synthetic renderings. Untested against marketing fluff, duplicated or missing responsibilities, contradictory requirements, title mismatch, jargon, or injected text.
-- **Next action:** Assemble a noisy job-description set. Keep interpretation per job and globally cached; never per user-job pair.
+- **Next action:** Assemble a noisy job-description set. Keep interpretation per job and globally cached; never per user-job pair. Person-side and job-side domain context are separate later questions (D-CTX-J-01); do not assume they need the same machinery. JobBlueprints are globally precomputable, so richer job-side domain interpretation has a different cost/latency tradeoff.
 - **Success criterion:** Structured work recovery holds on noisy input; no injected instruction changes behaviour.
 - **Cost if run:** 100 calls, ~$1.50
 - **Latency relevance:** Precomputed; not user wait.
@@ -292,7 +297,7 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 - **Status:** DEFERRED · **Stage:** S8 · **Split:** n/a
 - **Depends on:** `I-01`
 - **Evidence so far:** No tool-using or planning agent exists anywhere in the repository. This is the first component whose task might genuinely require iterative decision-making about what to investigate next.
-- **Next action:** Do not implement until the core representation and retrieval foundation are stable.
+- **Next action:** Do not implement until the core representation and retrieval foundation are stable. Selective retrieval of domain knowledge after the interpreter notices an ambiguity is a later agentic alternative (see domainProgram), not a reason to build tools now. Static/oracle context (D-CTX-01) must show value first.
 - **Success criterion:** Beats a deterministic or single-call alternative on discovery quality.
 - **Cost if run:** 0 calls, ~$0.00
 - **Latency relevance:** Exploratory loops are latency-expensive by nature.
@@ -361,8 +366,8 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 
 - **Status:** UNTESTED · **Stage:** S3 · **Split:** n/a
 - **Depends on:** `P-01`
-- **Evidence so far:** No QUALIFICATION_CONTRACT exists. Q-01 cannot be evaluated until evidence is visible (M-01), but the ontology must be designed first so person-Q and job-Q are compatible. Qualification is not Experience with another name.
-- **Next action:** Write QUALIFICATION_CONTRACT distinguishing capabilities, credentials, experience-depth, education, hard vs preferred requirements, transferable evidence, unknown/missing evidence, and gaps. Design PersonQualification and JobRequirement together. No prompt yet.
+- **Evidence so far:** No QUALIFICATION_CONTRACT exists. Q-01 cannot be evaluated until evidence is visible (M-01), but the ontology must be designed first so person-Q and job-Q are compatible. Qualification is not Experience with another name. Domain-conditioned Q is a later candidate (D-CTX-04), not part of this contract's implementation.
+- **Next action:** Write QUALIFICATION_CONTRACT distinguishing capabilities, credentials, experience-depth, education, hard vs preferred requirements, transferable evidence, unknown/missing evidence, and gaps. Design PersonQualification and JobRequirement together. Preserve hidden experimental domain metadata (industry / work-function / specialty, possibly per evidence item) so later D-CTX work can test conditioning without feeding those labels to the baseline interpreter. Distinguish that metadata from StructuredWork.domain. No prompt yet.
 - **Success criterion:** A committed contract that the deterministic compatibility layer can use to tell nice-to-have from legally/operationally mandatory, without treating absence of evidence as absence of qualification unless the contract says so.
 - **Cost if run:** 0 calls, ~$0.00
 - **Latency relevance:** None; design work.
@@ -387,33 +392,33 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 - **Cost if run:** 300 calls, ~$4.00
 - **Latency relevance:** Refresh-path relevant.
 
-### `TM-01` — Can product-specific transfer quality be measured separately from paraphrase recovery?
+### `TM-01` — Can product-specific transfer quality — including historical-domain anchoring — be measured separately from paraphrase recovery?
 
 - **Status:** UNTESTED · **Stage:** S5 · **Split:** DEVELOPMENT
 - **Depends on:** nothing
-- **Evidence so far:** Current metrics include surprising-fit and transition recall, but not an explicit suite for cross-title true-fit, cross-industry true-fit, same-title false-fit, performed-but-unwanted intrusion, or desired-but-unqualified recommendations.
-- **Next action:** Define the transfer-metric contract before the next realistic benchmark freeze. Do not invent a blended TaskDNA Quality number.
-- **Success criterion:** Each transfer failure mode has a named metric and a runnable evaluator or an explicit EXPLORATORY mark.
+- **Evidence so far:** Current metrics include surprising-fit and transition recall, but not an explicit suite for cross-title true-fit, cross-industry true-fit, cross-function true-fit, career-transition recall, same-title false-fit, performed-but-unwanted intrusion, desired-but-unqualified recommendations, recommendation-domain diversity where truth supports diversity, or DOMAIN_ANCHORING (ranking shifts back toward the historical industry when underlying work transfers).
+- **Next action:** Define the transfer-metric contract before the next realistic benchmark freeze, including named failure mode DOMAIN_ANCHORING. Do not invent a blended TaskDNA Quality number.
+- **Success criterion:** Each transfer failure mode, including DOMAIN_ANCHORING, has a named metric and a runnable evaluator or an explicit EXPLORATORY mark.
 - **Cost if run:** 0 calls, ~$0.00
 - **Latency relevance:** None.
 
-### `D-CTX-01` — Does correct oracle domain context improve semantic interpretation, and does wrong-domain context harm it?
+### `D-CTX-01` — If the semantic interpreter receives correct oracle domain context, does interpretation improve, and how much does wrong-domain or historically-salient context harm cross-domain transfer?
 
 - **Status:** BLOCKED · **Stage:** S5 · **Split:** DEVELOPMENT
-- **Depends on:** `P-01`, `S-01`, `M-01`
-- **Evidence so far:** Unmeasured. Domain knowledge is a major product hypothesis. A cheap router is not the first test — oracle benefit plus a wrong-domain negative control must come first. Domain context must never become a career gate.
-- **Next action:** After the person-inference architecture is stable and MIXED_EVIDENCE exists, run four arms with model/schema/matcher/truth/scoring frozen: no context, correct oracle pack, plausible wrong pack, multi-domain pack. If perfect domain knowledge does not help, do not build a router.
-- **Success criterion:** Oracle arm improves semantic recovery or Qualification without reducing legitimate cross-domain discovery; wrong-domain arm is reported as a negative control, not ignored.
+- **Depends on:** `P-01`, `S-01`, `S-02`
+- **Evidence so far:** Unmeasured. Registered now so the hypothesis cannot live only in chat. Domain information is interpretation context, not recommendation eligibility. StructuredWork.domain is a semantic role field (R-01 Δ −0.016 NDCG), not routing metadata. A cheap router is not the first test. Wrong-domain and DOMAIN_ANCHORING negative controls are mandatory. Oracle context measures an upper bound, not deployable product performance. Hidden domain truth must never leak into the no-context arm. Context packs may disambiguate evidence; they cannot become evidence (context-induced unsupported inference is a named failure class). Mixed-evidence domain benefit is a later claim requiring M-01; this item's first screen can use the structured benchmark after stability.
+- **Next action:** Do not execute now. After S-01 and S-02, preregister four frozen arms: A universal/no-context, B correct oracle pack, C plausible wrong-domain, D multi-domain oracle. Smallest useful versioned packs only (vocabulary, objects, methods, credentials, a few contrastive examples). No recommendation restrictions, occupational priors, E/P/Q/D redefinitions, hidden truth, or target-job hints. Domain context must not mechanically reach the matcher. If perfect domain knowledge does not help, do not build a router. Distinguish structured-benchmark effect from later MIXED_EVIDENCE effect.
+- **Success criterion:** Classify SUPPORTED / REJECTED / INCONCLUSIVE / IMPLEMENTATION FAILURE. Oracle arm must improve semantic recovery without material harm to cross-domain true-fit, transition recall, or DOMAIN_ANCHORING. Wrong-domain arm is mandatory and reported (semantic corruption, provenance mismatch, field drift, ranking damage). One generation is not enough; obey the stability program.
 - **Cost if run:** 48 calls, ~$3.70
 - **Latency relevance:** Context packs add input tokens; measure.
 
-### `D-CTX-02` — Is industry, work-function, or a multi-dimensional pack the right domain-context unit?
+### `D-CTX-02` — Which contextual abstraction — industry, work-function, hybrid, or technical specialty — and which routing unit — person, evidence-source, evidence-item, or soft internal inference — improves interpretation without narrowing transferable meaning?
 
 - **Status:** BLOCKED · **Stage:** S5 · **Split:** DEVELOPMENT
 - **Depends on:** `D-CTX-01`
-- **Evidence so far:** Unmeasured. Cross-industry transfer is part of the product value, so work-function context may matter more than employer industry. Do not assume 'industry' is the unit.
-- **Next action:** Only if D-CTX-01 shows oracle benefit. Compare industry vs function vs industry+function+specialty packs on the same people.
-- **Success criterion:** The winning unit is the one that helps interpretation without gating recommendations to the labelled domain.
+- **Evidence so far:** Unmeasured. Both the taxonomy and the routing unit are hypotheses. A person may simultaneously contain financial work, analytics, operations, program delivery, and people leadership. A hard single-domain label may destroy useful structure. Prefer multi-label / soft representations. Do not freeze NAICS-like industry classification from intuition.
+- **Next action:** Only if D-CTX-01 shows oracle benefit. Compare no context vs oracle industry vs oracle work-function vs industry+function vs multi-label combinations. Keep model and matcher frozen. Conceptually record whether context was applied at whole-person, evidence-source, or evidence-item level; do not skip to a learned router.
+- **Success criterion:** The winning representation is the one that helps interpretation without gating recommendations to the labelled domain and without forcing multi-domain people into one silo.
 - **Cost if run:** 36 calls, ~$2.80
 - **Latency relevance:** Minor input-token differences.
 
@@ -421,21 +426,71 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 
 - **Status:** BLOCKED · **Stage:** S5 · **Split:** DEVELOPMENT
 - **Depends on:** `D-CTX-01`, `D-CTX-02`
-- **Evidence so far:** No router exists. Building one before oracle benefit is shown is the failure this item exists to prevent. Prefer soft scores and abstention over a hard single-domain classifier.
-- **Next action:** Only if D-CTX-01 oracle arm helps. Evaluate router precision/recall AND end-to-end semantic and ranking effect. A 95% accurate router can still be harmful if its 5% errors destroy transitions.
-- **Success criterion:** End-to-end performance stays close to the oracle arm; low-confidence cases fall back to universal inference.
+- **Evidence so far:** No router exists. Building one before oracle benefit is shown is the failure this item exists to prevent. Prefer soft multi-label scores with uncertainty, abstention, general fallback, and unknown/new-domain handling over a hard FINANCE label. Classification accuracy is not sufficient: a 95% accurate router can still be bad if rare errors destroy career-transition cases. The router need not be an agent; deterministic or cheap-classifier options come first.
+- **Next action:** Only if D-CTX-01 oracle arm helps. Build the cheapest adequate router. Evaluate router-level precision/recall/top-k/calibration/abstention AND end-to-end semantic recovery, E/P/Q/D, NDCG, cross-domain transfer, false discoveries, recommendation stability, latency, and cost. Never use hidden domain truth in the learned-router arm.
+- **Success criterion:** Learned routing preserves enough of the oracle arm's downstream benefit to justify the extra machinery. Low-confidence cases fall back to the universal interpreter. Label accuracy alone cannot KEEP this item.
 - **Cost if run:** 24 calls, ~$1.80
 - **Latency relevance:** Router is an extra call unless it is a cheap classifier; measure the critical path.
 
 ### `D-CTX-04` — Does Qualification benefit from domain context more than Experience does?
 
 - **Status:** BLOCKED · **Stage:** S3 · **Split:** DEVELOPMENT
-- **Depends on:** `QC-01`, `D-CTX-01`
-- **Evidence so far:** Unmeasured. Credentials (CPA, RN, bar, Series licenses, clearance, PE) are where domain expertise is most plausible. Universal E/P/D plus domain-conditioned Q remains an open hypothesis.
-- **Next action:** Evaluate domain conditioning independently for work interpretation, Qualification interpretation, and job hard-requirement interpretation. Do not domain-specialize the whole CareerBlueprint by default.
+- **Depends on:** `QC-01`, `Q-01`, `D-CTX-01`
+- **Evidence so far:** Unmeasured. Credentials (CPA, RN, bar admission, PE, Series 7, clinical licensure, security clearance, AWS certifications, government eligibility) are where domain expertise is most plausible. Universal E/P/D plus domain-conditioned Q remains an explicit architectural candidate and must stay separate from domain-conditioning the entire CareerBlueprint. This item is Qualification-specific domain conditioning (addendum DCTX-Q-01). Router-error stress testing is D-CTX-05, not this id.
+- **Next action:** Only after QC-01, a measured Q implementation (Q-01), and D-CTX-01. Evaluate domain conditioning independently for Q vs the rest of the blueprint. Do not domain-specialize the whole CareerBlueprint by default.
 - **Success criterion:** Domain-conditioned Q improves hard-requirement precision/recall without raising false hard-gates or blocking transferable candidates.
 - **Cost if run:** 24 calls, ~$1.80
 - **Latency relevance:** Possibly one extra Q call or a longer shared call.
+
+### `D-CTX-05` — Which router-error and fallback behavior minimizes catastrophic wrong-domain distortion once a cheap router exists?
+
+- **Status:** BLOCKED · **Stage:** S5 · **Split:** DEVELOPMENT
+- **Depends on:** `D-CTX-03`
+- **Evidence so far:** Unmeasured. This is the addendum's DCTX-04 (router-error stress). Live D-CTX-04 remains Qualification-specific so existing ids are not stolen. Controlled cases: top label wrong, correct domain second, low confidence, two equally plausible domains, multi-domain evidence, historical industry ≠ desired domain.
+- **Next action:** Only after D-CTX-03. Compare hard top-1, top-k packs, confidence threshold, universal fallback, and weighted context blending. Do not implement now.
+- **Success criterion:** The chosen fallback minimizes wrong-domain semantic corruption, DOMAIN_ANCHORING, and ranking damage relative to oracle and universal controls, including transition cases.
+- **Cost if run:** 24 calls, ~$1.80
+- **Latency relevance:** Fallback strategy can add router or pack-loading latency; measure.
+
+### `D-CTX-J-01` — Does domain context improve JobBlueprint interpretation of credentials, jargon, methods, objects, and regulations — separately from person-side conditioning?
+
+- **Status:** BLOCKED · **Stage:** S5 · **Split:** new job set
+- **Depends on:** `J-01`, `D-CTX-01`
+- **Evidence so far:** Unmeasured. Person-side and job-side contextual machinery need not be identical. JobBlueprints are globally precomputable, so a richer job-side pack has a different cost/latency tradeoff than per-user inference.
+- **Next action:** Only after J-01 and a demonstrated person-side oracle benefit (D-CTX-01). Evaluate job-side context independently. Do not assume a win on people transfers to jobs.
+- **Success criterion:** Job-side oracle context improves structured-work recovery or requirement interpretation without fabricating unsupported job duties and without becoming a retrieval filter on people.
+- **Cost if run:** 100 calls, ~$1.50
+- **Latency relevance:** Precomputed; not user wait. Measure pack tokens and job-interpretation cost.
+
+### `D-CTX-P` — Do domain-specific prompt instructions add value beyond a universal semantic contract plus a small versioned context pack?
+
+- **Status:** BLOCKED · **Stage:** S5 · **Split:** DEVELOPMENT
+- **Depends on:** `D-CTX-01`, `D-CTX-02`
+- **Evidence so far:** Unmeasured and not to be implemented first. Isolated Finance/Healthcare/Legal/Software/Marketing brains with independent ontologies are explicitly deferred. If domain modules are ever tested, render SYSTEM/UNIVERSAL CONTRACT + DOMAIN MODULE + UNTRUSTED EVIDENCE + OUTPUT SCHEMA. Only contextual knowledge may differ. Deterministic consistency tests must assert identical E/P/Q/D definitions, schema, non-implications, abstention, and no retrieval restrictions.
+- **Next action:** Only if universal + modular context demonstrates value and then plateaus. Preregister against that baseline. Do not write giant domain prompts now.
+- **Success criterion:** Specialized instructions beat universal+context on semantic recovery without ontology divergence, transfer damage, or DOMAIN_ANCHORING. If not, keep one prompt.
+- **Cost if run:** 36 calls, ~$2.80
+- **Latency relevance:** Prompt bloat is in scope; measure input tokens, latency, truncation risk.
+
+### `D-CTX-FT` — Does a domain-adapted or fine-tuned model add incremental value over universal, universal+context, and domain-prompt variants?
+
+- **Status:** BLOCKED · **Stage:** S5 · **Split:** DEVELOPMENT
+- **Depends on:** `D-CTX-P`, `D-CTX-05`
+- **Evidence so far:** Unmeasured. This is the final escalation, not the starting point. Do not fine-tune unless domain conditioning helps, prompt/context specialization has plateaued, independent high-quality train and validation data exist, transfer can still be evaluated, router-error behavior is understood, and maintenance/latency/cost have a production case. Avoid circular validation (one model inventing the context another is scored against).
+- **Next action:** Do not implement. Revisit only if every listed precondition is true and cheaper stages have plateaued.
+- **Success criterion:** Fine-tuning demonstrates incremental value over simpler variants on semantic recovery without destroying cross-domain transfer or exploding maintenance.
+- **Cost if run:** 0 calls, ~$0.00
+- **Latency relevance:** Only relevant if a production case exists; do not assume it does.
+
+### `D-META-01` — Can future benchmarks store industry, work-function, and specialty labels as hidden experimental metadata without leaking them into the baseline interpreter or conflating them with StructuredWork.domain?
+
+- **Status:** UNTESTED · **Stage:** S5 · **Split:** n/a
+- **Depends on:** nothing
+- **Evidence so far:** No such schema exists. StructuredWork.domain is a semantic description of the work itself (industry/setting). Routing metadata is a different object: it may label a person, an evidence source, or an evidence item, possibly multi-label, and must stay hidden unless an experiment explicitly enables it. Designing this now lets QC-01 and M-01 preserve later D-CTX testability.
+- **Next action:** Write the metadata contract (label types, multiplicity, confidence/ambiguity, provenance of the label, hidden-by-default input rule) as zero-call design work. Do not feed labels to person-blueprint@v2. Do not execute domain experiments.
+- **Success criterion:** A committed distinction between routing metadata and the semantic domain role field, with a place for hidden labels on future MIXED_EVIDENCE / Qualification datasets.
+- **Cost if run:** 0 calls, ~$0.00
+- **Latency relevance:** None; design work.
 
 ### `H-02` — Can human correction events become future held-out evaluation data without leaking into the tuning set?
 
@@ -497,6 +552,22 @@ These are the questions the program is not allowed to 'finish' without answering
 | `EQ-30` | Is actual product cost acceptable? | `I-01` |
 | `EQ-31` | Can the architecture safely ingest untrusted external content? | `SEC-01` |
 | `EQ-32` | Does any future autonomous agent outperform a simpler workflow enough to justify itself? | `A-01`, `A-02` |
+| `EQ-33` | Does Qualification benefit from domain context more than Experience does? | `D-CTX-04` |
+| `EQ-34` | Is industry, work-function, hybrid, or specialty the right domain-context abstraction? | `D-CTX-02` |
+| `EQ-35` | Should domain routing happen per person, per evidence source, per evidence item, or softly inside one model? | `D-CTX-02` |
+| `EQ-36` | Does adding domain context shift rankings back toward the person's historical industry (DOMAIN_ANCHORING)? | `D-CTX-01`, `TM-01` |
+| `EQ-37` | Which router-error fallback minimizes catastrophic wrong-domain distortion? | `D-CTX-05` |
+| `EQ-38` | Does domain context improve JobBlueprint extraction separately from person-side conditioning? | `D-CTX-J-01` |
+| `EQ-39` | Do domain-specific prompts beat a universal contract plus a small context pack? | `D-CTX-P` |
+| `EQ-40` | Is fine-tuning a domain model ever justified over simpler conditioning? | `D-CTX-FT` |
+| `EQ-41` | Can one universal semantic ontology survive all domains? | `D-CTX-01` |
+| `EQ-42` | Does domain context help more on messy mixed evidence than on already-routed structured evidence? | `D-CTX-01`, `M-01` |
+| `EQ-43` | Does domain context induce unsupported inferences that the user's evidence does not support? | `D-CTX-01` |
+| `EQ-44` | Do multi-domain people benefit from multi-label context, or does it average away structure? | `D-CTX-01`, `M-02` |
+| `EQ-45` | Does domain conditioning reproduce conventional career paths on historical-to-desired domain transitions? | `D-CTX-01`, `M-02` |
+| `EQ-46` | Can a universal model infer useful domain context internally, making an explicit router unnecessary? | `D-CTX-01` |
+| `EQ-47` | Does representation identity vary across generations while rankings stay stable, or the reverse? | `S-01` |
+| `EQ-48` | Does requiring provenance preserve enough retrieval quality that the added auditability is worth adopting (non-inferiority)? | `P-01`, `S-01` |
 
 ---
 
@@ -527,6 +598,81 @@ Where the pasted directive disagreed with disk evidence, the repository won. The
 - **Directive said:** Qualification is the next major missing semantic construct after architecture+stability.
 - **Repository evidence:** Roadmap E5 already corrected two scoping errors: Q is a partition not a fourth similarity channel, and truth already exists.
 - **Resolution:** Keep those corrections. QC-01 writes the contract; Q-01 measures partition agreement; D-CTX-04 tests domain-conditioned Q separately.
+
+### D-CTX-01 dependency on MIXED_EVIDENCE
+
+- **Directive said:** Place domain experiments after provenance, stability, Qualification design, with some domain work potentially alongside the realistic-input benchmark.
+- **Repository evidence:** The previous live item depended on M-01. The current structured benchmark already hands the model pre-routed evidence, so a structured D-CTX-01 screen can measure an upper-bound oracle effect after S-01/S-02 without waiting for a new family. Mixed-evidence domain benefit is a different claim.
+- **Resolution:** D-CTX-01 now depends on P-01, S-01, and S-02. M-01 remains required before claiming a mixed-input domain effect. Immediate paid priority does not change.
+
+### Addendum DCTX-04 vs live D-CTX-04
+
+- **Directive said:** DCTX-04 is router-error / fallback stress; DCTX-Q-01 is Qualification-specific domain conditioning.
+- **Repository evidence:** Live D-CTX-04 was already 'Does Qualification benefit from domain context more than Experience does?' Stealing that id would silently retarget an existing question.
+- **Resolution:** Keep D-CTX-04 as Qualification-specific (addendum DCTX-Q-01). Register router-error stress as new D-CTX-05. Record the map in domainProgram.idMap.
+
+### S-01 sign-majority justification
+
+- **Directive said:** Four trials because they allow a 3-to-1 sign majority; success if every architectural sign is identical across trials.
+- **Repository evidence:** P-01 Direction Δ −0.062 CI [−0.172, 0.043] is a magnitude-and-uncertainty problem, not a sign-vote problem. Sign voting throws away both. A CI spanning zero is not equivalence.
+- **Resolution:** Supersede stochastic-stability:openai:LEXICAL_TRAP:low with :amended before spend. Four trials stay as an economical first repeated-measures screen. Primary endpoints are representation / ranking / provenance / architecture-decision stability. Sign counts are descriptive only. Non-inferiority margins are unresolved rather than invented from the observed P-01 deltas.
+
+---
+
+## Domain-conditioned semantic inference (registered, not executable)
+
+**Status:** REGISTERED_NOT_EXECUTABLE
+
+Can domain-conditioned semantic inference improve TaskDNA's understanding of specialized language, work context, and qualifications without reducing legitimate cross-domain transfer?
+
+**Permanent principle.** Specialized knowledge may inform interpretation; specialized knowledge must not fragment the universal semantic language TaskDNA uses to understand work. Domain context should help TaskDNA understand where someone has been without deciding where they are allowed to go.
+
+**Conditioning vs gating.** Domain conditioning may help the interpreter understand what evidence means (e.g. 'owned the close' as financial close vs deal close). Domain gating restricts which jobs a person may match (classified Finance → only search Finance). Gating would undermine the product's cross-domain-transfer objective. Domain context starts as interpretation context, not recommendation eligibility. Do not use domain classification as a retrieval filter unless a separately preregistered future experiment demonstrates benefit without destroying legitimate transfer.
+
+**Universal ontology.** All domain-conditioned variants must initially emit the same universal TaskDNA representation: Person semantics (Experience, Preference, Qualification, Direction, provenance, uncertainty/abstention) and work-role semantics (action, object, purpose, method, domain). Domain context may improve interpretation of these fields. It must not redefine them.
+
+**Semantic domain field vs routing metadata.** StructuredWork.domain is a semantic role field — the industry or setting of the work. R-01 found it contributed only −0.016 NDCG on LEXICAL_TRAP. Hidden industry / work-function / specialty labels are experimental routing metadata. They are not the same object and must not be conflated.
+
+**Immediate priority.** S-01 remains the next candidate paid experiment. Domain work is not executable because its stability and architecture dependencies are unsatisfied. Interesting is not authorization.
+
+Do not build yet:
+
+- Finance/Healthcare/Legal/Software/Marketing agents or models
+- Independent per-domain ontologies, prompts, or matchers
+- A learned domain router
+- Domain classification as a job-retrieval filter
+- Giant domain-specific prompts
+- Fine-tuned domain models
+- Selective/agentic domain-knowledge retrieval
+
+Escalation ladder:
+
+- D-CTX-01 oracle / none / wrong / multi-domain context
+- D-CTX-02 industry vs function vs hybrid taxonomy and routing unit
+- D-CTX-03 cheapest adequate multi-label router
+- D-CTX-05 router-error and fallback stress
+- D-CTX-04 Qualification-specific domain conditioning
+- D-CTX-J-01 JobBlueprint domain conditioning
+- D-CTX-P domain-specific prompt modules if warranted
+- D-CTX-FT fine-tuned domain models only if warranted
+
+Architectures to keep alive as hypotheses, not to anoint:
+
+- raw evidence → universal interpreter + selectively loaded domain knowledge → universal CareerBlueprint → deterministic field matcher → optional domain-aware Q check → cross-domain retrieval
+- one powerful universal model needs no explicit router because it infers domain context itself; if this wins, do not build extra machinery
+- interpreter notices an ambiguity and retrieves only relevant domain knowledge — more agentic; do not implement until static/oracle context has value
+
+| addendum id | live id | note |
+| --- | --- | --- |
+| DCTX-01 | `D-CTX-01` | Oracle / none / wrong / multi-domain. Already existed; enriched. |
+| DCTX-02 | `D-CTX-02` | Taxonomy ablation plus routing-unit hypothesis. Already existed; enriched. |
+| DCTX-03 | `D-CTX-03` | Cheap multi-label router. Already existed; enriched. |
+| DCTX-04 | `D-CTX-05` | Addendum DCTX-04 is router-error stress. Live D-CTX-04 was already Qualification-specific, so the new item is D-CTX-05. |
+| DCTX-Q-01 | `D-CTX-04` | Qualification-specific domain conditioning. Existing id kept. |
+| DCTX-J-01 | `D-CTX-J-01` | Job-side domain context. New. |
+| domain prompt modules | `D-CTX-P` | New; blocked until context packs plateau. |
+| fine-tuned domain models | `D-CTX-FT` | New; final escalation. |
+| domain metadata design | `D-META-01` | New; zero-call design so QC-01/M-01 can preserve later tests. |
 
 ---
 
@@ -566,8 +712,9 @@ Append-only record of every runtime experiment. A paid experiment must have a re
 | `split-agents:openai:LEXICAL_TRAP:low:direction-v1` | **REJECTED** _(superseded by `split-agents:openai:LEXICAL_TRAP:low:direction-v2`)_ | LEXICAL_TRAP | 64 | $2.28 | Direction collapsed 0.732 to 0.457 / 0.447, CIs excluding zero. INVALID AS A TEST OF SPECIALISATION: the v1 Direction prompt defined WANTED to include work the person enjoys, and the 'isolated' arm was still shown preference evidence. Two independent defects pointing the same way; provenance confirmed 81/129 and 83/132 desired claims sourced from LIKE evidence. |
 | `split-agents:openai:LEXICAL_TRAP:low:direction-v2` | **INCONCLUSIVE** | LEXICAL_TRAP | 24 | $0.36 | Channel integrity fully repaired: provenance contamination 0.629 to 0.000, desired volume 2.750 to 1.000. Retrieval unresolved: isolated direction 0.806 vs shared 0.732, paired +0.074 CI [-0.066, 0.198]. Experience bit-identical from cache, so the ablation is clean. |
 | `smoke-test` | **UNTESTED** | n/a | — | — | Operational probe. Not a quality experiment. |
-| `person-blueprint-v2:openai:LEXICAL_TRAP:low` | **SUPPORTED** | LEXICAL_TRAP | 12 | $0.55 | SUPPORTED / Case A. Retrieval held: experience Δ −0.019 CI [−0.097, 0.054]. Provenance contamination 0.000 on all four quote channels (72/84/24/48 claims), volume ratio 1.000. T-01 KEEP set stable across 25 threshold pairs. Direction point estimate −0.062 CI [−0.172, 0.043] is a remaining uncertainty, not a rejection. Fresh person p50 14.7s. Not shipped. |
-| `stochastic-stability:openai:LEXICAL_TRAP:low` | **PREREGISTERED** | LEXICAL_TRAP | — | — | Designed and preregistered. Dry-run only in this session. Paid execution not authorized. |
+| `person-blueprint-v2:openai:LEXICAL_TRAP:low` | **SUPPORTED** | LEXICAL_TRAP | 12 | $0.55 | SUPPORTED / Case A for auditability/provenance. No statistically detectable retrieval regression: experience Δ −0.019 CI [−0.097, 0.054]. Equivalence/non-inferiority has NOT been established. Provenance contamination 0.000 on all four quote channels (72/84/24/48 claims), volume ratio 1.000. T-01 KEEP set stable across 25 threshold pairs. Direction point estimate −0.062 CI [−0.172, 0.043] is compatible with a meaningful regression or a small improvement. Fresh person p50 14.7s. Not shipped. |
+| `stochastic-stability:openai:LEXICAL_TRAP:low` | **SUPERSEDED** _(superseded by `stochastic-stability:openai:LEXICAL_TRAP:low:amended`)_ | LEXICAL_TRAP | — | — | Never executed. Superseded before spend because the first draft used sign-majority as the decision rule and treated a CI spanning zero as retrieval equivalence. Methodological amendment is stochastic-stability:openai:LEXICAL_TRAP:low:amended. |
+| `stochastic-stability:openai:LEXICAL_TRAP:low:amended` | **PREREGISTERED** | LEXICAL_TRAP | — | — | Amended and preregistered. Dry-run only. Paid execution not authorized. |
 
 ---
 
@@ -591,9 +738,9 @@ Deliberately not binary pass/fail: most of these questions resolve into somethin
 
 ## At a glance
 
-- **35** tracked questions across **8** stages
-- Status spread: 13 BLOCKED, 5 DEFERRED, 1 INCONCLUSIVE, 1 PREREGISTERED, 3 SUPPORTED, 12 UNTESTED
-- **Runnable now** (untested, no unmet dependency): `J-01`, `SEC-01`, `POW-01`, `TM-01`, `PRIV-01`
+- **40** tracked questions across **8** stages
+- Status spread: 17 BLOCKED, 5 DEFERRED, 1 INCONCLUSIVE, 1 PREREGISTERED, 3 SUPPORTED, 13 UNTESTED
+- **Runnable now** (untested, no unmet dependency): `J-01`, `SEC-01`, `POW-01`, `TM-01`, `D-META-01`, `PRIV-01`
 - **Next paid experiment if authorized:** `S-01`
 - Total spend recorded so far: **$14.15** across **1053** calls
 

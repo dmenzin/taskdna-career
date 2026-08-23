@@ -22,6 +22,26 @@ export interface ConflictResolved {
   repositoryEvidence: string;
   resolution: string;
 }
+export interface DomainIdMapEntry {
+  addendumId: string;
+  liveId: string;
+  note: string;
+}
+
+export interface DomainProgram {
+  status: string;
+  coreQuestion: string;
+  permanentPrinciple: string;
+  conditioningVsGating: string;
+  universalOntology: string;
+  semanticDomainFieldVsRoutingMetadata: string;
+  doNotBuildYet: string[];
+  escalationLadder: string[];
+  candidateArchitecturesToPreserve: string[];
+  immediatePriority: string;
+  idMap: DomainIdMapEntry[];
+}
+
 export interface Program {
   version: string; purpose: string; notDuplicated: string;
   statuses: Record<string, string>;
@@ -30,6 +50,7 @@ export interface Program {
   directiveStageMap?: { note?: string; [key: string]: string | undefined };
   conflictsResolved?: ConflictResolved[];
   empiricalQuestions?: EmpiricalQuestion[];
+  domainProgram?: DomainProgram;
 }
 export interface ExperimentRecord {
   experimentId: string;
@@ -143,6 +164,44 @@ export function renderProgram(program: Program, registry: Registry): string {
       w(`- **Resolution:** ${conflict.resolution}`);
       w();
     }
+  }
+
+  if (program.domainProgram) {
+    const domain = program.domainProgram;
+    w("---");
+    w();
+    w("## Domain-conditioned semantic inference (registered, not executable)");
+    w();
+    w(`**Status:** ${domain.status}`);
+    w();
+    w(domain.coreQuestion);
+    w();
+    w(`**Permanent principle.** ${domain.permanentPrinciple}`);
+    w();
+    w(`**Conditioning vs gating.** ${domain.conditioningVsGating}`);
+    w();
+    w(`**Universal ontology.** ${domain.universalOntology}`);
+    w();
+    w(`**Semantic domain field vs routing metadata.** ${domain.semanticDomainFieldVsRoutingMetadata}`);
+    w();
+    w(`**Immediate priority.** ${domain.immediatePriority}`);
+    w();
+    w("Do not build yet:");
+    w();
+    for (const item of domain.doNotBuildYet) w(`- ${item}`);
+    w();
+    w("Escalation ladder:");
+    w();
+    for (const step of domain.escalationLadder) w(`- ${step}`);
+    w();
+    w("Architectures to keep alive as hypotheses, not to anoint:");
+    w();
+    for (const architecture of domain.candidateArchitecturesToPreserve) w(`- ${architecture}`);
+    w();
+    w("| addendum id | live id | note |");
+    w("| --- | --- | --- |");
+    for (const row of domain.idMap) w(`| ${row.addendumId} | \`${row.liveId}\` | ${row.note} |`);
+    w();
   }
 
   if (program.directiveStageMap) {

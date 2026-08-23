@@ -62,24 +62,29 @@ displacing these.
 
 ### E2 — Stochastic stability (`S-01`)
 
-- **Question.** Does run-to-run generation variance threaten any existing conclusion?
-- **Why it matters.** Every result in the program is a single generation per input. Reasoning tokens
-  varied 261→982 at fixed effort, so generation is demonstrably unstable; its effect on scores is
-  entirely unmeasured. This is the largest unquantified threat to the whole program, including the
-  field-matching finding.
-- **Hypothesis.** The sign of the `agent-field-match` vs `agent-blueprint` delta is stable across
-  independent generations.
-- **Minimal change.** A recorded trial index in the cache key to force fresh generation. No prompt,
-  schema, matcher or corpus change.
-- **Split / data.** DEVELOPMENT, LEXICAL_TRAP, the same 12 people, 3 trials.
-- **Primary metric.** Effect-sign stability of the matcher delta. **Secondary:** per-field agreement
-  across trials, channel-volume variance, ranking rank-correlation, reasoning-token and latency
-  variance.
-- **Cost.** ~36 fresh calls, ~$1.30.
-- **Decision rule.** PASS (sign stable, rank correlation high) → single-generation experiments stay
-  admissible. FAIL (sign flips) → **every architecture comparison in the program needs repeated
-  trials before it can be believed**, and prior deltas are downgraded to provisional. INCONCLUSIVE →
-  widen to 5 trials on 6 people before concluding.
+- **Question.** How much variation does repeated inference under identical semantic input introduce,
+  and can that variation change representation, recommendations, or architecture decisions?
+- **Why it matters.** P-01 is one generation. Direction Δ −0.062 CI [−0.172, 0.043] is compatible
+  with a real regression or a small improvement. A CI spanning zero is not equivalence. Shared
+  +provenance is a provisional incumbent until this is measured.
+- **Hypothesis.** Fresh `person-blueprint@v2` generations from identical bytes leave the written
+  P-01 Case A conclusion standing, while the Direction distribution tells us whether −0.062 was
+  noise or a small systematic shift. Field-match vs token-bag, computed on the same interpretation
+  each trial, keeps the same qualitative conclusion.
+- **Minimal change.** A recorded `trialId` in the cache key only. No prompt, schema, matcher, or
+  corpus change. No paraphrase (that is `S-02`).
+- **Split / data.** DEVELOPMENT, LEXICAL_TRAP, the same 12 people, 4 trials. Four is an economical
+  first repeated-measures screen, not a 3-to-1 sign-majority design. v1 is one frozen historical
+  realization, not a symmetric stochastic comparison.
+- **Primary metrics.** Four verdicts: representation, ranking (including preregistered recommendation
+  churn `1 - |TopK_A ∩ TopK_B| / K`), provenance, and architecture-decision stability. Sign counts
+  are descriptive only. Non-inferiority margins are unresolved rather than invented from P-01
+  deltas.
+- **Cost.** 48 fresh person calls, worst-case ~$3.73. Jobs reused.
+- **Decision rule.** Do not collapse to one PASS/FAIL. Highly stable → stronger incumbent, then
+  `S-02`. Ranking churn → stabilize before architecture freeze. Provenance fluctuation → P-01's one
+  clean realization is not enough. Architecture-decision flips → one-generation comparisons lose
+  authority. Paid execution is not authorized until the amended design is accepted.
 
 ### E3 — Resolve v2 Direction at adequate power (`D-01`)
 
@@ -219,11 +224,13 @@ VALIDATION. **Runs once per frozen architecture.** LOCKED stays untouched.
 
 ### S5 — Product-realistic evidence
 
-**Contains:** `M-01` (E4 / MIXED_EVIDENCE), `M-02` (population diversity), `M-03` (NATURAL_USER),
-`M-04` (MULTI_SOURCE), `J-01`, `TM-01` (transfer metrics), and the domain-context ladder
-`D-CTX-01` → `D-CTX-02` → `D-CTX-03`. Oracle domain context plus a wrong-domain control come
-before any cheap router. Domain context may help understand evidence; it must not limit which
-jobs a person may match.
+**Contains:** `M-01` (E4 / MIXED_EVIDENCE), `M-02` (population diversity, including multi-domain
+people and domain transitions), `M-03` (NATURAL_USER), `M-04` (MULTI_SOURCE), `J-01`, `TM-01`
+(transfer metrics, including `DOMAIN_ANCHORING`), `D-META-01` (hidden domain-routing metadata ≠
+`StructuredWork.domain`), and the domain-context ladder `D-CTX-01` → `D-CTX-02` → `D-CTX-03` →
+`D-CTX-05`, plus later `D-CTX-J-01` / `D-CTX-P` / `D-CTX-FT`. Oracle + wrong-domain + anchoring
+controls come before any cheap router. Domain context may help understand evidence; it must not
+limit which jobs a person may match. Do not execute this ladder until S-01/S-02 resolve.
 **EXIT WHEN:** the architecture works without synthetic pre-routing of evidence and survives
 realistic ambiguity and contradiction.
 
@@ -276,6 +283,17 @@ deterministic or single-call alternative.
   prompt-perturbation robustness.
 - **Do not build a domain router, or a per-domain model, before `D-CTX-01`.** Oracle context plus
   a wrong-domain control come first. Domain context must never become a career gate.
+- **Do not confuse domain conditioning with domain gating, or `StructuredWork.domain` with hidden
+  routing metadata.** Conditioning informs interpretation; gating restricts retrieval. The semantic
+  domain role field is not a router label.
+- **Do not steal `D-CTX-04` for router-error stress.** That id is Qualification-specific. Router
+  fallback is `D-CTX-05`.
+- **Do not treat a CI spanning zero as proven non-inferiority.** P-01 showed no statistically
+  detectable retrieval regression. Equivalence has not been established.
+- **Do not run the first S-01 draft.** It is SUPERSEDED. The live preregistration is
+  `stochastic-stability:openai:LEXICAL_TRAP:low:amended`. Sign-majority is not the decision rule.
+- **Do not execute domain, Qualification, or MIXED_EVIDENCE experiments because the hypotheses are
+  now registered.** Registration is not authorization. S-01 remains the next candidate paid step.
 - **Do not silently enlarge a frozen split to buy power.** That is `POW-01` plus a new versioned
   generation, not an edit to `frame-corpus.v1`.
 

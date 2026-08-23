@@ -7,7 +7,7 @@ Sensitivity: `artifacts/eval/p01-threshold-sensitivity.json`
 
 ## Verdict
 
-**SUPPORTED / Case A.** Retrieval held. Provenance is clean. Threshold conclusion is stable.
+**SUPPORTED / Case A for auditability/provenance.** No statistically detectable retrieval regression. Equivalence / non-inferiority has not been established. Provenance is clean. Threshold conclusion is stable.
 
 This is a research KEEP, not a ship decision. One generation only.
 
@@ -29,4 +29,4 @@ Provider, model, effort, job prompt, matcher, corpus, hidden truth, scoring, v1 
 
 ## What this does not mean
 
-It does not settle specialists. It does not prove Direction is unchanged. It does not authorize VALIDATION, product migration, or S-01 spend.
+It does not settle specialists. It does not prove Direction is unchanged. It does not establish retrieval equivalence or non-inferiority. It does not authorize VALIDATION, product migration, or S-01 spend.

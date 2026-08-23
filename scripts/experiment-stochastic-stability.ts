@@ -1,14 +1,18 @@
-// S-01: exact-repeat stochastic stability of person-blueprint@v2.
+// S-01 amended: exact-repeat stochastic stability of person-blueprint@v2.
 //
 // Same person, evidence, prompt, schema, provider, model, effort, matcher.
 // Multiple independent fresh generations. trialId is experiment identity only —
-// it is not rendered into the prompt. No cache reuse across trials.
+// it is not rendered into the prompt. No cache reuse across trials. P-01's
+// single generation is not trial 0.
 //
-// Sample size: 12 DEVELOPMENT people × 4 trials = 48 fresh person calls.
-// Why 4, not 3: P-01's Direction point estimate was −0.062 with a CI that spans
-// zero. Three trials is conventional; four is the smallest N that can show a
-// 3-to-1 sign majority on that near-zero delta. Person-sample power stays n=12
-// (POW-01); trials reduce generation variance, not person-sampling variance.
+// This is a repeated-measures screen: person -> independent model generations.
+// It measures stochastic variation of v2 relative to one frozen historical v1
+// realization. It does not measure variance of both architectures.
+//
+// Four trials are an economical first repeated-measures screen (6 pairwise
+// comparisons per person; a four-point distribution). They are NOT justified
+// by a 3-to-1 sign majority. Sign counts may be reported descriptively and
+// must not be the decision rule. Person-sample power stays n=12 (POW-01).
 //
 // `--dry-run` is mandatory. Paid execution is not authorized in this session.
 import { existsSync, readFileSync } from "node:fs";
@@ -30,6 +34,7 @@ import {
 } from "../src/agent/providerRegistry";
 import { allFrameJobs, buildFrameCorpus } from "../src/bench/frameCorpus";
 import type { RenderFamily } from "../src/bench/semanticFrame";
+import { S01_EXPERIMENT_ID, S01_FOUR_TRIAL_JUSTIFICATION } from "../src/agent/s01Stability";
 
 const arg = (name: string, fallback: string) => process.argv.find((a) => a.startsWith(`--${name}=`))?.split("=")[1] ?? fallback;
 const people = Number(arg("people", "12"));
@@ -39,7 +44,7 @@ const provider = arg("provider", "openai") as ProviderName;
 const model = arg("model", defaultModelFor(provider));
 const effort = arg("effort", CANONICAL_EFFORT);
 const dryRun = process.argv.includes("--dry-run");
-const experimentId = `stochastic-stability:${provider}:${family}:${effort}`;
+const experimentId = S01_EXPERIMENT_ID; // stochastic-stability:openai:LEXICAL_TRAP:low:amended
 assertPreregistered(experimentId);
 
 const v2PersonMaxOutput = Number(arg("v2-person-max-output", "2400"));
@@ -109,11 +114,12 @@ const perPersonWorst = corpus.people.reduce(
 const projectedCost = perPersonWorst * personFresh;
 const ledger = new RuntimeBudgetLedger("artifacts/agent_runtime/budget-ledger.json");
 
-process.stdout.write(`\nS-01 DRY CENSUS  exact-repeat stochastic stability\n`);
+process.stdout.write(`\nS-01 DRY CENSUS  amended exact-repeat stochastic stability\n`);
 process.stdout.write(`experiment=${experimentId}\n`);
 process.stdout.write(`provider=${provider} model=${model} effort=${effort}\n`);
 process.stdout.write(`family=${family} people=${people} trials=${trials} jobs=${jobs.length} split=DEVELOPMENT\n`);
-process.stdout.write(`trialId is cache identity only; the rendered prompt is identical across trials.\n\n`);
+process.stdout.write(`trialId is cache identity only; the rendered prompt is identical across trials.\n`);
+process.stdout.write(`v1 baseline is one frozen historical realization, not a symmetric stochastic comparison.\n\n`);
 process.stdout.write(`ALREADY PAID FOR:\n`);
 process.stdout.write(`  job blueprints @v1 : ${jobHits}/${jobs.length}${jobHits === jobs.length ? "  (all reusable)" : "  <-- STOP"}\n`);
 process.stdout.write(`  person@v2 trials   : ${personHits}/${people * trials} hits, ${personFresh} fresh\n`);
@@ -127,10 +133,12 @@ process.stdout.write(`  remaining          : $${ledger.remainingUsd().toFixed(3)
 process.stdout.write(`  after this run     : $${(ledger.remainingUsd() - projectedCost).toFixed(3)}\n`);
 process.stdout.write(`  share of remaining : ${((projectedCost / Math.max(1e-9, ledger.remainingUsd())) * 100).toFixed(1)}%\n`);
 process.stdout.write(`\nSAMPLE-SIZE JUSTIFICATION:\n`);
-process.stdout.write(`  4 trials, not 3: P-01 Direction Δ was −0.062 with CI spanning zero.\n`);
-process.stdout.write(`  Four independent generations can show a 3-to-1 sign majority.\n`);
+process.stdout.write(`  ${S01_FOUR_TRIAL_JUSTIFICATION.whyFourNotThree}\n`);
+process.stdout.write(`  ${S01_FOUR_TRIAL_JUSTIFICATION.rejectedJustification}\n`);
 process.stdout.write(`  Person-sample power remains n=12 (POW-01). Trials are not a substitute for more people.\n`);
+process.stdout.write(`  Non-inferiority margins: unresolved. Absence of significance is not equivalence.\n`);
 process.stdout.write(`  No cache reuse across trials. P-01's single generation is not a trial-0 replay.\n`);
+process.stdout.write(`  No prompt perturbation (S-02 is separate).\n`);
 
 if (jobHits < jobs.length) {
   process.stderr.write(`\nSTOP CONDITION: job cache incomplete.\n`);

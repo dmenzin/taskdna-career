@@ -31,9 +31,9 @@ Fresh person p50 14.7s, p95 18.1s (order statistics, n=12). Deterministic downst
 
 ## RESULT
 
-**SUPPORTED / Case A**
+**SUPPORTED / Case A for auditability/provenance**
 
-Retrieval held (experience CI spans zero). Provenance contamination is 0.000 on every quote channel.
+No statistically detectable retrieval regression (experience CI spans zero). Equivalence / non-inferiority has **not** been established. Provenance contamination is 0.000 on every quote channel.
 
 ## WHAT CAUSED THE RESULT
 
@@ -49,11 +49,11 @@ Field-aware matching is still the large LEXICAL_TRAP win. Qualification is still
 
 ## BIGGEST REMAINING UNCERTAINTY
 
-This is one generation. Direction's point estimate fell 0.062 with a CI that includes both a real regression and zero. If that sign flips on a fresh generation, one-generation architecture decisions are not safe.
+This is one generation. Direction's point estimate fell 0.062 with a CI that includes both a real regression and a small improvement. A CI spanning zero is not equivalence. If a fresh generation would have changed the written Case A conclusion — or if rankings churn while mean NDCG barely moves — one-generation architecture decisions are not safe.
 
 ## NEXT HIGHEST-INFORMATION EXPERIMENT
 
-**S-01** — exact-repeat stochastic stability. 12 people × 4 independent fresh person-blueprint@v2 generations. `trialId` in cache identity only. No cache replay. Distinct from S-02 (prompt perturbation).
+**S-01 (amended)** — exact-repeat stochastic stability. 12 people × 4 independent fresh person-blueprint@v2 generations. Measures representation, ranking, provenance, and architecture-decision variance. `trialId` in cache identity only. No cache replay. Distinct from S-02 (prompt perturbation). Sign-majority is not the decision rule. Paid execution is not authorized.
 
 ## WHY THIS IS NEXT
 
@@ -73,7 +73,7 @@ Still one person call on the critical path. P-01 p50 14.7s vs the earlier shared
 
 ## WHAT WOULD CHANGE THE PLAN
 
-S-01 sign flips → one-generation experiments lose the right to decide architecture; move to hierarchical/repeated-trial analysis. A later P-01-like run with contamination > 0.05 → Case B, specialists regain isolation value. A retrieval regression whose CI excludes zero → Case C, diagnose schema/budget/prompt before abandoning provenance.
+S-01 architecture-decision flips → one-generation experiments lose the right to decide architecture; move to hierarchical/repeated-trial analysis. Ranking churn with stable mean NDCG → stabilize recommendations before architecture freeze. Provenance fluctuation → P-01's one clean realization is insufficient. A later P-01-like run with contamination > 0.05 → Case B, specialists regain isolation value. An experience retrieval regression whose CI excludes zero → Case C, diagnose schema/budget/prompt before abandoning provenance.
 
 ## WHAT WE ARE DELIBERATELY NOT DOING YET
 

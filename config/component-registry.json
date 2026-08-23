@@ -136,6 +136,22 @@
       "implemented": false,
       "location": null,
       "note": "Not implemented. A trigger-based hybrid: shared baseline first, specialist only when a deterministic trigger fires. Research program item A-03."
+    },
+    {
+      "name": "domain context pack",
+      "promptId": null,
+      "class": "WORKFLOW",
+      "implemented": false,
+      "location": null,
+      "note": "Not implemented. Versioned, auditable interpretation-context modules. Not an Agent. D-CTX-01 tests oracle packs before any router. Must not redefine E/P/Q/D or become evidence."
+    },
+    {
+      "name": "domain router",
+      "promptId": null,
+      "class": "STRUCTURED_INFERENCE",
+      "implemented": false,
+      "location": null,
+      "note": "Not implemented. Blocked on D-CTX-01 oracle benefit. Prefer cheap multi-label classification with abstention, not an Agent. Must not be used as a job-retrieval filter."
     }
   ]
 }

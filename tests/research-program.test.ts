@@ -145,6 +145,8 @@ describe("the questions the audit found must not disappear", () => {
     ["POW-01", "sample-size/power is untracked"],
     ["QC-01", "Qualification contract is unwritten"],
     ["D-CTX-01", "oracle domain context is untested"],
+    ["D-CTX-05", "router-error stress is untested"],
+    ["D-META-01", "hidden domain metadata is undesigned"],
     ["PRIV-01", "privacy before real-user research"],
   ];
   it.each(mustTrack)("still tracks %s (%s)", (id) => {
@@ -158,7 +160,7 @@ describe("the master directive cannot be forgotten into chat", () => {
     const s01 = program.items.find((item) => item.id === "S-01")!;
     const s02 = program.items.find((item) => item.id === "S-02")!;
     expect(s02.question).not.toBe(s01.question);
-    expect(s01.question.toLowerCase()).toMatch(/identical prompt bytes|regenerat/);
+    expect(s01.question.toLowerCase()).toMatch(/identical/);
     expect(s02.question.toLowerCase()).toMatch(/phras|wording|perturb/);
     expect(s02.dependencies).toContain("S-01");
   });
@@ -166,10 +168,40 @@ describe("the master directive cannot be forgotten into chat", () => {
   it("requires a wrong-domain control before any domain router", () => {
     const oracle = program.items.find((item) => item.id === "D-CTX-01")!;
     const router = program.items.find((item) => item.id === "D-CTX-03")!;
+    const routerError = program.items.find((item) => item.id === "D-CTX-05")!;
+    const qualificationDomain = program.items.find((item) => item.id === "D-CTX-04")!;
     expect(oracle.question.toLowerCase()).toMatch(/wrong-domain|wrong domain/);
     expect(oracle.nextAction.toLowerCase()).toContain("wrong");
+    expect(oracle.dependencies).toEqual(["P-01", "S-01", "S-02"]);
+    expect(oracle.dependencies).not.toContain("M-01");
     expect(router.dependencies).toContain("D-CTX-01");
     expect(router.status).toBe("BLOCKED");
+    expect(routerError.dependencies).toContain("D-CTX-03");
+    expect(qualificationDomain.question.toLowerCase()).toMatch(/qualification/);
+    expect(qualificationDomain.question.toLowerCase()).not.toMatch(/router-error|fallback/);
+  });
+
+  it("registers domain conditioning without creating a second roadmap or implementing domain agents", () => {
+    expect(program.stages.map((s) => s.id)).toEqual(["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"]);
+    expect(program.domainProgram, "domainProgram missing").toBeDefined();
+    expect(program.domainProgram!.status).toBe("REGISTERED_NOT_EXECUTABLE");
+    expect(program.domainProgram!.conditioningVsGating.toLowerCase()).toMatch(/interpretation context/);
+    expect(program.domainProgram!.conditioningVsGating.toLowerCase()).toMatch(/not recommendation eligibility/);
+    expect(program.domainProgram!.semanticDomainFieldVsRoutingMetadata).toMatch(/StructuredWork\.domain/);
+    expect(program.domainProgram!.immediatePriority).toMatch(/S-01/);
+    expect(program.domainProgram!.doNotBuildYet.some((item) => /router/i.test(item))).toBe(true);
+    const qDomain = program.domainProgram!.idMap.find((row) => row.addendumId === "DCTX-Q-01");
+    const routerError = program.domainProgram!.idMap.find((row) => row.addendumId === "DCTX-04");
+    expect(qDomain?.liveId).toBe("D-CTX-04");
+    expect(routerError?.liveId).toBe("D-CTX-05");
+    const nextPaid = program.items.filter((item) => item.status === "PREREGISTERED").map((item) => item.id);
+    expect(nextPaid).toEqual(["S-01"]);
+  });
+
+  it("names DOMAIN_ANCHORING as a transfer failure mode before any domain experiment runs", () => {
+    const transfer = program.items.find((item) => item.id === "TM-01")!;
+    expect(transfer.question).toMatch(/DOMAIN_ANCHORING|historical-domain anchoring/);
+    expect(transfer.successCriterion).toContain("DOMAIN_ANCHORING");
   });
 
   it("keeps Qualification contract design separate from Qualification evaluation", () => {
@@ -195,8 +227,9 @@ describe("the master directive cannot be forgotten into chat", () => {
       ...registry.records.map((record) => record.experimentId),
     ]);
     expect(program.empiricalQuestions, "empiricalQuestions missing from the program").toBeDefined();
+    expect(program.empiricalQuestions!.length).toBeGreaterThanOrEqual(32);
     expect(program.empiricalQuestions!.map((q) => q.id)).toEqual(
-      Array.from({ length: 32 }, (_, i) => `EQ-${String(i + 1).padStart(2, "0")}`),
+      Array.from({ length: program.empiricalQuestions!.length }, (_, i) => `EQ-${String(i + 1).padStart(2, "0")}`),
     );
     for (const question of program.empiricalQuestions!) {
       expect(question.coveredBy.length, `${question.id} has no coverage`).toBeGreaterThan(0);
@@ -209,6 +242,8 @@ describe("the master directive cannot be forgotten into chat", () => {
   it("records conflicts instead of silently preferring the chat directive", () => {
     expect(program.conflictsResolved?.length).toBeGreaterThanOrEqual(3);
     expect(program.conflictsResolved?.some((c) => /Qualification/i.test(c.topic))).toBe(true);
+    expect(program.conflictsResolved?.some((c) => /sign-majority/i.test(c.topic))).toBe(true);
+    expect(program.conflictsResolved?.some((c) => /DCTX-04 vs live D-CTX-04/i.test(c.topic))).toBe(true);
   });
 });
 
@@ -369,6 +404,14 @@ describe("the architecture evidence ledger is not a second backlog", () => {
   it("does not replace the research program as the live question list", () => {
     expect(ledger.purpose.toLowerCase()).toMatch(/not a second backlog/);
     expect(readFileSync("docs/ARCHITECTURE_EVIDENCE_LEDGER.md", "utf8")).toContain("GENERATED FILE");
+  });
+
+  it("does not treat P-01's CI spanning zero as equivalence", () => {
+    const finding = ledger.findings.find((row) => row.id === "F-P01-PROVENANCE");
+    expect(finding, "lost F-P01-PROVENANCE").toBeDefined();
+    expect(finding!.claim.toLowerCase()).toMatch(/not been established|not established/);
+    expect(finding!.doNotClaim.toLowerCase()).toMatch(/not equivalence/);
+    expect(ledger.currentBaseline.pendingChange.toLowerCase()).not.toMatch(/signs and keep/);
   });
 });
 
