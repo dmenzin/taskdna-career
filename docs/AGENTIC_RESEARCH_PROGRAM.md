@@ -18,10 +18,14 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 
 | id | status | question | depends on | next action | calls | cost |
 | --- | --- | --- | --- | --- | --- | --- |
-| `P-01` | **SUPPORTED** | Can the strongest one-call baseline gain claim-level auditability without specialist inference? | — | Treat shared+provenance as a provisional research incumbent, not a settled baseline. Do not ship. Do not equate the P-01 CIs spanning zero with equivalence or non-inferiority. The amended S-01 design must characterize generation variance before architecture freeze. | 12 | $0.93 |
-| `D-01` | **INCONCLUSIVE** | Does a correctly-scoped Direction Agent beat the shared blueprint on Direction, or only tie it? | P-01, S-01 | P-01 Case A weakens always-on specialists. Do not rerun Direction because it is interesting. Remaining questions are S-01 architecture-decision stability (not sign-majority) and whether the extra call beats shared+provenance. Prefer A-03 (selective rescue) over always-on if S-01 holds. | 320 | $4.00 |
+| `PTA-01` | **SUPPORTED** | What data and DEVELOPMENT failures shaped every executed person, job, and specialist prompt, and was VALIDATION or LOCKED ever used to tune them? | — | Treat current NDCGs as development-benchmark performance on person-specific pools. Do not generate or inspect additional VALIDATION or LOCKED instances. Do not run S-01. Next zero-call work is ONT-01, TRUTH-01, and the M-01 independence protocol. | 0 | $0.00 |
+| `DATA-01` | **SUPPORTED** | Where did the current agent prompt-development corpus come from, and what is invented versus independently validated? | PTA-01 | Do not collect a fine-tune set and do not mutate the freeze. ONT-01 precedes M-01 design that assumes the ontology. TRUTH-01 specifies a separate truth/evaluation manifest. S-01 is DEFERRED on information value, not next. | 0 | $0.00 |
+| `ONT-01` | **UNTESTED** | Do independent human reviewers accept the five identity roles, the identity-equality rule, the coverage/grade relevance semantics, and a stratified sample of trap distinctions? | DATA-01 | Run the protocol with at least two independent human reviewers. Do not use a model as reviewer or adjudicator. Do not inspect VALIDATION or LOCKED instances. Must complete before M-01 design decisions that assume the ontology is correct. | 0 | $0.00 |
+| `P-01` | **SUPPORTED** | Can the strongest one-call baseline gain claim-level auditability without specialist inference? | — | Treat claim-level provenance as a DEVELOPMENT KEEP. Do not ship. Do not read this status as retrieval equivalence. See P-01-RET. | 12 | $0.93 |
+| `P-01-RET` | **INCONCLUSIVE** | Does adding required provenance preserve retrieval (non-inferiority) versus person-blueprint@v1 under the frozen field-aware matcher? | P-01 | Leave unresolved. Do not invent margins from the observed deltas. Do not run S-01 to launder this into equivalence. Revisit only if a later frozen architecture still uses this prompt/input format. | 0 | $0.00 |
+| `D-01` | **INCONCLUSIVE** | Does a correctly-scoped Direction Agent beat the shared blueprint on Direction, or only tie it? | P-01, S-01 | P-01 provenance KEEP weakens always-on specialists. Do not rerun Direction because it is interesting. S-01 is DEFERRED and is not a reason to wait. Prefer A-03 (selective rescue) over always-on if a later frozen shared+provenance architecture still needs a specialist question. | 320 | $4.00 |
 | `CT-01` | **UNTESTED** | Do the five non-implications no v1 prompt states change interpretation quality when added? | P-01 | Define semantic-contract v2 with the full rule set plus contrastive examples, as a new prompt version. Never edit a v1 prompt. | 12 | $0.45 |
-| `R-01` | **SUPPORTED** | Which of the five semantic role fields carry independent signal, and is the matcher robust to paraphrase? | — | Do not retune the matcher. A later versioned matcher experiment may drop or reweight purpose; that is not P-01. | 0 | $0.00 |
+| `R-01` | **SUPPORTED** | Which of the five semantic role fields carry independent signal, and is the matcher robust to paraphrase? | — | Do not retune or rerun the matcher now. Independent confirmation is a later versioned experiment on a holdout that did not shape the matcher. That is not this item and not P-01. | 0 | $0.00 |
 | `N-01` | **DEFERRED** | Should the interrupted NATURAL arm be completed? | — | Do not resume. Revisit only if a regression check on ordinary cases becomes decision-relevant and is newly preregistered. The existing 47 cached calls stay on disk. | 253 | $3.00 |
 
 ### S2 — Inference stability
@@ -31,7 +35,7 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 | id | status | question | depends on | next action | calls | cost |
 | --- | --- | --- | --- | --- | --- | --- |
 | `T-01` | **SUPPORTED** | Are the provenance attribution thresholds (0.6 floor, 0.1 ambiguity margin) defensible? | P-01 | No further sweep. Revisit only if a later architecture produces non-zero contamination near the ceiling. | 0 | $0.00 |
-| `S-01` | **PREREGISTERED** | How much variation is introduced by repeated inference under identical semantic input, and can that variation change TaskDNA's representation, recommendations, or architecture decisions? | P-01 | Dry-run the amended design. Paid execution is not authorized in this session. Do not replay the P-01 cache as trial 0. Do not contaminate S-01 with paraphrases (that is S-02). | 48 | $3.73 |
+| `S-01` | **DEFERRED** | How much variation is introduced by repeated inference under identical semantic input, and can that variation change TaskDNA's representation, recommendations, or architecture decisions? | P-01, PTA-01, DATA-01 | Paid execution is DEFERRED on information value and is not authorized. Do not execute until a post-M-01 architecture question makes repeated-generation stability useful again. Do not replay the P-01 cache as trial 0. Do not contaminate S-01 with paraphrases (that is S-02). Keep the amended preregistration on disk. | 48 | $3.73 |
 | `S-02` | **UNTESTED** | Does semantically equivalent evidence phrasing cause materially different TaskDNA understanding? | S-01 | After S-01, preregister controlled perturbations that preserve hidden truth: bullet vs prose, reorder, paraphrase, mild typos, first- vs third-person, inserted neutral sentences. No perturbation may change planted truth. | 48 | $3.70 |
 | `S-03` | **UNTESTED** | Do later provider/model/alias moves change TaskDNA understanding on a fixed regression panel? | S-01 | Define a tiny fixed panel and rerun it when the resolved model id changes. Do not interpret future behaviour changes as architecture changes when the model may have moved. | 12 | $0.90 |
 | `POW-01` | **UNTESTED** | For each planned architecture comparison, what sample size would materially answer the question? | — | Estimate paired effect size and variance from DEVELOPMENT before declaring future effects inconclusive forever. Do not silently enlarge a frozen split; unused frozen subjects must keep their designated split, otherwise create a new versioned generation. | 0 | $0.00 |
@@ -51,11 +55,15 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 
 ### S4 — Generalisation
 
-**Exit criterion.** The frozen architecture passes predefined VALIDATION criteria with no tuning on VALIDATION. Runs once per frozen architecture.
+**Exit criterion.** V-01 is frame-corpus.v1 mechanism validation only (procedural generator holdout). Eventual architecture confirmation is V-02, after the selected architecture is frozen. Neither consumes VALIDATION until that named freeze. LOCKED as it exists today is not a custodied blind artifact.
 
 | id | status | question | depends on | next action | calls | cost |
 | --- | --- | --- | --- | --- | --- | --- |
-| `V-01` | **BLOCKED** | Does the frozen architecture generalise to paraphrase families it never saw? | P-01, S-01, T-01 | Blocked by the architecture-freeze gate. S-01 is the remaining unmet condition of the three named dependencies. | 300 | $4.00 |
+| `TRUTH-01` | **UNTESTED** | Can evaluation-defining objects — hidden planted truth, generator seed/version, archetype spec, label implementation, GRADE_THRESHOLDS, INCIDENTAL_LABEL_WEIGHT, NDCG cutoff, and candidate-set rule — be hashed and versioned without putting identities into model input? | DATA-01 | Create the separate truth/evaluation manifest in a later pass. Hash hidden truth; never render it into prompts. Do not mutate current truth now. Do not build VALIDATION or LOCKED to populate it in this pass. | 0 | $0.00 |
+| `LOCK-01` | **UNTESTED** | Can final confirmation use a genuinely blind, custodied artifact or seed outside prompt-author access, rather than the in-repo LOCKED_CONFIRMATION split? | PTA-01 | Design a custodied seed or artifact that prompt authors cannot materialize from the repo. Do not build or inspect today's LOCKED split as a substitute. | 0 | $0.00 |
+| `V-01` | **DEFERRED** | Does a frozen frame-corpus.v1 architecture generalise to held-out vocabulary and unseen draws from this same generator? | P-01, T-01 | Do not run. Do not inspect or generate additional VALIDATION instances. If M-01/M-02 can change the selected architecture, keep this holdout unspent until a frame-corpus.v1 architecture is explicitly frozen — and even then it only answers the generator-holdout question. | 300 | $4.00 |
+| `ARCH-01` | **UNTESTED** | Has a named architecture been frozen for a named confirmation split, after any M-01/M-02 decision that could change it? | PTA-01 | Do not freeze the current pre-bucketed incumbent. Record a freeze only after ONT-01 and after deciding whether M-01/M-02 change the architecture. | 0 | $0.00 |
+| `V-02` | **BLOCKED** | Does the architecture that was actually selected — after M-01/M-02 if they changed it — pass a one-shot confirmation on a holdout that did not shape it? | ARCH-01, M-01 | Do not run. Do not consume current VALIDATION. After ARCH-01, use a holdout appropriate to the frozen family (custodied if LOCK-01 exists). | 0 | $0.00 |
 
 ### S5 — Product-realistic evidence
 
@@ -63,8 +71,9 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 
 | id | status | question | depends on | next action | calls | cost |
 | --- | --- | --- | --- | --- | --- | --- |
-| `M-01` | **DEFERRED** | Can TaskDNA untangle a messy person, rather than interpret evidence that was already routed for it? | P-01 | Requires explicit approval: a new benchmark family is a contract change under amendment C. Same hidden truth, new independent messy-narrative renderer, no channel labels. Store domain-routing metadata as hidden experimental fields (industry / work-function / specialty, multi-label, per person and per evidence item where truth supports it). Do not pass that metadata to the baseline interpreter unless a preregistered D-CTX arm enables it. Behind S-01 on information value. | 300 | $4.00 |
+| `M-01` | **BLOCKED** | Can TaskDNA untangle a messy person, rather than interpret evidence that was already routed for it? | ONT-01 | Do not implement or render. Complete ONT-01 first if the design assumes the five-field ontology. Then follow the independence protocol: renderer author does not receive current prompt outputs or DEVELOPMENT failure cases unless a written exception applies; record authorship and any model assistance; prefer human/independent authorship; freeze a preregistered inspection budget before prompt authors see cases. | 300 | $4.00 |
 | `M-02` | **BLOCKED** | Does the architecture hold for career states the current corpus does not contain? | M-01 | New versioned corpus with its own preregistration. Do not mutate the frozen corpus. Include multi-domain people (finance+analytics, healthcare+operations, legal+technology, etc.) and domain-transition cases where historical domain ≠ desired domain. These are first-class, not leftover cells. | 300 | $4.00 |
+| `MKT-01` | **UNTESTED** | Can TaskDNA retrieve and rank relevant jobs from a shared market-scale job universe, with globally amortized JobBlueprints, rather than from a person-specific pool of about 24 generated jobs? | DATA-01 | Design a new benchmark with a shared job universe and a retrieval stage. Do not reinterpret current NDCGs as market retrieval. Do not implement in this pass. | 0 | $0.00 |
 | `J-01` | **UNTESTED** | Does JobBlueprint interpretation survive real, noisy job descriptions? | — | Assemble a noisy job-description set. Keep interpretation per job and globally cached; never per user-job pair. Person-side and job-side domain context are separate later questions (D-CTX-J-01); do not assume they need the same machinery. JobBlueprints are globally precomputable, so richer job-side domain interpretation has a different cost/latency tradeoff. | 100 | $1.50 |
 | `M-03` | **BLOCKED** | Does the architecture hold on conversational NATURAL_USER renderings of the same latent truth? | M-01 | New independently versioned family after M-01. Do not promote MIXED_EVIDENCE results into claims about conversational input. | 300 | $4.00 |
 | `M-04` | **BLOCKED** | Can TaskDNA reconcile multi-source user evidence that contains planted contradictions? | M-03, C-01 | New versioned family combining resume bullets, narrative, explicit preferences, goals, and correction messages. Potential contradictions planted on purpose. | 300 | $4.00 |
@@ -84,7 +93,7 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 
 | id | status | question | depends on | next action | calls | cost |
 | --- | --- | --- | --- | --- | --- | --- |
-| `H-01` | **BLOCKED** | Do real people agree with TaskDNA's representation of their own work? | V-01, M-01, PRIV-01 | Design the review program after PRIV-01. Corrections held out under a custodian, never folded into a tuning set. Do not use model-generated labels as human truth. | 0 | $0.00 |
+| `H-01` | **BLOCKED** | Do real people agree with TaskDNA's representation of their own work? | V-02, M-01, PRIV-01 | Design the review program after PRIV-01. Corrections held out under a custodian, never folded into a tuning set. Do not use model-generated labels as human truth. | 0 | $0.00 |
 | `H-02` | **BLOCKED** | Can human correction events become future held-out evaluation data without leaking into the tuning set? | H-01 | Define the correction event schema and the held-out rule before the first human study writes a correction. Do not train on every correction and then evaluate on the same distribution. | 0 | $0.00 |
 
 ### S7 — Research-to-product integration
@@ -93,9 +102,10 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 
 | id | status | question | depends on | next action | calls | cost |
 | --- | --- | --- | --- | --- | --- | --- |
+| `BR-01` | **UNTESTED** | Have the sibling audit branches PR #8 (product engine) and PR #9 (agent lineage) been explicitly reconciled, rather than treated as one HEAD? | PTA-01 | Operator decision required. Do not fast-forward either branch over the other. See docs/PTA01_PROMPT_BENCHMARK_LINEAGE.md § 11. | 0 | $0.00 |
 | `L-01` | **BLOCKED** | What is the real user wait when independent calls are actually issued concurrently under provider contention? | D-01 | Only meaningful if a multi-call architecture wins. Needs genuine concurrency, >=100 subjects, repeated across times of day. | 200 | $6.00 |
 | `SEC-01` | **UNTESTED** | Does the architecture separate system instructions from untrusted external data? | — | Required before ingesting any real content. Explicit data/instruction separation; treat all extracted text as data; never let ingested text reach a tool-calling path. | 24 | $0.90 |
-| `I-01` | **BLOCKED** | How does a validated semantic architecture replace the deterministic product path? | V-01, H-01 | Do not merge research code into the product because DEVELOPMENT metrics look good. Requires persistence, migration, fallback, latency UX, cost, privacy and shadow testing. | 0 | $0.00 |
+| `I-01` | **BLOCKED** | How does a validated semantic architecture replace the deterministic product path? | V-02, H-01 | Do not merge research code into the product because DEVELOPMENT metrics look good. Requires persistence, migration, fallback, latency UX, cost, privacy and shadow testing. | 0 | $0.00 |
 | `PRIV-01` | **UNTESTED** | Are consent, retention, deletion, cache, logging, and provider-exposure rules defined before any real career history is persisted? | — | Write the privacy/security foundation: consent, retention, deletion, data minimization, access boundaries, cache policy, logging policy, model-provider exposure, secrets, user export/correction. Required before H-01. | 0 | $0.00 |
 
 ### S8 — Agentic expansion
@@ -112,15 +122,75 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 
 ## Item detail
 
+### `PTA-01` — What data and DEVELOPMENT failures shaped every executed person, job, and specialist prompt, and was VALIDATION or LOCKED ever used to tune them?
+
+- **Status:** SUPPORTED · **Stage:** S1 · **Split:** DEVELOPMENT
+- **Depends on:** nothing
+- **Evidence so far:** Zero-call git reconstruction in docs/PTA01_PROMPT_BENCHMARK_LINEAGE.md, amended after a second forensic pass. Executed prompts: person-blueprint@v1/v2, job-blueprint@v1, experience-agent@v1, direction-agent@v1 (superseded) and v2. Every scored registry arm is DEVELOPMENT n=12 against person-specific ~24-job pools (not a shared 288-job market). Direction v2 and person-blueprint v2 were written after inspecting the same 12 LEXICAL_TRAP DEVELOPMENT people. No agent experiment or manual prompt-tuning review used VALIDATION instances; held-out source and identity-inspecting tests remain visible, so VALIDATION is a procedural generator holdout, not a blinded external holdout. LOCKED is unfrozen, unexecuted, and deterministically buildable from repo+seed. Claude Opus 5 co-authored the benchmark and the first CareerBlueprint prompts.
+- **Next action:** Treat current NDCGs as development-benchmark performance on person-specific pools. Do not generate or inspect additional VALIDATION or LOCKED instances. Do not run S-01. Next zero-call work is ONT-01, TRUTH-01, and the M-01 independence protocol.
+- **Success criterion:** Every executed prompt version is dated against the freeze, the DEVELOPMENT results that motivated it, and a yes/no on VALIDATION or LOCKED inspection.
+- **Cost if run:** 0 calls, ~$0.00
+- **Latency relevance:** None.
+
+### `DATA-01` — Where did the current agent prompt-development corpus come from, and what is invented versus independently validated?
+
+- **Status:** SUPPORTED · **Stage:** S1 · **Split:** DEVELOPMENT
+- **Depends on:** `PTA-01`
+- **Evidence so far:** Zero-call inventory in docs/DATA01_BENCHMARK_PROVENANCE.md. Current CareerBlueprint truth is frame-corpus.v1 / semantic-frame.v2: 75 hand-authored concepts, explicit stance templates, fixed 6/7/2/4 planter, invented title/industry/qualification pools. O*NET and the 450-subject product lab are not this screen. Five-field identity matches the prompt schema. Qualification is planted only in narrative, which no interpreter reads. VALIDATION hashes exist; instances were not opened.
+- **Next action:** Do not collect a fine-tune set and do not mutate the freeze. ONT-01 precedes M-01 design that assumes the ontology. TRUTH-01 specifies a separate truth/evaluation manifest. S-01 is DEFERRED on information value, not next.
+- **Success criterion:** Every concept family, template class, planter rule, seed, and freeze entry is classified as invented / real-world / mechanically validated / human-validated.
+- **Cost if run:** 0 calls, ~$0.00
+- **Latency relevance:** None.
+
+### `ONT-01` — Do independent human reviewers accept the five identity roles, the identity-equality rule, the coverage/grade relevance semantics, and a stratified sample of trap distinctions?
+
+- **Status:** UNTESTED · **Stage:** S1 · **Split:** ontology review materials only
+- **Depends on:** `DATA-01`
+- **Evidence so far:** Protocol written in docs/ONT01_ONTOLOGY_REVIEW.md. No review has been run. This is not H-01 and does not use real-user recommendation outcomes. The five-field ontology is authored, not human-validated.
+- **Next action:** Run the protocol with at least two independent human reviewers. Do not use a model as reviewer or adjudicator. Do not inspect VALIDATION or LOCKED instances. Must complete before M-01 design decisions that assume the ontology is correct.
+- **Success criterion:** Two independent reviews on disk; identity roles, equality rule, grade policy, and stratified traps reviewed; no remaining DISAGREE on a rule later M-01 design will assume. Disagreement table retained.
+- **Cost if run:** 0 calls, ~$0.00
+- **Latency relevance:** None.
+
+### `TRUTH-01` — Can evaluation-defining objects — hidden planted truth, generator seed/version, archetype spec, label implementation, GRADE_THRESHOLDS, INCIDENTAL_LABEL_WEIGHT, NDCG cutoff, and candidate-set rule — be hashed and versioned without putting identities into model input?
+
+- **Status:** UNTESTED · **Stage:** S4 · **Split:** DEVELOPMENT
+- **Depends on:** `DATA-01`
+- **Evidence so far:** Spec only: docs/TRUTH01_EVALUATION_MANIFEST.md. The observed-input freeze excludes planted identity. Live constants: GRADE_THRESHOLDS {g3:0.6,g2:0.35,g1:0.12}, INCIDENTAL_LABEL_WEIGHT 0.25, FRAME_BENCH_SEED 20260823. Manifest file not created this pass. Truth not mutated.
+- **Next action:** Create the separate truth/evaluation manifest in a later pass. Hash hidden truth; never render it into prompts. Do not mutate current truth now. Do not build VALIDATION or LOCKED to populate it in this pass.
+- **Success criterion:** A machine-checked manifest exists; a test fails if a listed constant moves without a version bump; identities never appear in prompt input.
+- **Cost if run:** 0 calls, ~$0.00
+- **Latency relevance:** None.
+
+### `LOCK-01` — Can final confirmation use a genuinely blind, custodied artifact or seed outside prompt-author access, rather than the in-repo LOCKED_CONFIRMATION split?
+
+- **Status:** UNTESTED · **Stage:** S4 · **Split:** future custodied confirmation
+- **Depends on:** `PTA-01`
+- **Evidence so far:** LOCKED_CONFIRMATION is deterministically buildable from buildFrameCorpus plus FRAME_BENCH_SEED 20260823 and the in-repo lexicon. lockedConfirmationFrozen is false. It has not been executed. It is not a sealed box.
+- **Next action:** Design a custodied seed or artifact that prompt authors cannot materialize from the repo. Do not build or inspect today's LOCKED split as a substitute.
+- **Success criterion:** A confirmation object exists that prompt authors cannot reconstruct from public repo state; custody and release rules are written.
+- **Cost if run:** 0 calls, ~$0.00
+- **Latency relevance:** None.
+
 ### `P-01` — Can the strongest one-call baseline gain claim-level auditability without specialist inference?
 
 - **Status:** SUPPORTED · **Stage:** S1 · **Split:** DEVELOPMENT
 - **Depends on:** nothing
-- **Evidence so far:** Case A for auditability/provenance, not proven retrieval equivalence. LEXICAL_TRAP n=12, OpenAI gpt-5.6-sol low. person-blueprint@v2 vs v1 under frozen field-match: experience Δ −0.019 CI [−0.097, 0.054]; preference +0.014 [−0.043, 0.083]; direction −0.062 [−0.172, 0.043]. No statistically detectable retrieval regression was observed; equivalence/non-inferiority has NOT been established. Provenance contamination 0.000 on experience/liked/disliked/desired (72/84/24/48 claims). Volume ratio 1.000 all channels. Actual $0.546 / 12 fresh calls. T-01 KEEP set stable across 25 threshold pairs. Working research baseline is shared+provenance+field-match pending S-01. Not shipped.
-- **Next action:** Treat shared+provenance as a provisional research incumbent, not a settled baseline. Do not ship. Do not equate the P-01 CIs spanning zero with equivalence or non-inferiority. The amended S-01 design must characterize generation variance before architecture freeze.
-- **Success criterion:** Retrieval holds (CI spans zero or better) AND provenance contamination <= 0.05.
+- **Evidence so far:** Provenance/auditability only. LEXICAL_TRAP n=12 person-specific pools, OpenAI gpt-5.6-sol low. person-blueprint@v2: contamination 0.000 on 72/84/24/48 claims; volume ratio 1.000. T-01 KEEP set stable across 25 pairs. Actual $0.546 / 12 fresh calls. Retrieval is a separate item (P-01-RET). Registry record remains historically SUPPORTED for the combined preregistered hypothesis; the scientific split lives here. Not shipped.
+- **Next action:** Treat claim-level provenance as a DEVELOPMENT KEEP. Do not ship. Do not read this status as retrieval equivalence. See P-01-RET.
+- **Success criterion:** Provenance contamination <= 0.05 on quoted channels, with volume ratio near 1.0. Retrieval is not part of this item's success.
 - **Cost if run:** 12 calls, ~$0.93
 - **Latency relevance:** Small expected increase in output tokens; measure per-call.
+
+### `P-01-RET` — Does adding required provenance preserve retrieval (non-inferiority) versus person-blueprint@v1 under the frozen field-aware matcher?
+
+- **Status:** INCONCLUSIVE · **Stage:** S1 · **Split:** DEVELOPMENT
+- **Depends on:** `P-01`
+- **Evidence so far:** Experience Δ −0.019 CI [−0.097, 0.054]; preference +0.014 [−0.043, 0.083]; direction −0.062 [−0.172, 0.043]. A CI that spans zero does not prove equivalence or non-inferiority. One generation. n=12 person-specific ~24-job pools. Non-inferiority margins were never declared.
+- **Next action:** Leave unresolved. Do not invent margins from the observed deltas. Do not run S-01 to launder this into equivalence. Revisit only if a later frozen architecture still uses this prompt/input format.
+- **Success criterion:** A preregistered non-inferiority margin, justified independently of these deltas, is met. Until then this item cannot be SUPPORTED.
+- **Cost if run:** 0 calls, ~$0.00
+- **Latency relevance:** None beyond P-01.
 
 ### `T-01` — Are the provenance attribution thresholds (0.6 floor, 0.1 ambiguity margin) defensible?
 
@@ -134,10 +204,10 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 
 ### `S-01` — How much variation is introduced by repeated inference under identical semantic input, and can that variation change TaskDNA's representation, recommendations, or architecture decisions?
 
-- **Status:** PREREGISTERED · **Stage:** S2 · **Split:** DEVELOPMENT
-- **Depends on:** `P-01`
-- **Evidence so far:** P-01 is one generation. Direction Δ −0.062 CI [−0.172, 0.043] is compatible with a meaningful regression or a small improvement. The first S-01 draft used sign-majority as the decision rule and was superseded before spend. Amended preregistration: stochastic-stability:openai:LEXICAL_TRAP:low:amended. 12 people × 4 trials; trialId in cache identity only; v1 is one frozen historical realization. Non-inferiority margins remain unresolved rather than invented. Distinct from S-02.
-- **Next action:** Dry-run the amended design. Paid execution is not authorized in this session. Do not replay the P-01 cache as trial 0. Do not contaminate S-01 with paraphrases (that is S-02).
+- **Status:** DEFERRED · **Stage:** S2 · **Split:** DEVELOPMENT
+- **Depends on:** `P-01`, `PTA-01`, `DATA-01`
+- **Evidence so far:** Never executed. Experiment-registry record stochastic-stability:openai:LEXICAL_TRAP:low:amended remains PREREGISTERED (history preserved; do not rewrite it). Program status is DEFERRED on information value: the arm would still be 12 LEXICAL_TRAP DEVELOPMENT people × person-specific ~24-job pools on pre-bucketed text. P-01-RET already records retrieval non-inferiority as INCONCLUSIVE. Distinct from S-02.
+- **Next action:** Paid execution is DEFERRED on information value and is not authorized. Do not execute until a post-M-01 architecture question makes repeated-generation stability useful again. Do not replay the P-01 cache as trial 0. Do not contaminate S-01 with paraphrases (that is S-02). Keep the amended preregistration on disk.
 - **Success criterion:** Do not compress S-01 into one PASS/FAIL. Produce REPRESENTATION_STABILITY, RANKING_STABILITY, PROVENANCE_STABILITY, and ARCHITECTURE_DECISION_STABILITY, each SUPPORTED / CONCERN / INCONCLUSIVE. Sign counts may be descriptive only. Recommendation churn is 1 - |TopK_A ∩ TopK_B| / K with K=10. Non-inferiority remains unresolved unless a later, separately justified margin is preregistered.
 - **Cost if run:** 48 calls, ~$3.73
 - **Latency relevance:** Yields latency variance, currently unknown.
@@ -147,7 +217,7 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 - **Status:** INCONCLUSIVE · **Stage:** S1 · **Split:** DEVELOPMENT
 - **Depends on:** `P-01`, `S-01`
 - **Evidence so far:** v2 isolated Direction 0.806 vs shared 0.732, paired delta +0.074 CI [-0.066, 0.198]. Provenance contamination 0.000 and desired volume ratio 1.000, both corrected from v1.
-- **Next action:** P-01 Case A weakens always-on specialists. Do not rerun Direction because it is interesting. Remaining questions are S-01 architecture-decision stability (not sign-majority) and whether the extra call beats shared+provenance. Prefer A-03 (selective rescue) over always-on if S-01 holds.
+- **Next action:** P-01 provenance KEEP weakens always-on specialists. Do not rerun Direction because it is interesting. S-01 is DEFERRED and is not a reason to wait. Prefer A-03 (selective rescue) over always-on if a later frozen shared+provenance architecture still needs a specialist question.
 - **Success criterion:** Direction paired delta CI excludes zero.
 - **Cost if run:** 320 calls, ~$4.00
 - **Latency relevance:** Doubles onboarding calls; requires real concurrent measurement before shipping.
@@ -166,8 +236,8 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 
 - **Status:** SUPPORTED · **Stage:** S1 · **Split:** DEVELOPMENT
 - **Depends on:** nothing
-- **Evidence so far:** Leave-one-out on the frozen LEXICAL_TRAP OpenAI caches (n=12, 12/12 person and 288/288 job hits). Full field-match experience NDCG@10 0.745. Deltas: action -0.068, object -0.059, method -0.028, domain -0.016, purpose -0.000. Purpose is redundant on this family. Diagnostic only: agent-field-match stays on all five fields for P-01.
-- **Next action:** Do not retune the matcher. A later versioned matcher experiment may drop or reweight purpose; that is not P-01.
+- **Evidence so far:** ADAPTIVE DEVELOPMENT evidence, not independent confirmation. agent-field-match was written after inspecting DEVELOPMENT HARD_NEAR_MISS failures (6fa64a2). The LEXICAL_TRAP +0.148 vs token-bag (experience 0.745 vs 0.597) was a secondary observation on the run whose preregistered hypothesis (agent-blueprint beats lexical) was REJECTED. Leave-one-out used the same n=12 person-specific pools (12×~24 jobs, 288 interpretations). Purpose Δ 0.000 on this family. Diagnostic only.
+- **Next action:** Do not retune or rerun the matcher now. Independent confirmation is a later versioned experiment on a holdout that did not shape the matcher. That is not this item and not P-01.
 - **Success criterion:** Per-field contribution quantified; any redundant field identified.
 - **Cost if run:** 0 calls, ~$0.00
 - **Latency relevance:** None; deterministic.
@@ -202,22 +272,22 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 - **Cost if run:** 0 calls, ~$0.00
 - **Latency relevance:** Affects refresh path, not first result.
 
-### `V-01` — Does the frozen architecture generalise to paraphrase families it never saw?
+### `V-01` — Does a frozen frame-corpus.v1 architecture generalise to held-out vocabulary and unseen draws from this same generator?
 
-- **Status:** BLOCKED · **Stage:** S4 · **Split:** VALIDATION
-- **Depends on:** `P-01`, `S-01`, `T-01`
-- **Evidence so far:** VALIDATION has never been used by any agent arm; all four ledger experiment ids are DEVELOPMENT. Elsewhere in this codebase extraction macro F1 drops 0.831 to 0.611 across the boundary. P-01 and T-01 now pass; S-01 does not.
-- **Next action:** Blocked by the architecture-freeze gate. S-01 is the remaining unmet condition of the three named dependencies.
-- **Success criterion:** Predefined criteria pass with no tuning on VALIDATION.
+- **Status:** DEFERRED · **Stage:** S4 · **Split:** VALIDATION (procedural generator holdout)
+- **Depends on:** `P-01`, `T-01`
+- **Evidence so far:** This is MECHANISM validation only, not eventual architecture confirmation (that is V-02). No agent experiment used VALIDATION instances. Held-out concept source is visible in-repo; tests instantiate VALIDATION corpora and inspect planted identity. VALIDATION is a procedural generator holdout, not a blinded external holdout. Do not consume it now. S-01 is not a gate.
+- **Next action:** Do not run. Do not inspect or generate additional VALIDATION instances. If M-01/M-02 can change the selected architecture, keep this holdout unspent until a frame-corpus.v1 architecture is explicitly frozen — and even then it only answers the generator-holdout question.
+- **Success criterion:** Predefined frame-corpus.v1 mechanism criteria pass with no tuning on VALIDATION instances. Success here is not product or architecture confirmation.
 - **Cost if run:** 300 calls, ~$4.00
 - **Latency relevance:** None beyond what DEVELOPMENT already measured.
 
 ### `M-01` — Can TaskDNA untangle a messy person, rather than interpret evidence that was already routed for it?
 
-- **Status:** DEFERRED · **Stage:** S5 · **Split:** new MIXED_EVIDENCE family
-- **Depends on:** `P-01`
-- **Evidence so far:** The frozen corpus supplies evidence pre-partitioned into three arrays with explicit LIKE/DISLIKE stance and giveaway prefixes such as 'What I liked most:'. Removing the partition inflated full-context Experience volume to 1.736 immediately. Scientifically unblocked by P-01 Case A; still a contract change. Structured-benchmark domain effects and mixed-evidence domain effects are different claims; M-01 is required only for the latter.
-- **Next action:** Requires explicit approval: a new benchmark family is a contract change under amendment C. Same hidden truth, new independent messy-narrative renderer, no channel labels. Store domain-routing metadata as hidden experimental fields (industry / work-function / specialty, multi-label, per person and per evidence item where truth supports it). Do not pass that metadata to the baseline interpreter unless a preregistered D-CTX arm enables it. Behind S-01 on information value.
+- **Status:** BLOCKED · **Stage:** S5 · **Split:** new MIXED_EVIDENCE family
+- **Depends on:** `ONT-01`
+- **Evidence so far:** The frozen corpus supplies evidence pre-partitioned into three arrays with explicit LIKE/DISLIKE stance and giveaway prefixes such as 'What I liked most:'. Removing the partition inflated full-context Experience volume to 1.736 immediately. Still a contract change (amendment C). Independence protocol: docs/M01_INDEPENDENCE_PROTOCOL.md. Not implemented. Not rendered. Not behind S-01.
+- **Next action:** Do not implement or render. Complete ONT-01 first if the design assumes the five-field ontology. Then follow the independence protocol: renderer author does not receive current prompt outputs or DEVELOPMENT failure cases unless a written exception applies; record authorship and any model assistance; prefer human/independent authorship; freeze a preregistered inspection budget before prompt authors see cases.
 - **Success criterion:** Channel-assignment accuracy against planted truth, plus retrieval per channel.
 - **Cost if run:** 300 calls, ~$4.00
 - **Latency relevance:** May require a routing step, which would add to the critical path.
@@ -230,6 +300,46 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 - **Next action:** New versioned corpus with its own preregistration. Do not mutate the frozen corpus. Include multi-domain people (finance+analytics, healthcare+operations, legal+technology, etc.) and domain-transition cases where historical domain ≠ desired domain. These are first-class, not leftover cells.
 - **Success criterion:** Performance holds across pivots, returners, generalists, qualification/desire mismatches, multi-domain histories, and historical-to-desired domain transitions.
 - **Cost if run:** 300 calls, ~$4.00
+- **Latency relevance:** None.
+
+### `ARCH-01` — Has a named architecture been frozen for a named confirmation split, after any M-01/M-02 decision that could change it?
+
+- **Status:** UNTESTED · **Stage:** S4 · **Split:** n/a
+- **Depends on:** `PTA-01`
+- **Evidence so far:** No architecture freeze for confirmation exists. The current pre-bucketed person-blueprint@v2 incumbent is provisional DEVELOPMENT evidence. Do not freeze it in order to spend V-01.
+- **Next action:** Do not freeze the current pre-bucketed incumbent. Record a freeze only after ONT-01 and after deciding whether M-01/M-02 change the architecture.
+- **Success criterion:** A written freeze names the architecture, prompt versions, matcher, corpus family, and confirmation split, committed before that split is scored.
+- **Cost if run:** 0 calls, ~$0.00
+- **Latency relevance:** None.
+
+### `V-02` — Does the architecture that was actually selected — after M-01/M-02 if they changed it — pass a one-shot confirmation on a holdout that did not shape it?
+
+- **Status:** BLOCKED · **Stage:** S4 · **Split:** future architecture confirmation
+- **Depends on:** `ARCH-01`, `M-01`
+- **Evidence so far:** Not the same question as V-01. V-01 is frame-corpus.v1 mechanism validation on a procedural generator holdout. If M-01/M-02 change the selected architecture, confirmation must wait for ARCH-01 and must not spend today's VALIDATION instances as if they validated the new family.
+- **Next action:** Do not run. Do not consume current VALIDATION. After ARCH-01, use a holdout appropriate to the frozen family (custodied if LOCK-01 exists).
+- **Success criterion:** One confirmation run on the frozen architecture against a holdout that was not used for prompt or matcher tuning.
+- **Cost if run:** 0 calls, ~$0.00
+- **Latency relevance:** None.
+
+### `MKT-01` — Can TaskDNA retrieve and rank relevant jobs from a shared market-scale job universe, with globally amortized JobBlueprints, rather than from a person-specific pool of about 24 generated jobs?
+
+- **Status:** UNTESTED · **Stage:** S5 · **Split:** future shared-universe bench
+- **Depends on:** `DATA-01`
+- **Evidence so far:** Current n=12 screens rank each person against ~24 person-specific jobs. NDCG@10 is top 10 of that pool. Summing 12×24=288 counts interpretations, not a shared market. Global JobBlueprint amortization is not demonstrated.
+- **Next action:** Design a new benchmark with a shared job universe and a retrieval stage. Do not reinterpret current NDCGs as market retrieval. Do not implement in this pass.
+- **Success criterion:** A preregistered shared-universe protocol exists; later execution reports retrieval and ranking separately from the person-specific-pool NDCGs.
+- **Cost if run:** 0 calls, ~$0.00
+- **Latency relevance:** Job interpretation is corpus cost; person wait must exclude it if amortization is real.
+
+### `BR-01` — Have the sibling audit branches PR #8 (product engine) and PR #9 (agent lineage) been explicitly reconciled, rather than treated as one HEAD?
+
+- **Status:** UNTESTED · **Stage:** S7 · **Split:** n/a
+- **Depends on:** `PTA-01`
+- **Evidence so far:** PR #8 is cursor/taskdna-product-forensic-audit-b7d8 vs cursor/taskdna-agent-first-runtime-research. PR #9 is cursor/taskdna-prompt-benchmark-lineage-b7d8 vs cursor/taskdna-openai-provider-migration-b7d8. Different stacks. Proposed order: keep product facts from #8 and agent-research facts from #9; do not merge or rebase unless authorized.
+- **Next action:** Operator decision required. Do not fast-forward either branch over the other. See docs/PTA01_PROMPT_BENCHMARK_LINEAGE.md § 11.
+- **Success criterion:** A written reconciliation names which document is authority for product vs agent-research claims, without silently collapsing the two HEADs.
+- **Cost if run:** 0 calls, ~$0.00
 - **Latency relevance:** None.
 
 ### `X-01` — Are explanations faithful to the evidence and match factors that actually produced the ranking?
@@ -275,7 +385,7 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 ### `H-01` — Do real people agree with TaskDNA's representation of their own work?
 
 - **Status:** BLOCKED · **Stage:** S6 · **Split:** real users
-- **Depends on:** `V-01`, `M-01`, `PRIV-01`
+- **Depends on:** `V-02`, `M-01`, `PRIV-01`
 - **Evidence so far:** Zero human validity. Everything is planted-truth recovery on synthetic people.
 - **Next action:** Design the review program after PRIV-01. Corrections held out under a custodian, never folded into a tuning set. Do not use model-generated labels as human truth.
 - **Success criterion:** Claim correctness, omission and error rates, and correction burden meet preregistered thresholds.
@@ -285,7 +395,7 @@ Authoritative backlog of every unresolved question in the agent-first program. T
 ### `I-01` — How does a validated semantic architecture replace the deterministic product path?
 
 - **Status:** BLOCKED · **Stage:** S7 · **Split:** n/a
-- **Depends on:** `V-01`, `H-01`
+- **Depends on:** `V-02`, `H-01`
 - **Evidence so far:** The product runs no model call at all. src/app imports @/domain/engine; nothing under src/app, src/v3 or src/domain imports any agent module. The gap between research and product is total.
 - **Next action:** Do not merge research code into the product because DEVELOPMENT metrics look good. Requires persistence, migration, fallback, latency UX, cost, privacy and shadow testing.
 - **Success criterion:** Shadow-tested parity plus defined SLOs.
@@ -545,7 +655,7 @@ These are the questions the program is not allowed to 'finish' without answering
 | `EQ-23` | Does domain conditioning damage cross-domain transfer? | `D-CTX-01` |
 | `EQ-24` | Are JobBlueprints accurate on messy job descriptions? | `J-01` |
 | `EQ-25` | Are explanations faithful to the actual match computation? | `X-01` |
-| `EQ-26` | Do synthetic gains generalize? | `V-01` |
+| `EQ-26` | Do synthetic gains generalize? | `V-01`, `V-02` |
 | `EQ-27` | Do real humans agree with the resulting CareerBlueprint? | `H-01` |
 | `EQ-28` | Is performance stable across model updates? | `S-03` |
 | `EQ-29` | Is actual product latency acceptable? | `L-01` |
@@ -567,7 +677,10 @@ These are the questions the program is not allowed to 'finish' without answering
 | `EQ-45` | Does domain conditioning reproduce conventional career paths on historical-to-desired domain transitions? | `D-CTX-01`, `M-02` |
 | `EQ-46` | Can a universal model infer useful domain context internally, making an explicit router unnecessary? | `D-CTX-01` |
 | `EQ-47` | Does representation identity vary across generations while rankings stay stable, or the reverse? | `S-01` |
-| `EQ-48` | Does requiring provenance preserve enough retrieval quality that the added auditability is worth adopting (non-inferiority)? | `P-01`, `S-01` |
+| `EQ-48` | Does requiring provenance preserve enough retrieval quality that the added auditability is worth adopting (non-inferiority)? | `P-01-RET` |
+| `EQ-49` | Is the five-field work ontology and trap-distinction rule human-acceptable independently of model scores? | `ONT-01` |
+| `EQ-50` | Are hidden truth and label constants versioned separately from observed-input hashes? | `TRUTH-01` |
+| `EQ-51` | Can ranking from a shared job market be measured, rather than top-10 of a ~24-job person-specific pool? | `MKT-01` |
 
 ---
 
@@ -617,6 +730,12 @@ Where the pasted directive disagreed with disk evidence, the repository won. The
 - **Repository evidence:** P-01 Direction Δ −0.062 CI [−0.172, 0.043] is a magnitude-and-uncertainty problem, not a sign-vote problem. Sign voting throws away both. A CI spanning zero is not equivalence.
 - **Resolution:** Supersede stochastic-stability:openai:LEXICAL_TRAP:low with :amended before spend. Four trials stay as an economical first repeated-measures screen. Primary endpoints are representation / ranking / provenance / architecture-decision stability. Sign counts are descriptive only. Non-inferiority margins are unresolved rather than invented from the observed P-01 deltas.
 
+### S-01 vs M-01 information value
+
+- **Directive said:** Run S-01 next; M-01 is behind S-01 on information value.
+- **Repository evidence:** PTA-01/DATA-01 show S-01 would still spend on the same 12-person pre-bucketed DEVELOPMENT screen that already shaped Direction v2 and provenance v2. M-01 is the upstream routing question. S-01's registry preregistration is preserved.
+- **Resolution:** Program status of S-01 is DEFERRED on information value. M-01 is no longer behind S-01. M-01 is BLOCKED on ONT-01. No paid experiment is immediate priority. Do not rewrite the S-01 registry record.
+
 ---
 
 ## Domain-conditioned semantic inference (registered, not executable)
@@ -633,7 +752,7 @@ Can domain-conditioned semantic inference improve TaskDNA's understanding of spe
 
 **Semantic domain field vs routing metadata.** StructuredWork.domain is a semantic role field — the industry or setting of the work. R-01 found it contributed only −0.016 NDCG on LEXICAL_TRAP. Hidden industry / work-function / specialty labels are experimental routing metadata. They are not the same object and must not be conflated.
 
-**Immediate priority.** S-01 remains the next candidate paid experiment. Domain work is not executable because its stability and architecture dependencies are unsatisfied. Interesting is not authorization.
+**Immediate priority.** No paid experiment is authorized. Next work is zero-call: ONT-01, TRUTH-01, and the M-01 independence protocol. S-01 is DEFERRED on information value and is not immediate paid priority. Domain work is not executable.
 
 Do not build yet:
 
@@ -738,9 +857,9 @@ Deliberately not binary pass/fail: most of these questions resolve into somethin
 
 ## At a glance
 
-- **40** tracked questions across **8** stages
-- Status spread: 17 BLOCKED, 5 DEFERRED, 1 INCONCLUSIVE, 1 PREREGISTERED, 3 SUPPORTED, 13 UNTESTED
+- **50** tracked questions across **8** stages
+- Status spread: 18 BLOCKED, 6 DEFERRED, 2 INCONCLUSIVE, 5 SUPPORTED, 19 UNTESTED
 - **Runnable now** (untested, no unmet dependency): `J-01`, `SEC-01`, `POW-01`, `TM-01`, `D-META-01`, `PRIV-01`
-- **Next paid experiment if authorized:** `S-01`
+- **Next paid experiment if authorized:** none
 - Total spend recorded so far: **$14.15** across **1053** calls
 

@@ -19,7 +19,7 @@ Working principle: Use models where semantic understanding genuinely requires mo
 - **Corpus / split:** frame-corpus.v1 / DEVELOPMENT
 - **As of:** 2026-08-23
 - **Product path:** The shipping product does not run this architecture. src/app / src/v3 / src/domain import no agent module. Research harness ≠ production. P-01 Case A is a research KEEP, not a ship decision.
-- **Pending change:** Shared+provenance is a provisional incumbent. S-01 (amended) must measure representation, ranking, provenance, and architecture-decision variance under identical input bytes. A CI spanning zero is not equivalence. Do not ship on a single generation.
+- **Pending change:** Provenance is a DEVELOPMENT KEEP (P-01). Retrieval preservation is INCONCLUSIVE (P-01-RET); a CI spanning zero is not equivalence. Field-match is adaptive DEVELOPMENT evidence. S-01 is DEFERRED on information value and is not the next paid experiment. Next work is ONT-01 / TRUTH-01 / M-01 protocol. Do not ship.
 
 ## Findings
 
@@ -38,7 +38,7 @@ Preserving semantic structure downstream can matter at least as much as increasi
 
 - On LEXICAL_TRAP OpenAI, agent-field-match experience NDCG@10 0.745 vs agent-blueprint 0.597, +0.148 CI [0.088, 0.211], zero additional model calls.
 
-**Do not claim:** R-01 is diagnostic. Purpose was redundant on this family (Δ 0.000). The matcher is not retuned from that result.
+**Do not claim:** This is adaptive DEVELOPMENT evidence. The matcher was designed after inspecting DEVELOPMENT HARD_NEAR_MISS failures. The +0.148 LEXICAL_TRAP result was secondary, not the preregistered hypothesis (agent-blueprint vs lexical, which was REJECTED). Do not retune. Not independent confirmation. NDCG@10 is top 10 of a ~24-job person-specific pool.
 
 ### `F-DIRECTION-V1` — diagnosed
 
@@ -58,15 +58,15 @@ Correctly scoped isolated Direction repaired channel integrity; retrieval advant
 
 ### `F-P01-PROVENANCE` — measured-once
 
-The one-call shared architecture can emit claim-level supporting phrases without measurable evidence contamination, and with no statistically detectable retrieval regression, on LEXICAL_TRAP DEVELOPMENT n=12. Equivalence/non-inferiority of retrieval has not been established.
+The one-call shared architecture can emit claim-level supporting phrases without measurable evidence contamination on LEXICAL_TRAP DEVELOPMENT n=12 (P-01 SUPPORTED). Retrieval preservation / non-inferiority is INCONCLUSIVE (P-01-RET); equivalence has not been established.
 
 - person-blueprint-v2:openai:LEXICAL_TRAP:low SUPPORTED / Case A: experience Δ −0.019 CI [−0.097, 0.054]; contamination 0.000 on 72/84/24/48 claims; volume 1.000; T-01 KEEP set stable across 25 pairs.
 
-**Do not claim:** A CI spanning zero is not equivalence or proven non-inferiority. Experience Δ −0.019 [−0.097, 0.054], Preference +0.014 [−0.043, 0.083], Direction −0.062 [−0.172, 0.043] are each compatible with a real regression or a small improvement. This is one generation. Do not treat this as proof that specialists are never useful, or as a product-ship decision. S-01 (amended) is the next candidate paid experiment and is not authorized in this session.
+**Do not claim:** A CI spanning zero is not equivalence or proven non-inferiority. Experience Δ −0.019 [−0.097, 0.054], Preference +0.014 [−0.043, 0.083], Direction −0.062 [−0.172, 0.043] are each compatible with a real regression or a small improvement. This is one generation. Do not treat P-01's top-level SUPPORTED as retrieval equivalence. S-01 is DEFERRED and is not the next paid experiment.
 
 ## Not yet known
 
-- How much representation, ranking, provenance, and architecture-decision variance repeated v2 inference introduces (S-01 amended).
+- How much representation, ranking, provenance, and architecture-decision variance repeated v2 inference introduces (S-01 amended; DEFERRED, not next).
 - Whether P-01's Direction −0.062 is one noisy draw or a small systematic provenance-induced regression (S-01).
 - Whether v2 is non-inferior to v1 on retrieval; margins are unresolved (P-01, S-01, POW-01).
 - Whether semantically equivalent phrasing changes understanding (S-02).

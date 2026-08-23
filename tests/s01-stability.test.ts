@@ -141,7 +141,9 @@ describe("the amended S-01 preregistration replaced the sign-majority design", (
     expect(s01.question.toLowerCase()).toMatch(/representation|recommend|architecture/);
     expect(s01.successCriterion).toMatch(/REPRESENTATION_STABILITY/);
     expect(s01.successCriterion).toMatch(/RANKING_STABILITY/);
-    expect(s01.nextAction.toLowerCase()).toMatch(/not authorized|without approval|do not.*paid/);
+    expect(s01.status).toBe("DEFERRED");
+    expect(s01.nextAction.toLowerCase()).toMatch(/deferred/);
+    expect(s01.nextAction.toLowerCase()).toMatch(/not authorized|without approval|do not.*paid|do not execute/);
   });
 
   it("refuses paid execution and spends under the amended id", () => {

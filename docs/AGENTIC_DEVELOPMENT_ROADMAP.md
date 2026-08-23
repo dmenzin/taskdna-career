@@ -30,12 +30,13 @@ speculative and matcher/representation work as the main line.
 
 ---
 
-## Top five experiments, ranked by information value
+## Historical E1–E5 labels (not the current paid ranking)
 
-These five are the decision ranking. Each is a live item in the research program; the id in
-parentheses is the one the tests track. Rank is information value, not execution order of every
-item in the backlog — cheaper deterministic work (R-01, T-01) can run in parallel without
-displacing these.
+These five keep their original E-numbers so older write-ups stay readable. They are **not**
+the current paid-priority order. After the second forensic pass, **no paid experiment is
+authorized**. Next work is zero-call: `ONT-01`, `TRUTH-01`, and the M-01 independence
+protocol. `S-01` is **DEFERRED** on information value; `M-01` is **not** behind `S-01`.
+Each item below is still a live program id.
 
 ### E1 — Provenance on the shared CareerBlueprint (`P-01`)
 
@@ -54,11 +55,9 @@ displacing these.
   NDCG@10 paired vs shared v1, channel volume ratio, latency, output-token delta.
 - **Cost.** ~12 fresh calls, ~$0.45. Jobs and all baselines reused.
 - **Runtime.** ~3 minutes. **User-latency effect:** likely small increase in output tokens; measure.
-- **Decision rule.** PASS if retrieval holds (CI spans zero or better) **and** provenance
-  contamination ≤ 0.05 → shared+provenance becomes the baseline and multi-agent work is deprioritised.
-  FAIL if retrieval regresses with a CI excluding zero → auditability costs accuracy in the shared
-  form, which materially strengthens the specialist case. INCONCLUSIVE → keep shared v1 as baseline
-  and go to E2 before spending more.
+- **Decision rule (split after the fact).** Provenance/auditability is SUPPORTED (`P-01`).
+  Retrieval preservation / non-inferiority is INCONCLUSIVE (`P-01-RET`). A CI spanning zero
+  is not equivalence. Do not treat the top-level P-01 KEEP as retrieval proof.
 
 ### E2 — Stochastic stability (`S-01`)
 
@@ -81,10 +80,9 @@ displacing these.
   are descriptive only. Non-inferiority margins are unresolved rather than invented from P-01
   deltas.
 - **Cost.** 48 fresh person calls, worst-case ~$3.73. Jobs reused.
-- **Decision rule.** Do not collapse to one PASS/FAIL. Highly stable → stronger incumbent, then
-  `S-02`. Ranking churn → stabilize before architecture freeze. Provenance fluctuation → P-01's one
-  clean realization is not enough. Architecture-decision flips → one-generation comparisons lose
-  authority. Paid execution is not authorized until the amended design is accepted.
+- **Decision rule.** Do not collapse to one PASS/FAIL. Program status is **DEFERRED** on
+  information value (registry preregistration preserved). Paid execution is not authorized.
+  Do not run S-01 ahead of ONT-01 / M-01.
 
 ### E3 — Resolve v2 Direction at adequate power (`D-01`)
 
@@ -99,8 +97,9 @@ displacing these.
   per-subject parallel critical path now that pairing is correct.
 - **Cost.** ~2 calls/person for split + 1/person shared + new job blueprints for the added people.
   At 24 people, roughly 300–330 fresh calls, ~$4.
-- **Note.** Deliberately ranked **below** E1 and E2. If E1 passes, this experiment's motivation
-  shrinks sharply; if E2 fails, its result would not be trustworthy anyway. **Do not run it first.**
+- **Note.** Historical rank was below E1 and E2. P-01 provenance KEEP already weakens
+  always-on specialists. S-01 is DEFERRED and is not a reason to wait or to spend.
+  **Do not run D-01 now.**
 - **Decision rule.** PASS (CI excludes zero) → adopt the specialist Direction Agent and pay the
   latency, contingent on a concurrent implementation. FAIL → shared wins, close the multi-agent line
   for Direction. INCONCLUSIVE at n=36 → the effect is smaller than the benchmark can resolve; stop
@@ -217,10 +216,15 @@ truth, a defined metric, and a measured implementation.
 
 ### S4 — Generalisation
 
-**Contains:** `V-01` — exactly one VALIDATION run against the frozen architecture.
-**ENTRY GATE:** the architecture-freeze conditions in the audit. Two of four currently fail.
-**EXIT WHEN:** the frozen architecture passes predefined VALIDATION criteria with no tuning on
-VALIDATION. **Runs once per frozen architecture.** LOCKED stays untouched.
+**Contains:** `V-01` (frame-corpus.v1 **mechanism** validation on the procedural generator
+holdout), `ARCH-01` (named freeze after any M-01/M-02 decision that could change the
+architecture), `V-02` (eventual architecture confirmation), `TRUTH-01`, `LOCK-01`.
+**ENTRY GATE:** do not consume VALIDATION now. Do not freeze the current pre-bucketed
+incumbent just to spend V-01. If M-01/M-02 can change the selected architecture, keep
+final confirmation for after that architecture is frozen (`ARCH-01` then `V-02`).
+**EXIT WHEN:** V-01 answers only the generator-holdout question; V-02 answers architecture
+confirmation on a holdout that did not shape the frozen family. Today's LOCKED split is
+deterministically buildable from repo + seed and is **not** a custodied blind artifact.
 
 ### S5 — Product-realistic evidence
 
@@ -230,7 +234,9 @@ people and domain transitions), `M-03` (NATURAL_USER), `M-04` (MULTI_SOURCE), `J
 `StructuredWork.domain`), and the domain-context ladder `D-CTX-01` → `D-CTX-02` → `D-CTX-03` →
 `D-CTX-05`, plus later `D-CTX-J-01` / `D-CTX-P` / `D-CTX-FT`. Oracle + wrong-domain + anchoring
 controls come before any cheap router. Domain context may help understand evidence; it must not
-limit which jobs a person may match. Do not execute this ladder until S-01/S-02 resolve.
+limit which jobs a person may match. Domain-context items stay blocked on their listed
+dependencies. M-01 itself is blocked on ONT-01, not on S-01. Do not treat S-01 as a paid
+gate for MIXED_EVIDENCE.
 **EXIT WHEN:** the architecture works without synthetic pre-routing of evidence and survives
 realistic ambiguity and contradiction.
 
@@ -266,7 +272,8 @@ deterministic or single-call alternative.
   entirely.
 - **Do not build a critic, planner, or tool-using agent.** Nothing in the evidence asks for
   autonomy, and each adds failure modes and debugging surface.
-- **Do not run VALIDATION.** Its entry gate fails on two of four conditions.
+- **Do not run VALIDATION.** It is a procedural generator holdout, not a blinded external
+  holdout. V-01 is mechanism-only; architecture confirmation is V-02 after ARCH-01.
 - **Do not touch the frozen corpus.** E4 is a new family, preregistered and approved separately.
 - **Do not optimise latency yet.** Establish the architecture first, then attack latency with model
   tier, effort, prompt length, or selective invocation without muddling the science.
@@ -293,7 +300,10 @@ deterministic or single-call alternative.
 - **Do not run the first S-01 draft.** It is SUPERSEDED. The live preregistration is
   `stochastic-stability:openai:LEXICAL_TRAP:low:amended`. Sign-majority is not the decision rule.
 - **Do not execute domain, Qualification, or MIXED_EVIDENCE experiments because the hypotheses are
-  now registered.** Registration is not authorization. S-01 remains the next candidate paid step.
+  now registered.** Registration is not authorization. S-01 is DEFERRED on information value and
+  is not the next paid step. Next work is zero-call: `ONT-01`, `TRUTH-01`, M-01 protocol.
+- **Do not merge or rebase PR #8 and PR #9 as if they were one HEAD.** They are sibling
+  audit branches (`BR-01`). Reconcile only when authorized.
 - **Do not silently enlarge a frozen split to buy power.** That is `POW-01` plus a new versioned
   generation, not an edit to `frame-corpus.v1`.
 
