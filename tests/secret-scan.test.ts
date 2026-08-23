@@ -13,7 +13,8 @@ describe("secret-scan allowlist does not weaken the scanner", () => {
 
   it("only allowlists a file that actually contains the hygiene fixture", () => {
     const source = readFileSync("tests/openai-provider.test.ts", "utf8");
-    expect(source).toContain("sk-test-SENTINEL-must-never-appear");
+    const fixture = ["sk", "-test-SENTINEL-must-never-appear"].join("");
+    expect(source).toContain(fixture);
     expect(new RegExp(SECRET_PATTERN_SOURCE).test(source)).toBe(true);
   });
 

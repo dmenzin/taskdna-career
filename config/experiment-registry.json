@@ -283,7 +283,7 @@
       "estimatedCostUsd": 0.93,
       "actualCalls": null,
       "actualCostUsd": null,
-      "preregistrationCommit": null,
+      "preregistrationCommit": "97e83e3",
       "resultArtifact": null,
       "result": "Dry run complete: 12 fresh person@v2, 0 job misses (288/288 hits), 12/12 v1 baseline hits, worst-case $0.933. Paid run not executed.",
       "supersedes": null,
