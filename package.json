@@ -36,6 +36,7 @@
     "diag:baseline-ablation": "tsx scripts/diag-baseline-ablation.ts",
     "diag:soft-canonical": "tsx scripts/diag-soft-canonical.ts",
     "diag:generator-lexical-leak": "tsx scripts/diag-generator-lexical-leak.ts",
+    "diag:frame-leak": "tsx scripts/diag-frame-leak.ts",
     "audit:metric-contracts": "tsx scripts/audit-metric-contracts.ts",
     "eval:product-red-team": "tsx scripts/product-red-team.ts",
     "eval:generator-monotonicity": "tsx scripts/generator-monotonicity.ts",
