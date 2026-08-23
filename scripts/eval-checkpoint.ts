@@ -1,0 +1,99 @@
+// CHECKPOINT tier: run roughly every 45-90 minutes, or after a subsystem milestone.
+//
+// Broader than FAST and cheaper than FULL. Runs the whole unit suite, the DEVELOPMENT
+// dashboard, the preregistered-validation and channel-isolation gates, mapper/scorer
+// regression, and reproducibility checks. It does NOT run `pnpm build` (no Next.js
+// compilation) and does NOT touch LOCKED_CONFIRMATION.
+import { spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
+import { mkdirSync, writeFileSync } from "node:fs";
+
+const run = (command: string, args: string[]) => spawnSync(command, args, { encoding: "utf8", env: { ...process.env, NO_COLOR: "1" } });
+
+interface Step { label: string; pass: boolean; ms: number; detail: string }
+const steps: Step[] = [];
+
+function step(label: string, command: string, args: string[], describe?: (stdout: string) => string) {
+  const started = Date.now();
+  const result = run(command, args);
+  const pass = result.status === 0;
+  steps.push({
+    label,
+    pass,
+    ms: Date.now() - started,
+    detail: pass ? (describe?.(result.stdout ?? "") ?? "pass") : `${result.stdout ?? ""}${result.stderr ?? ""}`.slice(-1200),
+  });
+  console.log(`${pass ? "PASS" : "FAIL"}  ${label}  ${Date.now() - started} ms`);
+  return result;
+}
+
+const started = Date.now();
+
+// Broader tests: the whole unit suite, which is fast enough for this tier.
+step("unit tests", "pnpm", ["test"]);
+step("typecheck", "pnpm", ["typecheck"]);
+
+// Generator validity gates.
+step("generator semantic polarity + monotonicity", "pnpm", ["exec", "tsx", "scripts/generator-monotonicity.ts"], (stdout) => {
+  const report = safeParse(stdout);
+  return `semanticPolarityPass=${report?.semanticPolarityPass} eligiblePass=${report?.eligiblePass}`;
+});
+step("generator positional bias", "pnpm", ["exec", "tsx", "scripts/generator-bias.ts"], (stdout) => {
+  const report = safeParse(stdout);
+  return `samplerPass=${report?.samplerPass} corpusPass=${report?.corpusPass}`;
+});
+
+// DEVELOPMENT dashboard.
+const development = step("DEVELOPMENT preference dashboard", "pnpm", ["exec", "tsx", "scripts/iteration-diagnostics.ts", "--mode=DEVELOPMENT"], (stdout) => {
+  const report = safeParse(stdout);
+  return `primary=${report?.AVAILABLE_EVIDENCE_PREFERENCE_MACRO_MAE_V1} recall=${report?.AVAILABLE_TO_RECOGNIZED_RECALL} warnings=${JSON.stringify(report?.warnings)}`;
+});
+
+// Reproducibility: the same command twice must produce byte-identical output.
+{
+  const label = "DEVELOPMENT metrics reproducible";
+  const startedAt = Date.now();
+  const second = run("pnpm", ["exec", "tsx", "scripts/iteration-diagnostics.ts", "--mode=DEVELOPMENT"]);
+  const identical = second.status === 0 && second.stdout === development.stdout;
+  steps.push({ label, pass: identical, ms: Date.now() - startedAt, detail: identical ? `sha256=${createHash("sha256").update(development.stdout ?? "").digest("hex").slice(0, 16)}` : "two runs produced different output" });
+  console.log(`${identical ? "PASS" : "FAIL"}  ${label}  ${Date.now() - startedAt} ms`);
+}
+
+// Preregistered validation: only ever confirms a DEVELOPMENT result, never guides iteration.
+step("VALIDATION preference dashboard (confirmation only)", "pnpm", ["exec", "tsx", "scripts/iteration-diagnostics.ts", "--mode=VALIDATION"], (stdout) => {
+  const report = safeParse(stdout);
+  return `primary=${report?.AVAILABLE_EVIDENCE_PREFERENCE_MACRO_MAE_V1}`;
+});
+
+// Channel isolation and mapper/scorer regression.
+step("four-channel isolation", "pnpm", ["exec", "vitest", "run", "tests/four-channel-parallel.test.ts"]);
+step("mapper/scorer regression", "pnpm", ["exec", "vitest", "run", "tests/v3/bridge.test.ts", "tests/v3/coefficientGovernance.test.ts", "tests/hybrid-readiness.test.ts"]);
+
+// Metric red team.
+step("preference metric red team", "pnpm", ["exec", "tsx", "scripts/preference-metric-red-team.ts"]);
+
+// LOCKED_CONFIRMATION must stay guarded.
+{
+  const label = "LOCKED_CONFIRMATION stays guarded";
+  const startedAt = Date.now();
+  const locked = run("pnpm", ["exec", "tsx", "scripts/iteration-diagnostics.ts", "--mode=LOCKED_CONFIRMATION"]);
+  const guarded = locked.status !== 0 && !locked.stdout;
+  steps.push({ label, pass: guarded, ms: Date.now() - startedAt, detail: guarded ? "not executed" : "LOCKED_CONFIRMATION produced output without --confirm-locked" });
+  console.log(`${guarded ? "PASS" : "FAIL"}  ${label}  ${Date.now() - startedAt} ms`);
+}
+
+const totalMs = Date.now() - started;
+const passed = steps.every((entry) => entry.pass);
+const report = { tier: "CHECKPOINT", version: "eval-checkpoint.v1", totalMs, passed, steps };
+mkdirSync("artifacts/iteration_readiness", { recursive: true });
+writeFileSync("artifacts/iteration_readiness/checkpoint_latest.json", JSON.stringify(report, null, 2) + "\n");
+console.log(`\nCHECKPOINT tier: ${steps.filter((s) => s.pass).length}/${steps.length} steps passed in ${totalMs} ms`);
+process.exit(passed ? 0 : 1);
+
+function safeParse(stdout: string): Record<string, unknown> | null {
+  try {
+    return JSON.parse(stdout) as Record<string, unknown>;
+  } catch {
+    return null;
+  }
+}
