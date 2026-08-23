@@ -34,21 +34,30 @@ export interface ChannelLabel {
   matchedAtomIds: string[];
 }
 
-export interface PairLabel {
-  personId: string;
+/**
+ * The part of a labelled pair that the relevance PREDICATES need.
+ *
+ * Extracted so the grading policy below — what counts as relevant, as a transition, as a
+ * surprising transfer, as dominated — has exactly ONE definition shared by every truth
+ * substrate. The atom corpus and the frame corpus differ in how work identity is computed;
+ * they must not be allowed to drift in what a grade 2 means.
+ */
+export interface GradedPair {
   jobId: string;
-  archetype: PlantedJob["archetype"];
   experience: ChannelLabel;
   preference: ChannelLabel;
   direction: ChannelLabel;
+  crossTitle: boolean;
+  crossIndustry: boolean;
+}
+
+export interface PairLabel extends GradedPair {
+  personId: string;
+  archetype: PlantedJob["archetype"];
   /** Fraction of the job's REQUIRED requirements the person holds. */
   qualificationFeasibility: number;
   /** Any required qualification the person does not hold. */
   hardGaps: string[];
-  /** The job's title comes from a different stratum than the person's own. */
-  crossTitle: boolean;
-  /** The job's industry differs from the person's own. */
-  crossIndustry: boolean;
 }
 
 /** Weighted planted coverage of a job's responsibilities by a set of the person's atoms. */
@@ -134,12 +143,12 @@ export function novelWorkShare(person: PlantedPerson, job: PlantedJob): number {
 
 export type Channel = "experience" | "preference" | "direction";
 
-export function channelLabel(label: PairLabel, channel: Channel): ChannelLabel {
+export function channelLabel(label: GradedPair, channel: Channel): ChannelLabel {
   return label[channel];
 }
 
 /** A pair is channel-relevant when its planted grade is at least 1. */
-export function isRelevant(label: PairLabel, channel: Channel): boolean {
+export function isRelevant(label: GradedPair, channel: Channel): boolean {
   return channelLabel(label, channel).grade >= 1;
 }
 
@@ -147,7 +156,7 @@ export function isRelevant(label: PairLabel, channel: Channel): boolean {
  * Jobs that are independently good on BOTH experience and preference. The joint objective
  * intersects two independent labels; it never blends them into one number.
  */
-export function isJointRelevant(label: PairLabel, minimumGrade: Grade = 2): boolean {
+export function isJointRelevant(label: GradedPair, minimumGrade: Grade = 2): boolean {
   return label.experience.grade >= minimumGrade && label.preference.grade >= minimumGrade;
 }
 
@@ -156,7 +165,7 @@ export function isJointRelevant(label: PairLabel, minimumGrade: Grade = 2): bool
  * and likes it. Deliberately requires low experience, so a resume-replication ranker cannot
  * score well here.
  */
-export function isTransitionRelevant(label: PairLabel): boolean {
+export function isTransitionRelevant(label: GradedPair): boolean {
   return label.experience.grade <= 1 && label.direction.grade >= 2 && label.preference.grade >= 1;
 }
 
@@ -166,18 +175,18 @@ export function isTransitionRelevant(label: PairLabel): boolean {
  * experience grade requirement is what makes this a relevance metric rather than a novelty
  * metric.
  */
-export function isSurprisingTransfer(label: PairLabel): boolean {
+export function isSurprisingTransfer(label: GradedPair): boolean {
   return label.experience.grade >= 2 && (label.crossTitle || label.crossIndustry);
 }
 
 /** Does `a` dominate `b` on both experience and preference (strictly better on one)? */
-export function dominates(a: PairLabel, b: PairLabel): boolean {
+export function dominates(a: GradedPair, b: GradedPair): boolean {
   const betterOrEqual = a.experience.raw >= b.experience.raw && a.preference.raw >= b.preference.raw;
   const strictlyBetter = a.experience.raw > b.experience.raw || a.preference.raw > b.preference.raw;
   return betterOrEqual && strictlyBetter;
 }
 
 /** Non-dominated experience/preference frontier among a person's labelled jobs. */
-export function paretoFrontier(labels: PairLabel[]): PairLabel[] {
+export function paretoFrontier<T extends GradedPair>(labels: T[]): T[] {
   return labels.filter((candidate) => !labels.some((other) => other.jobId !== candidate.jobId && dominates(other, candidate)));
 }
