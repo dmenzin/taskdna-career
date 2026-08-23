@@ -87,6 +87,12 @@ step("subsystem benchmarks and trace fixture", "pnpm", ["exec", "tsx", "scripts/
   return `extraction macroF1=${report?.extraction?.macroF1?.toFixed(4)}, trace failed stages=${failed}`;
 });
 
+// Product-level red team.
+step("product red team", "pnpm", ["exec", "tsx", "scripts/product-red-team.ts", "--no-write"], (stdout) => {
+  const report = safeParse(stdout) as { summary?: { pass: number; limitation: number; fail: number } } | null;
+  return `${report?.summary?.pass} pass, ${report?.summary?.limitation} limitation, ${report?.summary?.fail} fail`;
+});
+
 // LOCKED_CONFIRMATION must stay guarded.
 {
   const label = "LOCKED_CONFIRMATION stays guarded";

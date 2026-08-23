@@ -38,7 +38,20 @@ const coverage=run("pnpm",["exec","vitest","run","tests/subsystem-coverage.test.
 
 // [ ] the research portfolio and the anti-micro-tuning guard are in place
 const guard=run("pnpm",["exec","tsx","scripts/experiment-guard.ts"]);
-try{const guardReport=JSON.parse(guard.stdout);const portfolio=JSON.parse(readFileSync("config/research-portfolio.json","utf8"));add("research portfolio and micro-tuning guard",guard.status===0&&guardReport.passed===true&&portfolio.workstreams.length===8,`${portfolio.workstreams.length} workstreams, ${guardReport.recordsAudited} experiment records audited, max ${guardReport.maxConsecutiveExperimentsPerMechanism} consecutive experiments per mechanism`);}catch(e){add("research portfolio and micro-tuning guard",false,String(e));}
+try{
+  const guardReport=JSON.parse(guard.stdout);
+  const portfolio=JSON.parse(readFileSync("config/research-portfolio.json","utf8"));
+  // The product contract requires twelve workstreams spanning measurement through model
+  // capacity, plus explicit exclusions for every subsystem with no runnable evaluator.
+  const requiredAreas=["measurement","preference","experience","task/dwa","job responsibility","direction","qualification","candidate retrieval","robustness","architecture"];
+  const names=portfolio.workstreams.map((w:{name:string})=>w.name.toLowerCase()).join(" | ");
+  const missingAreas=requiredAreas.filter(area=>!names.includes(area));
+  const excluded=(portfolio.excludedFromLoop??[]).map((e:{row:number})=>e.row);
+  const missingExclusions=[4,8,19,31].filter(row=>!excluded.includes(row));
+  add("research portfolio and micro-tuning guard",
+    guard.status===0&&guardReport.passed===true&&portfolio.workstreams.length>=12&&missingAreas.length===0&&missingExclusions.length===0,
+    `${portfolio.workstreams.length} workstreams, ${guardReport.recordsAudited} experiment records audited, max ${guardReport.maxConsecutiveExperimentsPerMechanism} consecutive experiments per mechanism, ${excluded.length} subsystems excluded from the loop${missingAreas.length?`; MISSING AREAS: ${missingAreas.join(", ")}`:""}${missingExclusions.length?`; MISSING EXCLUSIONS: rows ${missingExclusions.join(", ")}`:""}`);
+}catch(e){add("research portfolio and micro-tuning guard",false,String(e));}
 const guardTests=run("pnpm",["exec","vitest","run","tests/experiment-guard.test.ts"]);add("micro-tuning guard rejects hill climbing",guardTests.status===0,guardTests.status===0?"tests/experiment-guard.test.ts pass: unpreregistered threshold/coefficient/regex/prompt nudging and a third consecutive same-mechanism experiment are both rejected":(guardTests.stdout+guardTests.stderr).slice(-800));
 
 // --- Available-vs-recognized evidence hardening checks (readiness-hardening audit) ---
@@ -99,6 +112,10 @@ const negation=run("pnpm",["exec","vitest","run","tests/evidence-negation.test.t
 // [ ] the ranking benchmark has headroom at its declared optimization target
 const bench=run("pnpm",["exec","tsx","scripts/bench-product.ts","--difficulty=hard","--people=12","--no-write"]);
 try{const b=JSON.parse(bench.stdout);const saturated=b.headroom.filter((h:{saturated:boolean})=>h.saturated);add("ranking benchmark has headroom at the optimization target",bench.status===0&&saturated.length===0&&b.scoreSpaceDominanceViolations===0,`${b.channelRanking.map((r:{channel:string;ndcgAtK:number})=>`${r.channel} NDCG=${r.ndcgAtK?.toFixed(4)}`).join(", ")}; saturated=[${saturated.map((h:{channel:string})=>h.channel).join(", ")}]; score-space dominance violations=${b.scoreSpaceDominanceViolations}`);}catch(e){add("ranking benchmark has headroom at the optimization target",false,`${String(e)} ${(bench.stderr||bench.stdout||"").slice(-300)}`);}
+
+// [ ] the product-level red team finds no failure
+const productRedTeam=run("pnpm",["exec","tsx","scripts/product-red-team.ts","--no-write"]);
+try{const rt=JSON.parse(productRedTeam.stdout);add("product red team",productRedTeam.status===0&&rt.summary.fail===0,`${rt.summary.pass} pass, ${rt.summary.limitation} limitation, ${rt.summary.fail} fail across ${rt.attacks.length} attacks (circular gold, self-labelled mapping gold, title-collision false positives, cross-title misses, incidental over-reward, candidate-pool misses, novelty without relevance, Overall score, Pareto inconsistency, channel leakage, qualification mutation, duplicate recommendations, dev-only improvement, untraceability, unsupported explanation, metadata leakage, saturated benchmark, weakened baseline, metric without evaluator)`);}catch(e){add("product red team",false,`${String(e)} ${(productRedTeam.stderr||productRedTeam.stdout||"").slice(-300)}`);}
 
 // --- end hardening checks ---
 

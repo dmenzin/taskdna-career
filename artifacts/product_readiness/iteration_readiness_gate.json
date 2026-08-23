@@ -1,0 +1,187 @@
+{
+  "readinessVersion": "iteration-readiness.v5-product",
+  "lockedConfirmationExecuted": false,
+  "checks": [
+    {
+      "name": "readiness-lab provenance",
+      "pass": true,
+      "detail": "descends from c10b914a147fc39f2be37cd0584425aeec958d1f"
+    },
+    {
+      "name": "frozen baseline identity",
+      "pass": true,
+      "detail": "00ec10ef5d1f181ad82cd710561d13c5cfffedcf3a60ae0b56cbb21e2e30101c"
+    },
+    {
+      "name": "frozen baseline unchanged",
+      "pass": true,
+      "detail": "compared with creator commit"
+    },
+    {
+      "name": "metric registry",
+      "pass": true,
+      "detail": "14 contracts"
+    },
+    {
+      "name": "autonomous preference target",
+      "pass": true,
+      "detail": "measurable_feedback, experimentation_preference"
+    },
+    {
+      "name": "eligible generator monotonicity",
+      "pass": true,
+      "detail": "2158745a81ca36ff99c3ba74775ef8a80a746394eb4e1b3b60268155792715cf"
+    },
+    {
+      "name": "generator semantic polarity",
+      "pass": true,
+      "detail": "semanticPolarityPass=true, backwards placements=0"
+    },
+    {
+      "name": "generator positional sampling bias",
+      "pass": true,
+      "detail": "samplerChiSquare=12.39 (df=16, critical=39.252), positionSpearman=0.105, corpusSelectionRateSpread=0.095"
+    },
+    {
+      "name": "late-sentence and duplicate-evidence regressions",
+      "pass": true,
+      "detail": "tests/evidence-observability.test.ts and tests/generator-semantics.test.ts pass"
+    },
+    {
+      "name": "four parallel channels and hybrid-readiness contract",
+      "pass": true,
+      "detail": "channel isolation, strategy boundaries, learned-component contract, and mapper cache identity pass"
+    },
+    {
+      "name": "product-critical subsystem coverage",
+      "pass": true,
+      "detail": "20 subsystems registered with construct, evaluator, baseline, known-answer tests, failure cases, alternative strategy path, and human-validation boundary"
+    },
+    {
+      "name": "research portfolio and micro-tuning guard",
+      "pass": true,
+      "detail": "12 workstreams, 0 experiment records audited, max 2 consecutive experiments per mechanism, 4 subsystems excluded from the loop"
+    },
+    {
+      "name": "micro-tuning guard rejects hill climbing",
+      "pass": true,
+      "detail": "tests/experiment-guard.test.ts pass: unpreregistered threshold/coefficient/regex/prompt nudging and a third consecutive same-mechanism experiment are both rejected"
+    },
+    {
+      "name": "available evidence is defined independently of extractor output",
+      "pass": true,
+      "detail": "src/lab/evidenceAvailability.ts imports no production extractor module (src/domain/evidence.ts, engine.ts, workStructure.ts)"
+    },
+    {
+      "name": "primary preference MAE uses available evidence",
+      "pass": true,
+      "detail": "AVAILABLE_EVIDENCE_PREFERENCE_MACRO_MAE_V1"
+    },
+    {
+      "name": "DEVELOPMENT metrics deterministic",
+      "pass": true,
+      "detail": "89e9a1c173a99717ffb9dda05be180e6be66f1eaede49e22e89e5a7aed167fd7"
+    },
+    {
+      "name": "VALIDATION metrics deterministic",
+      "pass": true,
+      "detail": "d3ad2c1433134770be7315c204889d1661c4ef616e4b75fe4991abc9500864d9"
+    },
+    {
+      "name": "recognized-evidence metrics reported separately",
+      "pass": true,
+      "detail": "RECOGNIZED_EVIDENCE_PREFERENCE_MACRO_MAE=1.718904414626435 (primary 2.4152237706848902)"
+    },
+    {
+      "name": "available-to-recognized recall reported",
+      "pass": true,
+      "detail": "AVAILABLE_TO_RECOGNIZED_RECALL=0.31313131313131315"
+    },
+    {
+      "name": "missed-extractor example cannot disappear from the primary denominator",
+      "pass": true,
+      "detail": "tests/available-evidence.test.ts pass"
+    },
+    {
+      "name": "eligibility coverage thresholds documented as policy assumptions",
+      "pass": true,
+      "detail": "floor=0.1, status=POLICY_PARAMETER_NOT_SCIENTIFIC_FACT, sensitivityDoc=true"
+    },
+    {
+      "name": "AGENTS.md contains persistent TaskDNA experiment rules",
+      "pass": true,
+      "detail": "taskdna-experiment-rules block present alongside preserved nextjs-agent-rules block"
+    },
+    {
+      "name": "active V3 coefficients have explicit governance status",
+      "pass": true,
+      "detail": "6 coefficients: DWA_PARTIAL_CREDIT=PROVISIONAL_BASELINE, PREFERENCE_SCORE_CENTER=STRUCTURAL, PREFERENCE_SCORE_SPAN=STRUCTURAL, EXPERIENCE_STRENGTH_WEIGHTS=PROVISIONAL_BASELINE, EXPERIENCE_OWNERSHIP_WEIGHTS=UNJUSTIFIED, PREFERRED_REQUIREMENT_WEIGHT=PROVISIONAL_BASELINE"
+    },
+    {
+      "name": "metric contracts have runnable evaluators",
+      "pass": true,
+      "detail": "31 contracts, 26 runnable, 5 explicitly excluded (row 4, row 8, row 19, row 27, row 31), 0 blocking gaps"
+    },
+    {
+      "name": "planted-truth benchmark validity",
+      "pass": true,
+      "detail": "labels are computed from planted atom identity with no scoring/mapping import; no atom id, planted label or corpus metadata reaches pipeline input; corpus is byte-identical across runs"
+    },
+    {
+      "name": "job ranking known answers",
+      "pass": true,
+      "detail": "cross-title transfer outranks same-title/different-work; hard near-misses are demoted; burned-out-expert keeps high experience with low preference; transitions stay reachable; surprise requires relevance; no Overall score in any policy mode"
+    },
+    {
+      "name": "end-to-end recommendation traceability",
+      "pass": true,
+      "detail": "all 12 stages traced with per-stage verdicts, candidate sets, selection reasons, mapper/corpus/cache identity, channel decomposition, and explanations citing only used evidence"
+    },
+    {
+      "name": "extractor negation polarity",
+      "pass": true,
+      "detail": "negated preference verbs classify as DISLIKE and move the predicted dimension to the LOW pole; zero preference polarity inversions on the planted corpus"
+    },
+    {
+      "name": "ranking benchmark has headroom at the optimization target",
+      "pass": true,
+      "detail": "experience NDCG=0.9372, preference NDCG=0.6177, direction NDCG=0.7689; saturated=[]; score-space dominance violations=0"
+    },
+    {
+      "name": "locked confirmation guarded",
+      "pass": true,
+      "detail": "not executed by readiness"
+    },
+    {
+      "name": "V3 canonical/mapper/four-channel invariants",
+      "pass": true,
+      "detail": "known answers and separation pass"
+    },
+    {
+      "name": "unit tests",
+      "pass": true,
+      "detail": "pass"
+    },
+    {
+      "name": "typecheck",
+      "pass": true,
+      "detail": "pass"
+    },
+    {
+      "name": "lint",
+      "pass": true,
+      "detail": "pass"
+    },
+    {
+      "name": "build",
+      "pass": true,
+      "detail": "pass"
+    },
+    {
+      "name": "tracked secret-pattern scan",
+      "pass": true,
+      "detail": "filename-only scan; no candidates"
+    }
+  ],
+  "passed": true
+}

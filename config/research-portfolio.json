@@ -100,12 +100,12 @@
     {
       "id": 6,
       "name": "Experience Fit and transferable-job discovery",
-      "largestUncertainty": "Whether the 0.937 hard-tier experience NDCG is limited by ranking arithmetic or by upstream mapping recall.",
-      "currentHypothesis": "Upstream. Person mapping recovers only 0.194 of planted Tasks, so ranking is working with a fraction of the available signal; the ranking arithmetic is probably not the constraint.",
+      "largestUncertainty": "Whether the canonical Task/DWA path can beat a naive bag-of-words resume-to-JD baseline on experience ranking at all. At the hard tier TaskDNA scores 0.937 experience NDCG@5 against resume-lexical's 0.963: a lift of -0.026. TaskDNA's measurable advantage is confined to cross-title (+0.042), cross-industry (+0.083) and surprising-transfer (+0.042) recall.",
+      "currentHypothesis": "Upstream mapping is the constraint, not the ranking arithmetic. Person mapping recovers only 0.194 of planted Tasks, so ranking works with a fraction of the available signal while the lexical baseline uses the whole text. If mapping recall rises, the canonical path should overtake the baseline; if it does not, the canonical representation is the wrong bottleneck to be optimizing.",
       "currentBestStrategy": "Exact-Task and DWA identity matching with strength and ownership weights (src/v3/fit.ts experienceFit).",
       "strongestFailedAlternative": "None recorded.",
-      "highestValueNextExperiment": "Ablate the strength and ownership weights to all 1.0 and check whether experience NDCG, cross-title recall, or hard-near-miss demotion move at all. If nothing moves, the weights are decoration and should be removed rather than tuned.",
-      "diminishingReturnsEvidence": "None yet: this evaluator is new.",
+      "highestValueNextExperiment": "Establish whether the negative lift is caused by mapping recall or by information loss in canonicalization. Hold ranking fixed and feed the scorer PERFECT mappings (planted atoms directly) to get the ceiling; compare against the current 0.937. If the perfect-mapping ceiling exceeds resume-lexical, mapping recall is the target (workstream 3/12). If it does not, canonicalization itself is discarding information the baseline keeps, which is an ARCHITECTURAL finding.",
+      "diminishingReturnsEvidence": "None yet on this evaluator, but the negative lift is itself evidence that further ranking-arithmetic work is not the priority.",
       "openBlockers": [
         "Human relevance judgement of person-job pairs is required for a product claim."
       ],
@@ -114,7 +114,7 @@
     {
       "id": 7,
       "name": "Preference Fit and joint Experience/Preference discovery",
-      "largestUncertainty": "Preference is the weakest ranking channel at 0.618 hard-tier NDCG, and a job with equal liked and disliked work scores exactly the neutral 0.5 -- indistinguishable from a job with no preference evidence.",
+      "largestUncertainty": "Preference is the weakest ranking channel at 0.618 hard-tier NDCG, and a job with equal liked and disliked work scores exactly the neutral 0.5 -- indistinguishable from a job with no preference evidence. Mode B's Pareto plus maximin ordering also drops preference NDCG to 0.349 from the 0.618 the single-channel ranking achieves, so the joint policy is currently paying for experience with preference.",
       "currentHypothesis": "The mean-based aggregation in preferenceFit is the problem: it lets liked and disliked work cancel. A separate liked-coverage and disliked-intrusion pair may carry more product meaning than one signed mean.",
       "currentBestStrategy": "Signed mean of stance contributions centred at 0.5 (src/v3/fit.ts preferenceFit).",
       "strongestFailedAlternative": "None recorded.",
@@ -162,7 +162,7 @@
       "currentBestStrategy": "Canonical shared-identity retrieval (src/bench/candidates.ts canonicalWorkRetrieval).",
       "strongestFailedAlternative": "Title-only retrieval, decisively: 0.444 recall and 0.0 cross-title recall.",
       "highestValueNextExperiment": "Test a hybrid retriever that unions lexical and canonical candidates, measured by candidateRecallAtK at the hard tier with title/stratum/industry concentration as guardrails. Highest information value in the whole portfolio right now.",
-      "diminishingReturnsEvidence": "None yet: this evaluator is new.",
+      "diminishingReturnsEvidence": "None yet, but canonical retrieval being 0.33 recall BELOW the naive lexical retriever it was meant to beat is the strongest single signal in the portfolio.",
       "openBlockers": [
         "Live posting ingestion, freshness and closed-job detection are out of scope for this loop."
       ],
@@ -222,5 +222,11 @@
       "subsystem": "human recommendation validity",
       "reason": "permanently excluded; no human annotation exists"
     }
-  ]
+  ],
+  "headlineFinding": {
+    "statement": "At the declared optimization target (hard tier, 12 people, K=5), TaskDNA does NOT yet beat a naive bag-of-words resume-to-job-description baseline on its central claim. Experience NDCG@5 is 0.937 for TaskDNA against 0.963 for resume-lexical: a lift of -0.026. Canonical-work candidate retrieval recall is 0.540 against 0.868 for plain lexical overlap.",
+    "whatTaskDNADoesWin": "Cross-title transfer recall 0.958 vs 0.917 (+0.042), cross-industry transfer recall 0.917 vs 0.833 (+0.083), surprising-transfer recall 0.958 vs 0.917 (+0.042). It beats title-only (0.459 experience NDCG) and occupation-stratum (0.655) decisively, and it has a far lower same-title/different-work false-positive rate (0.017 vs 0.200 for occupation-stratum).",
+    "interpretation": "The canonical Task/DWA machinery is not yet earning its keep against a bag-of-words baseline on ranking, and is actively WORSE on retrieval. Its measurable advantage today is specifically cross-boundary discovery, which is the product thesis but a narrow slice of it. This is the single most important thing for the loop to work on and it is why workstreams 10 and 12 carry the highest information value.",
+    "measuredAt": "artifacts/product_readiness/bench_development_hard.json"
+  }
 }
