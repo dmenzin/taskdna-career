@@ -269,3 +269,73 @@ export function createAgentArchitecture(
 /** Worst-case cost of one interpretation, for budget reservation. */
 export const interpretationCost = (model: string, maxOutputTokens: number) => (request: ModelRequest) =>
   worstCaseCostUsd(model, request.prompt.render(request.input), maxOutputTokens);
+
+/**
+ * Field-aware variant: compare structured work FIELD BY FIELD instead of as a bag of tokens.
+ *
+ * WHY THIS EXISTS
+ * ---------------
+ * Two measurements pointed at the same conclusion. First, `oracle-normalizer` — perfect
+ * normalisation by construction — scored 0.808 rather than 1.000, so token matching loses
+ * ~0.19 even on flawless text: the MATCHER, not the representation, is the binding constraint.
+ * Second, the agent's false positives in the top 5 were dominated by HARD_NEAR_MISS, work that
+ * differs from the person's own in exactly ONE identity role. Concatenating five fields into
+ * one token bag makes a one-field difference almost invisible — four fields still agree.
+ *
+ * So this scores each role separately and requires them to agree together. A near-miss now
+ * loses a whole role's worth of similarity instead of a fifth of a token bag.
+ *
+ * Same interpretations, same cache, no additional model calls: this is a pure matcher change,
+ * which is exactly what makes it a clean test of the diagnosis.
+ */
+const ROLE_FIELDS = ["action", "object", "purpose", "method", "domain"] as const;
+
+function fieldSimilarity(a: StructuredWork, b: StructuredWork): number {
+  let total = 0;
+  for (const field of ROLE_FIELDS) {
+    const left = contentTokens(a[field] ?? "");
+    const right = contentTokens(b[field] ?? "");
+    if (!left.size || !right.size) continue;
+    let shared = 0;
+    for (const token of left) if (right.has(token)) shared += 1;
+    total += shared / new Set([...left, ...right]).size;
+  }
+  return total / ROLE_FIELDS.length;
+}
+
+/**
+ * Coverage of the job's work by the person's work, using per-field similarity.
+ *
+ * Mirrors how the LABEL is computed — what share of the job's responsibilities the person
+ * covers — rather than treating the two documents as undifferentiated text.
+ */
+function coverageScore(personWorks: StructuredWork[], jobWorks: StructuredWork[]): number {
+  if (!personWorks.length || !jobWorks.length) return 0;
+  let total = 0;
+  for (const jobWork of jobWorks) {
+    let best = 0;
+    for (const personWork of personWorks) best = Math.max(best, fieldSimilarity(personWork, jobWork));
+    total += best;
+  }
+  return total / jobWorks.length;
+}
+
+export function createAgentFieldMatchArchitecture(
+  blueprints: Map<string, CareerBlueprint>,
+  jobWork: Map<string, StructuredWork[]>,
+  id = "agent-field-match",
+): RankingArchitecture<CareerBlueprint | undefined> {
+  return {
+    id,
+    version: AGENT_ARCHITECTURE_VERSION,
+    description: "Agent interpretations compared field by field, then aggregated as job-work coverage.",
+    prepare: (person) => blueprints.get(person.personId),
+    score: (blueprint, job, channel: Channel) => {
+      if (!blueprint) return 0;
+      const works = jobWork.get(job.jobId) ?? [];
+      if (channel === "experience") return coverageScore(blueprint.experience, works);
+      if (channel === "direction") return coverageScore(blueprint.desired, works);
+      return coverageScore(blueprint.liked, works) - coverageScore(blueprint.disliked, works);
+    },
+  };
+}

@@ -29,6 +29,7 @@ import { createAnthropicProvider, hasAnthropicCredentials, DEFAULT_MODEL, worstC
 import { RuntimeBudgetLedger, RUNTIME_BUDGET_LIMITS } from "../src/agent/budget";
 import {
   createAgentArchitecture,
+  createAgentFieldMatchArchitecture,
   interpretCorpus,
   JOB_BLUEPRINT_PROMPT,
   PERSON_BLUEPRINT_PROMPT,
@@ -181,10 +182,13 @@ const normalizerControl = oracleNormalizerArchitecture(
   IDENTITY_ROLES,
 ) as unknown as RankingArchitecture<never>;
 const agent = createAgentArchitecture(blueprints, jobWork) as unknown as RankingArchitecture<never>;
+// Same interpretations, field-by-field matching. Included because the oracle-normalizer control
+// showed the matcher was the binding constraint, and this costs no additional model calls.
+const agentField = createAgentFieldMatchArchitecture(blueprints, jobWork) as unknown as RankingArchitecture<never>;
 const candidates = [
   randomArchitecture, constantScoreArchitecture, titleOnlyArchitecture,
   charNgramArchitecture, resumeLexicalArchitecture, experienceLexicalArchitecture,
-  ...(onet ? [onet] : []), agent,
+  ...(onet ? [onet] : []), agent, agentField,
 ] as unknown as RankingArchitecture<never>[];
 
 process.stdout.write(`\n================ ${family} (n=${people}) ================\n`);
