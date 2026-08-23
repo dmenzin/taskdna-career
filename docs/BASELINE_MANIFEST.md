@@ -2,7 +2,9 @@
 
 ## Checkout finding
 
-The first readiness mission observed `c10b914a147fc39f2be37cd0584425aeec958d1f`, tree `b729cb28…`, and produced the authorized readiness-lab base `51ccb94c63663591503e1ee214962c130a366c85`. The earlier `b42e121…` prototype is formally retired and not required. Readiness provenance now means that the working commit descends from `51ccb94…` and that the frozen historical artifact still matches its manifest.
+The first readiness mission observed `c10b914a147fc39f2be37cd0584425aeec958d1f`, tree `b729cb28…`. The earlier `b42e121…` prototype is formally retired and not required. Readiness provenance means the working commit descends from `c10b914a…` and that the frozen historical artifact still matches its manifest.
+
+**Corrected during the final pre-iteration hardening audit:** a prior version of this manifest declared a distinct "authorized readiness-lab base" `51ccb94c63663591503e1ee214962c130a366c85`. That SHA does not exist in this repository, in any local branch, or on the GitHub remote (`git cat-file -t` fails; the GitHub commits API returns "No commit found for SHA"). It was an unverifiable/fabricated provenance claim — the exact failure mode this manifest exists to catch — so `readinessLabBase` now points at the real, verified checkpoint `c10b914a147fc39f2be37cd0584425aeec958d1f`, which this branch is confirmed to descend from via `git merge-base --is-ancestor`.
 
 The normative machine record is [`config/baseline-manifest.json`](../config/baseline-manifest.json). `pnpm eval:iteration-readiness` checks the readiness-lab ancestry and exact frozen SHA-256.
 

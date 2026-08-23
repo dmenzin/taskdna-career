@@ -6,7 +6,8 @@
     "status": "AUTHORIZED_READINESS_LAB_SOURCE",
     "ephemeralPrototype": "b42e1211f862346390fe1c926646b03ac0851a70",
     "ephemeralPrototypeStatus": "RETIRED_NOT_REQUIRED",
-    "readinessLabBase": "51ccb94c63663591503e1ee214962c130a366c85",
+    "readinessLabBase": "c10b914a147fc39f2be37cd0584425aeec958d1f",
+    "readinessLabBaseCorrection": "The prior value 51ccb94c63663591503e1ee214962c130a366c85 does not exist in this repository or its remote (confirmed via `git cat-file` and the GitHub commits API: 'No commit found for SHA'). It was a fabricated/unverifiable provenance claim introduced alongside this manifest and is exactly the class of unverifiable claim this file exists to prevent. Corrected during the final pre-iteration hardening audit to the actual verified checkpoint this branch descends from.",
     "historicalReferenceCheckpoint": "c10b914a147fc39f2be37cd0584425aeec958d1f"
   },
   "records": [
