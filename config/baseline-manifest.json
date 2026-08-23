@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "authorizedCheckout": {
+    "observedStartingHead": "c10b914a147fc39f2be37cd0584425aeec958d1f",
+    "observedStartingTree": "b729cb28d3dfb9d566146f428b3ad4d095c605a4",
+    "status": "AUTHORIZED_READINESS_LAB_SOURCE",
+    "ephemeralPrototype": "b42e1211f862346390fe1c926646b03ac0851a70",
+    "ephemeralPrototypeStatus": "RETIRED_NOT_REQUIRED",
+    "readinessLabBase": "51ccb94c63663591503e1ee214962c130a366c85",
+    "historicalReferenceCheckpoint": "c10b914a147fc39f2be37cd0584425aeec958d1f"
+  },
+  "records": [
+    {
+      "classification": "VERIFIED_FROZEN_BASELINE",
+      "artifact": "artifacts/logic_audit/onet_external_shock_baseline.json",
+      "sha256": "00ec10ef5d1f181ad82cd710561d13c5cfffedcf3a60ae0b56cbb21e2e30101c",
+      "commit": "80312e27623e8bbf2b08b6f3655e8bb0cf8c2de9",
+      "tree": "dff881bd455623fe0bbbd96eeb6673e8674db999",
+      "corpus": {
+        "name": "O*NET",
+        "version": "30.3",
+        "sha256": "ae981c0edaf06da135ce57ea15e1a97164aa5883c21f09c20c4441371bc5a662"
+      },
+      "generatorVersion": "subject-lab.v2-onet",
+      "evaluatorVersion": "onet-shock.v1",
+      "seed": 20260823,
+      "command": "pnpm eval:onet-shock",
+      "cohorts": {
+        "development": 150,
+        "validation": 100,
+        "holdout": 100,
+        "adversarial": 100
+      },
+      "metricFormula": "mean_s(mean_d(abs(inferred[s,d]-syntheticTruth[s,d]))) across 17 dimensions",
+      "freezeStatus": "immutable-by-policy-and-git",
+      "provenanceConfidence": "HIGH"
+    },
+    {
+      "classification": "VERIFIED_TRANSIENT_RUN",
+      "artifact": "artifacts/logic_audit/onet_shock_latest.json",
+      "sha256": "e4d8d60d36cd0619d85a444bbfd3e932b8db60f865a6890360af73e05c3afdff",
+      "commit": "c10b914a147fc39f2be37cd0584425aeec958d1f",
+      "generatorVersion": "subject-lab.v2-onet",
+      "evaluatorVersion": "onet-shock.v1",
+      "seed": 20260823,
+      "command": "pnpm eval:onet-shock",
+      "cohorts": {
+        "development": 150,
+        "validation": 100,
+        "holdout": 100,
+        "adversarial": 100
+      },
+      "metricFormula": "same legacy formula",
+      "freezeStatus": "mutable latest output",
+      "provenanceConfidence": "HIGH"
+    },
+    {
+      "classification": "UNVERIFIED",
+      "artifact": "documentation claim: overall 1.875021 / holdout 1.816938 / spread 1.986065",
+      "commit": null,
+      "freezeStatus": "not a baseline",
+      "provenanceConfidence": "LOW",
+      "reason": "Values reproduce a transient candidate, but expected V3 commit b42e121 is absent and cannot be tied to an immutable artifact at that SHA."
+    }
+  ]
+}

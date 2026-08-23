@@ -30,7 +30,7 @@ const LAST = ["Okoye", "Diaz", "Shah", "Berg", "Wahl", "Costa", "Ng", "Ali", "No
 
 // Natural preference language for every TaskDNA dimension, independent of any occupation.
 // [high-side phrases, low-side phrases]
-const PREFERENCE_PHRASES: Record<DimensionId, [string[], string[]]> = {
+export const PREFERENCE_PHRASES: Record<DimensionId, [string[], string[]]> = {
   problem_structure: [["well-scoped problems I can finish", "bounded diagnostic questions"], ["open-ended ambiguity", "problems nobody has framed yet"]],
   measurable_feedback: [["work where I can see the numbers move", "fast observable feedback"], ["long-horizon work without clear metrics", "slow uncertain feedback loops"]],
   investigation_orientation: [["digging into why something failed", "root-cause investigation"], ["keeping many workstreams coordinated", "status coordination and administration"]],

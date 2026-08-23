@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 1,
+  "metrics": [
+    {
+      "name": "AUTONOMOUS_OBSERVED_PREFERENCE_MACRO_MAE_V1",
+      "subsystem": "preference decoder",
+      "construct": "continuous interpretation of supported evidence for explicitly eligible preference dimensions",
+      "prediction": "inferred value for measurable_feedback or experimentation_preference",
+      "groundTruth": "synthetic hidden preference for the same generator-observed and extractor-supported dimension",
+      "observationUnit": "eligible subject",
+      "aggregation": "supported eligible dimension MAE within subject, then equal subject mean",
+      "scale": "0-10 absolute-error points",
+      "datasetSplit": "synthetic DEVELOPMENT or VALIDATION",
+      "naiveBaseline": "constant 5 plus coverage/variance guardrails",
+      "knownFailureModes": [
+        "coverage reduction",
+        "shrinkage",
+        "generator drift"
+      ],
+      "allowedUse": "primary autonomous synthetic preference-decoder metric",
+      "forbiddenInterpretation": "full 17D profile, job fit, mapper accuracy, or human validity"
+    },
+    {
+      "name": "LEGACY_ALL_DIMENSION_MAE",
+      "subsystem": "preference decoder",
+      "construct": "full synthetic latent-vector recovery",
+      "prediction": "inferred 17D value",
+      "groundTruth": "generator hidden taskDnaTruth",
+      "observationUnit": "subject-dimension",
+      "aggregation": "mean over 17 dimensions per subject, then equal subject mean",
+      "scale": "0-10 absolute-error points",
+      "datasetSplit": "synthetic, explicitly selected split",
+      "naiveBaseline": "constant 5 and development-population prior",
+      "knownFailureModes": [
+        "unobservable truth dominates",
+        "collapse to 5"
+      ],
+      "allowedUse": "legacy compatibility diagnostic",
+      "forbiddenInterpretation": "recommendation, fit, mapping, or human validity"
+    },
+    {
+      "name": "OBSERVED_PREFERENCE_MACRO_MAE",
+      "subsystem": "preference decoder",
+      "construct": "interpretation of available preference/dislike evidence",
+      "prediction": "inferred dimension value",
+      "groundTruth": "synthetic truth only where PREFERENCE/DISLIKE evidence produced a dimension signal",
+      "observationUnit": "subject",
+      "aggregation": "within-subject mean supported-dimension error, then equal mean over eligible subjects",
+      "scale": "0-10 absolute-error points",
+      "datasetSplit": "synthetic development or validation",
+      "naiveBaseline": "constant 5",
+      "knownFailureModes": [
+        "extractor can reduce declared coverage",
+        "generator phrase semantics may be invalid"
+      ],
+      "allowedUse": "primary synthetic decoder experiment metric with coverage guard",
+      "forbiddenInterpretation": "full profile, job fit, or human validity"
+    },
+    {
+      "name": "OBSERVED_PREFERENCE_MICRO_MAE",
+      "subsystem": "preference decoder",
+      "construct": "supported evidence interpretation",
+      "prediction": "inferred dimension value",
+      "groundTruth": "same supported synthetic truth",
+      "observationUnit": "supported subject-dimension",
+      "aggregation": "flat mean",
+      "scale": "0-10 absolute-error points",
+      "datasetSplit": "synthetic development or validation",
+      "naiveBaseline": "constant 5",
+      "knownFailureModes": [
+        "subjects with more evidence dominate"
+      ],
+      "allowedUse": "secondary decoder diagnostic",
+      "forbiddenInterpretation": "equal-subject decoder performance"
+    },
+    {
+      "name": "ZERO_EVIDENCE_MAE",
+      "subsystem": "preference prior/imputation",
+      "construct": "behavior without extracted preference support",
+      "prediction": "inferred dimension value",
+      "groundTruth": "unobserved generator latent value",
+      "observationUnit": "unsupported subject-dimension",
+      "aggregation": "flat mean",
+      "scale": "0-10 absolute-error points",
+      "datasetSplit": "synthetic",
+      "naiveBaseline": "constant 5 and development prior",
+      "knownFailureModes": [
+        "rewards shrinkage",
+        "truth not observable"
+      ],
+      "allowedUse": "prior/imputation diagnostic only",
+      "forbiddenInterpretation": "evidence extraction accuracy"
+    },
+    {
+      "name": "TASK_MAPPING_TOP1_RECALL_AT_K",
+      "subsystem": "Task/DWA mapper",
+      "construct": "canonical mapping agreement",
+      "prediction": "ranked Task/DWA IDs or abstention",
+      "groundTruth": "independently annotated golden mapping",
+      "observationUnit": "source statement",
+      "aggregation": "top-1, recall@K, coverage and correct-abstention rates",
+      "scale": "rate 0-1",
+      "datasetSplit": "future independent golden split",
+      "naiveBaseline": "lexical retriever",
+      "knownFailureModes": [
+        "self-labelled truth",
+        "acceptable-alternative omission"
+      ],
+      "allowedUse": "only with fixed independent annotations",
+      "forbiddenInterpretation": "development-fixture agreement as accuracy"
+    },
+    {
+      "name": "FOUR_CHANNEL_KNOWN_ANSWER_AGREEMENT",
+      "subsystem": "Preference/Experience/Qualification/Direction Fit",
+      "construct": "implementation semantics and channel isolation",
+      "prediction": "four independent channel outputs",
+      "groundTruth": "predeclared known-answer fixture expectations",
+      "observationUnit": "fixture mutation",
+      "aggregation": "assertions and invariant pass rate",
+      "scale": "boolean/rate",
+      "datasetSplit": "development fixtures",
+      "naiveBaseline": "not applicable",
+      "knownFailureModes": [
+        "fixtures authored to implementation"
+      ],
+      "allowedUse": "correctness testing",
+      "forbiddenInterpretation": "human construct validity"
+    },
+    {
+      "name": "PRODUCT_RECOMMENDATION_VALIDITY",
+      "subsystem": "end-to-end recommendation",
+      "construct": "real job recommendation quality",
+      "prediction": "ranked jobs",
+      "groundTruth": "independent human labels or outcomes",
+      "observationUnit": "person-job decision/outcome",
+      "aggregation": "preregistered ranking/outcome metric",
+      "scale": "not yet specified",
+      "datasetSplit": "future genuinely locked human dataset",
+      "naiveBaseline": "preregistered conventional recommender",
+      "knownFailureModes": [
+        "synthetic substitution",
+        "selection bias"
+      ],
+      "allowedUse": "future independent validation only",
+      "forbiddenInterpretation": "no current synthetic metric establishes it"
+    }
+  ]
+}
