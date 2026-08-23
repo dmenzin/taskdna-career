@@ -115,7 +115,7 @@ fields — `action`, `object`, `purpose`, `method`, `domain`.
 | Experience channel | implemented, matched |
 | Preference channel | implemented as `liked`/`disliked`, matched as a signed difference |
 | Direction channel | implemented as `desired`, matched |
-| **Qualification channel** | **NOT IMPLEMENTED.** `qualifications` (5 per person) is planted in the corpus and never interpreted, never emitted, never matched. |
+| **Qualification channel** | **NOT IMPLEMENTED on the agent side, but the truth side exists.** `frameLabels.ts` already computes `qualificationFeasibility` and `hardGaps` per pair. What is missing: the 5 planted qualifications per person appear **only in `narrative`**, which no architecture reads, so no agent can extract them; `Channel` has three values and `CHANNELS` three entries. Per `docs/RECOMMENDATION_POLICY.md` this is a **partition/annotation**, not a fourth similarity channel — it must never rewrite a work-content score. |
 | Provenance | **absent** |
 | Uncertainty / confidence | **absent** — no abstention signal, no confidence field |
 | Contradiction handling | **absent** |

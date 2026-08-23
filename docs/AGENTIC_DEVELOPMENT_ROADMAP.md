@@ -107,17 +107,50 @@ speculative and matcher/representation work as the main line.
 - **Decision rule.** This is a **benchmark-contract change** and needs preregistration and explicit
   approval before the renderer is written, per amendment C.
 
-### E5 — Qualification channel
+### E5 — Qualification extraction and partition agreement
 
-- **Question.** Does the fourth channel work at all?
-- **Why it matters.** `AGENTS.md` asserts four independent channels; the agent path implements three.
-  Five qualifications per person are planted and never interpreted, never emitted, never matched.
-  Four of the seven documented non-implications are unenforceable because the channel does not exist.
-- **Hypothesis.** Qualification can be interpreted and matched with the same normalisation approach.
-- **Minimal change.** Add a `qualifications` array to the shared schema and a matcher channel.
-- **Cost.** ~12 fresh calls, ~$0.45 on the shared arm.
-- **Note.** Ranked last on information value but it closes a **correctness gap between the stated
-  contract and the implementation**, which is worth fixing before any production claim.
+**This entry was mis-scoped in the first draft, in two ways that mattered.** The corrections are
+recorded rather than quietly edited, because both would have produced an experiment that violated a
+standing contract.
+
+**Correction 1 — it is not a fourth similarity channel.** The first draft proposed "a `qualifications`
+array plus a matcher channel". That contradicts `AGENTS.md` and `docs/RECOMMENDATION_POLICY.md`, which
+state that Qualification **annotates and partitions** and *never* rewrites an Experience, Preference
+or Direction score. It splits candidates into meets-requirements and stretch, each partition keeping
+its work-content order. Scoring it as a parallel NDCG channel would have been a contract violation
+dressed up as filling a gap.
+
+**Correction 2 — the truth side already exists; the blocker is elsewhere.** `frameLabels.ts` already
+computes `qualificationFeasibility = (required − hardGaps) / required` and lists `hardGaps` per pair.
+So this is **not** a benchmark-truth change and needs no approval on that axis. What is missing is
+that **no agent can see qualifications at all**: the five planted per person appear only in
+`narrative`, which no current architecture reads. The `Channel` type has three values and `CHANNELS`
+has three entries.
+
+- **Question.** Can an agent extract held qualifications well enough to reproduce the
+  meets-requirements/stretch partition that planted truth produces?
+- **Why it matters.** Closes the gap between a contract asserting four channels and an implementation
+  with three, and unblocks four of the seven documented non-implications
+  (`qualified ↛ performed`, `qualified ↛ desired`, `desired ↛ qualified`, and the disliked/prohibition
+  distinction).
+- **Hypothesis.** Agent-extracted qualifications partition candidates the same way planted
+  qualifications do.
+- **Primary metric.** **Partition agreement** against the planted partition — not NDCG. Secondary:
+  extraction precision/recall against planted qualification values, and a hard guardrail that
+  Experience, Preference and Direction scores stay **byte-identical**.
+- **The research risk worth naming.** The planted label matches qualifications by **exact
+  lowercased string** (`"R"`, `"SQL"`, `"Tableau"`, `"six sigma green belt"`). That is a lexical
+  operation, and every prompt in this repository instructs the model to *normalise away* distinctive
+  wording. An agent that helpfully writes "R programming language" fails an exact match. So
+  Qualification may need a **different matcher** from work content, and the normalisation instruction
+  that makes the other channels work may actively hurt here. This is a genuine design question, not
+  an implementation detail.
+- **Sequencing.** Deliberately **after** E4. A messy human narrative naturally contains
+  *"I have a six sigma green belt"*, so the evidence-visibility blocker is solved as a **byproduct**
+  of building the mixed-evidence family. Running E5 first would mean inventing a bespoke
+  qualification-evidence renderer that E4 would immediately replace.
+- **Cost.** Trivial in calls once evidence is visible — roughly 12 person calls on the shared arm.
+  The expensive part is the metric and matcher design, which is free but not quick.
 
 ---
 
