@@ -19,11 +19,31 @@
       "aggregation": "within-subject mean over available eligible dimensions, then equal subject mean",
       "scale": "0-10 absolute-error points",
       "primaryMetric": "AVAILABLE_EVIDENCE_PREFERENCE_MACRO_MAE_V1",
-      "mandatoryGuardrails": ["AVAILABLE_EVIDENCE_PREFERENCE_MICRO_MAE", "RECOGNIZED_EVIDENCE_PREFERENCE_MACRO_MAE", "AVAILABLE_TO_RECOGNIZED_RECALL", "ZERO_AVAILABLE_EVIDENCE_MAE", "LEGACY_ALL_DIMENSION_MAE", "constant-5", "development prior", "shrinkage curve", "directionalAccuracyAmongLeaning", "neutralPredictionRate"],
+      "mandatoryGuardrails": [
+        "AVAILABLE_EVIDENCE_PREFERENCE_MICRO_MAE",
+        "RECOGNIZED_EVIDENCE_PREFERENCE_MACRO_MAE",
+        "AVAILABLE_TO_RECOGNIZED_RECALL",
+        "ZERO_AVAILABLE_EVIDENCE_MAE",
+        "LEGACY_ALL_DIMENSION_MAE",
+        "constant-5",
+        "development prior",
+        "shrinkage curve",
+        "directionalAccuracyAmongLeaning",
+        "neutralPredictionRate"
+      ],
       "datasetSplit": "synthetic DEVELOPMENT / VALIDATION",
       "naiveBaseline": "constant 5 and development population prior",
-      "knownFailureModes": ["extraction recall about 0.31 leaves predictions pinned near the neutral prior", "prediction variance under 10% of truth variance", "recognizedOutsideAvailableRate about 0.66"],
-      "goodhartRisks": ["shrinkage toward the prior", "constant-5 collapse", "generator-exposure drift", "stance-lexicon widening"],
+      "knownFailureModes": [
+        "extraction recall about 0.31 leaves predictions pinned near the neutral prior",
+        "prediction variance under 10% of truth variance",
+        "recognizedOutsideAvailableRate about 0.66"
+      ],
+      "goodhartRisks": [
+        "shrinkage toward the prior",
+        "constant-5 collapse",
+        "generator-exposure drift",
+        "stance-lexicon widening"
+      ],
       "allowedInterpretation": "relative preference-interpretation quality between decoders on the synthetic construct",
       "forbiddenInterpretation": "Experience accuracy, mapper accuracy, job-ranking quality, recommendation quality, human validity, or overall TaskDNA accuracy",
       "humanValidationBoundary": "Whether an extracted preference matches what the person means requires human labelling.",
@@ -47,11 +67,23 @@
       "aggregation": "per-class precision / recall / F1, then macro F1",
       "scale": "rate 0-1",
       "primaryMetric": "EXPERIENCE_CLASS_F1",
-      "mandatoryGuardrails": ["dislikeReadAsExperience", "aspirationReadAsExperience", "experienceReadAsPreference", "unclassifiedRate", "person_experience mapping exactTop1Accuracy"],
+      "mandatoryGuardrails": [
+        "dislikeReadAsExperience",
+        "aspirationReadAsExperience",
+        "experienceReadAsPreference",
+        "unclassifiedRate",
+        "person_experience mapping exactTop1Accuracy"
+      ],
       "datasetSplit": "planted DEVELOPMENT / VALIDATION",
       "naiveBaseline": "majority class",
-      "knownFailureModes": ["11.8% of statements classified UNKNOWN and contribute nothing", "experience recall 0.667: reframed first-person statements are missed"],
-      "goodhartRisks": ["widening the exposure pattern until everything is experience", "which the contamination counters expose"],
+      "knownFailureModes": [
+        "11.8% of statements classified UNKNOWN and contribute nothing",
+        "experience recall 0.667: reframed first-person statements are missed"
+      ],
+      "goodhartRisks": [
+        "widening the exposure pattern until everything is experience",
+        "which the contamination counters expose"
+      ],
       "allowedInterpretation": "relative evidence-class accuracy on synthetically rendered statements",
       "forbiddenInterpretation": "human-validated extraction accuracy on real resumes",
       "humanValidationBoundary": "Independent human annotation of real career text is required for a real-world claim.",
@@ -75,11 +107,20 @@
       "aggregation": "precision / recall / F1",
       "scale": "rate 0-1",
       "primaryMetric": "ASPIRATION_CLASS_F1",
-      "mandatoryGuardrails": ["aspirationReadAsExperience must stay 0", "person_direction mapping exactTop1Accuracy", "abstentionRate"],
+      "mandatoryGuardrails": [
+        "aspirationReadAsExperience must stay 0",
+        "person_direction mapping exactTop1Accuracy",
+        "abstentionRate"
+      ],
       "datasetSplit": "planted DEVELOPMENT / VALIDATION",
       "naiveBaseline": "majority class",
-      "knownFailureModes": ["aspiration recall 0.708; 28 aspirations read as present-tense likes", "person_direction mapping abstains on 54% of statements at hard difficulty"],
-      "goodhartRisks": ["treating any future-tense sentence as an aspiration"],
+      "knownFailureModes": [
+        "aspiration recall 0.708; 28 aspirations read as present-tense likes",
+        "person_direction mapping abstains on 54% of statements at hard difficulty"
+      ],
+      "goodhartRisks": [
+        "treating any future-tense sentence as an aspiration"
+      ],
       "allowedInterpretation": "relative aspiration-class accuracy on rendered statements",
       "forbiddenInterpretation": "human-validated aspiration understanding",
       "humanValidationBoundary": "Stated direction may differ from revealed direction; only the person can resolve that.",
@@ -103,11 +144,19 @@
       "aggregation": "precision / recall / F1",
       "scale": "rate 0-1",
       "primaryMetric": "QUALIFICATION_EXTRACTION_F1",
-      "mandatoryGuardrails": ["negation accuracy", "kind classification accuracy", "hallucination rate"],
+      "mandatoryGuardrails": [
+        "negation accuracy",
+        "kind classification accuracy",
+        "hallucination rate"
+      ],
       "datasetSplit": "not applicable",
       "naiveBaseline": "keyword list",
-      "knownFailureModes": ["FREE-TEXT QUALIFICATION EXTRACTION IS NOT IMPLEMENTED. Qualifications reach V3 as structured input."],
-      "goodhartRisks": ["not applicable while unimplemented"],
+      "knownFailureModes": [
+        "FREE-TEXT QUALIFICATION EXTRACTION IS NOT IMPLEMENTED. Qualifications reach V3 as structured input."
+      ],
+      "goodhartRisks": [
+        "not applicable while unimplemented"
+      ],
       "allowedInterpretation": "none",
       "forbiddenInterpretation": "any claim that qualification extraction is evaluated",
       "humanValidationBoundary": "Regulated credential equivalence has a legal answer no model should invent.",
@@ -132,11 +181,25 @@
       "aggregation": "accuracy and recall over statements, plus technical slices",
       "scale": "rate 0-1",
       "primaryMetric": "PERSON_EXPERIENCE_TASK_TOP1_ACCURACY",
-      "mandatoryGuardrails": ["taskRecallAtK", "dwaHierarchicalAccuracy", "catastrophicUnrelatedMapRate", "abstentionPrecision", "abstentionRecall", "selectiveAccuracy", "coverageAccuracyCurve", "worst technical slice"],
+      "mandatoryGuardrails": [
+        "taskRecallAtK",
+        "dwaHierarchicalAccuracy",
+        "catastrophicUnrelatedMapRate",
+        "abstentionPrecision",
+        "abstentionRecall",
+        "selectiveAccuracy",
+        "coverageAccuracyCurve",
+        "worst technical slice"
+      ],
       "datasetSplit": "planted DEVELOPMENT / VALIDATION",
       "naiveBaseline": "lexical top-1 (the current implementation IS the lexical baseline)",
-      "knownFailureModes": ["0.194 exact Top-1 at hard difficulty against 0.870 on the job side: compressed first-person language is far harder", "short text (<=12 words) drops to 0.322 Top-1 with 31% abstention"],
-      "goodhartRisks": ["lowering the abstention threshold to raise coverage while accuracy falls, which the coverage-accuracy curve exposes"],
+      "knownFailureModes": [
+        "0.194 exact Top-1 at hard difficulty against 0.870 on the job side: compressed first-person language is far harder",
+        "short text (<=12 words) drops to 0.322 Top-1 with 31% abstention"
+      ],
+      "goodhartRisks": [
+        "lowering the abstention threshold to raise coverage while accuracy falls, which the coverage-accuracy curve exposes"
+      ],
       "allowedInterpretation": "relative mapping recovery from synthetically paraphrased language",
       "forbiddenInterpretation": "human-validated mapping accuracy on real career text",
       "humanValidationBoundary": "Real mapping accuracy needs independent human text-to-Task annotation.",
@@ -160,11 +223,20 @@
       "aggregation": "accuracy and recall over statements",
       "scale": "rate 0-1",
       "primaryMetric": "PERSON_PREFERENCE_TASK_TOP1_ACCURACY",
-      "mandatoryGuardrails": ["taskRecallAtK", "catastrophicUnrelatedMapRate", "abstentionRate", "selectiveAccuracy"],
+      "mandatoryGuardrails": [
+        "taskRecallAtK",
+        "catastrophicUnrelatedMapRate",
+        "abstentionRate",
+        "selectiveAccuracy"
+      ],
       "datasetSplit": "planted DEVELOPMENT / VALIDATION",
       "naiveBaseline": "lexical top-1",
-      "knownFailureModes": ["0.179 exact Top-1 at hard difficulty; gerund reframing loses the leading verb"],
-      "goodhartRisks": ["same abstention-threshold gaming as row 5"],
+      "knownFailureModes": [
+        "0.179 exact Top-1 at hard difficulty; gerund reframing loses the leading verb"
+      ],
+      "goodhartRisks": [
+        "same abstention-threshold gaming as row 5"
+      ],
       "allowedInterpretation": "relative mapping recovery on preference language",
       "forbiddenInterpretation": "human-validated mapping accuracy",
       "humanValidationBoundary": "Same as row 5.",
@@ -188,11 +260,20 @@
       "aggregation": "accuracy and recall over statements",
       "scale": "rate 0-1",
       "primaryMetric": "PERSON_DIRECTION_TASK_TOP1_ACCURACY",
-      "mandatoryGuardrails": ["taskRecallAtK", "abstentionRate", "selectiveAccuracy", "catastrophicUnrelatedMapRate"],
+      "mandatoryGuardrails": [
+        "taskRecallAtK",
+        "abstentionRate",
+        "selectiveAccuracy",
+        "catastrophicUnrelatedMapRate"
+      ],
       "datasetSplit": "planted DEVELOPMENT / VALIDATION",
       "naiveBaseline": "lexical top-1",
-      "knownFailureModes": ["worst stream: 0.083 exact Top-1 and 0.542 abstention at hard difficulty"],
-      "goodhartRisks": ["same abstention-threshold gaming as row 5"],
+      "knownFailureModes": [
+        "worst stream: 0.083 exact Top-1 and 0.542 abstention at hard difficulty"
+      ],
+      "goodhartRisks": [
+        "same abstention-threshold gaming as row 5"
+      ],
       "allowedInterpretation": "relative mapping recovery on aspiration language",
       "forbiddenInterpretation": "human-validated mapping accuracy",
       "humanValidationBoundary": "Same as row 5.",
@@ -216,11 +297,20 @@
       "aggregation": "precision / recall / F1",
       "scale": "rate 0-1",
       "primaryMetric": "RESPONSIBILITY_EXTRACTION_F1",
-      "mandatoryGuardrails": ["missedMajorResponsibilityRate", "hallucinatedResponsibilityRate", "requirementResponsibilityConfusionRate", "longDescriptionCoverage"],
+      "mandatoryGuardrails": [
+        "missedMajorResponsibilityRate",
+        "hallucinatedResponsibilityRate",
+        "requirementResponsibilityConfusionRate",
+        "longDescriptionCoverage"
+      ],
       "datasetSplit": "not applicable",
       "naiveBaseline": "sentence split",
-      "knownFailureModes": ["FREE-TEXT RESPONSIBILITY SEGMENTATION IS NOT IMPLEMENTED. Responsibilities reach V3 as a structured list."],
-      "goodhartRisks": ["not applicable while unimplemented"],
+      "knownFailureModes": [
+        "FREE-TEXT RESPONSIBILITY SEGMENTATION IS NOT IMPLEMENTED. Responsibilities reach V3 as a structured list."
+      ],
+      "goodhartRisks": [
+        "not applicable while unimplemented"
+      ],
       "allowedInterpretation": "none",
       "forbiddenInterpretation": "any claim that responsibility extraction is evaluated",
       "humanValidationBoundary": "What a job is really about is validated by people who do it.",
@@ -245,11 +335,21 @@
       "aggregation": "accuracy and recall over responsibilities",
       "scale": "rate 0-1",
       "primaryMetric": "JOB_RESPONSIBILITY_TASK_TOP1_ACCURACY",
-      "mandatoryGuardrails": ["taskRecallAtK", "dwaHierarchicalAccuracy", "catastrophicUnrelatedMapRate", "title leakage: SAME_TITLE_DIFFERENT_WORK must earn no experience credit"],
+      "mandatoryGuardrails": [
+        "taskRecallAtK",
+        "dwaHierarchicalAccuracy",
+        "catastrophicUnrelatedMapRate",
+        "title leakage: SAME_TITLE_DIFFERENT_WORK must earn no experience credit"
+      ],
       "datasetSplit": "planted DEVELOPMENT / VALIDATION",
       "naiveBaseline": "lexical top-1",
-      "knownFailureModes": ["dwaHierarchicalAccuracy 0.120: when the mapper falls back to DWA it usually picks the wrong DWA", "job-side mapping never abstains, so a wrong commit is never withheld"],
-      "goodhartRisks": ["raising Top-1 by never abstaining, which the abstention metrics expose"],
+      "knownFailureModes": [
+        "dwaHierarchicalAccuracy 0.120: when the mapper falls back to DWA it usually picks the wrong DWA",
+        "job-side mapping never abstains, so a wrong commit is never withheld"
+      ],
+      "goodhartRisks": [
+        "raising Top-1 by never abstaining, which the abstention metrics expose"
+      ],
       "allowedInterpretation": "relative mapping recovery on job language",
       "forbiddenInterpretation": "human-validated mapping accuracy",
       "humanValidationBoundary": "Same as row 5.",
@@ -273,11 +373,23 @@
       "aggregation": "macro mean over people",
       "scale": "rate 0-1",
       "primaryMetric": "CANDIDATE_RECALL_AT_K",
-      "mandatoryGuardrails": ["relevantJobMissRate", "crossTitleRecallAtK", "crossIndustryRecallAtK", "titleConcentration", "stratumConcentration", "industryConcentration", "noveltyConditionedRelevance"],
+      "mandatoryGuardrails": [
+        "relevantJobMissRate",
+        "crossTitleRecallAtK",
+        "crossIndustryRecallAtK",
+        "titleConcentration",
+        "stratumConcentration",
+        "industryConcentration",
+        "noveltyConditionedRelevance"
+      ],
       "datasetSplit": "planted DEVELOPMENT / VALIDATION",
       "naiveBaseline": "title-only retrieval (0.346 recall) and lexical-overlap retrieval",
-      "knownFailureModes": ["canonical-work retrieval recall falls to 0.670 at hard difficulty while lexical-overlap holds 0.911: the canonical path is LESS robust to compressed language than the lexical one"],
-      "goodhartRisks": ["retrieving everything to guarantee recall, which the concentration and diversity metrics expose"],
+      "knownFailureModes": [
+        "canonical-work retrieval recall falls to 0.670 at hard difficulty while lexical-overlap holds 0.911: the canonical path is LESS robust to compressed language than the lexical one"
+      ],
+      "goodhartRisks": [
+        "retrieving everything to guarantee recall, which the concentration and diversity metrics expose"
+      ],
       "allowedInterpretation": "relative retrieval recall over a controlled pool",
       "forbiddenInterpretation": "recall over a live job market",
       "humanValidationBoundary": "Relevance here is planted, not human-judged.",
@@ -301,11 +413,24 @@
       "aggregation": "macro mean NDCG@K over people, plus worst case",
       "scale": "0-1",
       "primaryMetric": "EXPERIENCE_NDCG_AT_K",
-      "mandatoryGuardrails": ["CROSS_TITLE_TRANSFER_RECALL@K", "CROSS_INDUSTRY_TRANSFER_RECALL@K", "SAME_TITLE_DIFFERENT_WORK false-positive rate", "HARD_NEAR_MISS false-positive rate", "worstPersonNdcg", "catastrophicPeople", "title-removal invariance"],
+      "mandatoryGuardrails": [
+        "CROSS_TITLE_TRANSFER_RECALL@K",
+        "CROSS_INDUSTRY_TRANSFER_RECALL@K",
+        "SAME_TITLE_DIFFERENT_WORK false-positive rate",
+        "HARD_NEAR_MISS false-positive rate",
+        "worstPersonNdcg",
+        "catastrophicPeople",
+        "title-removal invariance"
+      ],
       "datasetSplit": "planted DEVELOPMENT / VALIDATION",
       "naiveBaseline": "title-only (0.463), resume-lexical (0.926), occupation-stratum (0.555)",
-      "knownFailureModes": ["saturates at standard difficulty and must be run at hard difficulty to be informative"],
-      "goodhartRisks": ["title leakage inflating rank, which the SAME_TITLE_DIFFERENT_WORK counter exposes", "near-miss confusion, which HARD_NEAR_MISS exposes"],
+      "knownFailureModes": [
+        "saturates at standard difficulty and must be run at hard difficulty to be informative"
+      ],
+      "goodhartRisks": [
+        "title leakage inflating rank, which the SAME_TITLE_DIFFERENT_WORK counter exposes",
+        "near-miss confusion, which HARD_NEAR_MISS exposes"
+      ],
       "allowedInterpretation": "relative experience-ranking quality on planted truth",
       "forbiddenInterpretation": "human-judged job relevance",
       "humanValidationBoundary": "Human relevance judgement of person-job pairs is required for a product claim.",
@@ -329,11 +454,21 @@
       "aggregation": "macro mean NDCG@K over people",
       "scale": "0-1",
       "primaryMetric": "PREFERENCE_NDCG_AT_K",
-      "mandatoryGuardrails": ["dislikedIntrusionRateAtK", "strongDislikeViolationRateAtK", "likedTaskCoverageAtK", "unknown/no-evidence behaviour must remain null rather than 0", "worstPersonNdcg"],
+      "mandatoryGuardrails": [
+        "dislikedIntrusionRateAtK",
+        "strongDislikeViolationRateAtK",
+        "likedTaskCoverageAtK",
+        "unknown/no-evidence behaviour must remain null rather than 0",
+        "worstPersonNdcg"
+      ],
       "datasetSplit": "planted DEVELOPMENT / VALIDATION",
       "naiveBaseline": "constant ordering and resume-lexical",
-      "knownFailureModes": ["a job with equal liked and disliked work scores exactly the neutral 0.5, indistinguishable from a job with no preference evidence (MIXED_PREFERENCE archetype)"],
-      "goodhartRisks": ["scoring every job at the neutral centre to avoid dislike penalties, which variance and intrusion metrics expose"],
+      "knownFailureModes": [
+        "a job with equal liked and disliked work scores exactly the neutral 0.5, indistinguishable from a job with no preference evidence (MIXED_PREFERENCE archetype)"
+      ],
+      "goodhartRisks": [
+        "scoring every job at the neutral centre to avoid dislike penalties, which variance and intrusion metrics expose"
+      ],
       "allowedInterpretation": "relative preference-ranking quality on planted truth",
       "forbiddenInterpretation": "predicted job satisfaction",
       "humanValidationBoundary": "Whether a preference score predicts real satisfaction requires longitudinal human outcomes.",
@@ -357,11 +492,21 @@
       "aggregation": "precision / recall over hard gaps, plus rank correlation with planted feasibility",
       "scale": "rate 0-1",
       "primaryMetric": "HARD_GAP_PRECISION and HARD_GAP_RECALL",
-      "mandatoryGuardrails": ["feasibilityRankCorrelation", "stretchRolesRetainedAtK", "negation handling", "substring collision (Java vs JavaScript)", "qualification must not alter any other channel score"],
+      "mandatoryGuardrails": [
+        "feasibilityRankCorrelation",
+        "stretchRolesRetainedAtK",
+        "negation handling",
+        "substring collision (Java vs JavaScript)",
+        "qualification must not alter any other channel score"
+      ],
       "datasetSplit": "planted DEVELOPMENT / VALIDATION",
       "naiveBaseline": "exact string match",
-      "knownFailureModes": ["ambiguous education and credential equivalence is unsolvable by a fixed alias table"],
-      "goodhartRisks": ["filtering out stretch roles to raise apparent precision, which stretchRolesRetainedAtK exposes"],
+      "knownFailureModes": [
+        "ambiguous education and credential equivalence is unsolvable by a fixed alias table"
+      ],
+      "goodhartRisks": [
+        "filtering out stretch roles to raise apparent precision, which stretchRolesRetainedAtK exposes"
+      ],
       "allowedInterpretation": "structured requirement-matching correctness",
       "forbiddenInterpretation": "hireability, or a prediction of being hired",
       "humanValidationBoundary": "Regulated credential equivalence has a legal answer no model should invent.",
@@ -385,11 +530,20 @@
       "aggregation": "macro mean NDCG@K over people",
       "scale": "0-1",
       "primaryMetric": "DIRECTION_NDCG_AT_K",
-      "mandatoryGuardrails": ["transitionRecallAtK", "desired-task coverage", "Experience must not leak into Direction: planted desired atoms are never performed atoms", "worstPersonNdcg"],
+      "mandatoryGuardrails": [
+        "transitionRecallAtK",
+        "desired-task coverage",
+        "Experience must not leak into Direction: planted desired atoms are never performed atoms",
+        "worstPersonNdcg"
+      ],
       "datasetSplit": "planted DEVELOPMENT / VALIDATION",
       "naiveBaseline": "constant ordering",
-      "knownFailureModes": ["0.769 NDCG at hard difficulty with 3 of 12 people below the catastrophe threshold, driven by 0.542 mapping abstention on aspiration language"],
-      "goodhartRisks": ["inferring direction from experience, which the planted disjointness prevents by construction"],
+      "knownFailureModes": [
+        "0.769 NDCG at hard difficulty with 3 of 12 people below the catastrophe threshold, driven by 0.542 mapping abstention on aspiration language"
+      ],
+      "goodhartRisks": [
+        "inferring direction from experience, which the planted disjointness prevents by construction"
+      ],
       "allowedInterpretation": "relative direction-ranking quality on planted truth",
       "forbiddenInterpretation": "prediction of what the person will actually do next",
       "humanValidationBoundary": "Stated direction may differ from revealed direction.",
@@ -413,11 +567,21 @@
       "aggregation": "macro mean over people",
       "scale": "rate 0-1",
       "primaryMetric": "JOINT_RELEVANT_RECALL_AT_K",
-      "mandatoryGuardrails": ["JOINT_RELEVANT_PRECISION@K", "PARETO_FRONTIER_RECALL@K", "LABEL-SPACE DOMINANCE_VIOLATION_RATE", "SCORE-SPACE dominance violations must be 0", "Experience NDCG@K and Preference NDCG@K must both be reported"],
+      "mandatoryGuardrails": [
+        "JOINT_RELEVANT_PRECISION@K",
+        "PARETO_FRONTIER_RECALL@K",
+        "LABEL-SPACE DOMINANCE_VIOLATION_RATE",
+        "SCORE-SPACE dominance violations must be 0",
+        "Experience NDCG@K and Preference NDCG@K must both be reported"
+      ],
       "datasetSplit": "planted DEVELOPMENT / VALIDATION",
       "naiveBaseline": "single-channel ordering by experience alone",
-      "knownFailureModes": ["a joint metric can hide damage to one channel, which is why both single-channel NDCGs are mandatory companions"],
-      "goodhartRisks": ["inventing an Overall score, which the mode contract and a test forbid"],
+      "knownFailureModes": [
+        "a joint metric can hide damage to one channel, which is why both single-channel NDCGs are mandatory companions"
+      ],
+      "goodhartRisks": [
+        "inventing an Overall score, which the mode contract and a test forbid"
+      ],
       "allowedInterpretation": "relative joint-discovery quality on planted truth",
       "forbiddenInterpretation": "a single measure of recommendation quality",
       "humanValidationBoundary": "Human judgement of whether a job is both familiar and enjoyable is required.",
@@ -441,11 +605,21 @@
       "aggregation": "macro mean over people",
       "scale": "rate 0-1",
       "primaryMetric": "TRANSITION_RECALL_AT_K",
-      "mandatoryGuardrails": ["transitionPrecisionAtK", "transitionMeanRank", "per-channel NDCG@K", "Mode C must not correlate with Experience Fit", "Experience scores must be identical across modes"],
+      "mandatoryGuardrails": [
+        "transitionPrecisionAtK",
+        "transitionMeanRank",
+        "per-channel NDCG@K",
+        "Mode C must not correlate with Experience Fit",
+        "Experience scores must be identical across modes"
+      ],
       "datasetSplit": "planted DEVELOPMENT / VALIDATION",
       "naiveBaseline": "experience-ordered ranking, which should perform badly here by construction",
-      "knownFailureModes": ["depends on aspiration mapping, currently the weakest stream"],
-      "goodhartRisks": ["becoming a resume-replication ranker, which the low-experience requirement prevents"],
+      "knownFailureModes": [
+        "depends on aspiration mapping, currently the weakest stream"
+      ],
+      "goodhartRisks": [
+        "becoming a resume-replication ranker, which the low-experience requirement prevents"
+      ],
       "allowedInterpretation": "relative transition-discovery quality on planted truth",
       "forbiddenInterpretation": "prediction of transition success",
       "humanValidationBoundary": "Whether a transition is achievable is a human and market judgement.",
@@ -469,11 +643,20 @@
       "aggregation": "macro mean over people",
       "scale": "rate 0-1",
       "primaryMetric": "SURPRISING_TRANSFER_RECALL_AT_K",
-      "mandatoryGuardrails": ["surprisingTransferPrecisionAtK", "noveltyWithoutRelevanceRateAtK reported SEPARATELY", "lift over title-only and occupation-stratum baselines", "title-removal invariance"],
+      "mandatoryGuardrails": [
+        "surprisingTransferPrecisionAtK",
+        "noveltyWithoutRelevanceRateAtK reported SEPARATELY",
+        "lift over title-only and occupation-stratum baselines",
+        "title-removal invariance"
+      ],
       "datasetSplit": "planted DEVELOPMENT / VALIDATION",
       "naiveBaseline": "title-only (0.271) and occupation-stratum (0.042)",
-      "knownFailureModes": ["rewarding random novelty, which is why relevance is a precondition of the label"],
-      "goodhartRisks": ["injecting unrelated jobs to raise a novelty number, which noveltyWithoutRelevanceRate exposes"],
+      "knownFailureModes": [
+        "rewarding random novelty, which is why relevance is a precondition of the label"
+      ],
+      "goodhartRisks": [
+        "injecting unrelated jobs to raise a novelty number, which noveltyWithoutRelevanceRate exposes"
+      ],
       "allowedInterpretation": "relative cross-boundary discovery on planted truth",
       "forbiddenInterpretation": "human-judged surprise or delight",
       "humanValidationBoundary": "Whether a surprising match is welcome is a human judgement.",
@@ -497,11 +680,21 @@
       "aggregation": "per-mode NDCG on graded channels",
       "scale": "0-1",
       "primaryMetric": "per-mode NDCG on the mode's graded channels",
-      "mandatoryGuardrails": ["no Overall score anywhere in a mode result", "channel scores byte-identical across modes", "SCORE-SPACE dominance violations 0", "qualification partitions but never rewrites", "stretch roles retained"],
+      "mandatoryGuardrails": [
+        "no Overall score anywhere in a mode result",
+        "channel scores byte-identical across modes",
+        "SCORE-SPACE dominance violations 0",
+        "qualification partitions but never rewrites",
+        "stretch roles retained"
+      ],
       "datasetSplit": "planted DEVELOPMENT / VALIDATION",
       "naiveBaseline": "single-channel experience ordering",
-      "knownFailureModes": ["Pareto plus maximin is a declared policy choice, not a validated one"],
-      "goodhartRisks": ["quietly introducing blended weights, which a test forbids"],
+      "knownFailureModes": [
+        "Pareto plus maximin is a declared policy choice, not a validated one"
+      ],
+      "goodhartRisks": [
+        "quietly introducing blended weights, which a test forbids"
+      ],
       "allowedInterpretation": "relative policy behaviour on planted truth",
       "forbiddenInterpretation": "the best policy for real users",
       "humanValidationBoundary": "Which mode a user wants is a product and user-research question.",
@@ -525,11 +718,18 @@
       "aggregation": "violation rate",
       "scale": "rate 0-1",
       "primaryMetric": "HARD_CONSTRAINT_VIOLATION_RATE",
-      "mandatoryGuardrails": ["SOFT_CONSTRAINT_SATISFACTION", "constraint filtering must not rewrite any fit channel value"],
+      "mandatoryGuardrails": [
+        "SOFT_CONSTRAINT_SATISFACTION",
+        "constraint filtering must not rewrite any fit channel value"
+      ],
       "datasetSplit": "not applicable",
       "naiveBaseline": "not applicable",
-      "knownFailureModes": ["NO USER CONSTRAINT FIELDS EXIST in the data model."],
-      "goodhartRisks": ["not applicable while unimplemented"],
+      "knownFailureModes": [
+        "NO USER CONSTRAINT FIELDS EXIST in the data model."
+      ],
+      "goodhartRisks": [
+        "not applicable while unimplemented"
+      ],
       "allowedInterpretation": "none",
       "forbiddenInterpretation": "any claim that constraints are enforced or measured",
       "humanValidationBoundary": "Constraints are user-declared facts, not inferences.",
@@ -554,11 +754,19 @@
       "aggregation": "TaskDNA value minus best baseline value",
       "scale": "same units as the compared metric",
       "primaryMetric": "ABSOLUTE_LIFT_OVER_BEST_BASELINE",
-      "mandatoryGuardrails": ["report the best baseline and its identity, never only the lift", "compare on experience NDCG, cross-title recall, cross-industry recall, and surprising-transfer recall"],
+      "mandatoryGuardrails": [
+        "report the best baseline and its identity, never only the lift",
+        "compare on experience NDCG, cross-title recall, cross-industry recall, and surprising-transfer recall"
+      ],
       "datasetSplit": "planted DEVELOPMENT / VALIDATION",
       "naiveBaseline": "title-only, resume-lexical, occupation-stratum",
-      "knownFailureModes": ["the baselines are deliberately simple and are not strong competitors", "resume-lexical is a strong baseline on this corpus and lift over it is small at hard difficulty"],
-      "goodhartRisks": ["weakening the baseline instead of improving TaskDNA, which the fixed baseline implementations prevent"],
+      "knownFailureModes": [
+        "the baselines are deliberately simple and are not strong competitors",
+        "resume-lexical is a strong baseline on this corpus and lift over it is small at hard difficulty"
+      ],
+      "goodhartRisks": [
+        "weakening the baseline instead of improving TaskDNA, which the fixed baseline implementations prevent"
+      ],
       "allowedInterpretation": "relative advantage over simple conventional matching on planted truth",
       "forbiddenInterpretation": "advantage over production recommender systems",
       "humanValidationBoundary": "A real comparison needs human relevance labels on real jobs.",
@@ -582,11 +790,19 @@
       "aggregation": "counts and rates",
       "scale": "rate 0-1",
       "primaryMetric": "UNSUPPORTED_RATIONALE_RATE",
-      "mandatoryGuardrails": ["every cited evidence id must appear in a traced contribution", "every cited responsibility id must appear in a traced contribution", "channel attribution must match the channel that produced the contribution"],
+      "mandatoryGuardrails": [
+        "every cited evidence id must appear in a traced contribution",
+        "every cited responsibility id must appear in a traced contribution",
+        "channel attribution must match the channel that produced the contribution"
+      ],
       "datasetSplit": "planted DEVELOPMENT",
       "naiveBaseline": "not applicable",
-      "knownFailureModes": ["structural grounding does not establish that a grounded explanation is USEFUL or well-worded"],
-      "goodhartRisks": ["emitting only trivially-supported sentences to keep the unsupported rate at zero"],
+      "knownFailureModes": [
+        "structural grounding does not establish that a grounded explanation is USEFUL or well-worded"
+      ],
+      "goodhartRisks": [
+        "emitting only trivially-supported sentences to keep the unsupported rate at zero"
+      ],
       "allowedInterpretation": "explanations are grounded in used evidence",
       "forbiddenInterpretation": "explanation quality, persuasiveness, or human comprehensibility",
       "humanValidationBoundary": "Whether an explanation helps a person decide requires human evaluation.",
@@ -610,11 +826,21 @@
       "aggregation": "rates over the top-K",
       "scale": "rate 0-1",
       "primaryMetric": "NEAR_DUPLICATE_RATE",
-      "mandatoryGuardrails": ["exactDuplicateRate", "canonicalWorkDiversity", "titleDiversity", "industryDiversity", "relevantShare must be reported alongside every diversity number"],
+      "mandatoryGuardrails": [
+        "exactDuplicateRate",
+        "canonicalWorkDiversity",
+        "titleDiversity",
+        "industryDiversity",
+        "relevantShare must be reported alongside every diversity number"
+      ],
       "datasetSplit": "planted DEVELOPMENT",
       "naiveBaseline": "unfiltered ranking",
-      "knownFailureModes": ["diversity is trivially improved by inserting irrelevant jobs"],
-      "goodhartRisks": ["optimizing diversity alone, which is why relevantShare is mandatory"],
+      "knownFailureModes": [
+        "diversity is trivially improved by inserting irrelevant jobs"
+      ],
+      "goodhartRisks": [
+        "optimizing diversity alone, which is why relevantShare is mandatory"
+      ],
       "allowedInterpretation": "structural redundancy of the returned set",
       "forbiddenInterpretation": "perceived usefulness of the set",
       "humanValidationBoundary": "Useful breadth is a human judgement.",
@@ -638,11 +864,20 @@
       "aggregation": "difference between DEVELOPMENT and VALIDATION",
       "scale": "same units as the compared metric",
       "primaryMetric": "DEVELOPMENT_TO_VALIDATION_GAP",
-      "mandatoryGuardrails": ["VALIDATION uses paraphrase families never seen in DEVELOPMENT", "LOCKED_CONFIRMATION stays guarded", "difficulty-tier drop (verbatim to standard to hard) isolates surface-wording dependence", "repeated DEVELOPMENT gains with VALIDATION degradation are never KEEP"],
+      "mandatoryGuardrails": [
+        "VALIDATION uses paraphrase families never seen in DEVELOPMENT",
+        "LOCKED_CONFIRMATION stays guarded",
+        "difficulty-tier drop (verbatim to standard to hard) isolates surface-wording dependence",
+        "repeated DEVELOPMENT gains with VALIDATION degradation are never KEEP"
+      ],
       "datasetSplit": "DEVELOPMENT (plain, clausal) vs VALIDATION (nominalized, colloquial)",
       "naiveBaseline": "not applicable",
-      "knownFailureModes": ["only four paraphrase families exist, so family withholding is a coarse generalization test"],
-      "goodhartRisks": ["tuning against VALIDATION, which the preregistration protocol forbids"],
+      "knownFailureModes": [
+        "only four paraphrase families exist, so family withholding is a coarse generalization test"
+      ],
+      "goodhartRisks": [
+        "tuning against VALIDATION, which the preregistration protocol forbids"
+      ],
       "allowedInterpretation": "whether a change survives unseen phrasings",
       "forbiddenInterpretation": "generalization to real human language",
       "humanValidationBoundary": "Real generalization needs real text.",
@@ -666,11 +901,18 @@
       "aggregation": "mean rank comparison and over-reward rate",
       "scale": "rank positions and rate 0-1",
       "primaryMetric": "INCIDENTAL_OVER_REWARD_RATE",
-      "mandatoryGuardrails": ["incidentalOnlyMeanRank must exceed coreMatchMeanRank", "O*NET importance metadata is preserved on every atom but is NOT used as an invented weight"],
+      "mandatoryGuardrails": [
+        "incidentalOnlyMeanRank must exceed coreMatchMeanRank",
+        "O*NET importance metadata is preserved on every atom but is NOT used as an invented weight"
+      ],
       "datasetSplit": "planted DEVELOPMENT / VALIDATION",
       "naiveBaseline": "unweighted responsibility matching",
-      "knownFailureModes": ["INCIDENTAL_LABEL_WEIGHT of 0.25 is a declared label-design choice, not an empirically derived weight"],
-      "goodhartRisks": ["adjusting the incidental weight to move a metric, which is a metric-contract change"],
+      "knownFailureModes": [
+        "INCIDENTAL_LABEL_WEIGHT of 0.25 is a declared label-design choice, not an empirically derived weight"
+      ],
+      "goodhartRisks": [
+        "adjusting the incidental weight to move a metric, which is a metric-contract change"
+      ],
       "allowedInterpretation": "whether peripheral matches are correctly discounted",
       "forbiddenInterpretation": "the correct importance weighting for real jobs",
       "humanValidationBoundary": "Which duties are central is a judgement about the specific role.",
@@ -694,11 +936,21 @@
       "aggregation": "pass / fail",
       "scale": "boolean",
       "primaryMetric": "LEAKAGE_CHECK_PASS_RATE",
-      "mandatoryGuardrails": ["no atom id, planted label, or corpus metadata may appear in pipeline input", "title-removal invariance", "SAME_TITLE_DIFFERENT_WORK earns no experience credit", "occupation_context creates no person signal", "deterministic reproducibility"],
+      "mandatoryGuardrails": [
+        "no atom id, planted label, or corpus metadata may appear in pipeline input",
+        "title-removal invariance",
+        "SAME_TITLE_DIFFERENT_WORK earns no experience credit",
+        "occupation_context creates no person signal",
+        "deterministic reproducibility"
+      ],
       "datasetSplit": "planted DEVELOPMENT",
       "naiveBaseline": "not applicable",
-      "knownFailureModes": ["paraphrase invariance is only tested across the four implemented families"],
-      "goodhartRisks": ["reading planted metadata, which an explicit leakage test forbids"],
+      "knownFailureModes": [
+        "paraphrase invariance is only tested across the four implemented families"
+      ],
+      "goodhartRisks": [
+        "reading planted metadata, which an explicit leakage test forbids"
+      ],
       "allowedInterpretation": "the pipeline sees only what real inference would see",
       "forbiddenInterpretation": "robustness to real-world text variation",
       "humanValidationBoundary": "Real robustness needs real text.",
@@ -722,11 +974,21 @@
       "aggregation": "distributions, correlations, coverage-accuracy curve",
       "scale": "mixed",
       "primaryMetric": "COVERAGE_ACCURACY_CURVE",
-      "mandatoryGuardrails": ["meanConfidenceCorrect must exceed meanConfidenceIncorrect", "prediction variance", "score saturation", "mode ordering must be driven by ranking not by score prettiness"],
+      "mandatoryGuardrails": [
+        "meanConfidenceCorrect must exceed meanConfidenceIncorrect",
+        "prediction variance",
+        "score saturation",
+        "mode ordering must be driven by ranking not by score prettiness"
+      ],
       "datasetSplit": "planted DEVELOPMENT / VALIDATION",
       "naiveBaseline": "constant score",
-      "knownFailureModes": ["channel scores are NOT probabilities and must never be shown as percentage likelihoods", "diagnosticConfidence is a similarity readout, not a calibrated probability"],
-      "goodhartRisks": ["optimizing score cosmetics instead of ranking behaviour"],
+      "knownFailureModes": [
+        "channel scores are NOT probabilities and must never be shown as percentage likelihoods",
+        "diagnosticConfidence is a similarity readout, not a calibrated probability"
+      ],
+      "goodhartRisks": [
+        "optimizing score cosmetics instead of ranking behaviour"
+      ],
       "allowedInterpretation": "relative ordering and discrimination",
       "forbiddenInterpretation": "any probabilistic reading such as '87% fit'",
       "humanValidationBoundary": "Calibration against outcomes requires outcome data.",
@@ -750,11 +1012,22 @@
       "aggregation": "accuracy delta over the deterministic baseline",
       "scale": "rate 0-1",
       "primaryMetric": "RERANK_TOP1_DELTA_OVER_DETERMINISTIC",
-      "mandatoryGuardrails": ["invocation rate <= 0.15", "cost and latency per experiment", "deterministic fallback must be recorded and used on abstention", "no person-by-job model loop", "cache key must include model and prompt version"],
+      "mandatoryGuardrails": [
+        "invocation rate <= 0.15",
+        "cost and latency per experiment",
+        "deterministic fallback must be recorded and used on abstention",
+        "no person-by-job model loop",
+        "cache key must include model and prompt version"
+      ],
       "datasetSplit": "planted DEVELOPMENT / VALIDATION",
       "naiveBaseline": "the deterministic lexical mapper, which is the current implementation",
-      "knownFailureModes": ["NO RERANKER IS IMPLEMENTED. The CandidateReranker seam and the LearnedComponent contract exist; nothing is wired."],
-      "goodhartRisks": ["invoking a model on everything", "which the invocation-rate cap bounds"],
+      "knownFailureModes": [
+        "NO RERANKER IS IMPLEMENTED. The CandidateReranker seam and the LearnedComponent contract exist; nothing is wired."
+      ],
+      "goodhartRisks": [
+        "invoking a model on everything",
+        "which the invocation-rate cap bounds"
+      ],
       "allowedInterpretation": "none until a reranker exists",
       "forbiddenInterpretation": "any claim that contextual reranking is evaluated",
       "humanValidationBoundary": "Same as rows 5 to 7.",
@@ -779,11 +1052,20 @@
       "aggregation": "counts and rates",
       "scale": "counts",
       "primaryMetric": "STALE_CACHE_POSSIBILITY (must be zero)",
-      "mandatoryGuardrails": ["context and reranker version must separate entries", "MAPPER_CONFIG contents pinned by a test", "cache hit returns a bit-identical object", "bounded size with insertion-order eviction"],
+      "mandatoryGuardrails": [
+        "context and reranker version must separate entries",
+        "MAPPER_CONFIG contents pinned by a test",
+        "cache hit returns a bit-identical object",
+        "bounded size with insertion-order eviction"
+      ],
       "datasetSplit": "not applicable",
       "naiveBaseline": "no cache",
-      "knownFailureModes": ["a future model-assisted component must add model and prompt version to the key or it will serve stale interpretations"],
-      "goodhartRisks": ["caching across a behaviour change to gain speed"],
+      "knownFailureModes": [
+        "a future model-assisted component must add model and prompt version to the key or it will serve stale interpretations"
+      ],
+      "goodhartRisks": [
+        "caching across a behaviour change to gain speed"
+      ],
       "allowedInterpretation": "cache correctness and efficiency",
       "forbiddenInterpretation": "not applicable",
       "humanValidationBoundary": "not applicable",
@@ -807,11 +1089,22 @@
       "aggregation": "per-stage verdict",
       "scale": "OK / DEGRADED / FAILED / NOT_APPLICABLE",
       "primaryMetric": "STAGE_LOCALIZATION_COMPLETENESS",
-      "mandatoryGuardrails": ["all 12 stages present", "candidate set and selection reason retained", "channel score decomposed to evidence and responsibility", "mapper version, corpus hash, and cache key recorded", "explanation cites only used evidence", "deterministic"],
+      "mandatoryGuardrails": [
+        "all 12 stages present",
+        "candidate set and selection reason retained",
+        "channel score decomposed to evidence and responsibility",
+        "mapper version, corpus hash, and cache key recorded",
+        "explanation cites only used evidence",
+        "deterministic"
+      ],
       "datasetSplit": "planted DEVELOPMENT",
       "naiveBaseline": "not applicable",
-      "knownFailureModes": ["stage verdict thresholds are declared, not derived"],
-      "goodhartRisks": ["not applicable"],
+      "knownFailureModes": [
+        "stage verdict thresholds are declared, not derived"
+      ],
+      "goodhartRisks": [
+        "not applicable"
+      ],
       "allowedInterpretation": "a failure can be localized to a subsystem",
       "forbiddenInterpretation": "not applicable",
       "humanValidationBoundary": "not applicable",
@@ -835,11 +1128,19 @@
       "aggregation": "milliseconds per stage",
       "scale": "milliseconds",
       "primaryMetric": "END_TO_END_BENCHMARK_RUNTIME",
-      "mandatoryGuardrails": ["corpus build, pipeline, and metric phases reported separately", "cache hits, misses, and evictions", "FAST tier must stay in seconds"],
+      "mandatoryGuardrails": [
+        "corpus build, pipeline, and metric phases reported separately",
+        "cache hits, misses, and evictions",
+        "FAST tier must stay in seconds"
+      ],
       "datasetSplit": "not applicable",
       "naiveBaseline": "pre-cache mapWork at 214 ms per call",
-      "knownFailureModes": ["the product benchmark is the slowest evaluator and belongs in CHECKPOINT, not FAST"],
-      "goodhartRisks": ["trading correctness for speed via unsafe caching"],
+      "knownFailureModes": [
+        "the product benchmark is the slowest evaluator and belongs in CHECKPOINT, not FAST"
+      ],
+      "goodhartRisks": [
+        "trading correctness for speed via unsafe caching"
+      ],
       "allowedInterpretation": "evaluation cost",
       "forbiddenInterpretation": "production serving latency",
       "humanValidationBoundary": "not applicable",
@@ -863,11 +1164,18 @@
       "aggregation": "human-labelled NDCG@K, Recall@K, Precision@K, pairwise preference accuracy",
       "scale": "0-1",
       "primaryMetric": "HUMAN_LABELLED_NDCG_AT_K",
-      "mandatoryGuardrails": ["annotation must be independent of the algorithm", "behavioural outcomes carry user-selection and market bias and must not be substituted for construct-valid labels"],
+      "mandatoryGuardrails": [
+        "annotation must be independent of the algorithm",
+        "behavioural outcomes carry user-selection and market bias and must not be substituted for construct-valid labels"
+      ],
       "datasetSplit": "future genuinely locked human dataset",
       "naiveBaseline": "a preregistered conventional recommender",
-      "knownFailureModes": ["substituting synthetic results for human validity"],
-      "goodhartRisks": ["optimizing saves and clicks instead of career usefulness"],
+      "knownFailureModes": [
+        "substituting synthetic results for human validity"
+      ],
+      "goodhartRisks": [
+        "optimizing saves and clicks instead of career usefulness"
+      ],
       "allowedInterpretation": "none available",
       "forbiddenInterpretation": "NO CURRENT BENCHMARK IN THIS FILE ESTABLISHES THIS. Every other row is autonomous engineering signal only.",
       "humanValidationBoundary": "This row IS the boundary.",
@@ -880,6 +1188,130 @@
       "currentLimitation": "No human annotation exists. Schemas for future annotation are described in docs/METRIC_COVERAGE_MATRIX.md.",
       "blockingGap": false,
       "exclusion": "PERMANENTLY EXCLUDED FROM AUTONOMOUS OPTIMIZATION. The loop must never claim human recommendation validity."
+    },
+    {
+      "row": 32,
+      "subsystem": "Frame benchmark / experience ranking",
+      "productQuestion": "Given what this person has actually done, does the system rank jobs containing that same work above jobs that do not?",
+      "construct": "Recovery of planted work identity from independently rendered surface text, per rendering family.",
+      "predictionOutput": "ranked job list per person per channel",
+      "groundTruth": "planted semantic-frame identity (src/bench/frameLabels.ts), which imports nothing from the scoring pipeline",
+      "observationUnit": "person",
+      "aggregation": "per-person metric, then equal-weight mean over persons; paired bootstrap over persons for differences",
+      "scale": "0-1 NDCG",
+      "primaryMetric": "FRAME_EXPERIENCE_NDCG10",
+      "mandatoryGuardrails": [
+        "FRAME_EXPERIENCE_NDCG10 on NATURAL",
+        "FRAME_EXPERIENCE_NDCG10 on SEMANTIC_BRIDGE",
+        "FRAME_EXPERIENCE_NDCG10 on LEXICAL_TRAP",
+        "constant-score control",
+        "random control",
+        "oracle ceiling"
+      ],
+      "datasetSplit": "synthetic DEVELOPMENT / VALIDATION, frozen in config/frame-corpus-freeze.json",
+      "naiveBaseline": "random, constant-score (degenerate control), title-only",
+      "knownFailureModes": [
+        "pool-ordering artifacts reward any architecture with tied scores (guarded by the constant-score control)",
+        "a family reported in isolation hides collapse in another family",
+        "underpowered person counts cannot resolve the differences being claimed"
+      ],
+      "goodhartRisks": [
+        "tuning the corpus rather than the architecture",
+        "reporting the family where a system happens to win",
+        "averaging families into one number"
+      ],
+      "allowedInterpretation": "relative ranking quality between architectures on planted synthetic work identity, reported per family",
+      "forbiddenInterpretation": "real job-match quality, human relevance, hiring outcomes, or an overall TaskDNA score",
+      "humanValidationBoundary": "Whether a planted-relevant job is one a real person would want requires independent human judgement.",
+      "runnableBenchmarkExists": true,
+      "runnableCommand": "pnpm bench:frame-competition",
+      "runtimeSeconds": 120,
+      "naiveBaselineExists": true,
+      "autonomouslyOptimizable": true,
+      "humanGoldExists": false,
+      "currentLimitation": "Reported at 48 people on DEVELOPMENT. No architecture currently exceeds the constant-score control on SEMANTIC_BRIDGE.",
+      "blockingGap": false
+    },
+    {
+      "row": 33,
+      "subsystem": "Frame benchmark / preference and direction ranking",
+      "productQuestion": "Does the system rank work the person LIKES, and work they WANT NEXT, without confusing either with what they have done?",
+      "construct": "Recovery of planted liked/desired identity, kept independent of the experience channel.",
+      "predictionOutput": "ranked job list per person per channel",
+      "groundTruth": "planted semantic-frame identity (src/bench/frameLabels.ts), which imports nothing from the scoring pipeline",
+      "observationUnit": "person",
+      "aggregation": "per-person metric, then equal-weight mean over persons; paired bootstrap over persons for differences",
+      "scale": "0-1 NDCG",
+      "primaryMetric": "FRAME_PREFERENCE_NDCG10 and FRAME_DIRECTION_NDCG10",
+      "mandatoryGuardrails": [
+        "signed preference (liked minus disliked)",
+        "channel independence: no channel may be inferred from another",
+        "constant-score control",
+        "oracle ceiling"
+      ],
+      "datasetSplit": "synthetic DEVELOPMENT / VALIDATION, frozen in config/frame-corpus-freeze.json",
+      "naiveBaseline": "random, constant-score (degenerate control), title-only",
+      "knownFailureModes": [
+        "pool-ordering artifacts reward any architecture with tied scores (guarded by the constant-score control)",
+        "a family reported in isolation hides collapse in another family",
+        "underpowered person counts cannot resolve the differences being claimed"
+      ],
+      "goodhartRisks": [
+        "tuning the corpus rather than the architecture",
+        "reporting the family where a system happens to win",
+        "averaging families into one number"
+      ],
+      "allowedInterpretation": "relative ranking quality between architectures on planted synthetic work identity, reported per family",
+      "forbiddenInterpretation": "real job-match quality, human relevance, hiring outcomes, or an overall TaskDNA score",
+      "humanValidationBoundary": "Whether a planted-relevant job is one a real person would want requires independent human judgement.",
+      "runnableBenchmarkExists": true,
+      "runnableCommand": "pnpm bench:frame-competition",
+      "runtimeSeconds": 120,
+      "naiveBaselineExists": true,
+      "autonomouslyOptimizable": true,
+      "humanGoldExists": false,
+      "currentLimitation": "Preference is scored signed so a job full of disliked work cannot rank well on partial liked overlap.",
+      "blockingGap": false
+    },
+    {
+      "row": 34,
+      "subsystem": "Frame benchmark / surprising transfer and career transition",
+      "productQuestion": "Does the system find relevant work across a title or industry boundary, and work the person wants but has not yet done?",
+      "construct": "Recall of planted cross-boundary relevant jobs and of planted transition targets. Surprise WITHOUT relevance is excluded by construction.",
+      "predictionOutput": "ranked job list per person per channel",
+      "groundTruth": "planted semantic-frame identity (src/bench/frameLabels.ts), which imports nothing from the scoring pipeline",
+      "observationUnit": "person",
+      "aggregation": "per-person metric, then equal-weight mean over persons; paired bootstrap over persons for differences",
+      "scale": "0-1 NDCG",
+      "primaryMetric": "FRAME_SURPRISING_TRANSFER_RECALL10 and FRAME_TRANSITION_RECALL10",
+      "mandatoryGuardrails": [
+        "novelty-without-relevance must not score",
+        "experience grade >= 2 required for a transfer to count as surprising",
+        "transition requires low experience and high direction"
+      ],
+      "datasetSplit": "synthetic DEVELOPMENT / VALIDATION, frozen in config/frame-corpus-freeze.json",
+      "naiveBaseline": "random, constant-score (degenerate control), title-only",
+      "knownFailureModes": [
+        "pool-ordering artifacts reward any architecture with tied scores (guarded by the constant-score control)",
+        "a family reported in isolation hides collapse in another family",
+        "underpowered person counts cannot resolve the differences being claimed"
+      ],
+      "goodhartRisks": [
+        "tuning the corpus rather than the architecture",
+        "reporting the family where a system happens to win",
+        "averaging families into one number"
+      ],
+      "allowedInterpretation": "relative ranking quality between architectures on planted synthetic work identity, reported per family",
+      "forbiddenInterpretation": "real job-match quality, human relevance, hiring outcomes, or an overall TaskDNA score",
+      "humanValidationBoundary": "Whether a planted-relevant job is one a real person would want requires independent human judgement.",
+      "runnableBenchmarkExists": true,
+      "runnableCommand": "pnpm bench:frame-competition",
+      "runtimeSeconds": 120,
+      "naiveBaselineExists": true,
+      "autonomouslyOptimizable": true,
+      "humanGoldExists": false,
+      "currentLimitation": "Both are recall-only; precision of surprising transfers is not yet separately contracted.",
+      "blockingGap": false
     }
   ]
 }

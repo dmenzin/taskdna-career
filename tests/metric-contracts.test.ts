@@ -9,9 +9,16 @@ const registry = JSON.parse(readFileSync("config/metric-contracts.json", "utf8")
 const packageJson = JSON.parse(readFileSync("package.json", "utf8")) as { scripts: Record<string, string> };
 
 describe("metric contract registry", () => {
+  // Rows 1-31 are the ORIGINAL required subsystem coverage and must stay complete and
+  // contiguous. Rows beyond 31 are decision metrics added by later work (the frame benchmark);
+  // they are additive, so the guard checks the required prefix rather than a fixed total —
+  // pinning the total would force every new decision metric to edit this assertion, which is
+  // exactly how a coverage guard stops being read.
   it("covers all 31 required subsystem rows exactly once", () => {
-    expect(registry.contracts).toHaveLength(31);
-    expect(registry.contracts.map((contract) => contract.row)).toEqual(Array.from({ length: 31 }, (_, index) => index + 1));
+    expect(registry.contracts.length).toBeGreaterThanOrEqual(31);
+    expect(registry.contracts.slice(0, 31).map((contract) => contract.row)).toEqual(Array.from({ length: 31 }, (_, index) => index + 1));
+    const rows = registry.contracts.map((contract) => contract.row);
+    expect(new Set(rows).size).toBe(rows.length);
   });
 
   it("passes its own audit", () => {

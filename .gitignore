@@ -9,3 +9,4 @@ playwright-report/
 tsconfig.tsbuildinfo
 .env*
 !.env.example
+artifacts/agent_runtime/

@@ -41,6 +41,8 @@
     "bench:frame-acceptance": "tsx scripts/bench-frame-acceptance.ts",
     "bench:frame-competition": "tsx scripts/bench-frame-competition.ts",
     "bench:frame-freeze": "tsx scripts/freeze-frame-corpus.ts",
+    "agent:smoke": "tsx scripts/agent-smoke-test.ts",
+    "experiment:agent-vs-lexical": "tsx scripts/experiment-agent-vs-lexical.ts",
     "audit:metric-contracts": "tsx scripts/audit-metric-contracts.ts",
     "eval:product-red-team": "tsx scripts/product-red-team.ts",
     "eval:generator-monotonicity": "tsx scripts/generator-monotonicity.ts",
@@ -65,6 +67,7 @@
     "export:demo": "tsx scripts/export-demo.ts && tsx scripts/export-opportunity-graph.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.120.0",
     "clsx": "^2.1.1",
     "lucide-react": "^1.33.0",
     "next": "^16.3.2",

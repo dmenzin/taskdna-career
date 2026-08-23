@@ -5,6 +5,7 @@
 // and an explicit oracle ceiling.
 import { mkdirSync, writeFileSync } from "node:fs";
 import {
+  charNgramArchitecture,
   constantScoreArchitecture,
   experienceLexicalArchitecture,
   onetCanonicalArchitecture,
@@ -41,6 +42,7 @@ const candidates = [
   randomArchitecture,
   constantScoreArchitecture,
   titleOnlyArchitecture,
+  charNgramArchitecture,
   resumeLexicalArchitecture,
   experienceLexicalArchitecture,
   ...(onet ? [onet] : []),

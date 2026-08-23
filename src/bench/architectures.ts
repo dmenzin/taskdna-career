@@ -227,3 +227,63 @@ export const DETERMINISTIC_ARCHITECTURES: RankingArchitecture<never>[] = [
   resumeLexicalArchitecture,
   experienceLexicalArchitecture,
 ] as unknown as RankingArchitecture<never>[];
+
+/**
+ * Character n-gram TF-IDF cosine similarity. A deliberately STRONGER lexical competitor.
+ *
+ * Whole-token overlap misses morphological variation entirely — "reconcile"/"reconciliation",
+ * "forecast"/"forecasting" share no token but most of their characters. Sub-word matching
+ * recovers that, so this closes the cheapest gap between token counting and anything claiming
+ * to understand meaning.
+ *
+ * It is NOT a semantic embedding retriever and must not be reported as one: it has no notion
+ * that "near misses" and "safety events" are related, because they share no characters either.
+ * A true dense retriever needs an embedding provider, which this environment does not have —
+ * recorded as a limitation rather than approximated and mislabelled.
+ */
+function charNgrams(text: string, n = 4): Map<string, number> {
+  const cleaned = ` ${text.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim()} `;
+  const counts = new Map<string, number>();
+  for (let index = 0; index + n <= cleaned.length; index += 1) {
+    const gram = cleaned.slice(index, index + n);
+    counts.set(gram, (counts.get(gram) ?? 0) + 1);
+  }
+  return counts;
+}
+
+function cosine(a: Map<string, number>, b: Map<string, number>): number {
+  let dot = 0;
+  let normA = 0;
+  let normB = 0;
+  for (const value of a.values()) normA += value * value;
+  for (const [gram, value] of b) {
+    normB += value * value;
+    const other = a.get(gram);
+    if (other) dot += other * value;
+  }
+  if (!normA || !normB) return 0;
+  return dot / (Math.sqrt(normA) * Math.sqrt(normB));
+}
+
+export const charNgramArchitecture: RankingArchitecture<{
+  experience: Map<string, number>;
+  liked: Map<string, number>;
+  disliked: Map<string, number>;
+  desired: Map<string, number>;
+}> = {
+  id: "char-ngram-lexical",
+  version: "1",
+  description: "Character 4-gram cosine similarity per channel. Stronger lexical: catches morphological variation.",
+  prepare: (person) => ({
+    experience: charNgrams(person.experienceEvidence.map((entry) => entry.text).join(" ")),
+    liked: charNgrams(person.preferenceEvidence.filter((e) => e.stance === "LIKE").map((e) => e.text).join(" ")),
+    disliked: charNgrams(person.preferenceEvidence.filter((e) => e.stance === "DISLIKE").map((e) => e.text).join(" ")),
+    desired: charNgrams(person.aspirationEvidence.map((entry) => entry.text).join(" ")),
+  }),
+  score: (prepared, job, channel) => {
+    const jobGrams = charNgrams(job.responsibilities.map((entry) => entry.text).join(" "));
+    if (channel === "experience") return cosine(prepared.experience, jobGrams);
+    if (channel === "direction") return cosine(prepared.desired, jobGrams);
+    return cosine(prepared.liked, jobGrams) - cosine(prepared.disliked, jobGrams);
+  },
+};

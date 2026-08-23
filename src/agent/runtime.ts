@@ -13,6 +13,9 @@
 // and reporting an impression is not a product measurement. Every field on `ModelCallRecord`
 // exists so a result can be reproduced or invalidated later.
 import { createHash } from "node:crypto";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname } from "node:path";
+import type { RuntimeBudgetLedger } from "@/agent/budget";
 
 export const AGENT_RUNTIME_VERSION = "agent-runtime.v1";
 
@@ -104,11 +107,57 @@ function sortDeep(value: unknown): unknown {
  * job's responsibilities are interpreted once and the cached result is reused across every
  * pairing. A person-by-job model loop is the architecture this class exists to make impossible.
  */
+export interface RunnerOptions {
+  /**
+   * Spend ledger. When present, EVERY uncached call must be reserved against the contract
+   * ceiling before it is made, and is recorded after. Passing no ledger is only appropriate
+   * for a stub provider that cannot spend anything.
+   */
+  budget?: RuntimeBudgetLedger;
+  /** Worst-case cost of one call, used for the reservation. */
+  projectedCostUsd?: (request: ModelRequest) => number;
+  experimentId?: string;
+  /**
+   * Persist the cache to disk.
+   *
+   * Without this, a crash 200 calls into a 300-call run re-bills every completed call on the
+   * retry. That is real money and, worse, it silently discourages fixing a bug mid-experiment.
+   * The file is keyed by the same content hash as the in-memory cache, so a resumed run is
+   * byte-identical to an uninterrupted one.
+   */
+  cachePath?: string;
+  /**
+   * Handle a provider error without aborting the run.
+   *
+   * Returning a value records an ABSTENTION and continues; rethrowing stops the experiment. A
+   * safety refusal on one job should not destroy 300 calls of work, but it must never be
+   * silently treated as a successful empty interpretation either — hence the explicit hook and
+   * the `errors` tally below.
+   */
+  onError?: (error: unknown, request: ModelRequest) => { text: string; usage: ModelUsage } | null;
+}
+
 export class InstrumentedRunner {
   private readonly cache = new Map<string, { text: string; usage: ModelUsage }>();
   readonly records: ModelCallRecord[] = [];
+  /** Calls that failed and were recorded as abstentions rather than aborting the run. */
+  readonly errors: { cacheKey: string; message: string }[] = [];
 
-  constructor(private readonly provider: ModelProvider) {}
+  constructor(
+    private readonly provider: ModelProvider,
+    private readonly options: RunnerOptions = {},
+  ) {
+    if (options.cachePath && existsSync(options.cachePath)) {
+      const stored = JSON.parse(readFileSync(options.cachePath, "utf8")) as Record<string, { text: string; usage: ModelUsage }>;
+      for (const [key, value] of Object.entries(stored)) this.cache.set(key, value);
+    }
+  }
+
+  private persistCache(): void {
+    if (!this.options.cachePath) return;
+    mkdirSync(dirname(this.options.cachePath), { recursive: true });
+    writeFileSync(this.options.cachePath, JSON.stringify(Object.fromEntries(this.cache), null, 0));
+  }
 
   async run(request: ModelRequest): Promise<{ text: string; record: ModelCallRecord }> {
     const cacheKey = cacheKeyFor(this.provider, request);
@@ -116,8 +165,26 @@ export class InstrumentedRunner {
     const started = Date.now();
 
     const cached = this.cache.get(cacheKey);
-    const result = cached ?? (await this.provider.complete(request));
-    if (!cached) this.cache.set(cacheKey, result);
+    // Reserve BEFORE the call, and only for a genuine miss: a cache hit spends nothing, so
+    // charging it would make the cap tighten for work that never reached the provider.
+    if (!cached && this.options.budget) {
+      this.options.budget.reserve(this.options.projectedCostUsd?.(request) ?? 0);
+    }
+    let result: { text: string; usage: ModelUsage };
+    if (cached) {
+      result = cached;
+    } else {
+      try {
+        result = await this.provider.complete(request);
+      } catch (error) {
+        const recovered = this.options.onError?.(error, request);
+        if (!recovered) throw error;
+        this.errors.push({ cacheKey, message: String(error).slice(0, 300) });
+        result = recovered;
+      }
+      this.cache.set(cacheKey, result);
+      this.persistCache();
+    }
 
     const record: ModelCallRecord = {
       provider: this.provider.name,
@@ -134,6 +201,17 @@ export class InstrumentedRunner {
       timestamp: new Date().toISOString(),
     };
     this.records.push(record);
+    this.options.budget?.record({
+      experimentId: this.options.experimentId ?? "unspecified",
+      model: record.model,
+      promptId: record.promptId,
+      promptVersion: record.promptVersion,
+      inputTokens: record.usage.inputTokens,
+      outputTokens: record.usage.outputTokens,
+      costUsd: record.usage.costUsd ?? 0,
+      costIsEstimate: record.usage.costIsEstimate,
+      cacheHit: record.cacheHit,
+    });
     return { text: result.text, record };
   }
 
@@ -148,6 +226,7 @@ export class InstrumentedRunner {
       calls,
       cacheHits: hits,
       cacheMisses: calls - hits,
+      errors: this.errors.length,
       inputTokens: sum((r) => r.usage.inputTokens),
       outputTokens: sum((r) => r.usage.outputTokens),
       costUsd: sum((r) => r.usage.costUsd),
