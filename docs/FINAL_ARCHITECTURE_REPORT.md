@@ -88,6 +88,31 @@ Paired bootstrap over persons, `agent-blueprint` vs `experience-lexical`:
 | preference | +0.213 | [0.032, 0.367] | **BETTER** |
 | direction | +0.559 | [0.387, 0.713] | **BETTER** |
 
+### Agent arm — LEXICAL_TRAP: BLOCKED, not run
+
+This run does not have LEXICAL_TRAP numbers for `agent-blueprint` / `agent-field-match`, and it
+would be wrong to infer them from the SEMANTIC_BRIDGE result. The interpretation pass was
+started and was cut off mid-run when API access became unavailable:
+
+| cache | status |
+| --- | --- |
+| person blueprints (`cache-person-lexical_trap.json`) | **12/12 — complete** |
+| job blueprints (`cache-job-lexical_trap.json`) | **218/288 — 70 short** |
+
+The budget ledger confirms the stop point exactly (`12 + 218 = 230` recorded calls for
+`agent-vs-lexical:LEXICAL_TRAP`). `scripts/experiment-agent-vs-lexical.ts` hard-gates on
+`hasAnthropicCredentials()` before it will run at all, so it currently refuses to start even
+though 218 of 288 job interpretations are already cached for free.
+
+Every completed call is cached by content and persisted to disk after each call, so resuming
+loses nothing: the next run against the same corpus (`--family=LEXICAL_TRAP --people=12`) picks
+up at job 219/288, at a worst-case cost of roughly $0.6 for the remaining ~70 calls plus
+evaluation. Until then, LEXICAL_TRAP is a gap, not a negative result — it must not be read as
+"agent-first was tried and failed on the trap family."
+
+The deterministic re-baseline's LEXICAL_TRAP column (above) is unaffected — those architectures
+need no model calls and are complete.
+
 ---
 
 ## 3. Verdicts
@@ -202,3 +227,12 @@ corpus is a one-time-per-job cost amortised across every user who ever sees it.
    here shows that real users feel understood or that these recommendations are good.
 6. **Traceability for the frame pipeline is not built.** The existing traceability machinery
    covers the old atom pipeline.
+7. **LEXICAL_TRAP for the agent arm is unmeasured, not negative.** Interpretation stopped at
+   218/288 job blueprints when API access became unavailable (see §2). Whether `agent-blueprint`
+   holds its SEMANTIC_BRIDGE advantage when overlap is adversarial — wording that overlaps
+   *more* for false matches than true ones — is exactly the open question a trap family exists
+   to answer, and it remains open.
+8. **The VALIDATION generalization check for the agent arm never started.** Zero cache entries,
+   zero budget-ledger entries. Every agent-arm number in this report is DEVELOPMENT-split only;
+   whether it holds on paraphrase families the agent never saw (the same boundary that drops
+   extraction macro F1 from 0.831 to 0.611 elsewhere in this codebase) is untested.
