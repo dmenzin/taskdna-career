@@ -1,5 +1,8 @@
 # Coefficient registry (as-is)
 
+This inventory describes the **current implementation**. No coefficient was
+changed in the forensic-audit pass.
+
 Official count **74** comes from `inventoryParameters()` in `src/lab/parameters.ts`,
 written to `artifacts/logic_audit/parameters.json` by `pnpm audit:parameters`.
 
@@ -220,7 +223,7 @@ These still change recommendations. Treating “74” as complete is incorrect.
 | conf clamps | [0.2, 0.94] | | | arbitrary |
 | non-neutralPrior bonus | 0.12 | | demo personas only | legacy |
 | extra-within-group credit | 0.5, max 2 extras | | effective signals | hand-chosen |
-| sentence cap | 10 | `extractEvidence` | dropped evidence | arbitrary |
+| sentence / char cap | 200 / 40_000 | `EVIDENCE_EXTRACTION_LIMITS` | dropped evidence | hand-chosen (replaced a hard 10) |
 | explicit list cap | 4 + 4 | | | arbitrary |
 | explicit reliability | 0.78 | | | arbitrary |
 | reliability base / clamps | 0.5, 0.35–0.92, … | `evidenceReliability` | blend weights | hand-chosen |
