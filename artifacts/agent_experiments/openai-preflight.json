@@ -2,8 +2,8 @@
   "preflight": "openai-arm",
   "providerVersion": "openai-provider.v1",
   "requestedModel": "gpt-5.6-sol",
-  "resolvedModel": null,
-  "blocker": "INSUFFICIENT_QUOTA",
+  "resolvedModel": "gpt-5.6-sol",
+  "blocker": null,
   "checks": [
     {
       "name": "OpenAI credential present",
@@ -27,10 +27,15 @@
     },
     {
       "name": "provider reachable",
-      "pass": false,
-      "detail": "INSUFFICIENT_QUOTA: credential is valid but the account has no available quota or billing; no call can succeed"
+      "pass": true,
+      "detail": "served by gpt-5.6-sol"
+    },
+    {
+      "name": "requested model identifier resolves",
+      "pass": true,
+      "detail": "requested and served identifiers match (gpt-5.6-sol); still a moving alias, so this is not a pin"
     }
   ],
-  "passed": false,
-  "timestamp": "2026-08-23T13:07:51.206Z"
+  "passed": true,
+  "timestamp": "2026-08-23T13:19:54.737Z"
 }
