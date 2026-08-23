@@ -1,0 +1,406 @@
+{
+  "version": "generator-monotonicity.v1",
+  "seed": 20260823,
+  "autonomousDimensions": [
+    "measurable_feedback",
+    "experimentation_preference"
+  ],
+  "eligiblePass": true,
+  "decisions": [
+    {
+      "id": "problem_structure",
+      "classification": "VALID_WITH_REDEFINITION",
+      "maeEligible": false,
+      "reason": "boundedness and ambiguity are compound; interval semantics not yet defensible"
+    },
+    {
+      "id": "measurable_feedback",
+      "classification": "VALID_BIPOLAR_CONTINUOUS",
+      "maeEligible": true,
+      "reason": "ordered preference for shorter/more observable versus longer/uncertain feedback"
+    },
+    {
+      "id": "investigation_orientation",
+      "classification": "BETTER_AS_TWO_INDEPENDENT_PREFERENCES",
+      "maeEligible": false,
+      "reason": "investigation and coordination/administration are not opposites"
+    },
+    {
+      "id": "evidence_density",
+      "classification": "VALID_WITH_REDEFINITION",
+      "maeEligible": false,
+      "reason": "raw evidence and narrative/administrative information can coexist"
+    },
+    {
+      "id": "experimentation_preference",
+      "classification": "VALID_BIPOLAR_CONTINUOUS",
+      "maeEligible": true,
+      "reason": "ordered preference for experiment-driven versus established-procedure work"
+    },
+    {
+      "id": "scope_preference",
+      "classification": "OVERLAPS_ANOTHER_DIMENSION",
+      "maeEligible": false,
+      "reason": "duplicates problem_structure and combines breadth with ambiguity"
+    },
+    {
+      "id": "software_as_tool",
+      "classification": "VALID_WITH_REDEFINITION",
+      "maeEligible": false,
+      "reason": "software-mediated and hands-on work are not exhaustive opposites"
+    },
+    {
+      "id": "reasoning_style",
+      "classification": "OVERLAPS_ANOTHER_DIMENSION",
+      "maeEligible": false,
+      "reason": "duplicates causal reasoning and rules/compliance is independently desirable"
+    },
+    {
+      "id": "creation_style",
+      "classification": "VALID_WITH_REDEFINITION",
+      "maeEligible": false,
+      "reason": "ordinal emphasis is plausible but equal interval distance is unproven"
+    },
+    {
+      "id": "real_system_grounding",
+      "classification": "BETTER_AS_TWO_INDEPENDENT_PREFERENCES",
+      "maeEligible": false,
+      "reason": "physical systems, users, and abstraction are multiple constructs"
+    },
+    {
+      "id": "closure_preference",
+      "classification": "VALID_WITH_REDEFINITION",
+      "maeEligible": false,
+      "reason": "low pole is pejorative and not neutral exploration"
+    },
+    {
+      "id": "causal_reasoning",
+      "classification": "OVERLAPS_ANOTHER_DIMENSION",
+      "maeEligible": false,
+      "reason": "overlaps investigation and reasoning_style"
+    },
+    {
+      "id": "integration_preference",
+      "classification": "INSUFFICIENT_EVIDENCE",
+      "maeEligible": false,
+      "reason": "conceptually ordered but generator coverage is only about 4%, below the declared 10% eligibility floor"
+    },
+    {
+      "id": "customer_interaction_preference",
+      "classification": "BETTER_AS_TWO_INDEPENDENT_PREFERENCES",
+      "maeEligible": false,
+      "reason": "customer contact and internal technical work may both be liked"
+    },
+    {
+      "id": "coordination_preference",
+      "classification": "BETTER_AS_TWO_INDEPENDENT_PREFERENCES",
+      "maeEligible": false,
+      "reason": "orchestration and solo investigation may both be liked"
+    },
+    {
+      "id": "theory_vs_application",
+      "classification": "VALID_WITH_REDEFINITION",
+      "maeEligible": false,
+      "reason": "theory and application are not exclusive and scale is ordinal"
+    },
+    {
+      "id": "repetition_tolerance",
+      "classification": "BETTER_AS_TWO_INDEPENDENT_PREFERENCES",
+      "maeEligible": false,
+      "reason": "tolerance for repetition is not inverse desire for novelty"
+    }
+  ],
+  "results": [
+    {
+      "id": "problem_structure",
+      "n": 450,
+      "coverage": 0.5555555555555556,
+      "highEvidenceAssociation": 0.6940207661065408,
+      "lowEvidenceAssociation": -0.7386517030135092,
+      "observableSignalAssociation": 0.8619122417991388,
+      "signalByTruthQuartile": [
+        -0.9,
+        -0.5061728395061729,
+        0.3586206896551724,
+        0.7469879518072289
+      ],
+      "monotonicBins": true,
+      "eligible": false,
+      "failures": []
+    },
+    {
+      "id": "measurable_feedback",
+      "n": 450,
+      "coverage": 0.5866666666666667,
+      "highEvidenceAssociation": 0.736542470862387,
+      "lowEvidenceAssociation": -0.7401830779993197,
+      "observableSignalAssociation": 0.8778997968660841,
+      "signalByTruthQuartile": [
+        -0.8433734939759037,
+        -0.4857142857142857,
+        0.40268456375838924,
+        0.8461538461538461
+      ],
+      "monotonicBins": true,
+      "eligible": true,
+      "failures": []
+    },
+    {
+      "id": "investigation_orientation",
+      "n": 450,
+      "coverage": 0.5288888888888889,
+      "highEvidenceAssociation": 0.6728842727182041,
+      "lowEvidenceAssociation": -0.6601910707111691,
+      "observableSignalAssociation": 0.8103877347090978,
+      "signalByTruthQuartile": [
+        -0.625,
+        -0.49056603773584906,
+        0.37777777777777777,
+        0.78
+      ],
+      "monotonicBins": true,
+      "eligible": false,
+      "failures": []
+    },
+    {
+      "id": "evidence_density",
+      "n": 450,
+      "coverage": 0.4222222222222222,
+      "highEvidenceAssociation": 0.6010698289061124,
+      "lowEvidenceAssociation": -0.6134111222433039,
+      "observableSignalAssociation": 0.7630911972037916,
+      "signalByTruthQuartile": [
+        -0.6617647058823529,
+        -0.3782051282051282,
+        0.24,
+        0.6578947368421053
+      ],
+      "monotonicBins": true,
+      "eligible": false,
+      "failures": []
+    },
+    {
+      "id": "experimentation_preference",
+      "n": 450,
+      "coverage": 0.3111111111111111,
+      "highEvidenceAssociation": 0.49847280676513356,
+      "lowEvidenceAssociation": -0.5150984598371128,
+      "observableSignalAssociation": 0.658665013351497,
+      "signalByTruthQuartile": [
+        -0.5535714285714286,
+        -0.26490066225165565,
+        0.18562874251497005,
+        0.5
+      ],
+      "monotonicBins": true,
+      "eligible": true,
+      "failures": []
+    },
+    {
+      "id": "scope_preference",
+      "n": 450,
+      "coverage": 0.25333333333333335,
+      "highEvidenceAssociation": 0.42945377386722855,
+      "lowEvidenceAssociation": -0.4488535570625817,
+      "observableSignalAssociation": 0.5805578683566184,
+      "signalByTruthQuartile": [
+        -0.44285714285714284,
+        -0.18791946308724833,
+        0.16417910447761194,
+        0.3402061855670103
+      ],
+      "monotonicBins": true,
+      "eligible": false,
+      "failures": []
+    },
+    {
+      "id": "software_as_tool",
+      "n": 450,
+      "coverage": 0.18,
+      "highEvidenceAssociation": 0.3581734089429956,
+      "lowEvidenceAssociation": -0.37182787766022796,
+      "observableSignalAssociation": 0.49016785790644807,
+      "signalByTruthQuartile": [
+        -0.2972972972972973,
+        -0.15441176470588236,
+        0.1276595744680851,
+        0.2808988764044944
+      ],
+      "monotonicBins": true,
+      "eligible": false,
+      "failures": []
+    },
+    {
+      "id": "reasoning_style",
+      "n": 450,
+      "coverage": 0.15333333333333332,
+      "highEvidenceAssociation": 0.3203931007459454,
+      "lowEvidenceAssociation": -0.35394894260267556,
+      "observableSignalAssociation": 0.45858285421488365,
+      "signalByTruthQuartile": [
+        -0.2833333333333333,
+        -0.11875,
+        0.11764705882352941,
+        0.19480519480519481
+      ],
+      "monotonicBins": true,
+      "eligible": false,
+      "failures": []
+    },
+    {
+      "id": "creation_style",
+      "n": 450,
+      "coverage": 0.1,
+      "highEvidenceAssociation": 0.24472967508617777,
+      "lowEvidenceAssociation": -0.2918197828722191,
+      "observableSignalAssociation": 0.37109678807251806,
+      "signalByTruthQuartile": [
+        -0.16393442622950818,
+        -0.10273972602739725,
+        0.045454545454545456,
+        0.14606741573033707
+      ],
+      "monotonicBins": true,
+      "eligible": false,
+      "failures": []
+    },
+    {
+      "id": "real_system_grounding",
+      "n": 450,
+      "coverage": 0.06444444444444444,
+      "highEvidenceAssociation": 0.23233865531084513,
+      "lowEvidenceAssociation": -0.24380881931895942,
+      "observableSignalAssociation": 0.33045813488182074,
+      "signalByTruthQuartile": [
+        -0.12,
+        -0.047619047619047616,
+        0.029585798816568046,
+        0.13095238095238096
+      ],
+      "monotonicBins": true,
+      "eligible": false,
+      "failures": []
+    },
+    {
+      "id": "closure_preference",
+      "n": 450,
+      "coverage": 0.06222222222222222,
+      "highEvidenceAssociation": 0.1977850137964261,
+      "lowEvidenceAssociation": -0.2371913483833611,
+      "observableSignalAssociation": 0.3035433739415552,
+      "signalByTruthQuartile": [
+        -0.1323529411764706,
+        -0.041666666666666664,
+        0.04054054054054054,
+        0.07777777777777778
+      ],
+      "monotonicBins": true,
+      "eligible": false,
+      "failures": []
+    },
+    {
+      "id": "causal_reasoning",
+      "n": 450,
+      "coverage": 0.03777777777777778,
+      "highEvidenceAssociation": 0.1610288861761123,
+      "lowEvidenceAssociation": -0.13502189558209768,
+      "observableSignalAssociation": 0.20695707766601112,
+      "signalByTruthQuartile": [
+        -0.041666666666666664,
+        -0.022556390977443608,
+        0.03783783783783784,
+        0.05952380952380952
+      ],
+      "monotonicBins": true,
+      "eligible": false,
+      "failures": []
+    },
+    {
+      "id": "integration_preference",
+      "n": 450,
+      "coverage": 0.04,
+      "highEvidenceAssociation": 0.15317115282043312,
+      "lowEvidenceAssociation": -0.15813367598230954,
+      "observableSignalAssociation": 0.2170862075690242,
+      "signalByTruthQuartile": [
+        -0.046875,
+        -0.05333333333333334,
+        0.012195121951219513,
+        0.06944444444444445
+      ],
+      "monotonicBins": true,
+      "eligible": false,
+      "failures": []
+    },
+    {
+      "id": "customer_interaction_preference",
+      "n": 450,
+      "coverage": 0.02,
+      "highEvidenceAssociation": 0.08421722272059652,
+      "lowEvidenceAssociation": -0.1764075762804288,
+      "observableSignalAssociation": 0.19457560365730095,
+      "signalByTruthQuartile": [
+        -0.07272727272727272,
+        -0.021897810218978103,
+        0.005376344086021506,
+        0.013888888888888888
+      ],
+      "monotonicBins": true,
+      "eligible": false,
+      "failures": []
+    },
+    {
+      "id": "coordination_preference",
+      "n": 450,
+      "coverage": 0.008888888888888889,
+      "highEvidenceAssociation": 0.08463818423101498,
+      "lowEvidenceAssociation": 0,
+      "observableSignalAssociation": 0.08463818423101498,
+      "signalByTruthQuartile": [
+        0,
+        0,
+        0.01015228426395939,
+        0.02040816326530612
+      ],
+      "monotonicBins": true,
+      "eligible": false,
+      "failures": [
+        "low-pole evidence does not decrease with truth"
+      ]
+    },
+    {
+      "id": "theory_vs_application",
+      "n": 450,
+      "coverage": 0.006666666666666667,
+      "highEvidenceAssociation": 0.06912091221067274,
+      "lowEvidenceAssociation": -0.06377670297658222,
+      "observableSignalAssociation": 0.09185425017969943,
+      "signalByTruthQuartile": [
+        0,
+        -0.013422818791946308,
+        0,
+        0.011764705882352941
+      ],
+      "monotonicBins": true,
+      "eligible": false,
+      "failures": []
+    },
+    {
+      "id": "repetition_tolerance",
+      "n": 450,
+      "coverage": 0.008888888888888889,
+      "highEvidenceAssociation": 0.04606839122541112,
+      "lowEvidenceAssociation": -0.09739425066155223,
+      "observableSignalAssociation": 0.10719202843738736,
+      "signalByTruthQuartile": [
+        -0.02040816326530612,
+        -0.01639344262295082,
+        0.0049504950495049506,
+        0
+      ],
+      "monotonicBins": true,
+      "eligible": false,
+      "failures": []
+    }
+  ]
+}

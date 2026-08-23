@@ -1,0 +1,9 @@
+import { mapWork } from "@/v3/mapper";
+import type { AspirationEvidence, ExperienceEvidence, PreferenceEvidence, Provenance, QualificationEvidence, V3Person, WorkContext } from "@/v3/types";
+export type RawV3Evidence =
+ | {id:string;kind:"preference";text:string;stance:"LIKE"|"DISLIKE"|"NEUTRAL"|"UNKNOWN";strength?:number;context?:WorkContext}
+ | {id:string;kind:"experience";text:string;strength:"weak"|"demonstrated"|"deep";ownership:"assisted"|"performed"|"led"|"unknown";sourceGroup:string;context?:WorkContext}
+ | {id:string;kind:"qualification";value:string;qualificationKind:"skill"|"education"|"credential"|"capability";negated?:boolean}
+ | {id:string;kind:"aspiration";text:string;strength?:number;context?:WorkContext}
+ | {id:string;kind:"occupation_context";text:string};
+export function buildV3Person(id:string,raw:RawV3Evidence[]):V3Person {const preferences:PreferenceEvidence[]=[],experience:ExperienceEvidence[]=[],qualifications:QualificationEvidence[]=[],aspirations:AspirationEvidence[]=[];const provenance=(r:RawV3Evidence):Provenance=>({source:"explicit classified input",version:"person-builder.v1",recordId:r.id});for(const r of raw){if(r.kind==="preference")preferences.push({id:r.id,stance:r.stance,strength:r.strength,mapping:mapWork(r.text,r.context),provenance:provenance(r)});else if(r.kind==="experience")experience.push({id:r.id,mapping:mapWork(r.text,r.context),strength:r.strength,ownership:r.ownership,sourceGroup:r.sourceGroup,provenance:provenance(r)});else if(r.kind==="qualification")qualifications.push({id:r.id,kind:r.qualificationKind,value:r.value,negated:r.negated,provenance:provenance(r)});else if(r.kind==="aspiration")aspirations.push({id:r.id,mapping:mapWork(r.text,r.context),strength:r.strength??null,provenance:provenance(r)});/* occupation context intentionally creates no person signal */}return {id,preferences,experience,qualifications,aspirations};}

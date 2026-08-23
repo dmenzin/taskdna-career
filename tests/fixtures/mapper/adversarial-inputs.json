@@ -1,0 +1,9 @@
+[
+ {"id":"exact","category":"obvious exact task","text":"Analyze test data to identify causes of equipment failure.","context":{"occupation":"Reliability Engineer"}},
+ {"id":"paraphrase","category":"paraphrase","text":"I trace noisy field signals back to the mechanism that broke.","context":{}},
+ {"id":"unrelated","category":"unrelated text","text":"The office has free lunch on Fridays.","context":{}},
+ {"id":"ambiguous","category":"ambiguity","text":"I supported the system rollout.","context":{}},
+ {"id":"broad-dwa","category":"broad DWA collision","text":"Evaluate information to determine compliance.","context":{}},
+ {"id":"context-a","category":"changed occupation context","text":"Diagnose irregular readings.","context":{"occupation":"Medical Equipment Repairer"}},
+ {"id":"dwa-only","category":"correct DWA uncertain Task","text":"Assess technical evidence and recommend action.","context":{}}
+]
