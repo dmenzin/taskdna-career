@@ -104,16 +104,23 @@ export type Attribution =
   | { kind: "AMBIGUOUS"; candidates: EvidenceChannel[]; score: number }
   | { kind: "UNATTRIBUTABLE"; bestScore: number };
 
+export interface AttributionOptions {
+  floor?: number;
+  margin?: number;
+}
+
 /** Attribute one quoted phrase to the evidence channel it most likely came from. */
-export function attributeQuote(quote: string, index: EvidenceEntry[]): Attribution {
+export function attributeQuote(quote: string, index: EvidenceEntry[], options: AttributionOptions = {}): Attribution {
+  const floor = options.floor ?? ATTRIBUTION_FLOOR;
+  const margin = options.margin ?? AMBIGUITY_MARGIN;
   const scored = index
     .map((entry) => ({ entry, score: containment(quote, entry.text) }))
     .sort((a, b) => b.score - a.score);
   const best = scored[0];
-  if (!best || best.score < ATTRIBUTION_FLOOR) return { kind: "UNATTRIBUTABLE", bestScore: best?.score ?? 0 };
+  if (!best || best.score < floor) return { kind: "UNATTRIBUTABLE", bestScore: best?.score ?? 0 };
 
   const rivalFromOtherChannel = scored.find((candidate) => candidate.entry.channel !== best.entry.channel);
-  if (rivalFromOtherChannel && best.score - rivalFromOtherChannel.score < AMBIGUITY_MARGIN) {
+  if (rivalFromOtherChannel && best.score - rivalFromOtherChannel.score < margin) {
     return {
       kind: "AMBIGUOUS",
       candidates: [...new Set([best.entry.channel, rivalFromOtherChannel.entry.channel])],
@@ -226,6 +233,7 @@ export function provenanceFor(
   outputChannel: OutputChannel,
   index: EvidenceEntry[],
   visibleChannels: EvidenceChannel[],
+  options: AttributionOptions = {},
 ): ClaimProvenance[] {
-  return works.map((work) => classifyChannelError(outputChannel, attributeQuote(work.evidence ?? "", index), visibleChannels));
+  return works.map((work) => classifyChannelError(outputChannel, attributeQuote(work.evidence ?? "", index, options), visibleChannels));
 }

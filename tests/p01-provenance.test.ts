@@ -64,10 +64,22 @@ describe("P-01 is a minimal prompt/schema change", () => {
     );
   });
 
-  it("refuses paid execution in this session unless --dry-run is set", () => {
+  it("can spend only after preregistration, a dry-run census, and full job-cache reuse", () => {
     const source = readFileSync("scripts/experiment-p01.ts", "utf8");
     expect(source).toContain("assertPreregistered");
-    expect(source).toContain("Paid execution is not authorized in this session");
     expect(source).toContain("stripProvenance");
+    expect(source).toContain("--dry-run");
+    expect(source).toContain("STOP CONDITION");
+    expect(source).toContain("checkArmReadiness");
+    expect(source).not.toContain("Paid execution is not authorized in this session");
+  });
+});
+
+describe("T-01 does not retune thresholds after seeing results", () => {
+  it("sweeps a fixed grid and reports flips without picking a winner", () => {
+    const source = readFileSync("scripts/experiment-t01.ts", "utf8");
+    expect(source).toContain("sweepProvenanceThresholds");
+    expect(source).toContain("were not selected post-hoc");
+    expect(readFileSync("src/agent/provenanceSensitivity.ts", "utf8")).toContain("never selected post-hoc");
   });
 });

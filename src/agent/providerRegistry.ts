@@ -49,6 +49,8 @@ export interface ProviderBuildOptions {
   maxOutputTokens: number;
   outputSchema: Record<string, unknown>;
   schemaName: string;
+  /** Defaults to AGENT_ARCHITECTURE_VERSION so existing cache keys stay byte-identical. */
+  schemaVersion?: string;
 }
 
 export function buildProvider(options: ProviderBuildOptions): ModelProvider {
@@ -61,7 +63,7 @@ export function buildProvider(options: ProviderBuildOptions): ModelProvider {
       maxOutputTokens,
       outputSchema,
       schemaName,
-      schemaVersion: AGENT_ARCHITECTURE_VERSION,
+      schemaVersion: options.schemaVersion ?? AGENT_ARCHITECTURE_VERSION,
     });
   }
   return createAnthropicProvider({

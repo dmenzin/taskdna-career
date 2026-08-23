@@ -102,7 +102,7 @@
       "promptId": null,
       "class": "WORKFLOW",
       "implemented": true,
-      "location": "scripts/experiment-split-agents.ts, scripts/experiment-agent-vs-lexical.ts",
+      "location": "scripts/experiment-split-agents.ts, scripts/experiment-agent-vs-lexical.ts, scripts/experiment-p01.ts",
       "note": "Fixed sequence decided by code: interpret persons, interpret jobs, evaluate. No model decides control flow."
     },
     {

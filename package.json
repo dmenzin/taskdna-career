@@ -67,6 +67,8 @@
     "audit:zero-origin": "tsx scripts/audit-zero-origin.ts",
     "audit:provenance": "tsx scripts/audit-provenance.ts",
     "research:program": "tsx scripts/research-program.ts",
+    "research:ledger": "tsx scripts/research-ledger.ts",
+    "experiment:t01": "tsx scripts/experiment-t01.ts",
     "audit:domain-holdout": "tsx scripts/audit-domain-holdout.ts",
     "subjects:generate": "tsx scripts/subjects-generate.ts",
     "subjects:inspect": "tsx scripts/subjects-inspect.ts",
