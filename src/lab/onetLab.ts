@@ -19,7 +19,6 @@ import {
   statementsForConstruction,
   statementsForSource,
   type PreferenceSourceBudget,
-  type PreferenceStatementPlan,
 } from "@/lab/preferencePhrases";
 import { between, chance, hashSeed, mulberry32, pick, pickN, type Rng } from "@/lab/rng";
 import type { SubjectCohortV2, TwinPair, VirtualSubject, VirtualSubjectObservations, VirtualSubjectTruth } from "@/lab/types";

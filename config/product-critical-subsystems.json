@@ -1,0 +1,195 @@
+{
+  "version": "product-critical-subsystems.v1",
+  "purpose": "Every subsystem the product's correctness depends on, with a defined construct, inputs/outputs, an evaluator, a baseline, known-answer tests, failure cases, an alternative strategy path, and an explicit human-validation boundary. No product-critical subsystem may become an opaque orphan with no way to evaluate or improve it. This is NOT a mandate to tune every code function: 'optimize every function' means every PRODUCT-CRITICAL SUBSYSTEM has a path to improvement, not that every TypeScript function gets a coefficient sweep.",
+  "subsystems": [
+    {
+      "id": "preference-evidence-extraction",
+      "construct": "Which statements in messy career language express a preference or dislike, and about what work?",
+      "inputs": "career narrative, explicit preference list, explicit dislike list, contradictory statements",
+      "outputs": "classified UserEvidence[] with evidenceClass, signalWeight, sourceGroup, inferredTaskDimensions",
+      "implementation": "src/domain/evidence.ts, src/domain/workStructure.ts, extractEvidence in src/domain/engine.ts",
+      "evaluator": "pnpm eval:preference (AVAILABLE_TO_RECOGNIZED_RECALL, RECOGNIZED_EVIDENCE_PREFERENCE_MACRO_MAE/MICRO)",
+      "baseline": "constant-5 and the DEVELOPMENT population prior, both reported alongside every primary value",
+      "knownAnswerTests": ["tests/evidence-taskdna.test.ts", "tests/evidence-observability.test.ts", "tests/generator-semantics.test.ts"],
+      "failureCases": [
+        "late-sentence loss (fixed: fallback.slice(0,10) replaced by a declared budget)",
+        "duplicate evidence via two plumbing paths (fixed: exact-normalized cross-source suppression)",
+        "recall about 0.31 of exposed preference language: the current binding constraint",
+        "attributes preference signal to dimensions with no exposed preference language (recognizedOutsideAvailableRate)"
+      ],
+      "alternativeStrategyPath": "PreferenceExtractionStrategy in src/v3/strategy.ts; embedding retrieval, cross-encoder, or selective LLM families",
+      "humanValidationBoundary": "Whether an extracted preference matches what the person actually means requires human labelling. Autonomous work can only measure recall against generator-exposed language."
+    },
+    {
+      "id": "preference-representation",
+      "construct": "What structure holds a person's preferences over work?",
+      "inputs": "classified preference evidence",
+      "outputs": "17-dimension bipolar Vector, and V3 Task/DWA stance evidence",
+      "implementation": "src/config/model.ts, inferTaskDna in src/domain/engine.ts, src/v3/types.ts",
+      "evaluator": "pnpm eval:preference plus the construct classifications in src/lab/preferenceTarget.ts",
+      "baseline": "neutral prior 5 on every dimension",
+      "knownAnswerTests": ["tests/scoring-boundaries.test.ts", "tests/iteration-metrics.test.ts"],
+      "failureCases": [
+        "only 2 of 17 dimensions are MAE-eligible; 8 are classified construct-invalid or overlapping",
+        "prediction variance under 10% of truth variance: the decoder rarely leaves the neutral prior"
+      ],
+      "alternativeStrategyPath": "PreferenceRepresentationStrategy in src/v3/strategy.ts",
+      "humanValidationBoundary": "Interval semantics (whether a 2-point difference means the same thing everywhere) cannot be established without human data."
+    },
+    {
+      "id": "task-dwa-mapping",
+      "construct": "Given work language, which canonical O*NET Task or DWA does it denote?",
+      "inputs": "source text plus optional WorkContext",
+      "outputs": "TaskMapping with candidates, selected, level (task/dwa/abstain), diagnosticConfidence, provenance, cacheKey",
+      "implementation": "src/v3/mapper.ts, src/v3/canonical.ts",
+      "evaluator": "known-answer fixtures in tests/v3/bridge.test.ts and tests/fixtures/mapper/adversarial-inputs.json",
+      "baseline": "token-overlap lexical retrieval, topK=5",
+      "knownAnswerTests": ["tests/v3/bridge.test.ts", "tests/hybrid-readiness.test.ts", "tests/onet-lab.test.ts"],
+      "failureCases": [
+        "broad-DWA overmatching on generic vocabulary",
+        "abstains on paraphrases that share no tokens",
+        "was 214 ms per call before token hoisting, which blocked the whole workstream"
+      ],
+      "alternativeStrategyPath": "TaskCandidateRetrievalStrategy, SemanticRetrievalStrategy, ContextualRerankingStrategy in src/v3/strategy.ts",
+      "humanValidationBoundary": "Real mapping ACCURACY needs human-labelled text-to-Task pairs. Autonomous work measures relative behaviour on fixtures only."
+    },
+    {
+      "id": "abstention-policy",
+      "construct": "When is evidence too weak to name any canonical work?",
+      "inputs": "ranked candidates and context",
+      "outputs": "level and selected",
+      "implementation": "MAPPER_CONFIG thresholds and margin in src/v3/mapper.ts",
+      "evaluator": "abstention-rate guardrail in the red-team script; over-abstention is a failure, not a win",
+      "baseline": "taskThreshold=0.46, dwaThreshold=0.25, taskMargin=0.06",
+      "knownAnswerTests": ["tests/v3/bridge.test.ts"],
+      "failureCases": ["over-abstention silently shrinks coverage while improving conditional precision"],
+      "alternativeStrategyPath": "AbstentionPolicyStrategy in src/v3/strategy.ts",
+      "humanValidationBoundary": "The acceptable abstention rate is a product decision, not a measurable optimum."
+    },
+    {
+      "id": "preference-fit",
+      "construct": "Does the job contain work the person likes or dislikes?",
+      "inputs": "V3Person.preferences, V3Job.responsibilities",
+      "outputs": "ChannelScore",
+      "implementation": "preferenceFit in src/v3/fit.ts",
+      "evaluator": "tests/four-channel-parallel.test.ts, tests/v3/bridge.test.ts",
+      "baseline": "PREFERENCE_SCORE_CENTER=0.5 with no evidence",
+      "knownAnswerTests": ["tests/four-channel-parallel.test.ts", "tests/v3/coefficientGovernance.test.ts"],
+      "failureCases": ["DWA_PARTIAL_CREDIT=0.6 has no empirical basis (PROVISIONAL_BASELINE)", "absence of LIKE must not read as DISLIKE"],
+      "alternativeStrategyPath": "PreferenceFitStrategy in src/v3/strategy.ts (deterministic arithmetic only)",
+      "humanValidationBoundary": "Whether a Preference Fit number predicts real satisfaction requires longitudinal human outcomes."
+    },
+    {
+      "id": "experience-fit",
+      "construct": "Does the job contain work the person has actually performed?",
+      "inputs": "V3Person.experience, V3Job.responsibilities",
+      "outputs": "ChannelScore",
+      "implementation": "experienceFit in src/v3/fit.ts",
+      "evaluator": "tests/four-channel-parallel.test.ts",
+      "baseline": "null score with no evidence",
+      "knownAnswerTests": ["tests/four-channel-parallel.test.ts", "tests/v3/bridge.test.ts"],
+      "failureCases": ["documented led>performed>unknown>assisted ownership ordering anomaly", "common-source bullets must not count as independent samples"],
+      "alternativeStrategyPath": "ExperienceFitStrategy in src/v3/strategy.ts (deterministic arithmetic only)",
+      "humanValidationBoundary": "Self-reported depth and ownership are unverified without references."
+    },
+    {
+      "id": "qualification-fit",
+      "construct": "Does the person's structured qualification evidence meet the job's requirements?",
+      "inputs": "V3Person.qualifications, V3Job.requirements",
+      "outputs": "ChannelScore with hard-gap diagnostics",
+      "implementation": "qualificationFit and DEFAULT_ALIASES in src/v3/fit.ts",
+      "evaluator": "tests/v3/bridge.test.ts alias/collision/hard-gap known answers",
+      "baseline": "exact normalized match with a small alias table",
+      "knownAnswerTests": ["tests/v3/bridge.test.ts", "tests/four-channel-parallel.test.ts"],
+      "failureCases": ["ambiguous education/credential equivalence is unsolvable by a fixed alias table", "substring collisions (Java vs JavaScript)"],
+      "alternativeStrategyPath": "AliasProvider seam; QUALIFICATION_EQUIVALENCE_SEAM in src/v3/strategy.ts permits a cached model equivalence judgement",
+      "humanValidationBoundary": "Regulated credential equivalence has a legal answer no model should invent."
+    },
+    {
+      "id": "direction-fit",
+      "construct": "Does the job contain work the person explicitly wants to do next?",
+      "inputs": "V3Person.aspirations, V3Job.responsibilities",
+      "outputs": "ChannelScore",
+      "implementation": "directionFit in src/v3/fit.ts",
+      "evaluator": "tests/four-channel-parallel.test.ts",
+      "baseline": "null score with no evidence",
+      "knownAnswerTests": ["tests/four-channel-parallel.test.ts"],
+      "failureCases": ["aspiration language is rare in resume-style text, so this is the least-evidenced channel", "must never be inferred from experience"],
+      "alternativeStrategyPath": "DirectionFitStrategy in src/v3/strategy.ts (deterministic arithmetic only)",
+      "humanValidationBoundary": "Stated direction may not match revealed direction; only the person can resolve that."
+    },
+    {
+      "id": "hireability",
+      "construct": "How legible is this person's evidence against this job's stated requirements?",
+      "inputs": "UserProfile, JobPosting",
+      "outputs": "requirement matrix, hireability, sellability, hard gaps",
+      "implementation": "src/domain/hireability.ts",
+      "evaluator": "pnpm audit:hireability",
+      "baseline": "coreCoverage-driven score recorded in artifacts/logic_audit/hireability.json",
+      "knownAnswerTests": ["tests/hireability.test.ts"],
+      "failureCases": ["keyword-legible skills are over-credited relative to demonstrated but unlabelled work"],
+      "alternativeStrategyPath": "not yet abstracted; no plausible alternative family identified, so no interface was invented",
+      "humanValidationBoundary": "Real hireability is a recruiter judgement and an outcome, not a computable quantity."
+    },
+    {
+      "id": "job-work-structure-inference",
+      "construct": "What work does a job posting actually contain, independent of its title?",
+      "inputs": "JobPosting text",
+      "outputs": "job TaskDNA vector, primary/secondary function, friction factors",
+      "implementation": "inferJobVector and matchFunctionByTasks in src/fixtures/jobs.ts, analyzeJob in src/domain/engine.ts",
+      "evaluator": "pnpm audit:logic, pnpm eval:onet-shock",
+      "baseline": "artifacts/logic_audit/onet_external_shock_baseline.json",
+      "knownAnswerTests": ["tests/job-intelligence.test.ts", "tests/logic-invariants.test.ts"],
+      "failureCases": ["title leakage: same-title/different-task and different-title/same-task pairs are the standing regression"],
+      "alternativeStrategyPath": "shares the Task/DWA mapping boundaries",
+      "humanValidationBoundary": "What a job is 'really about' is ultimately validated by people who do it."
+    },
+    {
+      "id": "network-and-next-best-action",
+      "construct": "Which relationship, if any, is the right next action, and is asking appropriate?",
+      "inputs": "relationships, interactions, scored jobs",
+      "outputs": "opportunity graph, ranked next-best actions",
+      "implementation": "src/domain/networkEngine.ts",
+      "evaluator": "pnpm audit:network-logic, pnpm audit:next-best-action",
+      "baseline": "artifacts/logic_audit/network_logic.json, next_best_action.json",
+      "knownAnswerTests": ["tests/network-engine.test.ts", "tests/network-logic.test.ts", "tests/recommendation-engine.test.ts"],
+      "failureCases": ["explicit boundaries and ask fatigue must veto a high-score action", "work fit must stay invariant to the network"],
+      "alternativeStrategyPath": "not yet abstracted; deliberately left concrete until an alternative family is identified",
+      "humanValidationBoundary": "Whether an outreach action is socially appropriate is a human judgement."
+    },
+    {
+      "id": "synthetic-observation-generator",
+      "construct": "Produce observation text whose meaning is a known function of a hidden truth vector.",
+      "inputs": "seed, cohort, O*NET occupation",
+      "outputs": "VirtualSubject with truth and observations",
+      "implementation": "src/lab/onetLab.ts, src/lab/generate.ts, src/lab/preferencePhrases.ts, src/lab/preferenceSemantics.ts",
+      "evaluator": "pnpm eval:generator-monotonicity (semantic polarity, hard gate), pnpm eval:generator-bias (positional bias)",
+      "baseline": "artifacts/iteration_readiness/generator_monotonicity.json",
+      "knownAnswerTests": ["tests/generator-semantics.test.ts", "tests/virtual-subjects.test.ts"],
+      "failureCases": [
+        "backwards polarity (fixed: was LOW truth expressed as a dislike of LOW-side behaviour)",
+        "positional sampling bias (fixed: seeded shuffle before truncation)",
+        "generator-exposure drift remains a residual metric risk and is a declared policy-parameter change, not a decoder experiment"
+      ],
+      "alternativeStrategyPath": "the generator is evaluation infrastructure, not a product strategy; it is changed only as a reviewed metric-contract change",
+      "humanValidationBoundary": "Synthetic language is not real language. No synthetic result establishes real-world validity."
+    },
+    {
+      "id": "evaluation-metric-harness",
+      "construct": "Measure decoder quality without letting the algorithm influence its own denominator.",
+      "inputs": "VirtualSubject[] and a split mode",
+      "outputs": "the full primary-plus-companion metric report",
+      "implementation": "src/lab/iterationMetrics.ts, src/lab/evidenceAvailability.ts, src/lab/preferenceTarget.ts",
+      "evaluator": "pnpm eval:metric-red-team, pnpm eval:iteration-readiness",
+      "baseline": "artifacts/iteration_readiness/preference_metric_red_team.json",
+      "knownAnswerTests": ["tests/available-evidence.test.ts", "tests/preference-metric-red-team.test.ts", "tests/iteration-metrics.test.ts"],
+      "failureCases": [
+        "recognition-gated inclusion let the extractor shrink its own denominator (superseded)",
+        "stance-blind availability counted backwards evidence as valid (fixed)",
+        "directionalAccuracy conflates a wrong direction with no lean; now reported with neutralPredictionRate and directionalAccuracyAmongLeaning"
+      ],
+      "alternativeStrategyPath": "metric contracts are versioned in config/metric-registry.json; changing one is a reviewed contract change",
+      "humanValidationBoundary": "The harness measures a synthetic construct. It cannot certify product quality."
+    }
+  ]
+}
