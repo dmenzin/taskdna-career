@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.5.3-iteration-hardening
+
+- Replaced the recognized-evidence-gated primary preference metric with `AVAILABLE_EVIDENCE_PREFERENCE_MACRO_MAE_V1`, defined from generator-exposed evidence (`src/lab/evidenceAvailability.ts`), independent of extractor recognition. The superseded `AUTONOMOUS_OBSERVED_PREFERENCE_MACRO_MAE_V1` is retained under `legacySuperseded` for comparison only.
+- Added `RECOGNIZED_EVIDENCE_PREFERENCE_MACRO_MAE`/`MICRO`, `AVAILABLE_TO_RECOGNIZED_RECALL`, and `ZERO_AVAILABLE_EVIDENCE_MAE` as mandatory companion metrics; added a mandatory regression test proving a missed extractor example cannot disappear from the primary denominator.
+- Corrected a fabricated/nonexistent `readinessLabBase` commit SHA in `config/baseline-manifest.json` (confirmed via the GitHub commits API that it never existed).
+- Reclassified `integration_preference` as `CONSTRUCT_VALID_BUT_INSUFFICIENT_TEST_COVERAGE` and added a coverage-floor sensitivity table (`pnpm eval:eligibility-sensitivity`) showing the eligibility floor is a policy parameter, not a scientific fact.
+- Named and inventoried every active `src/v3/fit.ts` coefficient with an explicit governance status (`src/v3/coefficientGovernance.ts`, `docs/V3_COEFFICIENT_INVENTORY.md`); no values changed. Flagged an unjustified `EXPERIENCE_OWNERSHIP_WEIGHTS` ordering anomaly (`unknown` scoring above `assisted`) without silently fixing it.
+- Red-teamed the primary metric against eight attack strategies (`pnpm eval:metric-red-team`, `docs/PREFERENCE_METRIC_RED_TEAM.md`); fixed a pre-existing no-op duplicate-evidence warning check.
+- Extended `pnpm eval:iteration-readiness` with eight new gates covering the above; extended `AGENTS.md` with persistent TaskDNA experiment rules for future autonomous iteration.
+- No V3 coefficients, generator behavior, or scoring logic were tuned; this is a metric-definition and governance hardening pass only.
+
 ## 0.5.1-forensic-specs
 
 - Documented the current implementation as-is in `docs/ALGORITHM_SPEC.md`, `docs/EVALUATION_SPEC.md`, and `docs/COEFFICIENT_REGISTRY.md`.

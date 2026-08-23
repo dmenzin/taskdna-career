@@ -81,9 +81,9 @@
     },
     {
       "id": "integration_preference",
-      "classification": "INSUFFICIENT_EVIDENCE",
+      "classification": "CONSTRUCT_VALID_BUT_INSUFFICIENT_TEST_COVERAGE",
       "maeEligible": false,
-      "reason": "conceptually ordered but generator coverage is only about 4%, below the declared 10% eligibility floor"
+      "reason": "conceptually ordered, non-overlapping bipolar construct, but generator coverage is only about 4%, below the declared 10% eligibility-floor POLICY parameter (see ELIGIBILITY_COVERAGE_FLOOR_POLICY)"
     },
     {
       "id": "customer_interaction_preference",
