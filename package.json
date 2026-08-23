@@ -45,6 +45,7 @@
     "openai:preflight": "tsx scripts/openai-preflight.ts",
     "openai:calibrate": "tsx scripts/openai-effort-calibration.ts",
     "experiment:agent-vs-lexical": "tsx scripts/experiment-agent-vs-lexical.ts",
+    "experiment:split-agents": "tsx scripts/experiment-split-agents.ts",
     "analyze:blueprints": "tsx scripts/analyze-blueprints.ts",
     "audit:metric-contracts": "tsx scripts/audit-metric-contracts.ts",
     "eval:product-red-team": "tsx scripts/product-red-team.ts",
