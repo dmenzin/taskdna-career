@@ -39,7 +39,7 @@ export const V3_COEFFICIENT_INVENTORY: V3CoefficientRecord[] = [
     status: "PROVISIONAL_BASELINE",
     requiredToRun: true,
     experimentCandidate: true,
-    notes: "Needed for a deterministic Task-versus-DWA-versus-abstain rule. Not a calibrated accuracy threshold.",
+    notes: "Needed for a deterministic Task / DWA / abstain rule. Not a calibrated accuracy threshold.",
   },
   {
     id: "v3.mapper.dwaThreshold",

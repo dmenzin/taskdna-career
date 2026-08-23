@@ -1,0 +1,160 @@
+{
+  "version": "metric-redteam.v1",
+  "seed": 20260823,
+  "mode": "DEVELOPMENT",
+  "allAttacksResistedOrExposed": true,
+  "attacks": [
+    {
+      "id": "recognize-fewer",
+      "name": "Make the extractor recognize fewer / harder cases",
+      "resistedByPrimary": true,
+      "exposedByGuardrail": true,
+      "detail": "Primary available-evidence MAE must stay put; recall must fall.",
+      "before": {
+        "availableEvidencePreferenceMacroMae": 2.500982319581047,
+        "availableToRecognizedRecall": 0.2953020134228188,
+        "availableEvidenceCoverage": 0.49666666666666665,
+        "availableEligibleCount": 149
+      },
+      "after": {
+        "availableEvidencePreferenceMacroMae": 2.500982319581047,
+        "availableToRecognizedRecall": 0.04697986577181208,
+        "availableEvidenceCoverage": 0.49666666666666665,
+        "availableEligibleCount": 149
+      }
+    },
+    {
+      "id": "abstain",
+      "name": "Abstain from all eligible recognition",
+      "resistedByPrimary": true,
+      "exposedByGuardrail": true,
+      "detail": "Abstention cannot empty the primary denominator; recall becomes 0.",
+      "before": {
+        "availableEvidencePreferenceMacroMae": 2.500982319581047,
+        "availableToRecognizedRecall": 0.2953020134228188,
+        "availableEvidenceCoverage": 0.49666666666666665,
+        "availableEligibleCount": 149
+      },
+      "after": {
+        "availableEvidencePreferenceMacroMae": 2.500982319581047,
+        "availableToRecognizedRecall": 0,
+        "availableEvidenceCoverage": 0.49666666666666665,
+        "availableEligibleCount": 149
+      }
+    },
+    {
+      "id": "constant-5",
+      "name": "Predict constant 5",
+      "resistedByPrimary": false,
+      "exposedByGuardrail": true,
+      "detail": "Constant-5 is reported beside the primary metric and cannot hide inside recognized-only selection.",
+      "before": {
+        "availableEvidencePreferenceMacroMae": 2.500982319581047,
+        "availableToRecognizedRecall": 0.2953020134228188,
+        "availableEvidenceCoverage": 0.49666666666666665,
+        "availableEligibleCount": 149
+      },
+      "after": {
+        "availableEvidencePreferenceMacroMae": 2.481259566217647,
+        "availableToRecognizedRecall": 0.2953020134228188,
+        "availableEvidenceCoverage": 0.49666666666666665,
+        "availableEligibleCount": 149
+      }
+    },
+    {
+      "id": "shrink-toward-5",
+      "name": "Shrink predictions toward 5",
+      "resistedByPrimary": true,
+      "exposedByGuardrail": true,
+      "detail": "Shrinkage is a published diagnostic curve, not an automatic selector.",
+      "before": {
+        "availableEvidencePreferenceMacroMae": 2.500982319581047,
+        "availableToRecognizedRecall": 0.2953020134228188,
+        "availableEvidenceCoverage": 0.49666666666666665,
+        "availableEligibleCount": 149
+      },
+      "after": {
+        "availableEvidencePreferenceMacroMae": 2.4883710014533276,
+        "availableToRecognizedRecall": 0.2953020134228188,
+        "availableEvidenceCoverage": 0.49666666666666665,
+        "availableEligibleCount": 149
+      }
+    },
+    {
+      "id": "drop-difficult-dimensions",
+      "name": "Keep only the easier eligible dimension",
+      "resistedByPrimary": true,
+      "exposedByGuardrail": true,
+      "detail": "Changing the eligible set is a metric-contract change and is visible in the dimension list.",
+      "before": {
+        "availableEvidencePreferenceMacroMae": 2.500982319581047,
+        "availableToRecognizedRecall": 0.2953020134228188,
+        "availableEvidenceCoverage": 0.49666666666666665,
+        "availableEligibleCount": 149
+      },
+      "after": {
+        "availableEvidencePreferenceMacroMae": 2.1040715010566315,
+        "availableToRecognizedRecall": 0.19298245614035087,
+        "availableEvidenceCoverage": 0.19,
+        "availableEligibleCount": 57
+      }
+    },
+    {
+      "id": "hide-hard-available-evidence",
+      "name": "Hide difficult available evidence from the inclusion set",
+      "resistedByPrimary": true,
+      "exposedByGuardrail": true,
+      "detail": "Removing hard available cases shrinks coverage rather than silently improving a recognized-only MAE.",
+      "before": {
+        "availableEvidencePreferenceMacroMae": 2.500982319581047,
+        "availableToRecognizedRecall": 0.2953020134228188,
+        "availableEvidenceCoverage": 0.49666666666666665,
+        "availableEligibleCount": 149
+      },
+      "after": {
+        "availableEvidencePreferenceMacroMae": 1.6696762265597256,
+        "availableToRecognizedRecall": 0.18421052631578946,
+        "availableEvidenceCoverage": 0.12666666666666668,
+        "availableEligibleCount": 38
+      }
+    },
+    {
+      "id": "change-generator-visibility",
+      "name": "Zero generator-visible preference phrases",
+      "resistedByPrimary": true,
+      "exposedByGuardrail": true,
+      "detail": "If the generator no longer exposes phrases, the primary denominator becomes empty and coverage is 0.",
+      "before": {
+        "availableEvidencePreferenceMacroMae": 2.500982319581047,
+        "availableToRecognizedRecall": 0.2953020134228188,
+        "availableEvidenceCoverage": 0.49666666666666665,
+        "availableEligibleCount": 149
+      },
+      "after": {
+        "availableEvidencePreferenceMacroMae": 0,
+        "availableToRecognizedRecall": 0,
+        "availableEvidenceCoverage": 0,
+        "availableEligibleCount": 0
+      }
+    },
+    {
+      "id": "duplicate-easy-evidence",
+      "name": "Duplicate easy available cases",
+      "resistedByPrimary": false,
+      "exposedByGuardrail": true,
+      "detail": "Records are unique per subject-dimension; cloned easy subjects are either ignored or increase subject count explicitly.",
+      "before": {
+        "availableEvidencePreferenceMacroMae": 2.500982319581047,
+        "availableToRecognizedRecall": 0.2953020134228188,
+        "availableEvidenceCoverage": 0.49666666666666665,
+        "availableEligibleCount": 149
+      },
+      "after": {
+        "availableEvidencePreferenceMacroMae": 2.398090864015485,
+        "availableToRecognizedRecall": 0.2822085889570552,
+        "availableEvidenceCoverage": 0.5191082802547771,
+        "availableEligibleCount": 163
+      }
+    }
+  ]
+}

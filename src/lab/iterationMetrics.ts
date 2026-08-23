@@ -1,10 +1,7 @@
 import { DIMENSION_IDS } from "@/config/model";
 import { observationsToProfile } from "@/lab/evaluate";
-import {
-  availablePreferenceDimensions,
-  recognizedPreferenceCount,
-  recognizedPreferenceDimensions,
-} from "@/lab/availableEvidence";
+import { availablePreferenceDimensions } from "@/lab/availableEvidence";
+import { recognizedPreferenceCount, recognizedPreferenceDimensions } from "@/lab/recognizedEvidence";
 import type { DimensionId } from "@/domain/types";
 import type { VirtualSubject } from "@/lab/types";
 import { AUTONOMOUS_PREFERENCE_DIMENSIONS_V1, PRIMARY_PREFERENCE_DECODER_METRIC } from "@/lab/preferenceTarget";

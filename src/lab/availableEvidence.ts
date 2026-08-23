@@ -1,5 +1,5 @@
 import { DIMENSION_IDS } from "@/config/model";
-import type { DimensionId, UserEvidence, UserProfile } from "@/domain/types";
+import type { DimensionId } from "@/domain/types";
 import { PREFERENCE_PHRASES } from "@/lab/onetLab";
 import type { VirtualSubject, VirtualSubjectObservations } from "@/lab/types";
 
@@ -14,7 +14,7 @@ import type { VirtualSubject, VirtualSubjectObservations } from "@/lab/types";
  */
 export const GENERIC_FALLBACK_PHRASES = ["work that suits me", "work that drains me"] as const;
 
-/** Fields `observationsToProfile` concatenates into career text / explicit lists. */
+/** Inference-visible observation fields that become career text or explicit lists. */
 export const INFERENCE_VISIBLE_PREFERENCE_FIELDS = [
   "resumeText",
   "explicitPreferences",
@@ -94,21 +94,6 @@ export function availablePreferencePlacements(subject: VirtualSubject): ExposedP
 
 export function availablePreferenceDimensions(subject: VirtualSubject): Set<DimensionId> {
   return new Set(availablePreferencePlacements(subject).map((item) => item.dimensionId));
-}
-
-export function recognizedPreferenceEvidence(evidence: UserEvidence[]) {
-  return evidence.filter((item) => item.evidenceClass === "PREFERENCE" || item.evidenceClass === "DISLIKE");
-}
-
-/** Extractor-recognized dimensions. Depends on decoder/lexicon output. */
-export function recognizedPreferenceDimensions(profile: UserProfile): Set<DimensionId> {
-  return new Set(
-    recognizedPreferenceEvidence(profile.evidence).flatMap((item) => Object.keys(item.inferredTaskDimensions) as DimensionId[]),
-  );
-}
-
-export function recognizedPreferenceCount(profile: UserProfile, id: DimensionId) {
-  return recognizedPreferenceEvidence(profile.evidence).filter((item) => id in item.inferredTaskDimensions).length;
 }
 
 function fieldContainsPhrase(texts: string[], phrase: string) {

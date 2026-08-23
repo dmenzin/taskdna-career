@@ -1,0 +1,122 @@
+{
+  "readinessVersion": "iteration-readiness.v3",
+  "lockedConfirmationExecuted": false,
+  "checks": [
+    {
+      "name": "readiness-lab provenance",
+      "pass": true,
+      "detail": "declared base 51ccb94c63663591503e1ee214962c130a366c85 is absent from this object store; verified descendant of historicalReferenceCheckpoint c10b914a147fc39f2be37cd0584425aeec958d1f"
+    },
+    {
+      "name": "frozen baseline identity",
+      "pass": true,
+      "detail": "00ec10ef5d1f181ad82cd710561d13c5cfffedcf3a60ae0b56cbb21e2e30101c"
+    },
+    {
+      "name": "frozen baseline unchanged",
+      "pass": true,
+      "detail": "compared with creator commit"
+    },
+    {
+      "name": "metric registry",
+      "pass": true,
+      "detail": "14 contracts"
+    },
+    {
+      "name": "primary preference MAE uses available evidence",
+      "pass": true,
+      "detail": "AVAILABLE_EVIDENCE_PREFERENCE_MACRO_MAE_V1"
+    },
+    {
+      "name": "recognized-evidence metrics are reported separately",
+      "pass": true,
+      "detail": "macro and micro"
+    },
+    {
+      "name": "available-to-recognized recall is reported",
+      "pass": true,
+      "detail": "AVAILABLE_TO_RECOGNIZED_RECALL"
+    },
+    {
+      "name": "autonomous preference target",
+      "pass": true,
+      "detail": "measurable_feedback, experimentation_preference"
+    },
+    {
+      "name": "available evidence is defined independently of extractor output",
+      "pass": true,
+      "detail": "phrase catalog vs visible observation fields"
+    },
+    {
+      "name": "eligibility coverage thresholds are policy assumptions",
+      "pass": true,
+      "detail": "floor=0.1"
+    },
+    {
+      "name": "AGENTS.md contains persistent TaskDNA experiment rules",
+      "pass": true,
+      "detail": "taskdna-experiment-rules block"
+    },
+    {
+      "name": "active V3 coefficients have explicit governance status",
+      "pass": true,
+      "detail": "20 inventoried coefficients"
+    },
+    {
+      "name": "missed extractor example remains in the primary denominator",
+      "pass": true,
+      "detail": "available-evidence regression"
+    },
+    {
+      "name": "eligible generator monotonicity",
+      "pass": true,
+      "detail": "298eae1ee2561dd2db5a29b3d52ff3a30ed45f959cbfa0e959c7cfc86cb5825e"
+    },
+    {
+      "name": "DEVELOPMENT metrics deterministic",
+      "pass": true,
+      "detail": "11e5dba9827a0671174a2a871166d8d9379d2c7ef7a9df39aa3cc2018e6e54be"
+    },
+    {
+      "name": "VALIDATION metrics deterministic",
+      "pass": true,
+      "detail": "f38a3d1ee4246299f4ca40a3bf77e91b54009c8bc7dc425f793ffa0ad68f920a"
+    },
+    {
+      "name": "locked confirmation guarded",
+      "pass": true,
+      "detail": "not executed by readiness"
+    },
+    {
+      "name": "V3 canonical/mapper/four-channel invariants",
+      "pass": true,
+      "detail": "known answers and separation pass"
+    },
+    {
+      "name": "unit tests",
+      "pass": true,
+      "detail": "pass"
+    },
+    {
+      "name": "typecheck",
+      "pass": true,
+      "detail": "pass"
+    },
+    {
+      "name": "lint",
+      "pass": true,
+      "detail": "pass"
+    },
+    {
+      "name": "build",
+      "pass": true,
+      "detail": "pass"
+    },
+    {
+      "name": "tracked secret-pattern scan",
+      "pass": true,
+      "detail": "filename-only scan; no candidates"
+    }
+  ],
+  "passed": true
+}

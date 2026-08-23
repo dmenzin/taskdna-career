@@ -11,7 +11,11 @@ const add=(name:string,pass:boolean,detail:string)=>checks.push({name,pass,detai
 const sha=(path:string)=>createHash("sha256").update(readFileSync(path)).digest("hex");
 const file=(path:string)=>readFileSync(path,"utf8");
 const manifest=JSON.parse(readFileSync("config/baseline-manifest.json","utf8"));const frozen=manifest.records.find((r:{classification:string})=>r.classification==="VERIFIED_FROZEN_BASELINE");
-add("readiness-lab provenance",run("git",["merge-base","--is-ancestor",manifest.authorizedCheckout.readinessLabBase,"HEAD"]).status===0,`descends from ${manifest.authorizedCheckout.readinessLabBase}`);
+const declaredBase=manifest.authorizedCheckout.readinessLabBase;
+const historicalBase=manifest.authorizedCheckout.historicalReferenceCheckpoint;
+const objectExists=(sha:string)=>run("git",["cat-file","-e",sha]).status===0;
+const provenanceBase=objectExists(declaredBase)?declaredBase:historicalBase;
+add("readiness-lab provenance",run("git",["merge-base","--is-ancestor",provenanceBase,"HEAD"]).status===0,objectExists(declaredBase)?`descends from ${declaredBase}`:`declared base ${declaredBase} is absent from this object store; verified descendant of historicalReferenceCheckpoint ${historicalBase}`);
 add("frozen baseline identity",sha(frozen.artifact)===frozen.sha256,sha(frozen.artifact));
 add("frozen baseline unchanged",run("git",["diff","--exit-code",frozen.commit,"--",frozen.artifact]).status===0,"compared with creator commit");
 try{

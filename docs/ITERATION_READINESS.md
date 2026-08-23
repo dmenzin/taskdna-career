@@ -2,6 +2,7 @@
 
 **Assessment date:** 2026-08-23
 **Authorized lab base:** `51ccb94c63663591503e1ee214962c130a366c85`
+**Hardening checkout:** `cursor/taskdna-pre-iteration-hardening-5d9f`
 **Ephemeral `b42e121…` prototype:** retired and not required
 
 # READY FOR AUTONOMOUS ITERATION: YES
@@ -12,10 +13,14 @@ YES means the lab and V3 computational boundaries are safe for scoped autonomous
 
 | Gate | Result | Evidence |
 |---|---|---|
-| readiness-lab and frozen baseline provenance | PASS | HEAD descends from `51ccb94…`; immutable artifact SHA/history checks pass |
-| metric registry and preference target | PASS | 17 decisions; only two continuous eligible dimensions; primary metric registered |
+| readiness-lab and frozen baseline provenance | PASS | Declared `51ccb94…` is not in this GitHub object store; HEAD descends from historical checkpoint `c10b914…`; frozen artifact SHA/history checks pass |
+| metric registry and preference target | PASS | 17 decisions; only two continuous eligible dimensions; available-evidence primary registered |
+| available vs recognized evidence | PASS | availability uses generator-visible phrases; extractor output cannot empty the primary denominator |
+| eligibility coverage floor | PASS | 10% floor documented as a policy assumption; sensitivity table emitted |
+| AGENTS.md TaskDNA rules | PASS | Next.js block preserved; experiment rules appended |
+| V3 coefficient governance | PASS | every active coefficient has an explicit non-calibrated status |
 | generator monotonicity | PASS | eligible dimensions have coverage, correct signed associations, and monotone quartile signals |
-| observed macro/micro and anti-collapse diagnostics | PASS | deterministic DEVELOPMENT/VALIDATION reports include coverage, variance, constant/prior, shrinkage and legacy MAE |
+| available/recognized macro/micro and anti-collapse diagnostics | PASS | deterministic DEVELOPMENT/VALIDATION reports include recall, coverage, variance, constant/prior, shrinkage and legacy MAE |
 | confidence governance | PASS | diagnostic-only; never a V3 fit multiplier |
 | split governance | PASS | DEVELOPMENT/VALIDATION explicit; LOCKED_CONFIRMATION denied without confirmation and never run by preflight |
 | canonical Task/DWA representation | PASS | O*NET identity/type/importance/DWA/GWA/provenance plus separate context |
@@ -28,28 +33,35 @@ YES means the lab and V3 computational boundaries are safe for scoped autonomous
 
 ## Autonomous preference target
 
-The primary metric is `AUTONOMOUS_OBSERVED_PREFERENCE_MACRO_MAE_V1`, evaluated only on `measurable_feedback` and `experimentation_preference` where the subject has extracted PREFERENCE/DISLIKE support. DEVELOPMENT macro/micro are `2.5723946176015295` / `2.46658501846426`, with eligible evidence coverage `0.20666666666666667`. VALIDATION values are `2.125820891422168` / `2.1528805734542513`, coverage `0.255`. These values describe the current unoptimized decoder, not a quality claim.
+The primary metric is `AVAILABLE_EVIDENCE_PREFERENCE_MACRO_MAE_V1`. For each subject, take eligible dimensions (`measurable_feedback`, `experimentation_preference`) for which the generator actually placed a preference/dislike phrase in an inference-visible field; average absolute error within subject; then average those subjects equally. Extractor recognition is not an inclusion rule.
 
-The legacy all-17D MAE remains `1.9009214051435472` DEVELOPMENT and `1.8619872971926397` VALIDATION. It is compatibility evidence only. Zero-evidence MAE remains a prior diagnostic. Directional accuracy, extreme recall, within-dimension rank, calibration slope, eligible coverage, prediction variance, constant/prior comparison, shrinkage curve, and legacy MAE must accompany the primary metric. Current poor rank/calibration diagnostics are legitimate future experiment targets, not readiness failures.
+Current unoptimized decoder values, not a quality claim:
+
+| Split | Available macro | Available micro | Recognized macro | Recognized micro | Available→recognized recall | Available coverage | Recognized coverage | Zero-available MAE | Legacy 17D MAE |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| DEVELOPMENT | 2.500982319581047 | 2.4694755263173227 | 2.5723946176015295 | 2.46658501846426 | 0.2953020134228188 | 0.49666666666666665 | 0.20666666666666667 | 1.4071360989067914 | 1.9009214051435472 |
+| VALIDATION | 2.4345693230624006 | 2.43878826897293 | 2.125820891422168 | 2.1528805734542513 | 0.3177570093457944 | 0.535 | 0.255 | 1.3286917764786086 | 1.8619872971926397 |
+
+VALIDATION recognized MAE is lower than available MAE. That is the selection-bias pattern the old primary would have rewarded. Directional accuracy, extreme recall, rank, calibration, coverage, variance, constant/prior/shrinkage, recall, and legacy MAE must accompany the primary metric. Current poor rank/calibration and near-constant-5 behavior are legitimate future experiment targets, not readiness failures.
 
 ## Generator findings
 
-At seed `20260823` over 450 subjects:
+DEVELOPMENT available-evidence coverage at seed `20260823`:
 
-| Eligible dimension | Coverage | truth→high evidence | truth→low evidence | truth→observable signal | quartile monotone |
-|---|---:|---:|---:|---:|---|
-| measurable_feedback | 0.5867 | 0.7365 | −0.7402 | 0.8779 | PASS |
-| experimentation_preference | 0.3111 | 0.4985 | −0.5151 | 0.6587 | PASS |
+| Eligible dimension | Generator-available coverage | Extractor-recognized coverage |
+|---|---:|---:|
+| measurable_feedback | 0.6133 | 0.3133 |
+| experimentation_preference | 0.3800 | 0.1000 |
 
-The complete 17D result and exclusions are in `artifacts/iteration_readiness/generator_monotonicity.json`. Integration preference is conceptually ordered but excluded for approximately 4% generator coverage, below the declared 10% floor. Other exclusions follow the non-opposite, compound, overlap, or non-interval findings in the product audit. No generator behavior was changed to obtain this result.
+`integration_preference` is conceptually ordered (`CONSTRUCT_VALID_BUT_INSUFFICIENT_TEST_COVERAGE`) with generator-available coverage `0.0667`, below the declared **policy** floor of 10%. It would become eligible only at 0% or 5% floors. No other dimension's eligibility changes solely because of the threshold. Extractor coverage never decides eligibility.
 
 ## Final blueprint check
 
-1. **Decoder prediction:** a 0–10 synthetic preference latent value for generated preference/dislike evidence that the extractor supports—not a complete person profile or job fit.
+1. **Decoder prediction:** a 0–10 synthetic preference latent value where generated preference/dislike evidence was made available—not a complete person profile or job fit.
 2. **MAE-eligible:** `measurable_feedback`, `experimentation_preference` only.
-3. **Excluded/questionable:** the other 15 are visible and classified; reasons include redefinition, two independent preferences, overlap, and insufficient evidence.
-4. **Primary metric:** equal-subject autonomous observed preference macro MAE over supported eligible dimensions.
-5. **Always accompany it:** micro MAE, directional accuracy, extreme recall, rank/order, calibration, coverage, variance, constant/prior/shrinkage, confidence/error, and legacy 17D MAE.
+3. **Excluded/questionable:** the other 15 remain visible. Layers are construct invalidity, insufficient interval semantics, or generator-coverage policy—not extractor misses.
+4. **Primary metric:** equal-subject available-evidence preference macro MAE over eligible dimensions.
+5. **Always accompany it:** available micro, recognized macro/micro, available-to-recognized recall, zero-available MAE, directional accuracy, extreme recall, rank/order, calibration, coverage, variance, constant/prior/shrinkage, and legacy 17D MAE.
 6. **Preference Fit:** compatibility of explicit LIKE/DISLIKE/NEUTRAL evidence with mapped job responsibilities; UNKNOWN is no contribution.
 7. **Experience Fit:** coverage of job tasks by performed-task evidence with exact/DWA matching, depth, ownership and deduplication.
 8. **Qualification Fit:** structured equivalence and gaps between qualifications and required/preferred requirements.
@@ -58,7 +70,7 @@ The complete 17D result and exclusions are in `artifacts/iteration_readiness/gen
 
 ## Starting instructions for the later loop
 
-1. Run `pnpm eval:iteration-readiness` and require `passed: true`.
-2. Read `docs/V3_COMPUTATIONAL_CONTRACT.md`, `docs/EXPERIMENT_PERMISSIONS.md`, and `docs/AUTONOMOUS_ITERATION_PROTOCOL.md`.
+1. Start from this hardened branch and SHA after `pnpm eval:iteration-readiness` reports `passed: true`.
+2. Read `docs/V3_COMPUTATIONAL_CONTRACT.md`, `docs/EXPERIMENT_PERMISSIONS.md`, `docs/V3_COEFFICIENT_GOVERNANCE.md`, and `docs/AUTONOMOUS_ITERATION_PROTOCOL.md`.
 3. Run `pnpm experiment:new <id>`, finish preregistration, then make one conceptual change.
-4. Use DEVELOPMENT first; preserve eligibility/coverage/variance guardrails. Use VALIDATION only after the preregistered development gate. Do not run locked confirmation during ordinary iteration.
+4. Use DEVELOPMENT first; preserve eligibility/coverage/variance/recall guardrails. Use VALIDATION only after the preregistered development gate. Do not run locked confirmation during ordinary iteration.

@@ -5,8 +5,8 @@ import { observationsToProfile } from "@/lab/evaluate";
 import {
   availablePreferenceDimensions,
   availablePreferencePlacements,
-  recognizedPreferenceDimensions,
 } from "@/lab/availableEvidence";
+import { recognizedPreferenceDimensions } from "@/lab/recognizedEvidence";
 import { diagnosePreference, preferenceMetricRecords } from "@/lab/iterationMetrics";
 import type { VirtualSubject, VirtualSubjectObservations, VirtualSubjectTruth } from "@/lab/types";
 

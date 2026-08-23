@@ -1,0 +1,372 @@
+{
+  "version": "eligibility-sensitivity.v1",
+  "seed": 20260823,
+  "mode": "DEVELOPMENT",
+  "policyFloor": 0.1,
+  "policyFloorIsAssumption": true,
+  "floors": [
+    0,
+    0.05,
+    0.1,
+    0.2
+  ],
+  "rows": [
+    {
+      "id": "problem_structure",
+      "classification": "VALID_WITH_REDEFINITION",
+      "constructValidity": "NEEDS_REDEFINITION",
+      "intervalSemantics": "INSUFFICIENT_INTERVAL_SEMANTICS",
+      "exclusionLayers": [
+        "CONSTRUCT_INVALIDITY",
+        "INSUFFICIENT_INTERVAL_SEMANTICS"
+      ],
+      "currentMaeEligible": false,
+      "constructValidForContinuousMae": false,
+      "generatorAvailableCoverage": 0.5533333333333333,
+      "extractorRecognizedCoverage": 0.6066666666666667,
+      "eligibilityByFloor": {
+        "0": false,
+        "0.05": false,
+        "0.1": false,
+        "0.2": false
+      },
+      "floorsThatChangeEligibility": []
+    },
+    {
+      "id": "measurable_feedback",
+      "classification": "VALID_BIPOLAR_CONTINUOUS",
+      "constructValidity": "VALID_BIPOLAR_CONTINUOUS",
+      "intervalSemantics": "POLICY_ACCEPTED_FOR_SYNTHETIC_MAE",
+      "exclusionLayers": [],
+      "currentMaeEligible": true,
+      "constructValidForContinuousMae": true,
+      "generatorAvailableCoverage": 0.6133333333333333,
+      "extractorRecognizedCoverage": 0.31333333333333335,
+      "eligibilityByFloor": {
+        "0": true,
+        "0.05": true,
+        "0.1": true,
+        "0.2": true
+      },
+      "floorsThatChangeEligibility": []
+    },
+    {
+      "id": "investigation_orientation",
+      "classification": "BETTER_AS_TWO_INDEPENDENT_PREFERENCES",
+      "constructValidity": "NOT_OPPOSITES",
+      "intervalSemantics": "INSUFFICIENT_INTERVAL_SEMANTICS",
+      "exclusionLayers": [
+        "CONSTRUCT_INVALIDITY"
+      ],
+      "currentMaeEligible": false,
+      "constructValidForContinuousMae": false,
+      "generatorAvailableCoverage": 0.5933333333333334,
+      "extractorRecognizedCoverage": 0.5266666666666666,
+      "eligibilityByFloor": {
+        "0": false,
+        "0.05": false,
+        "0.1": false,
+        "0.2": false
+      },
+      "floorsThatChangeEligibility": []
+    },
+    {
+      "id": "evidence_density",
+      "classification": "VALID_WITH_REDEFINITION",
+      "constructValidity": "NEEDS_REDEFINITION",
+      "intervalSemantics": "INSUFFICIENT_INTERVAL_SEMANTICS",
+      "exclusionLayers": [
+        "CONSTRUCT_INVALIDITY",
+        "INSUFFICIENT_INTERVAL_SEMANTICS"
+      ],
+      "currentMaeEligible": false,
+      "constructValidForContinuousMae": false,
+      "generatorAvailableCoverage": 0.44,
+      "extractorRecognizedCoverage": 0.38666666666666666,
+      "eligibilityByFloor": {
+        "0": false,
+        "0.05": false,
+        "0.1": false,
+        "0.2": false
+      },
+      "floorsThatChangeEligibility": []
+    },
+    {
+      "id": "experimentation_preference",
+      "classification": "VALID_BIPOLAR_CONTINUOUS",
+      "constructValidity": "VALID_BIPOLAR_CONTINUOUS",
+      "intervalSemantics": "POLICY_ACCEPTED_FOR_SYNTHETIC_MAE",
+      "exclusionLayers": [],
+      "currentMaeEligible": true,
+      "constructValidForContinuousMae": true,
+      "generatorAvailableCoverage": 0.38,
+      "extractorRecognizedCoverage": 0.1,
+      "eligibilityByFloor": {
+        "0": true,
+        "0.05": true,
+        "0.1": true,
+        "0.2": true
+      },
+      "floorsThatChangeEligibility": []
+    },
+    {
+      "id": "scope_preference",
+      "classification": "OVERLAPS_ANOTHER_DIMENSION",
+      "constructValidity": "OVERLAPPING",
+      "intervalSemantics": "INSUFFICIENT_INTERVAL_SEMANTICS",
+      "exclusionLayers": [
+        "CONSTRUCT_INVALIDITY"
+      ],
+      "currentMaeEligible": false,
+      "constructValidForContinuousMae": false,
+      "generatorAvailableCoverage": 0.36,
+      "extractorRecognizedCoverage": 0.5066666666666667,
+      "eligibilityByFloor": {
+        "0": false,
+        "0.05": false,
+        "0.1": false,
+        "0.2": false
+      },
+      "floorsThatChangeEligibility": []
+    },
+    {
+      "id": "software_as_tool",
+      "classification": "VALID_WITH_REDEFINITION",
+      "constructValidity": "NEEDS_REDEFINITION",
+      "intervalSemantics": "INSUFFICIENT_INTERVAL_SEMANTICS",
+      "exclusionLayers": [
+        "CONSTRUCT_INVALIDITY",
+        "INSUFFICIENT_INTERVAL_SEMANTICS"
+      ],
+      "currentMaeEligible": false,
+      "constructValidForContinuousMae": false,
+      "generatorAvailableCoverage": 0.14666666666666667,
+      "extractorRecognizedCoverage": 0.04,
+      "eligibilityByFloor": {
+        "0": false,
+        "0.05": false,
+        "0.1": false,
+        "0.2": false
+      },
+      "floorsThatChangeEligibility": []
+    },
+    {
+      "id": "reasoning_style",
+      "classification": "OVERLAPS_ANOTHER_DIMENSION",
+      "constructValidity": "OVERLAPPING",
+      "intervalSemantics": "INSUFFICIENT_INTERVAL_SEMANTICS",
+      "exclusionLayers": [
+        "CONSTRUCT_INVALIDITY"
+      ],
+      "currentMaeEligible": false,
+      "constructValidForContinuousMae": false,
+      "generatorAvailableCoverage": 0.24,
+      "extractorRecognizedCoverage": 0.3,
+      "eligibilityByFloor": {
+        "0": false,
+        "0.05": false,
+        "0.1": false,
+        "0.2": false
+      },
+      "floorsThatChangeEligibility": []
+    },
+    {
+      "id": "creation_style",
+      "classification": "VALID_WITH_REDEFINITION",
+      "constructValidity": "NEEDS_REDEFINITION",
+      "intervalSemantics": "INSUFFICIENT_INTERVAL_SEMANTICS",
+      "exclusionLayers": [
+        "CONSTRUCT_INVALIDITY",
+        "INSUFFICIENT_INTERVAL_SEMANTICS"
+      ],
+      "currentMaeEligible": false,
+      "constructValidForContinuousMae": false,
+      "generatorAvailableCoverage": 0.14666666666666667,
+      "extractorRecognizedCoverage": 0.16666666666666666,
+      "eligibilityByFloor": {
+        "0": false,
+        "0.05": false,
+        "0.1": false,
+        "0.2": false
+      },
+      "floorsThatChangeEligibility": []
+    },
+    {
+      "id": "real_system_grounding",
+      "classification": "BETTER_AS_TWO_INDEPENDENT_PREFERENCES",
+      "constructValidity": "NOT_OPPOSITES",
+      "intervalSemantics": "INSUFFICIENT_INTERVAL_SEMANTICS",
+      "exclusionLayers": [
+        "CONSTRUCT_INVALIDITY"
+      ],
+      "currentMaeEligible": false,
+      "constructValidForContinuousMae": false,
+      "generatorAvailableCoverage": 0.04666666666666667,
+      "extractorRecognizedCoverage": 0.08,
+      "eligibilityByFloor": {
+        "0": false,
+        "0.05": false,
+        "0.1": false,
+        "0.2": false
+      },
+      "floorsThatChangeEligibility": []
+    },
+    {
+      "id": "closure_preference",
+      "classification": "VALID_WITH_REDEFINITION",
+      "constructValidity": "NEEDS_REDEFINITION",
+      "intervalSemantics": "INSUFFICIENT_INTERVAL_SEMANTICS",
+      "exclusionLayers": [
+        "CONSTRUCT_INVALIDITY",
+        "INSUFFICIENT_INTERVAL_SEMANTICS"
+      ],
+      "currentMaeEligible": false,
+      "constructValidForContinuousMae": false,
+      "generatorAvailableCoverage": 0.1,
+      "extractorRecognizedCoverage": 0.2733333333333333,
+      "eligibilityByFloor": {
+        "0": false,
+        "0.05": false,
+        "0.1": false,
+        "0.2": false
+      },
+      "floorsThatChangeEligibility": []
+    },
+    {
+      "id": "causal_reasoning",
+      "classification": "OVERLAPS_ANOTHER_DIMENSION",
+      "constructValidity": "OVERLAPPING",
+      "intervalSemantics": "INSUFFICIENT_INTERVAL_SEMANTICS",
+      "exclusionLayers": [
+        "CONSTRUCT_INVALIDITY"
+      ],
+      "currentMaeEligible": false,
+      "constructValidForContinuousMae": false,
+      "generatorAvailableCoverage": 0.05333333333333334,
+      "extractorRecognizedCoverage": 0.44666666666666666,
+      "eligibilityByFloor": {
+        "0": false,
+        "0.05": false,
+        "0.1": false,
+        "0.2": false
+      },
+      "floorsThatChangeEligibility": []
+    },
+    {
+      "id": "integration_preference",
+      "classification": "CONSTRUCT_VALID_BUT_INSUFFICIENT_TEST_COVERAGE",
+      "constructValidity": "VALID_BIPOLAR_CONTINUOUS",
+      "intervalSemantics": "POLICY_ACCEPTED_FOR_SYNTHETIC_MAE",
+      "exclusionLayers": [
+        "GENERATOR_COVERAGE"
+      ],
+      "currentMaeEligible": false,
+      "constructValidForContinuousMae": true,
+      "generatorAvailableCoverage": 0.06666666666666667,
+      "extractorRecognizedCoverage": 0.04,
+      "eligibilityByFloor": {
+        "0": true,
+        "0.05": true,
+        "0.1": false,
+        "0.2": false
+      },
+      "floorsThatChangeEligibility": [
+        0,
+        0.05
+      ]
+    },
+    {
+      "id": "customer_interaction_preference",
+      "classification": "BETTER_AS_TWO_INDEPENDENT_PREFERENCES",
+      "constructValidity": "NOT_OPPOSITES",
+      "intervalSemantics": "INSUFFICIENT_INTERVAL_SEMANTICS",
+      "exclusionLayers": [
+        "CONSTRUCT_INVALIDITY"
+      ],
+      "currentMaeEligible": false,
+      "constructValidForContinuousMae": false,
+      "generatorAvailableCoverage": 0.02,
+      "extractorRecognizedCoverage": 0.02666666666666667,
+      "eligibilityByFloor": {
+        "0": false,
+        "0.05": false,
+        "0.1": false,
+        "0.2": false
+      },
+      "floorsThatChangeEligibility": []
+    },
+    {
+      "id": "coordination_preference",
+      "classification": "BETTER_AS_TWO_INDEPENDENT_PREFERENCES",
+      "constructValidity": "NOT_OPPOSITES",
+      "intervalSemantics": "INSUFFICIENT_INTERVAL_SEMANTICS",
+      "exclusionLayers": [
+        "CONSTRUCT_INVALIDITY"
+      ],
+      "currentMaeEligible": false,
+      "constructValidForContinuousMae": false,
+      "generatorAvailableCoverage": 0.02666666666666667,
+      "extractorRecognizedCoverage": 0.4266666666666667,
+      "eligibilityByFloor": {
+        "0": false,
+        "0.05": false,
+        "0.1": false,
+        "0.2": false
+      },
+      "floorsThatChangeEligibility": []
+    },
+    {
+      "id": "theory_vs_application",
+      "classification": "VALID_WITH_REDEFINITION",
+      "constructValidity": "NEEDS_REDEFINITION",
+      "intervalSemantics": "INSUFFICIENT_INTERVAL_SEMANTICS",
+      "exclusionLayers": [
+        "CONSTRUCT_INVALIDITY",
+        "INSUFFICIENT_INTERVAL_SEMANTICS"
+      ],
+      "currentMaeEligible": false,
+      "constructValidForContinuousMae": false,
+      "generatorAvailableCoverage": 0.02,
+      "extractorRecognizedCoverage": 0.08,
+      "eligibilityByFloor": {
+        "0": false,
+        "0.05": false,
+        "0.1": false,
+        "0.2": false
+      },
+      "floorsThatChangeEligibility": []
+    },
+    {
+      "id": "repetition_tolerance",
+      "classification": "BETTER_AS_TWO_INDEPENDENT_PREFERENCES",
+      "constructValidity": "NOT_OPPOSITES",
+      "intervalSemantics": "INSUFFICIENT_INTERVAL_SEMANTICS",
+      "exclusionLayers": [
+        "CONSTRUCT_INVALIDITY"
+      ],
+      "currentMaeEligible": false,
+      "constructValidForContinuousMae": false,
+      "generatorAvailableCoverage": 0,
+      "extractorRecognizedCoverage": 0.15333333333333332,
+      "eligibilityByFloor": {
+        "0": false,
+        "0.05": false,
+        "0.1": false,
+        "0.2": false
+      },
+      "floorsThatChangeEligibility": []
+    }
+  ],
+  "dimensionsWhoseEligibilityChangesSolelyFromThreshold": [
+    {
+      "id": "integration_preference",
+      "generatorAvailableCoverage": 0.06666666666666667,
+      "currentMaeEligible": false,
+      "floorsThatWouldFlip": [
+        0,
+        0.05
+      ],
+      "note": "Construct is treated as continuously MAE-capable; only the coverage-floor policy changes the decision."
+    }
+  ]
+}

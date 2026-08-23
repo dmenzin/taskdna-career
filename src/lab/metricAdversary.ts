@@ -1,5 +1,4 @@
 import { DIMENSION_IDS } from "@/config/model";
-import type { DimensionId } from "@/domain/types";
 import { AUTONOMOUS_PREFERENCE_DIMENSIONS_V1 } from "@/lab/preferenceTarget";
 import { summarizePreferenceRecords, type PreferenceMetricRecord } from "@/lab/iterationMetrics";
 

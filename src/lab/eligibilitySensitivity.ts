@@ -1,7 +1,8 @@
 import { DIMENSION_IDS } from "@/config/model";
 import type { DimensionId } from "@/domain/types";
 import { observationsToProfile } from "@/lab/evaluate";
-import { availablePreferenceDimensions, recognizedPreferenceDimensions } from "@/lab/availableEvidence";
+import { availablePreferenceDimensions } from "@/lab/availableEvidence";
+import { recognizedPreferenceDimensions } from "@/lab/recognizedEvidence";
 import {
   COVERAGE_GATED_CONSTRUCT_VALID_DIMENSIONS,
   ELIGIBILITY_COVERAGE_FLOOR_SENSITIVITY,
