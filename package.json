@@ -28,6 +28,8 @@
     "eval:preference": "tsx scripts/iteration-diagnostics.ts",
     "eval:generator-monotonicity": "tsx scripts/generator-monotonicity.ts",
     "eval:iteration-readiness": "tsx scripts/iteration-readiness.ts",
+    "eval:eligibility-sensitivity": "tsx scripts/eligibility-sensitivity.ts",
+    "eval:metric-redteam": "tsx scripts/metric-redteam.ts",
     "experiment:new": "tsx scripts/create-experiment.ts",
     "audit:logic": "tsx scripts/audit-logic.ts",
     "audit:sensitivity": "tsx scripts/audit-sensitivity.ts",

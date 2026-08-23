@@ -3,15 +3,11 @@ import { buildProfileFromCareerInput, profileVector, scoreFunctions, scoreJobs, 
 import { createHumanOpportunityGraphFromIntake } from "@/domain/networkEngine";
 import type { UserProfile } from "@/domain/types";
 import { analogCoordinationJobs, analogInvestigationJobs } from "@/lab/analogJobs";
+import { inferenceVisiblePreferenceTexts } from "@/lab/availableEvidence";
 import type { SubjectEvaluation, TwinPair, VirtualSubject } from "@/lab/types";
 
 export function observationsToProfile(subject: VirtualSubject): UserProfile {
-  const text = [
-    subject.observations.resumeText,
-    ...subject.observations.explicitPreferences,
-    ...subject.observations.explicitDislikes,
-    ...subject.observations.contradictoryStatements,
-  ].join(" ");
+  const text = inferenceVisiblePreferenceTexts(subject.observations).join(" ");
   return buildProfileFromCareerInput({
     id: subject.observations.subjectId,
     name: subject.observations.subjectId,

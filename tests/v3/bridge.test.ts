@@ -25,7 +25,7 @@ describe("V3 canonical model and deterministic mapper boundary",()=>{
 });
 
 describe("autonomous preference target",()=>{
- it("classifies all dimensions and limits continuous MAE to defensible targets",()=>{expect(PREFERENCE_DIMENSION_DECISIONS).toHaveLength(17);expect(AUTONOMOUS_PREFERENCE_DIMENSIONS_V1).toEqual(["measurable_feedback","experimentation_preference"]);expect(PREFERENCE_DIMENSION_DECISIONS.filter(x=>x.maeEligible).every(x=>x.classification==="VALID_BIPOLAR_CONTINUOUS")).toBe(true);});
+ it("classifies all dimensions and limits continuous MAE to defensible targets",()=>{expect(PREFERENCE_DIMENSION_DECISIONS).toHaveLength(17);expect(AUTONOMOUS_PREFERENCE_DIMENSIONS_V1).toEqual(["measurable_feedback","experimentation_preference"]);expect(PREFERENCE_DIMENSION_DECISIONS.filter(x=>x.maeEligible).every(x=>x.classification==="VALID_BIPOLAR_CONTINUOUS")).toBe(true);expect(PREFERENCE_DIMENSION_DECISIONS.find(x=>x.id==="integration_preference")?.classification).toBe("CONSTRUCT_VALID_BUT_INSUFFICIENT_TEST_COVERAGE");expect(PREFERENCE_DIMENSION_DECISIONS.every(x=>!x.exclusionLayers.includes("EXTRACTOR_COVERAGE"))).toBe(true);});
  it("empirically passes generator monotonicity for every eligible dimension",()=>{const results=assessGeneratorMonotonicity(generateOnetSubjects());expect(eligibleMonotonicityPass(results)).toBe(true);for(const r of results.filter(x=>x.eligible)){expect(r.coverage).toBeGreaterThan(0);expect(r.observableSignalAssociation).toBeGreaterThan(0);expect(r.failures).toEqual([]);}});
 });
 

@@ -10,7 +10,7 @@
 
 ## AUTONOMOUSLY EVALUABLE
 
-Synthetic preference decoder semantics (observed macro primary plus micro, coverage, variance and collapse guards); generator correctness and monotonicity; invariance; deterministic cache/provenance; code correctness; runtime; channel isolation; known-answer scoring fixtures.
+Synthetic preference decoder semantics (available-evidence macro primary plus available/recognized micro, recall, coverage, variance and collapse guards); generator correctness and monotonicity; invariance; deterministic cache/provenance; code correctness; runtime; channel isolation; known-answer scoring fixtures.
 
 ## AUTONOMOUSLY EXPERIMENTAL BUT NOT VALIDATED
 

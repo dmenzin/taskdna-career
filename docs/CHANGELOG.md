@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.2-pre-iteration-hardening
+
+- Split generator-available preference evidence from extractor-recognized evidence.
+- Primary synthetic metric is now `AVAILABLE_EVIDENCE_PREFERENCE_MACRO_MAE_V1`.
+- Relabelled `integration_preference` as construct-valid but below the policy coverage floor.
+- Documented V3 coefficient governance statuses and persistent TaskDNA experiment rules in `AGENTS.md`.
+- No coefficient tuning and no 8-hour improvement loop.
+
 ## 0.5.1-forensic-specs
 
 - Documented the current implementation as-is in `docs/ALGORITHM_SPEC.md`, `docs/EVALUATION_SPEC.md`, and `docs/COEFFICIENT_REGISTRY.md`.

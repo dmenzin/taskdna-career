@@ -29,14 +29,16 @@ No channel reads another channel's collection. `null` means unknown/no applicabl
 | ownership | USED | declared Experience depth modifier |
 | Task importance | DIAGNOSTIC_ONLY | retained with O*NET scale/source; not fit-weighted |
 | Core/Supplemental | DIAGNOSTIC_ONLY | retained; not fit-weighted |
-| DWA partial credit | USED | fixed semantic fallback of 0.6, not empirically validated |
+| DWA partial credit | USED | fixed semantic fallback of 0.6; `PROVISIONAL_BASELINE`, not empirically validated |
 | contextual reranking | EXPERIMENTAL_DISABLED | interface exists; no default reranker |
 | Overall score | NOT_USED | deliberately absent |
 
 ## Autonomous preference target V1
 
-The decoder predicts a 0–10 synthetic preference latent value only where generated preference/dislike evidence is extracted. Continuous autonomous MAE is restricted to `measurable_feedback` and `experimentation_preference`. Both have ordered bipolar semantics, empirical generator coverage above the preregistered 10% floor, positive truth→high-evidence association, negative truth→low-evidence association, positive observable-signal association, and monotone quartile signal.
+The decoder predicts a 0–10 synthetic preference latent value. Continuous autonomous MAE is restricted to `measurable_feedback` and `experimentation_preference`. Both have ordered bipolar semantics, empirical **generator-available** coverage above the declared 10% **policy** floor, positive truth→high-evidence association, negative truth→low-evidence association, positive observable-signal association, and monotone quartile signal. Interval MAE is a policy acceptance, not a proven interval scale.
 
-`AUTONOMOUS_OBSERVED_PREFERENCE_MACRO_MAE_V1` is the primary metric: eligible supported-dimension MAE within each eligible subject, then equal subject mean. It must always be accompanied by micro MAE, directional accuracy, extreme recall, within-dimension rank correlation, calibration slope, eligible coverage, prediction variance, constant/prior and shrinkage diagnostics, and legacy all-17D MAE. Changing eligibility is a metric-contract change, not a decoder experiment.
+`AVAILABLE_EVIDENCE_PREFERENCE_MACRO_MAE_V1` is the primary metric: for each subject, take eligible dimensions for which the generator actually placed a preference/dislike phrase in an inference-visible field; average absolute error within subject; then average subjects equally. Inclusion does **not** depend on extractor recognition. Always accompany it with available micro MAE, recognized macro/micro MAE, available-to-recognized recall, zero-available-evidence MAE, directional accuracy, extreme recall, rank/calibration, coverage, variance, constant/prior/shrinkage, and legacy all-17D MAE. Changing eligibility is a metric-contract change, not a decoder experiment.
 
-All 17 decisions and empirical values are emitted by `pnpm eval:generator-monotonicity`; excluded dimensions remain visible. Dimensions are excluded for compound/non-opposite poles, overlap, non-interval semantics, or—in the case of integration preference—insufficient generator coverage.
+`integration_preference` is construct-valid but currently below the 10% generator-coverage policy floor (`CONSTRUCT_VALID_BUT_INSUFFICIENT_TEST_COVERAGE`). That floor is a policy parameter, not a scientific fact. Extractor coverage is reported separately and must never decide eligibility.
+
+All 17 decisions and empirical values are emitted by `pnpm eval:generator-monotonicity` and `pnpm eval:eligibility-sensitivity`; excluded dimensions remain visible. Exclusion layers are construct invalidity, insufficient interval semantics, or generator coverage—not extractor misses.

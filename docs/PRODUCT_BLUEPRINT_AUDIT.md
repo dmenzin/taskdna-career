@@ -4,7 +4,7 @@
 
 The four person-side signals are independent: **Preference** (liked/disliked/tolerated work), **Experience** (performed work), **Qualification** (capability/credential evidence), and **Direction** (desired future work). Exposure is not preference; aspiration is not experience. They meet job-side Task → DWA mappings only after independent representation. Preference-vector recovery MAE is therefore a decoder-layer diagnostic, never Preference Fit or recommendation accuracy.
 
-The observed macro MAE estimates: *the synthetic generator's continuous hidden preference value for a dimension for which the extractor received and recognized generated preference/dislike evidence*. The math matches that target. Its semantic validity is only provisional because several poles are not genuine opposites and phrase generation is sparse/templated. This target is part of the blueprint only as a proxy for preference evidence interpretation—not a full latent person profile.
+The primary available-evidence macro MAE estimates: *the synthetic generator's continuous hidden preference value for an eligible dimension for which the generator actually placed preference/dislike evidence in an inference-visible field*. Extractor recognition is a separate recall diagnostic. Semantic validity remains provisional because several poles are not genuine opposites and phrase generation is sparse/templated. This target is a proxy for preference evidence interpretation—not a full latent person profile.
 
 ## Dimension-by-dimension audit
 

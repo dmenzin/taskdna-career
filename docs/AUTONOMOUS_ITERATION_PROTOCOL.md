@@ -5,8 +5,8 @@
 1. Run `pnpm eval:iteration-readiness`; stop on any failure. Read the baseline and metric registries and this protocol.
 2. Select the highest-value unresolved issue within `EXPERIMENT_PERMISSIONS.md`.
 3. Run `pnpm experiment:new <id>` and complete every preregistration field **before code**.
-4. Make one conceptual change. Run construct-specific DEVELOPMENT metrics; inspect distributions, coverage, variance, paired examples, wins and regressions.
-5. Attack Goodhart risks: constant-5/shrinkage comparison, mean/variance collapse, zero-evidence-only gains, coverage loss, abstention, and duplicate evidence.
+4. Make one conceptual change. Run construct-specific DEVELOPMENT metrics; inspect distributions, coverage, variance, paired examples, wins and regressions. Primary preference MAE is `AVAILABLE_EVIDENCE_PREFERENCE_MACRO_MAE_V1`.
+5. Attack Goodhart risks: extractor under-recognition, abstention, constant-5/shrinkage, mean/variance collapse, zero-available-evidence-only gains, coverage loss, generator-visibility change, eligible-set change, and duplicate evidence.
 6. Apply an independent review lens; then run VALIDATION only if preregistered development guardrails pass.
 7. Record KEEP, REVERT, or INCONCLUSIVE. KEEP only when the primary construct metric and all guardrails support it. REVERT failed changes. INCONCLUSIVE speculative scoring must be reverted or disabled—never silently active.
 8. Commit code and completed record, then choose the next issue.
