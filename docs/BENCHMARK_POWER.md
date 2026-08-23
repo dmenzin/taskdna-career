@@ -52,7 +52,7 @@ or REVERT on the strength of the n=12 number was decided by noise.
 
 ---
 
-## 2. The brief's headline claim is false, and the true effect has the opposite sign
+## 2. The brief's headline claim was decided by noise, against the wrong baseline
 
 The premise driving this research run was: *TaskDNA NDCG 0.937 versus naive resume-lexical
 0.963 — TaskDNA does not clearly beat a dumb resume-lexical baseline on its central
@@ -66,8 +66,8 @@ Paired bootstrap over **480 persons / 40 independent seeds**, hard difficulty, D
 | preference | 0.6516 | 0.3000 | **+0.3516** | [+0.3288, +0.3757] | TaskDNA wins |
 | direction | 0.7702 | 0.1234 | **+0.6467** | [+0.6154, +0.6787] | TaskDNA wins |
 
-TaskDNA beats every conventional baseline on every channel. On experience the margin is real
-but small (+0.016), and **its sign flips from seed to seed** — which is exactly how a single
+Against the baselines as they existed, TaskDNA wins every channel. On experience the margin is
+real but small (+0.016), and **its sign flips from seed to seed** — which is exactly how a single
 n=12 draw produced a number pointing the other way. The reported 0.026 deficit was about one
 third of the instrument's resolution at that sample size.
 
