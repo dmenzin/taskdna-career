@@ -63,12 +63,16 @@ export function latencyDistribution(samplesMs: number[]): LatencyDistribution {
 
 export interface CallLatencySample {
   promptId: string;
+  subjectId: string | null;
   provider: string;
   model: string;
   resolvedModel: string | null;
   reasoning: string | null;
   cacheHit: boolean;
+  /** Wall-clock time of this invocation; sub-millisecond for a cache hit. */
   latencyMs: number;
+  /** Duration of the call that originally produced the result; null if never recorded. */
+  originalLatencyMs: number | null;
   inputTokens: number | null;
   outputTokens: number | null;
   reasoningTokens: number | null;
@@ -78,12 +82,14 @@ export interface CallLatencySample {
 export function callSamples(records: ModelCallRecord[]): CallLatencySample[] {
   return records.map((record) => ({
     promptId: record.promptId,
+    subjectId: record.subjectId,
     provider: record.provider,
     model: record.model,
     resolvedModel: record.providerMetadata?.resolvedModel ?? null,
     reasoning: record.providerMetadata?.reasoning ?? null,
     cacheHit: record.cacheHit,
     latencyMs: record.latencyMs,
+    originalLatencyMs: record.originalLatencyMs,
     inputTokens: record.usage.inputTokens,
     outputTokens: record.usage.outputTokens,
     reasoningTokens: record.usage.reasoningTokens ?? null,
@@ -91,8 +97,10 @@ export function callSamples(records: ModelCallRecord[]): CallLatencySample[] {
 }
 
 export interface AgentLatencyProfile {
-  /** Fresh-call distributions, keyed by prompt id. The population a user actually experiences. */
+  /** Model-call distributions, keyed by prompt id. The population a user actually experiences. */
   freshByAgent: Record<string, LatencyDistribution>;
+  /** Agents whose figures came from replayed cache entries rather than calls made in this run. */
+  replayedAgents: string[];
   /** Cache-hit distribution, kept separate so it can never dilute the fresh numbers. */
   cacheHit: LatencyDistribution;
   freshCalls: number;
@@ -100,11 +108,23 @@ export interface AgentLatencyProfile {
 }
 
 export function agentLatencyProfile(samples: CallLatencySample[]): AgentLatencyProfile {
-  const fresh = samples.filter((sample) => !sample.cacheHit);
+  // Any sample with a recorded ORIGINAL duration describes a real model call, whether it was made
+  // in this run or replayed from cache. Restricting to fresh calls only would drop a fully-cached
+  // architecture out of the latency table entirely, which is how a cached arm silently disappears
+  // from a comparison.
   const byAgent: Record<string, number[]> = {};
-  for (const sample of fresh) (byAgent[sample.promptId] ??= []).push(sample.latencyMs);
+  const replayed = new Set<string>();
+  for (const sample of samples) {
+    const duration = sample.cacheHit ? sample.originalLatencyMs : sample.latencyMs;
+    if (duration === null || duration === undefined) continue;
+    (byAgent[sample.promptId] ??= []).push(duration);
+    if (sample.cacheHit) replayed.add(sample.promptId);
+  }
+  const fresh = samples.filter((sample) => !sample.cacheHit);
   return {
     freshByAgent: Object.fromEntries(Object.entries(byAgent).map(([id, values]) => [id, latencyDistribution(values)])),
+    // An agent contributes here only if EVERY sample for it was replayed.
+    replayedAgents: [...replayed].filter((id) => !fresh.some((sample) => sample.promptId === id)),
     cacheHit: latencyDistribution(samples.filter((sample) => sample.cacheHit).map((sample) => sample.latencyMs)),
     freshCalls: fresh.length,
     cachedCalls: samples.length - fresh.length,
@@ -120,6 +140,12 @@ export function agentLatencyProfile(samples: CallLatencySample[]): AgentLatencyP
  */
 export interface CriticalPathInput {
   architecture: string;
+  /**
+   * Per-subject durations keyed by agent, when available. THE CORRECT INPUT for a parallel
+   * estimate: the critical path for one person is the max over that person's own agent calls, and
+   * only then is it aggregated across people.
+   */
+  perSubject?: { subjectId: string; byAgent: Record<string, number> }[];
   /** Fresh latency distribution per person-side agent, in the order a sequential run makes them. */
   personAgents: { promptId: string; distribution: LatencyDistribution }[];
   /**
@@ -137,6 +163,13 @@ export interface CriticalPathInput {
 export interface CriticalPath {
   architecture: string;
   agentCount: number;
+  /**
+   * How the parallel figure was obtained. `per-subject` pairs each person's own calls and is
+   * correct. `aggregate-approximation` takes the maximum of separately-aggregated percentiles,
+   * which is OPTIMISTICALLY BIASED: for independent agents, max(p50_A, p50_B) sits at or below the
+   * true median of max(A_i, B_i). Reported so a biased number is never mistaken for a measured one.
+   */
+  parallelBasis: "per-subject" | "aggregate-approximation";
   agentsAreIndependent: boolean;
   /** Sum of agent latencies. What a naive implementation would make the user wait. */
   sequentialP50Ms: number;
@@ -167,13 +200,35 @@ export function criticalPath(input: CriticalPathInput): CriticalPath {
 
   const sequentialP50 = sum(p50s);
   const sequentialP95 = sum(p95s);
-  // With one agent there is nothing to parallelise, so parallel equals sequential by definition.
-  const parallelP50 = input.agentsAreIndependent ? max(p50s) : sequentialP50;
-  const parallelP95 = input.agentsAreIndependent ? max(p95s) : sequentialP95;
+
+  // Prefer per-subject pairing. Falling back to the aggregate maximum is an approximation and is
+  // labelled as one rather than being silently reported as an estimate of the same quantity.
+  let parallelP50: number;
+  let parallelP95: number;
+  let parallelBasis: "per-subject" | "aggregate-approximation";
+  const agentIds = input.personAgents.map((agent) => agent.promptId);
+  const paired = (input.perSubject ?? []).filter((row) => agentIds.every((id) => typeof row.byAgent[id] === "number"));
+  if (input.agentsAreIndependent && paired.length > 0) {
+    const perSubjectMax = paired.map((row) => Math.max(...agentIds.map((id) => row.byAgent[id]!)));
+    const distribution = latencyDistribution(perSubjectMax);
+    parallelP50 = distribution.p50Ms;
+    parallelP95 = distribution.p95Ms;
+    parallelBasis = "per-subject";
+  } else if (input.agentsAreIndependent) {
+    parallelP50 = max(p50s);
+    parallelP95 = max(p95s);
+    parallelBasis = "aggregate-approximation";
+  } else {
+    // Nothing to parallelise: a single agent, or a dependent chain.
+    parallelP50 = sequentialP50;
+    parallelP95 = sequentialP95;
+    parallelBasis = "per-subject";
+  }
 
   return {
     architecture: input.architecture,
     agentCount: input.personAgents.length,
+    parallelBasis,
     agentsAreIndependent: input.agentsAreIndependent,
     sequentialP50Ms: sequentialP50,
     sequentialP95Ms: sequentialP95,

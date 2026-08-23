@@ -131,6 +131,7 @@ const jobRequest = (job: { jobId: string; responsibilities: { text: string }[] }
 const sharedRequest = (personId: string): ModelRequest => ({
   prompt: PERSON_BLUEPRINT_PROMPT, input: sharedInput(personId),
   decoding: { temperature: 0, maxOutputTokens: personMaxOutput },
+  subjectId: personId,
 });
 const splitRequest = (personId: string, scope: EvidenceScope, which: "experience" | "direction"): ModelRequest => {
   const person = corpus.people.find((p) => p.personId === personId)!;
@@ -139,6 +140,7 @@ const splitRequest = (personId: string, scope: EvidenceScope, which: "experience
     prompt: which === "experience" ? EXPERIENCE_AGENT_PROMPT : DIRECTION_AGENT_PROMPT,
     input: { evidence: which === "experience" ? evidence.experience : evidence.direction },
     decoding: { temperature: 0, maxOutputTokens: splitMaxOutput },
+    subjectId: personId,
   };
 };
 
@@ -438,10 +440,34 @@ paths.push(criticalPath({
   agentsAreIndependent: false, // one call: nothing to parallelise
   deterministicMs,
 }));
+// Latency now comes from the cache entries themselves, so a fully-replayed agent is still
+// reportable. Deliberately NO fallback to a different prompt generation: substituting v1's slower
+// Direction latency for v2's would misreport the architecture under test, and a stated gap is
+// better than a confident wrong number.
+// Per-subject durations, so the parallel estimate pairs each person's own calls rather than
+// taking a maximum of separately-aggregated percentiles.
+const perSubject = (() => {
+  const bySubject = new Map<string, Record<string, number>>();
+  for (const sample of allSamples) {
+    const duration = sample.cacheHit ? sample.originalLatencyMs : sample.latencyMs;
+    if (!sample.subjectId || duration === null) continue;
+    const row = bySubject.get(sample.subjectId) ?? {};
+    row[sample.promptId] = duration;
+    bySubject.set(sample.subjectId, row);
+  }
+  return [...bySubject.entries()].map(([subjectId, byAgent]) => ({ subjectId, byAgent }));
+})();
+
 for (const variant of VARIANTS) {
   const experience = profile.freshByAgent[EXPERIENCE_AGENT_PROMPT.id];
   const direction = profile.freshByAgent[DIRECTION_AGENT_PROMPT.id];
-  if (!experience || !direction) continue;
+  if (!experience || !direction) {
+    process.stdout.write(
+      `  ${variant.id}: latency unavailable — ${!experience ? "experience" : "direction"} agent has no ` +
+      `recorded duration (cache entry predates latency persistence). Re-run after the cache carries it.\n`,
+    );
+    continue;
+  }
   paths.push(criticalPath({
     architecture: variant.id,
     personAgents: [
@@ -452,6 +478,7 @@ for (const variant of VARIANTS) {
     // independent by the four-channel contract and could be issued concurrently.
     agentsAreIndependent: true,
     deterministicMs,
+    perSubject,
   }));
 }
 
@@ -497,7 +524,9 @@ process.stdout.write(`  fresh calls made  : ${profile.freshCalls}\n`);
 process.stdout.write(`  budget now        : $${ledger.spentUsd.toFixed(4)} / $${RUNTIME_BUDGET_LIMITS.maxSpendUsd} (HARD), ${ledger.calls} calls\n`);
 
 mkdirSync("artifacts/agent_experiments", { recursive: true });
-const outputPath = `artifacts/agent_experiments/split-agents-${provider}-${family.toLowerCase()}-n${people}.json`;
+// The Direction prompt generation is in the filename. Without it, a v2 run overwrites the v1
+// artifact -- which it did once, and only git made the v1 latency recoverable.
+const outputPath = `artifacts/agent_experiments/split-agents-${provider}-${family.toLowerCase()}-n${people}-direction-${DIRECTION_AGENT_PROMPT.version}.json`;
 writeFileSync(outputPath, JSON.stringify({
   experiment: "split-agents", experimentId, family, people, provider, requestedModel: model, reasoning: effort,
   splitAgentVersion: SPLIT_AGENT_VERSION,
@@ -517,6 +546,7 @@ writeFileSync(outputPath, JSON.stringify({
     cachedCalls: profile.cachedCalls,
     deterministicMsPerPerson: deterministicMs,
     sharedBaselineFreshLatency: sharedFresh,
+    replayedAgents: profile.replayedAgents,
     criticalPaths: paths,
     qualityVsWait: trades,
     // Raw per-call rows, deliberately unsummarised, so a Pareto frontier can be built later from

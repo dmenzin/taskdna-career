@@ -13,8 +13,8 @@ import {
 import type { ModelCallRecord } from "@/agent/runtime";
 
 const sample = (over: Partial<CallLatencySample> = {}): CallLatencySample => ({
-  promptId: "person-blueprint", provider: "openai", model: "gpt-5.6-sol",
-  resolvedModel: "gpt-5.6-sol", reasoning: "low", cacheHit: false, latencyMs: 1000,
+  promptId: "person-blueprint", subjectId: null, provider: "openai", model: "gpt-5.6-sol",
+  resolvedModel: "gpt-5.6-sol", reasoning: "low", cacheHit: false, latencyMs: 1000, originalLatencyMs: 1000,
   inputTokens: 100, outputTokens: 50, reasoningTokens: 20, ...over,
 });
 
@@ -26,24 +26,48 @@ describe("cache hits must never dilute the latency a user experiences", () => {
     // because every call was a cache hit. A cache-warm rerun would otherwise "prove" that a
     // 15-second architecture is instant.
     const profile = agentLatencyProfile([
-      sample({ latencyMs: 15000 }),
-      ...Array.from({ length: 50 }, () => sample({ latencyMs: 0, cacheHit: true })),
+      sample({ latencyMs: 15000, originalLatencyMs: 15000 }),
+      // Cache hits with NO recorded original duration: a map lookup, not a model call.
+      ...Array.from({ length: 50 }, () => sample({ latencyMs: 0, originalLatencyMs: null, cacheHit: true })),
     ]);
     expect(profile.freshByAgent["person-blueprint"]!.p50Ms).toBe(15000);
+    expect(profile.freshByAgent["person-blueprint"]!.n).toBe(1);
     expect(profile.freshCalls).toBe(1);
     expect(profile.cachedCalls).toBe(50);
   });
 
   it("keeps the cache-hit population reportable in its own right", () => {
-    const profile = agentLatencyProfile([sample({ latencyMs: 9000 }), sample({ latencyMs: 1, cacheHit: true })]);
+    const profile = agentLatencyProfile([sample({ latencyMs: 9000 }), sample({ latencyMs: 1, originalLatencyMs: null, cacheHit: true })]);
     expect(profile.cacheHit.n).toBe(1);
     expect(profile.cacheHit.p50Ms).toBe(1);
   });
 
+  it("reports a REPLAYED call at its original duration, not at the map-lookup cost", () => {
+    // Without this, a fully-cached architecture either vanishes from the latency table or gets
+    // another configuration's number substituted for it. Both happened before the cache carried
+    // the original duration.
+    const profile = agentLatencyProfile([
+      sample({ promptId: "direction-agent", latencyMs: 0, originalLatencyMs: 6808, cacheHit: true }),
+      sample({ promptId: "direction-agent", latencyMs: 1, originalLatencyMs: 7200, cacheHit: true }),
+    ]);
+    expect(profile.freshByAgent["direction-agent"]!.n).toBe(2);
+    expect(profile.freshByAgent["direction-agent"]!.p50Ms).toBe(6808);
+    expect(profile.replayedAgents).toEqual(["direction-agent"]);
+    expect(profile.freshCalls).toBe(0);
+  });
+
+  it("does not mark an agent replayed when any of its calls were fresh", () => {
+    const profile = agentLatencyProfile([
+      sample({ promptId: "direction-agent", originalLatencyMs: 5000 }),
+      sample({ promptId: "direction-agent", latencyMs: 0, originalLatencyMs: 6000, cacheHit: true }),
+    ]);
+    expect(profile.replayedAgents).toEqual([]);
+  });
+
   it("separates the agents rather than pooling them", () => {
     const profile = agentLatencyProfile([
-      sample({ promptId: "experience-agent", latencyMs: 12000 }),
-      sample({ promptId: "direction-agent", latencyMs: 4000 }),
+      sample({ promptId: "experience-agent", latencyMs: 12000, originalLatencyMs: 12000 }),
+      sample({ promptId: "direction-agent", latencyMs: 4000, originalLatencyMs: 4000 }),
     ]);
     expect(profile.freshByAgent["experience-agent"]!.p50Ms).toBe(12000);
     expect(profile.freshByAgent["direction-agent"]!.p50Ms).toBe(4000);
@@ -88,6 +112,44 @@ describe("independent agents must not be summed and called user wait", () => {
     expect(path.estimatedParallelP50Ms).toBe(12000);
     expect(path.timeToFirstUsableResultP50Ms).toBe(12100);
     expect(path.sequentialUserWaitP50Ms).toBe(16100);
+  });
+
+  it("pairs each person's own calls when per-subject durations are supplied", () => {
+    // The defect this fixes: max(p50_A, p50_B) is NOT the median of max(A_i, B_i). Here every
+    // person's slowest agent is 9000ms, so the true parallel median is 9000 -- but the aggregate
+    // approximation would report max(p50_A, p50_B) = 5000 and understate the wait by 44%.
+    const perSubject = [
+      { subjectId: "p1", byAgent: { "experience-agent": 9000, "direction-agent": 1000 } },
+      { subjectId: "p2", byAgent: { "experience-agent": 1000, "direction-agent": 9000 } },
+      { subjectId: "p3", byAgent: { "experience-agent": 9000, "direction-agent": 1000 } },
+    ];
+    const path = criticalPath({
+      architecture: "split",
+      personAgents: [
+        { promptId: "experience-agent", distribution: latencyDistribution([9000, 1000, 9000]) },
+        { promptId: "direction-agent", distribution: latencyDistribution([1000, 9000, 1000]) },
+      ],
+      agentsAreIndependent: true, deterministicMs: 0, perSubject,
+    });
+    expect(path.parallelBasis).toBe("per-subject");
+    expect(path.estimatedParallelP50Ms).toBe(9000);
+  });
+
+  it("labels the aggregate fallback as an approximation rather than an estimate", () => {
+    const path = criticalPath({
+      architecture: "split", personAgents: [experience, direction],
+      agentsAreIndependent: true, deterministicMs: 0,
+    });
+    expect(path.parallelBasis).toBe("aggregate-approximation");
+  });
+
+  it("ignores per-subject rows missing an agent, rather than pairing against a gap", () => {
+    const path = criticalPath({
+      architecture: "split", personAgents: [experience, direction],
+      agentsAreIndependent: true, deterministicMs: 0,
+      perSubject: [{ subjectId: "p1", byAgent: { "experience-agent": 9000 } }],
+    });
+    expect(path.parallelBasis).toBe("aggregate-approximation");
   });
 
   it("does not parallelise a dependent chain", () => {
@@ -152,7 +214,7 @@ describe("raw call rows survive for a later Pareto frontier", () => {
       providerMetadata: { providerVersion: "openai-provider.v1", resolvedModel: "gpt-5.6-sol-2026-07-09", reasoning: "high" },
       experimentId: "exp", promptId: "experience-agent", promptVersion: "v1", promptHash: "h",
       schemaVersion: "s", schemaHash: "sh", decoding: { temperature: 0, maxOutputTokens: 1800 },
-      inputHash: "i", cacheKey: "k", cacheHit: false, latencyMs: 8123,
+      inputHash: "i", cacheKey: "k", cacheHit: false, subjectId: "p1", latencyMs: 8123, originalLatencyMs: 8123,
       usage: { inputTokens: 900, outputTokens: 700, costUsd: 0.02, costIsEstimate: true, reasoningTokens: 400, cachedInputTokens: 0 },
       outputText: "{}", timestamp: new Date().toISOString(),
     };

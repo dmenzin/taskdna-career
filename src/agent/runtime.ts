@@ -39,6 +39,15 @@ export interface ModelRequest {
   prompt: PromptSpec;
   input: Record<string, unknown>;
   decoding: DecodingParams;
+  /**
+   * The subject this call is about, for per-subject latency pairing. NOT part of the cache key —
+   * it is metadata about who the call concerns, not an input that changes the answer.
+   *
+   * Required to estimate parallel latency correctly. Aggregating first and then taking a maximum
+   * computes max(p50_A, p50_B), which is not the median of max(A_i, B_i) and is optimistically
+   * biased. The pairing has to happen per subject, before aggregation.
+   */
+  subjectId?: string;
 }
 
 export interface ModelUsage {
@@ -102,7 +111,18 @@ export interface ModelCallRecord {
   inputHash: string;
   cacheKey: string;
   cacheHit: boolean;
+  /** Subject the call concerns, when supplied. Enables per-subject critical-path pairing. */
+  subjectId: string | null;
+  /** Wall-clock time of THIS invocation. Sub-millisecond for a cache hit. */
   latencyMs: number;
+  /**
+   * Wall-clock time of the call that originally produced this result.
+   *
+   * Equal to `latencyMs` for a fresh call. For a cache hit it is the recorded duration of the
+   * original call, or null when the cache entry predates latency persistence. This is the field a
+   * latency report should read: `latencyMs` on a cache hit measures a map lookup, not a model.
+   */
+  originalLatencyMs: number | null;
   usage: ModelUsage;
   outputText: string;
   timestamp: string;
@@ -215,7 +235,18 @@ export interface RunnerOptions {
   onError?: (error: unknown, request: ModelRequest) => { text: string; usage: ModelUsage } | null;
 }
 
-type CachedCall = { text: string; usage: ModelUsage; metadata?: ProviderMetadata };
+/**
+ * A persisted call result.
+ *
+ * `latencyMs` is stored because latency is now a product metric and a cache hit cannot re-measure
+ * it. Without this, a cache-warm rerun has no way to report what the call originally took, and the
+ * only options are to drop the architecture from the latency table or to substitute another
+ * configuration's number — both of which happened before this field existed.
+ *
+ * Entries written before this field are read back with it absent, which is reported as unavailable
+ * rather than filled in.
+ */
+type CachedCall = { text: string; usage: ModelUsage; metadata?: ProviderMetadata; latencyMs?: number };
 
 export class InstrumentedRunner {
   private readonly cache = new Map<string, CachedCall>();
@@ -262,7 +293,7 @@ export class InstrumentedRunner {
         this.errors.push({ cacheKey, message: String(error).slice(0, 300) });
         result = recovered;
       }
-      this.cache.set(cacheKey, result);
+      this.cache.set(cacheKey, { ...result, latencyMs: Date.now() - started });
       this.persistCache();
     }
 
@@ -280,7 +311,14 @@ export class InstrumentedRunner {
       inputHash,
       cacheKey,
       cacheHit: Boolean(cached),
+      subjectId: request.subjectId ?? null,
       latencyMs: Date.now() - started,
+      /**
+       * What the call took when it was ORIGINALLY made, for a cache hit. Null when the entry
+       * predates latency persistence. This is what lets a cache-warm rerun still report the
+       * latency a user would experience, instead of the sub-millisecond cost of a map lookup.
+       */
+      originalLatencyMs: cached ? (cached.latencyMs ?? null) : Date.now() - started,
       usage: cached ? { ...result.usage, costUsd: 0, costIsEstimate: result.usage.costIsEstimate } : result.usage,
       outputText: result.text,
       timestamp: new Date().toISOString(),
